@@ -130,14 +130,14 @@
      <string>Help</string>
     </property>
    </widget>
-   <widget class="QMenu" name="menuMeasurements">
+   <widget class="QMenu" name="menu_Tasks">
     <property name="title">
-     <string>Measurements</string>
+     <string>Tasks</string>
     </property>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Control"/>
-   <addaction name="menuMeasurements"/>
+   <addaction name="menu_Tasks"/>
    <addaction name="menu_View"/>
    <addaction name="menuHelp"/>
   </widget>

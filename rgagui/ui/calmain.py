@@ -30,7 +30,7 @@ from .config import Config
 from .stdout import StdOut
 from .qtloghandler import QtLogHandler
 
-from rgagui.basetest import BaseTest, Bold
+from rgagui.basetask import Task, Bold
 from rga.baseinst import Instrument as BaseInst
 
 
@@ -60,15 +60,15 @@ class CalMain(QMainWindow, Ui_CalMain):
 
         # Get Instrument dict name from BaseTest
         # the dict holds instances of subclass of BaseInst
-        self.InstDict = BaseTest.InstrumentDict
-        self.Dut = BaseTest.DeviceUnderTest
+        self.InstDict = Task.InstrumentDict
+        self.Dut = Task.DeviceUnderTest
 
         self.inst_dict = {
             self.Dut: BaseInst()
         }
 
         try:
-            self.default_config_file = 'rga120tests/rga120.testdict'
+            self.default_config_file = 'rga120tasks/rga120.taskconfig'
             self.config = Config()
             self.base_data_dir = self.config.base_data_dir
 
@@ -137,14 +137,15 @@ class CalMain(QMainWindow, Ui_CalMain):
             except Exception as e:
                 logger.error(e)
 
-            if len(sys.argv) == 2 and sys.argv[1].split('.')[-1].lower() == 'testdict':
+            if len(sys.argv) == 2 and sys.argv[1].split('.')[-1].lower() == 'taskconfig':
                 self.default_config_file = sys.argv[1]
                 
             current_dir = str(Path(self.default_config_file).parent)
             sys.path.insert(0, current_dir)
             os.chdir(current_dir)
-            print('Config file : {} loaded'.format(self.default_config_file))
+
             self.config.load(self.default_config_file)
+            logger.info('Taskconfig file: "{}"  loading done'.format(self.default_config_file))
 
             self.inst_dict = self.config.inst_dict
 
@@ -158,15 +159,21 @@ class CalMain(QMainWindow, Ui_CalMain):
             logger.error(str(e))
 
         try:
-            actions = self.menuMeasurements.actions()
+            try:
+                # diconnect with none connected causes an exception
+                self.menu_Tasks.triggered.disconnect()
+            except:
+                pass
+
+            actions = self.menu_Tasks.actions()
             for action in actions:
-                self.menuMeasurements.removeAction(action)
+                self.menu_Tasks.removeAction(action)
 
             for item in self.test_dict:
                 action_measure = QAction(self)
                 action_measure.setText(item)
-                self.menuMeasurements.addAction(action_measure)
-            self.menuMeasurements.triggered.connect(self.onMenuSelect)
+                self.menu_Tasks.addAction(action_measure)
+            self.menu_Tasks.triggered.connect(self.onMenuSelect)
         except Exception as e:
             print(e)
 
@@ -174,27 +181,27 @@ class CalMain(QMainWindow, Ui_CalMain):
         try:
             if len(text) < 2:
                 return
-            if text[0] != BaseTest.EscapeForResult[0]:
+            if text[0] != Task.EscapeForResult[0]:
                 if len(text) > 4:
                     self.console.append(text)
                     # sb = self.console.verticalScrollBar()
                     # sb.setValue(sb.maximum())
                 return
 
-            msg = text.split(BaseTest.EscapeForResult[0], 2)
+            msg = text.split(Task.EscapeForResult[0], 2)
             if len(msg) != 3: return
-            if text.startswith(BaseTest.EscapeForResult):
+            if text.startswith(Task.EscapeForResult):
                 self.testResult.append(msg[2])
                 sb = self.testResult.verticalScrollBar()
                 sb.setValue(sb.maximum())
-            elif text.startswith(BaseTest.EscapeForDevice):
+            elif text.startswith(Task.EscapeForDevice):
                 self.deviceInfo.append(msg[2])
-            elif text.startswith(BaseTest.EscapeForStatus):
+            elif text.startswith(Task.EscapeForStatus):
                 self.statusbar.showMessage(msg[2])
-            elif text.startswith(BaseTest.EscapeForStart):
+            elif text.startswith(Task.EscapeForStart):
                 # self.testInfo.append(text)
                 pass
-            elif text.startswith(BaseTest.EscapeForStop):
+            elif text.startswith(Task.EscapeForStop):
                 # self.testInfo.append(text)
                 # self.clear_busy()
                 pass
@@ -253,13 +260,13 @@ class CalMain(QMainWindow, Ui_CalMain):
 
             self.current_action = action
             current_action_name = action.text()
-            logger.info('test {} is selected.'.format(Bold.format(current_action_name)))
+            logger.info('Task {} is selected.'.format(Bold.format(current_action_name)))
             testClassChosen = self.test_dict[current_action_name]
-            if not issubclass(testClassChosen, BaseTest):
+            if not issubclass(testClassChosen, Task):
                 title = 'Error'
-                msg = 'The test chosen is not a right test class'
+                msg = 'The task chosen "{}" does not have a valid Task subclass'.format(current_action_name)
                 self.show_message(msg, title)
-                raise TypeError("Not a subclass of BaseTest")
+                raise TypeError(msg)
 
             self.testmethod = testClassChosen
             self.handle_initial_image(self.testmethod)
@@ -279,7 +286,7 @@ class CalMain(QMainWindow, Ui_CalMain):
             if self.is_test_running():
                 self.show_message('Another test is running', 'Error')
                 return
-            if not issubclass(self.testmethod, BaseTest):
+            if not issubclass(self.testmethod, Task):
                 raise TypeError("{} is not a subclass of BaseTest".format(self.testmethod.__name__))
 
             self.test = self.testmethod(self)
@@ -312,9 +319,9 @@ class CalMain(QMainWindow, Ui_CalMain):
 
     def onOpen(self):
         try:
-            logger.info('Opening a testdict file..')
-            file_name, _ = QFileDialog.getOpenFileName(self, "Select a testdict file", ".",
-                                                       "TestDict files (*.testdict)")
+            logger.info('Opening a taskconfig file..')
+            file_name, _ = QFileDialog.getOpenFileName(self, "Select a taskconfig file", ".",
+                                                       "TaskConfig files (*.taskconfig)")
             if file_name:
                 self.default_config_file = file_name
                 self.load_tests()

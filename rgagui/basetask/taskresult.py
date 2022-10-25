@@ -59,7 +59,7 @@ class ResultLogHandler(logging.Handler):
             print('Logging error: {}'.format(e))
 
 
-class TestResult:
+class TaskResult:
     """An object that stores relevant test result data
 
     Any data stored in attributes of this object will
@@ -86,7 +86,7 @@ class TestResult:
         self.log = ""
         self._key_ordering = []
         self._plots = []
-        TestResult.reserved = list(self.__dict__.keys())
+        TaskResult.reserved = list(self.__dict__.keys())
 
         logger.debug('Reserved for TestResults: {}'.format(self.reserved))
 
@@ -120,7 +120,7 @@ class TestResult:
             self.error += msg
 
     def add_details(self, msg: str, key='summary'):
-        if key in TestResult.reserved:
+        if key in TaskResult.reserved:
             msg = '{} is reserved'.format(key)
             logger.error(msg)
             raise AttributeError(msg)

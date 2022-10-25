@@ -3,8 +3,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QDoubleSpinBox, QSpinBox, QComboBox, \
                             QLineEdit, QLabel, QGridLayout, QPushButton
 
-from rgagui.basetest.basetest  import BaseTest
-from rgagui.basetest.baseinput import IntegerInput, FloatInput, StringInput, ListInput
+from rgagui.basetask.task  import Task
+from rgagui.basetask.inputs import IntegerInput, FloatInput, StringInput, ListInput
 
 import logging
 logger = logging.getLogger(__name__)
@@ -16,9 +16,9 @@ class InputPanel(QWidget):
     FirstColumn = 0
     SecondColumn = 1
 
-    def __init__(self, test: BaseTest, parent=None):
+    def __init__(self, test: Task, parent=None):
         try:
-            if not isinstance(test, BaseTest) and not issubclass(test, BaseTest):
+            if not isinstance(test, Task) and not issubclass(test, Task):
                 raise TypeError(" not a subclass of BaseTest")
             super().__init__()
             layout = QGridLayout()

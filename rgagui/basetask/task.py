@@ -13,8 +13,8 @@ import sys
 import traceback
 import logging
 
-from .baseinput import FloatInput
-from .testresult import TestResult, ResultLogHandler
+from .inputs import FloatInput
+from .taskresult import TaskResult, ResultLogHandler
 
 from rga.baseinst import Instrument as BaseInst
 
@@ -30,7 +30,7 @@ def round_float(number, fmt='{:.4e}'):
     return float(fmt.format(number))
 
 
-class BaseTest(QThread):
+class Task(QThread):
     """ Base class for all testcal classes
     """
 
@@ -157,12 +157,12 @@ class BaseTest(QThread):
             raise AttributeError('inst_dict has no DUT')
 
         # We want Exception to be handled in run()
-        BaseTest._is_running = True
+        Task._is_running = True
         self._keep_running = True
         self._error_raised = False
 
         # We want to create self.result after self.name is assigned
-        self.result = TestResult(self.name)
+        self.result = TaskResult(self.name)
         self.result.set_start_time_now()
 
         log_format = '%(asctime)s-%(levelname)s-%(message)s'
@@ -183,7 +183,7 @@ class BaseTest(QThread):
 
     def basic_cleanup(self):
         try:
-            BaseTest._is_running = False
+            Task._is_running = False
             self._keep_running = False
             self.__notify_finish()
             self.result.set_stop_time_now()
@@ -368,7 +368,7 @@ class BaseTest(QThread):
     # These callbacks are used to update display for streaming data from another class or thread
     # Signals are wrapped as a callback functions 
 
-    def data_available_callback(self, data_dict, *args):
+    def data_available_callback(self, data_dict={}, *args):
         self.data_available.emit(data_dict)
 
     @Slot(dict)
@@ -385,7 +385,7 @@ class BaseTest(QThread):
         self.scan_started.emit()
 
     @Slot()
-    def update_on_scan_started(self, data):
+    def update_on_scan_started(self):
         """
         This method handles scan_started signal.
         """
@@ -396,7 +396,7 @@ class BaseTest(QThread):
         self.scan_finished.emit()
 
     @Slot()
-    def update_on_scan_finished(self, data):
+    def update_on_scan_finished(self):
         """
         This method handles scan_finished signal.
         """
@@ -406,7 +406,7 @@ class BaseTest(QThread):
     def get_instrument(self, name):
         """Get an instrument from parent's inst_dict and check its validity"""
 
-        inst_dict = getattr(self, BaseTest.InstrumentDict)
+        inst_dict = getattr(self, Task.InstrumentDict)
         if name not in inst_dict:
             self.logger.error("{} is not in Instrument dict.".format(name))
             # self.stop()
@@ -418,7 +418,7 @@ class BaseTest(QThread):
                          .format(type(inst), BaseInst.__class__.__name__))
 
         if not inst.is_connected():
-            raise BaseTest.TestSetupFailed('{} is not connected'.format(name))
+            raise Task.TestSetupFailed('{} is not connected'.format(name))
             return None
 
         model, sn, version = inst.check_id()
@@ -456,7 +456,7 @@ class BaseTest(QThread):
                     return self.parent.question_result_value
             else:
                 self.question_background_update()
-        raise BaseTest.TestRunFailed("Timeout at '{}'".format(self.current_question))
+        raise Task.TestRunFailed("Timeout at '{}'".format(self.current_question))
 
     def question_background_update(self):
         time.sleep(0.1)

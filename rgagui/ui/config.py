@@ -3,7 +3,7 @@ import logging
 from pathlib import Path
 from importlib import import_module, invalidate_caches
 
-from rgagui.basetest import BaseTest, GreenNormal, RedNormal
+from rgagui.basetask import Task, GreenNormal, RedNormal
 
 # from srs_insts.baseinsts import BaseInst
 from rga.baseinst import Instrument as BaseInst
@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class Config(object):
-    Dut = BaseTest.DeviceUnderTest
+    Dut = Task.DeviceUnderTest
 
     DataRootDirectory = str(Path.home() / "tcal-results")
 
@@ -90,14 +90,16 @@ class Config(object):
     def load_test_from_line(self, v):
         test_key, test_module_name, test_class_name = v.split(',', 2)
         test_key = test_key.strip()
-        mod = import_module(test_module_name.strip())
+        test_module = test_module_name.strip()
+        mod = import_module(test_module)
+
         test_class_name = test_class_name.strip()
         if hasattr(mod, test_class_name):
             test_class = getattr(mod, test_class_name)
         else:
-            logger.error('Invalid test class')
+            logger.error('No task class: {} in module: {}'.format(test_class_name, test_module))
             return
-        if not issubclass(test_class, BaseTest):
+        if not issubclass(test_class, Task):
             logger.error('Not BaseTest subclass')
             return
         self.test_dict[test_key] = test_class

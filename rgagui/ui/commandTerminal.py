@@ -2,7 +2,7 @@
 
 from PyQt5.QtWidgets import QFrame, QMessageBox
 
-from srs_insts.baseinsts import BaseInst
+from rga.baseinst import Instrument as BaseInst
 
 from .ui_commandTerminal import Ui_CommandTerminal
 
