@@ -31,7 +31,7 @@ from .stdout import StdOut
 from .qtloghandler import QtLogHandler
 
 from rgagui.basetest import BaseTest, Bold
-from srs_insts.baseinsts import BaseInst
+from rga.baseinst import Instrument as BaseInst
 
 
 SuccessSound = str(Path(__file__).parent / 'sounds/successSound.wav')
@@ -48,7 +48,7 @@ class CalMain(QMainWindow, Ui_CalMain):
         # self.testResult.setFontFamily('monospace')
 
         QApplication.setOrganizationName("SRS")
-        QApplication.setApplicationName('CalMain')
+        QApplication.setApplicationName('rgagui')
         self.settings = QSettings()
 
         # The dict holds subclass of BaseTest
@@ -337,20 +337,15 @@ class CalMain(QMainWindow, Ui_CalMain):
             self.console.clear()
 
             if dut.is_connected():
-                msg = ' Name: {} \n S/N: {} \n F/W version: {} \n\n'.format(*dut.check_id())
-                msg += ' Connection: {} {} \n'.format(*dut.get_port_info())
-                msg += ' Status: {} \n'.format(dut.get_status_info())
+                msg = ''  # Name: {} \n S/N: {} \n F/W version: {} \n\n'.format(*dut.check_id())
+                msg += ' Info: {} \n\n\n'.format(dut.get_info())
+                msg += ' Status: {} \n'.format(dut.get_status())
                 logger.debug(msg.replace('\n', ''))
                 self.deviceInfo.clear()
                 self.deviceInfo.append(msg)
 
                 # if API server is available, upload.
                 sn = self.get_current_serial_number()
-
-                # Mark optional tests as success
-                for test_name in self.test_dict:
-                    if self.test_dict[test_name].is_optional():
-                        self.change_test_status(test_name, True)
 
             else:
                 logger.info('Connection aborted')
@@ -360,18 +355,6 @@ class CalMain(QMainWindow, Ui_CalMain):
     def onDisconnect(self):
         dut = self.get_dut()
         if dut.is_connected():
-            # Are all the test passed?
-            passed = self.get_test_status()
-            if passed:
-                question = "Disconnecting DUT, close the current test session as Passed?"
-                close_state = True
-            else:
-                question = "Disconnecting DUT, close the current test session as Failed?"
-                close_state = False
-
-            self.display_question(question)
-            if self.question_result is None:
-                return
 
             dut.disconnect()
             self.deviceInfo.clear()
@@ -379,18 +362,6 @@ class CalMain(QMainWindow, Ui_CalMain):
             self.deviceInfo.append(msg)
             self.sub_assemblies = {}
             logger.info('DUT is disconnected')
-
-            if self.question_result:
-                try:
-                    self.session_handler.close_session(close_state)
-                    for key in self.sub_session_handler_dict:
-                        handler = self.sub_session_handler_dict[key]
-                        if handler is not None and handler.is_open():
-                            handler.close_session(close_state)
-                except Exception as e:
-                    logger.error(e)
-            else:
-                logger.info('Current session stays open for further tests')
 
     def okToContinue(self):
         return True
@@ -633,8 +604,8 @@ class CalMain(QMainWindow, Ui_CalMain):
         # self.splitter.setSizes(self.settings.value("MainWindow/Splitter1", [100, 200, 200]))  #, type=int))
         # self.splitter_2.setSizes(self.settings.value("MainWindow/Splitter2", [150, 500]))  #, type=int))
 
-        self.restoreGeometry(self.settings.value("MainWindow/Geometry")) # , type=QByteArray))
-        self.restoreState(self.settings.value("MainWindow/State"))  # , type=QByteArray))
+        self.restoreGeometry(self.settings.value("MainWindow/Geometry", type=QByteArray))
+        self.restoreState(self.settings.value("MainWindow/State", type=QByteArray))
 
     def save_settings(self):
         self.settings.setValue("ConfigFile", self.default_config_file)

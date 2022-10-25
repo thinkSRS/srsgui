@@ -4,7 +4,9 @@ from pathlib import Path
 from importlib import import_module, invalidate_caches
 
 from rgagui.basetest import BaseTest, GreenNormal, RedNormal
-from srs_insts.baseinsts import BaseInst
+
+# from srs_insts.baseinsts import BaseInst
+from rga.baseinst import Instrument as BaseInst
 
 logger = logging.getLogger(__name__)
 

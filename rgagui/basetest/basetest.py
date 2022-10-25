@@ -16,7 +16,7 @@ import logging
 from .baseinput import FloatInput
 from .testresult import TestResult, ResultLogHandler
 
-from srs_insts.baseinsts import BaseInst
+from rga.baseinst import Instrument as BaseInst
 
 # HTML formatter for QTextBrowser
 Bold = '<font color="black"><b>{}</b></font>'
@@ -27,7 +27,7 @@ RedNormal = '<font color="red">{}</font>'
 
 
 def round_float(number, fmt='{:.4e}'):
-    return float(format.fmt(number))
+    return float(fmt.format(number))
 
 
 class BaseTest(QThread):
@@ -310,11 +310,8 @@ class BaseTest(QThread):
         self.result.add_details(msg, key)
 
     # Wrapper for TestResult.create_table
-    def create_table(self, name: str, *args, add_plot=True):
+    def create_table(self, name: str, *args):
         self.result.create_table(name, *args)
-        if add_plot:
-            # Add a plot for a table to WIP tracker
-            self.result.add_plot_for_table(name)
 
     # Wrapper for TestResult.add_data_to_table
     def add_data_to_table(self, name: str, *args, ):
