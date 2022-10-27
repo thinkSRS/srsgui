@@ -29,10 +29,10 @@ from .commandTerminal import CommandTerminal
 from .config import Config
 from .stdout import StdOut
 from .qtloghandler import QtLogHandler
+from .sessionhandler import SessionHandler
 
 from rgagui.basetask import Task, Bold
 from rga.baseinst import Instrument as BaseInst
-
 
 SuccessSound = str(Path(__file__).parent / 'sounds/successSound.wav')
 FailSound = str(Path(__file__).parent / 'sounds/errorSound.wav')
@@ -155,6 +155,10 @@ class CalMain(QMainWindow, Ui_CalMain):
             self.setWindowTitle(self.config.test_dict_name)
             self.display_image(self.config.get_logo_file())
 
+            self.session_handler = SessionHandler(self.config, True, False, False)
+            sn = self.get_current_serial_number()
+            self.session_handler.open_session(sn)
+
         except Exception as e:
             logger.error(str(e))
 
@@ -216,6 +220,8 @@ class CalMain(QMainWindow, Ui_CalMain):
         self.actionStop.setEnabled(True)
         self._busy_flag = True
 
+        self.session_handler.create_file(self.test.__class__.__name__)
+
     def onTestFinished(self):
         try:
             logger.debug('onTestFinished run started')
@@ -223,6 +229,8 @@ class CalMain(QMainWindow, Ui_CalMain):
             self.actionRun.setEnabled(True)
             self.actionStop.setEnabled(False)
             self._busy_flag = False
+
+            self.create_test_result_in_session(self.test)
 
             if self.test.is_test_passed():
                 # self.change_test_status(self.test.name, True)
@@ -293,6 +301,7 @@ class CalMain(QMainWindow, Ui_CalMain):
             self.test.name = self.current_action.text()
             self.test.set_figure(self.figure)
             self.test.set_inst_dict(self.inst_dict)
+            self.test.set_session_handler(self.session_handler)
             self.test.text_written_available.connect(self.print_redirect)
             self.test.data_available.connect(self.test.update)
             self.test.scan_started.connect(self.test.update_on_scan_started)
@@ -354,6 +363,7 @@ class CalMain(QMainWindow, Ui_CalMain):
                 # if API server is available, upload.
                 sn = self.get_current_serial_number()
 
+                self.session_handler.open_session(sn)
             else:
                 logger.info('Connection aborted')
         except Exception as e:
@@ -370,8 +380,17 @@ class CalMain(QMainWindow, Ui_CalMain):
             self.sub_assemblies = {}
             logger.info('DUT is disconnected')
 
+            self.session_handler.close_session(True)
     def okToContinue(self):
         return True
+
+    def create_test_result_in_session(self, test):
+        if not self.session_handler.is_open():
+            logger.error('No session is open when the test is finished')
+            return
+        self.session_handler.create_new_test_result(test.result)
+        self.session_handler.close_file()
+        logger.debug('A test result for DUT is created')
 
     @staticmethod
     def show_message(msg, title=''):

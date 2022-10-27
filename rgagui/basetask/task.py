@@ -357,6 +357,26 @@ class Task(QThread):
     def write_text(self, text):
         self.text_written_available.emit(str(text))
 
+    def get_input_parameter(self, name):
+        if name in self.__class__.input_parameters:
+            value = self.__class__.input_parameters[name].value
+            self.add_details(str(value), name)
+            return value
+        else:
+            raise KeyError('{} not in input_parameters'.format(name))
+
+    @classmethod
+    def set_input_parameter(cls, name, value):
+        if name in cls.input_parameters:
+            if type(cls.input_parameters[name].value) == type(value):
+                cls.input_parameters[name].value = value
+            else:
+                 raise TypeError('Type for input_parameter {} does not match with type of {}'
+                                 .format(name, value))
+        else:
+            raise KeyError('{} not in input_parameters'.format(name))
+
+
     # Notify UI to input_parameters for display update
     def notify_parameter_changed(self):
         self.parameter_changed.emit()

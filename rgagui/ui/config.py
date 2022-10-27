@@ -33,7 +33,7 @@ class Config(object):
         self.sn_prefix_dict = {}
         self.test_dict_name = 'No tests loaded'
         self.dut_class = None
-
+        self.local_db_name = None
         self.base_data_dir = self.DataRootDirectory
         p = Path(self.base_data_dir)
         if not p.exists():
