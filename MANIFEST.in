@@ -1,2 +1,3 @@
-recursive-include RGA120TestCal/basetest/sounds *
-recursive-include RGA120TestCal/ui/icons *
+recursive-include rgagui/ui/sounds *
+recursive-include rgagui/ui/icons *
+recursive-include rgagui/ui/images *
