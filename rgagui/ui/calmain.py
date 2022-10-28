@@ -29,10 +29,10 @@ from .commandTerminal import CommandTerminal
 from .config import Config
 from .stdout import StdOut
 from .qtloghandler import QtLogHandler
+from .sessionhandler import SessionHandler
 
-from rgagui.basetest import BaseTest, Bold
-from srs_insts.baseinsts import BaseInst
-
+from rgagui.basetask import Task, Bold
+from rga.baseinst import Instrument as BaseInst
 
 SuccessSound = str(Path(__file__).parent / 'sounds/successSound.wav')
 FailSound = str(Path(__file__).parent / 'sounds/errorSound.wav')
@@ -48,7 +48,7 @@ class CalMain(QMainWindow, Ui_CalMain):
         # self.testResult.setFontFamily('monospace')
 
         QApplication.setOrganizationName("SRS")
-        QApplication.setApplicationName('CalMain')
+        QApplication.setApplicationName('rgagui')
         self.settings = QSettings()
 
         # The dict holds subclass of BaseTest
@@ -60,15 +60,15 @@ class CalMain(QMainWindow, Ui_CalMain):
 
         # Get Instrument dict name from BaseTest
         # the dict holds instances of subclass of BaseInst
-        self.InstDict = BaseTest.InstrumentDict
-        self.Dut = BaseTest.DeviceUnderTest
+        self.InstDict = Task.InstrumentDict
+        self.Dut = Task.DeviceUnderTest
 
         self.inst_dict = {
             self.Dut: BaseInst()
         }
 
         try:
-            self.default_config_file = 'rga120tests/rga120.testdict'
+            self.default_config_file = 'rga120tasks/rga120.taskconfig'
             self.config = Config()
             self.base_data_dir = self.config.base_data_dir
 
@@ -137,14 +137,15 @@ class CalMain(QMainWindow, Ui_CalMain):
             except Exception as e:
                 logger.error(e)
 
-            if len(sys.argv) == 2 and sys.argv[1].split('.')[-1].lower() == 'testdict':
+            if len(sys.argv) == 2 and sys.argv[1].split('.')[-1].lower() == 'taskconfig':
                 self.default_config_file = sys.argv[1]
                 
             current_dir = str(Path(self.default_config_file).parent)
             sys.path.insert(0, current_dir)
             os.chdir(current_dir)
-            print('Config file : {} loaded'.format(self.default_config_file))
+
             self.config.load(self.default_config_file)
+            logger.info('Taskconfig file: "{}"  loading done'.format(self.default_config_file))
 
             self.inst_dict = self.config.inst_dict
 
@@ -154,19 +155,29 @@ class CalMain(QMainWindow, Ui_CalMain):
             self.setWindowTitle(self.config.test_dict_name)
             self.display_image(self.config.get_logo_file())
 
+            self.session_handler = SessionHandler(self.config, True, False, False)
+            sn = self.get_current_serial_number()
+            self.session_handler.open_session(sn)
+
         except Exception as e:
             logger.error(str(e))
 
         try:
-            actions = self.menuMeasurements.actions()
+            try:
+                # diconnect with none connected causes an exception
+                self.menu_Tasks.triggered.disconnect()
+            except:
+                pass
+
+            actions = self.menu_Tasks.actions()
             for action in actions:
-                self.menuMeasurements.removeAction(action)
+                self.menu_Tasks.removeAction(action)
 
             for item in self.test_dict:
                 action_measure = QAction(self)
                 action_measure.setText(item)
-                self.menuMeasurements.addAction(action_measure)
-            self.menuMeasurements.triggered.connect(self.onMenuSelect)
+                self.menu_Tasks.addAction(action_measure)
+            self.menu_Tasks.triggered.connect(self.onMenuSelect)
         except Exception as e:
             print(e)
 
@@ -174,27 +185,27 @@ class CalMain(QMainWindow, Ui_CalMain):
         try:
             if len(text) < 2:
                 return
-            if text[0] != BaseTest.EscapeForResult[0]:
+            if text[0] != Task.EscapeForResult[0]:
                 if len(text) > 4:
                     self.console.append(text)
                     # sb = self.console.verticalScrollBar()
                     # sb.setValue(sb.maximum())
                 return
 
-            msg = text.split(BaseTest.EscapeForResult[0], 2)
+            msg = text.split(Task.EscapeForResult[0], 2)
             if len(msg) != 3: return
-            if text.startswith(BaseTest.EscapeForResult):
+            if text.startswith(Task.EscapeForResult):
                 self.testResult.append(msg[2])
                 sb = self.testResult.verticalScrollBar()
                 sb.setValue(sb.maximum())
-            elif text.startswith(BaseTest.EscapeForDevice):
+            elif text.startswith(Task.EscapeForDevice):
                 self.deviceInfo.append(msg[2])
-            elif text.startswith(BaseTest.EscapeForStatus):
+            elif text.startswith(Task.EscapeForStatus):
                 self.statusbar.showMessage(msg[2])
-            elif text.startswith(BaseTest.EscapeForStart):
+            elif text.startswith(Task.EscapeForStart):
                 # self.testInfo.append(text)
                 pass
-            elif text.startswith(BaseTest.EscapeForStop):
+            elif text.startswith(Task.EscapeForStop):
                 # self.testInfo.append(text)
                 # self.clear_busy()
                 pass
@@ -209,6 +220,8 @@ class CalMain(QMainWindow, Ui_CalMain):
         self.actionStop.setEnabled(True)
         self._busy_flag = True
 
+        self.session_handler.create_file(self.test.__class__.__name__)
+
     def onTestFinished(self):
         try:
             logger.debug('onTestFinished run started')
@@ -216,6 +229,8 @@ class CalMain(QMainWindow, Ui_CalMain):
             self.actionRun.setEnabled(True)
             self.actionStop.setEnabled(False)
             self._busy_flag = False
+
+            self.create_test_result_in_session(self.test)
 
             if self.test.is_test_passed():
                 # self.change_test_status(self.test.name, True)
@@ -253,13 +268,13 @@ class CalMain(QMainWindow, Ui_CalMain):
 
             self.current_action = action
             current_action_name = action.text()
-            logger.info('test {} is selected.'.format(Bold.format(current_action_name)))
+            logger.info('Task {} is selected.'.format(Bold.format(current_action_name)))
             testClassChosen = self.test_dict[current_action_name]
-            if not issubclass(testClassChosen, BaseTest):
+            if not issubclass(testClassChosen, Task):
                 title = 'Error'
-                msg = 'The test chosen is not a right test class'
+                msg = 'The task chosen "{}" does not have a valid Task subclass'.format(current_action_name)
                 self.show_message(msg, title)
-                raise TypeError("Not a subclass of BaseTest")
+                raise TypeError(msg)
 
             self.testmethod = testClassChosen
             self.handle_initial_image(self.testmethod)
@@ -279,13 +294,14 @@ class CalMain(QMainWindow, Ui_CalMain):
             if self.is_test_running():
                 self.show_message('Another test is running', 'Error')
                 return
-            if not issubclass(self.testmethod, BaseTest):
+            if not issubclass(self.testmethod, Task):
                 raise TypeError("{} is not a subclass of BaseTest".format(self.testmethod.__name__))
 
             self.test = self.testmethod(self)
             self.test.name = self.current_action.text()
             self.test.set_figure(self.figure)
             self.test.set_inst_dict(self.inst_dict)
+            self.test.set_session_handler(self.session_handler)
             self.test.text_written_available.connect(self.print_redirect)
             self.test.data_available.connect(self.test.update)
             self.test.scan_started.connect(self.test.update_on_scan_started)
@@ -312,9 +328,9 @@ class CalMain(QMainWindow, Ui_CalMain):
 
     def onOpen(self):
         try:
-            logger.info('Opening a testdict file..')
-            file_name, _ = QFileDialog.getOpenFileName(self, "Select a testdict file", ".",
-                                                       "TestDict files (*.testdict)")
+            logger.info('Opening a taskconfig file..')
+            file_name, _ = QFileDialog.getOpenFileName(self, "Select a taskconfig file", ".",
+                                                       "TaskConfig files (*.taskconfig)")
             if file_name:
                 self.default_config_file = file_name
                 self.load_tests()
@@ -337,9 +353,9 @@ class CalMain(QMainWindow, Ui_CalMain):
             self.console.clear()
 
             if dut.is_connected():
-                msg = ' Name: {} \n S/N: {} \n F/W version: {} \n\n'.format(*dut.check_id())
-                msg += ' Connection: {} {} \n'.format(*dut.get_port_info())
-                msg += ' Status: {} \n'.format(dut.get_status_info())
+                msg = ''  # Name: {} \n S/N: {} \n F/W version: {} \n\n'.format(*dut.check_id())
+                msg += ' Info: {} \n\n\n'.format(dut.get_info())
+                msg += ' Status: {} \n'.format(dut.get_status())
                 logger.debug(msg.replace('\n', ''))
                 self.deviceInfo.clear()
                 self.deviceInfo.append(msg)
@@ -347,11 +363,7 @@ class CalMain(QMainWindow, Ui_CalMain):
                 # if API server is available, upload.
                 sn = self.get_current_serial_number()
 
-                # Mark optional tests as success
-                for test_name in self.test_dict:
-                    if self.test_dict[test_name].is_optional():
-                        self.change_test_status(test_name, True)
-
+                self.session_handler.open_session(sn)
             else:
                 logger.info('Connection aborted')
         except Exception as e:
@@ -360,18 +372,6 @@ class CalMain(QMainWindow, Ui_CalMain):
     def onDisconnect(self):
         dut = self.get_dut()
         if dut.is_connected():
-            # Are all the test passed?
-            passed = self.get_test_status()
-            if passed:
-                question = "Disconnecting DUT, close the current test session as Passed?"
-                close_state = True
-            else:
-                question = "Disconnecting DUT, close the current test session as Failed?"
-                close_state = False
-
-            self.display_question(question)
-            if self.question_result is None:
-                return
 
             dut.disconnect()
             self.deviceInfo.clear()
@@ -380,20 +380,17 @@ class CalMain(QMainWindow, Ui_CalMain):
             self.sub_assemblies = {}
             logger.info('DUT is disconnected')
 
-            if self.question_result:
-                try:
-                    self.session_handler.close_session(close_state)
-                    for key in self.sub_session_handler_dict:
-                        handler = self.sub_session_handler_dict[key]
-                        if handler is not None and handler.is_open():
-                            handler.close_session(close_state)
-                except Exception as e:
-                    logger.error(e)
-            else:
-                logger.info('Current session stays open for further tests')
-
+            self.session_handler.close_session(True)
     def okToContinue(self):
         return True
+
+    def create_test_result_in_session(self, test):
+        if not self.session_handler.is_open():
+            logger.error('No session is open when the test is finished')
+            return
+        self.session_handler.create_new_test_result(test.result)
+        self.session_handler.close_file()
+        logger.debug('A test result for DUT is created')
 
     @staticmethod
     def show_message(msg, title=''):
@@ -633,8 +630,8 @@ class CalMain(QMainWindow, Ui_CalMain):
         # self.splitter.setSizes(self.settings.value("MainWindow/Splitter1", [100, 200, 200]))  #, type=int))
         # self.splitter_2.setSizes(self.settings.value("MainWindow/Splitter2", [150, 500]))  #, type=int))
 
-        self.restoreGeometry(self.settings.value("MainWindow/Geometry")) # , type=QByteArray))
-        self.restoreState(self.settings.value("MainWindow/State"))  # , type=QByteArray))
+        self.restoreGeometry(self.settings.value("MainWindow/Geometry", type=QByteArray))
+        self.restoreState(self.settings.value("MainWindow/State", type=QByteArray))
 
     def save_settings(self):
         self.settings.setValue("ConfigFile", self.default_config_file)

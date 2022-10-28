@@ -3,28 +3,27 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QDoubleSpinBox, QSpinBox, QComboBox, \
                             QLineEdit, QLabel, QGridLayout, QPushButton
 
-from rgagui.basetest.basetest  import BaseTest
-from rgagui.basetest.baseinput import IntegerInput, FloatInput, StringInput, ListInput
+from rgagui.basetask.task  import Task
+from rgagui.basetask.inputs import IntegerInput, FloatInput, StringInput, ListInput
 
 import logging
 logger = logging.getLogger(__name__)
 # logger.addHandler(logging.NullHandler())
 
 
-# build a input panels from input_parameters of BaseTest subclasses
+# build a input panels from input_parameters of Task subclasses
 class InputPanel(QWidget):
     FirstColumn = 0
     SecondColumn = 1
 
-    def __init__(self, test: BaseTest, parent=None):
+    def __init__(self, task_class: Task, parent=None):
         try:
-            if not isinstance(test, BaseTest) and not issubclass(test, BaseTest):
-                raise TypeError(" not a subclass of BaseTest")
+            if not issubclass(task_class, Task):
+                raise TypeError(" not a subclass of Task")
             super().__init__()
             layout = QGridLayout()
-            self.test = test
-            params = self.test.input_parameters
-
+            self.task_class = task_class
+            params = self.task_class.input_parameters
             row = 0
             for i in params.keys():
                 p = params[i]
@@ -92,7 +91,7 @@ class InputPanel(QWidget):
 
     def update(self):
         try:
-            params = self.test.input_parameters
+            params = self.task_class.input_parameters
             for i in params.keys():
                 widget = getattr(self, i, None)
                 if type(widget) == QLineEdit:
@@ -107,7 +106,7 @@ class InputPanel(QWidget):
 
     def on_default(self):
         try:
-            params = self.test.input_parameters
+            params = self.task_class.input_parameters
             for i in params.keys():
                 params[i].value = params[i].default_value
                 widget = getattr(self, i, None)
@@ -122,7 +121,7 @@ class InputPanel(QWidget):
             logger.error(e)
 
     def on_apply(self):
-        params = self.test.input_parameters
+        params = self.task_class.input_parameters
         for i in params.keys():
             widget = getattr(self, i, None)
             if type(widget) == QLineEdit:
