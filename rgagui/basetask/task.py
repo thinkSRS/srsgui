@@ -322,9 +322,13 @@ class Task(QThread):
     # TestResult is attached to the file in the last before closed.
 
     def create_table_in_file(self, name, *args):
+        if self.session_handler is None:
+            raise AttributeError("No session handler available")
         self.session_handler.create_table_in_file(name, *args)
 
     def add_to_table_in_file(self, *args, format_list=None):
+        if self.session_handler is None:
+            raise AttributeError("No session handler available")
         self.session_handler.add_to_table_in_file(*args, format_list=format_list)
 
     def save_result(self, msg):

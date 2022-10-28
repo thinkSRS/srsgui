@@ -294,6 +294,8 @@ class CalMain(QMainWindow, Ui_CalMain):
             if self.is_test_running():
                 self.show_message('Another test is running', 'Error')
                 return
+            if self.testmethod is None:
+                raise TypeError("No Task selected")
             if not issubclass(self.testmethod, Task):
                 raise TypeError("{} is not a subclass of BaseTest".format(self.testmethod.__name__))
 
@@ -453,7 +455,7 @@ class CalMain(QMainWindow, Ui_CalMain):
             inst_dict = self.inst_dict
             for key in inst_dict:
                 if issubclass(type(inst_dict[key]), BaseInst):
-                    inst_dict[key].close()
+                    inst_dict[key].disconnect()
         else:
             event.ignore()
 
