@@ -31,13 +31,25 @@ class CommandTerminal(QFrame, Ui_CommandTerminal):
                 msg_box.exec()
                 return
 
-            cmd = self.leCommand.text().strip().upper()
+            cmd = self.leCommand.text().strip()
             self.tbCommand.append(cmd)
             self.leCommand.clear()
-            reply = inst.handle_command(cmd)
+
+            if cmd.startswith('dut.'):
+                reply = self.eval(cmd)
+            else:
+                reply = inst.handle_command(cmd)
+
             if reply != '':
                 self.tbCommand.append(reply)
 
         except Exception as e:
             self.tbCommand.append('Error: {}'.format(str(e)))
 
+    def eval(self, cmd):
+        dut = self.parent.get_dut()
+        if '=' in cmd:
+            exec(cmd, {}, {'dut': dut})
+            return ''
+        else:
+            return str(eval(cmd, {}, {'dut': dut}))

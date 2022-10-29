@@ -69,17 +69,17 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
             try:
                 if self.loginCB.isChecked():
                     # print(self.ipAddressLineEdit.text())
-                    self.dut.open(Interface.TCPIP,
-                                  self.ipAddressLineEdit.text(),
-                                  self.userNameLineEdit.text(),
-                                  self.passwordLineEdit.text(),
-                                  self.portNumberSB.value())
+                    self.dut.connect(Interface.TCPIP,
+                                     self.ipAddressLineEdit.text(),
+                                     self.userNameLineEdit.text(),
+                                     self.passwordLineEdit.text(),
+                                     self.portNumberSB.value())
                     self.dut.comm.ip_address = self.ipAddressLineEdit.text()
                     self.dut.comm.userid = self.userNameLineEdit.text()
                     self.dut.comm.password = self.passwordLineEdit.text()
                     self.dut.comm.tcp_port = self.portNumberSB.value()
                 else:
-                    self.dut.open(Interface.TCPIP,
+                    self.dut.connect(Interface.TCPIP,
                                   self.ipAddressLineEdit.text(),
                                   self.portNumberSB.value())            
                     self.dut.comm.ip_address = self.ipAddressLineEdit.text()
@@ -101,7 +101,7 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
         elif self.commTabWidget.currentIndex() == 0: #Serial Tab
             try:            
                 #self.dut.comm = SerialInterface()
-                self.dut.open(
+                self.dut.connect(
                               Interface.SERIAL,
                               self.serialPortComboBox.currentText(),
                               int(self.baudRateComboBox.currentText()))
@@ -119,18 +119,21 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
 
         if self.dut.is_connected():
             try:
+                self.dut.check_id()  # clear the comm buffer
                 if self.dut.check_id()[0] is None:  # make sure it is a correct DUT
-                    self.dut.close()
+                    self.dut.disconnect()
                     err_string = 'Disconnected from an Invalid instrument'
                     logger.error(err_string)
                     QMessageBox.warning(self, 'Error', err_string)
 
             except Exception as e:
-                self.dut.close()
                 err_string = 'Disconnected with error during ID checking: {}'.format(e)
                 logger.error(err_string)
                 QMessageBox.warning(self, 'Error', err_string)
-
+                try:
+                    self.dut.disconnect()
+                except:
+                    pass
             else:
                 self.save_settings()
         QDialog.accept(self)  # This ends the dialog box.
@@ -151,6 +154,7 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
             if self.dut.interface_type == 'serial':
                 self.settings.setValue("ConnectDlg/ComPort", self.dut.comm.port)
                 self.settings.setValue("ConnectDlg/BaudRate", self.dut.comm.baud)
+
 
 if __name__ == "__main__":    
     app = QApplication(sys.argv)
