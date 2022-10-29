@@ -29,9 +29,9 @@ class Config(object):
         self.inst_dict = {
             self.Dut: None
         }
-        self.test_dict = {}
+        self.task_dict = {}
         self.sn_prefix_dict = {}
-        self.test_dict_name = 'No tests loaded'
+        self.task_dict_name = 'No tasks loaded'
         self.dut_class = None
         self.local_db_name = None
         self.base_data_dir = self.DataRootDirectory
@@ -49,7 +49,7 @@ class Config(object):
                 self.inst_dict = {
                     self.Dut: None
                 }
-                self.test_dict = {}
+                self.task_dict = {}
                 self.sn_prefix_dict = {}
 
                 # Delete existing WIP attributes
@@ -65,18 +65,18 @@ class Config(object):
                         k = k.strip().lower()
                         v = v.strip()
                         if k == 'test':
-                            self.load_test_from_line(v)
+                            self.load_task_from_line(v)
 
                         elif k == 'inst':
                             self.load_inst_from_line(v)
 
                         elif k == 'name':
-                            self.test_dict_name = v
+                            self.task_dict_name = v
 
             logger.debug('Read testlist file successfully')
 
             # Local DB file name for SessionHandler
-            self.data_dir = self.base_data_dir + '/' + self.test_dict_name
+            self.data_dir = self.base_data_dir + '/' + self.task_dict_name
             p = Path(self.data_dir)
             if not p.exists():
                 p.mkdir(parents=True)
@@ -87,22 +87,22 @@ class Config(object):
             logger.error("load_config_error: {}".format(e))
             logger.error("Error in line: {}".format(current_line))
 
-    def load_test_from_line(self, v):
-        test_key, test_module_name, test_class_name = v.split(',', 2)
-        test_key = test_key.strip()
-        test_module = test_module_name.strip()
-        mod = import_module(test_module)
+    def load_task_from_line(self, v):
+        task_key, task_module_name, task_class_name = v.split(',', 2)
+        task_key = task_key.strip()
+        task_module = task_module_name.strip()
+        mod = import_module(task_module)
 
-        test_class_name = test_class_name.strip()
-        if hasattr(mod, test_class_name):
-            test_class = getattr(mod, test_class_name)
+        task_class_name = task_class_name.strip()
+        if hasattr(mod, task_class_name):
+            task_class = getattr(mod, task_class_name)
         else:
-            logger.error('No task class: {} in module: {}'.format(test_class_name, test_module))
+            logger.error('No task class: {} in module: {}'.format(task_class_name, task_module))
             return
-        if not issubclass(test_class, Task):
+        if not issubclass(task_class, Task):
             logger.error('Not BaseTest subclass')
             return
-        self.test_dict[test_key] = test_class
+        self.task_dict[task_key] = task_class
 
     def load_inst_from_line(self, v):
         items = v.split(',')

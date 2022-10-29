@@ -30,14 +30,14 @@ def strip_tags(message):
 
 
 class ResultLogHandler(logging.Handler):
-    def __init__(self, test_result):
-        if not hasattr(test_result, 'log'):
+    def __init__(self, task_result):
+        if not hasattr(task_result, 'log'):
             logging.error("ResultLogHandler needs a 'log' attribute")
             raise AttributeError
 
         super().__init__()
-        self.test_result = test_result
-        self.test_result.log = ""
+        self.task_result = task_result
+        self.task_result.log = ""
         if hasattr(self, 'error'):
             delattr(self, 'error')
 
@@ -47,13 +47,13 @@ class ResultLogHandler(logging.Handler):
             mod = strip_tags(msg).strip()
 
             if mod:
-                self.test_result.log += mod + '\n'
+                self.task_result.log += mod + '\n'
 
                 if record.levelno >= logging.ERROR:
-                    if not hasattr(self.test_result, 'error'):
-                        self.test_result.error = record.message + '\n'
+                    if not hasattr(self.task_result, 'error'):
+                        self.task_result.error = record.message + '\n'
                     else:
-                        self.test_result.error += record.message + '\n'
+                        self.task_result.error += record.message + '\n'
 
         except Exception as e:
             print('Logging error: {}'.format(e))
@@ -72,12 +72,12 @@ class TaskResult:
     """
     reserved = {}
 
-    def __init__(self, test_class_name, test_id=None):
+    def __init__(self, task_class_name, task_id=None):
         # these will reflect the values configured in your test classes
-        self.test_class_name = test_class_name
+        self.task_class_name = task_class_name
 
-        # No idea what to do with test_id
-        # self.test_id = test_id
+        # No idea what to do with task_id
+        # self.task_id = task_id
 
         # these are automatically filled in by the test runner mechanism
         self.start_time = None

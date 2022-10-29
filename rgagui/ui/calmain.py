@@ -32,7 +32,7 @@ from .qtloghandler import QtLogHandler
 from .sessionhandler import SessionHandler
 
 from rgagui.basetask import Task, Bold
-from rga.baseinst import Instrument as BaseInst
+from rga.baseinst import Instrument
 
 SuccessSound = str(Path(__file__).parent / 'sounds/successSound.wav')
 FailSound = str(Path(__file__).parent / 'sounds/errorSound.wav')
@@ -45,26 +45,26 @@ class CalMain(QMainWindow, Ui_CalMain):
     def __init__(self, parent=None):
         super(CalMain, self).__init__(parent)
         self.setupUi(self)
-        # self.testResult.setFontFamily('monospace')
+        # self.taskResult.setFontFamily('monospace')
 
         QApplication.setOrganizationName("SRS")
         QApplication.setApplicationName('rgagui')
         self.settings = QSettings()
 
-        # The dict holds subclass of BaseTest
-        self.test_dict = {}
+        # The dict holds subclass of Task
+        self.task_dict = {}
         self.current_action = None
-        self.test = None
+        self.task = None
         self.question_result = None
         self.question_result_value = None
 
-        # Get Instrument dict name from BaseTest
-        # the dict holds instances of subclass of BaseInst
+        # Get Instrument dict name from Task
+        # the dict holds instances of subclass of Instrument
         self.InstDict = Task.InstrumentDict
         self.Dut = Task.DeviceUnderTest
 
         self.inst_dict = {
-            self.Dut: BaseInst()
+            self.Dut: Instrument()
         }
 
         try:
@@ -75,13 +75,13 @@ class CalMain(QMainWindow, Ui_CalMain):
             self.success_icon = QIcon(str(Path(__file__).parent / 'icons/o.png'))
             self.fail_icon = QIcon(str(Path(__file__).parent / 'icons/x.png'))
 
-            self.testParameter = QTextBrowser()
+            self.taskParameter = QTextBrowser()
             layout = QVBoxLayout()
-            layout.addWidget(self.testParameter)
-            self.testParameterFrame.setLayout(layout)
+            layout.addWidget(self.taskParameter)
+            self.taskParameterFrame.setLayout(layout)
 
-            # Load test configuration after init
-            QTimer.singleShot(0, self.load_tests)
+            # Load task configuration after init
+            QTimer.singleShot(0, self.load_tasks)
 
         except Exception as e:
             logger.error(e)
@@ -89,11 +89,11 @@ class CalMain(QMainWindow, Ui_CalMain):
         # Setup toolbar buttons
         self.actionRun.setEnabled(True)
         self.actionStop.setEnabled(False)
-        # busy flag is used to tell if a test is running
+        # busy flag is used to tell if a task is running
         self._busy_flag = False
         self.is_selection_running = False
 
-        self.testmethod = None
+        self.taskmethod = None
 
         self.init_plot()
         self.figure = self.plotDockWidget.figure
@@ -110,7 +110,7 @@ class CalMain(QMainWindow, Ui_CalMain):
                             format='%(asctime)s-%(name)s-%(levelname)s-%(message)s',
                             level=logging.DEBUG)
 
-        # Session handler for TestResult output
+        # Session handler for TaskResult output
         self.session_handler = None
 
         self.load_settings()
@@ -118,11 +118,11 @@ class CalMain(QMainWindow, Ui_CalMain):
         self.statusbar.showMessage('Waiting for selection')
         self.stdout = StdOut(self.print_redirect)
 
-    def load_tests(self):
+    def load_tasks(self):
         try:
             # Clear console and result display
             self.console.clear()
-            self.testResult.clear()
+            self.taskResult.clear()
 
             # Disconnect previously used instruments
             try:
@@ -150,9 +150,9 @@ class CalMain(QMainWindow, Ui_CalMain):
             self.inst_dict = self.config.inst_dict
 
             self.dut_sn_prefix = self.config.dut_sn_prefix
-            self.test_dict = self.config.test_dict
+            self.task_dict = self.config.task_dict
 
-            self.setWindowTitle(self.config.test_dict_name)
+            self.setWindowTitle(self.config.task_dict_name)
             self.display_image(self.config.get_logo_file())
 
             self.session_handler = SessionHandler(self.config, True, False, False)
@@ -173,7 +173,7 @@ class CalMain(QMainWindow, Ui_CalMain):
             for action in actions:
                 self.menu_Tasks.removeAction(action)
 
-            for item in self.test_dict:
+            for item in self.task_dict:
                 action_measure = QAction(self)
                 action_measure.setText(item)
                 self.menu_Tasks.addAction(action_measure)
@@ -195,18 +195,18 @@ class CalMain(QMainWindow, Ui_CalMain):
             msg = text.split(Task.EscapeForResult[0], 2)
             if len(msg) != 3: return
             if text.startswith(Task.EscapeForResult):
-                self.testResult.append(msg[2])
-                sb = self.testResult.verticalScrollBar()
+                self.taskResult.append(msg[2])
+                sb = self.taskResult.verticalScrollBar()
                 sb.setValue(sb.maximum())
             elif text.startswith(Task.EscapeForDevice):
                 self.deviceInfo.append(msg[2])
             elif text.startswith(Task.EscapeForStatus):
                 self.statusbar.showMessage(msg[2])
             elif text.startswith(Task.EscapeForStart):
-                # self.testInfo.append(text)
+                # self.taskInfo.append(text)
                 pass
             elif text.startswith(Task.EscapeForStop):
-                # self.testInfo.append(text)
+                # self.taskInfo.append(text)
                 # self.clear_busy()
                 pass
             else:
@@ -214,46 +214,46 @@ class CalMain(QMainWindow, Ui_CalMain):
         except Exception as e:
             logger.error(e)
 
-    def onTestStarted(self):
+    def onTaskStarted(self):
         # setup toolbar buttons
         self.actionRun.setEnabled(False)
         self.actionStop.setEnabled(True)
         self._busy_flag = True
 
-        self.session_handler.create_file(self.test.__class__.__name__)
+        self.session_handler.create_file(self.task.__class__.__name__)
 
-    def onTestFinished(self):
+    def onTaskFinished(self):
         try:
-            logger.debug('onTestFinished run started')
+            logger.debug('onTaskFinished run started')
             # Setup toolbar buttons
             self.actionRun.setEnabled(True)
             self.actionStop.setEnabled(False)
             self._busy_flag = False
 
-            self.create_test_result_in_session(self.test)
+            self.create_task_result_in_session(self.task)
 
-            if self.test.is_test_passed():
-                # self.change_test_status(self.test.name, True)
+            if self.task.is_task_passed():
+                # self.change_task_status(self.taskst.name, True)
                 playsound(SuccessSound, block=False)
             else:
-                # self.change_test_status(self.test.name, False)
+                # self.change_task_status(self.task.name, False)
                 playsound(FailSound, block=False)
 
             # try:
-            #     self.test.deleteLater()
+            #     self.task.deleteLater()
             # except Exception as e:
-            #     logger.error('Error with deleteLater in onTestFinished: {}'.format(e))
+            #     logger.error('Error with deleteLater in onTaskFinished: {}'.format(e))
 
-            if self.test.is_error_raised():  # No more test runs with error raised
+            if self.task.is_error_raised():  # No more task runs with error raised
                 self.onStop()
                 return
 
-            self.test = None
+            self.task = None
 
         except Exception as e:
-            logger.error('Error onTestFinished: {}'.format(e))
+            logger.error('Error onTaskFinished: {}'.format(e))
 
-    def is_test_running(self):
+    def is_task_running(self):
         return self._busy_flag
 
     def get_dut(self):
@@ -261,7 +261,7 @@ class CalMain(QMainWindow, Ui_CalMain):
 
     def onMenuSelect(self, action):
         try:
-            if self.is_test_running():  # Another test is running
+            if self.is_task_running():  # Another task is running
                 return
 
             self.plotDockWidget.toolbar.hide()
@@ -269,61 +269,61 @@ class CalMain(QMainWindow, Ui_CalMain):
             self.current_action = action
             current_action_name = action.text()
             logger.info('Task {} is selected.'.format(Bold.format(current_action_name)))
-            testClassChosen = self.test_dict[current_action_name]
-            if not issubclass(testClassChosen, Task):
+            taskClassChosen = self.task_dict[current_action_name]
+            if not issubclass(taskClassChosen, Task):
                 title = 'Error'
                 msg = 'The task chosen "{}" does not have a valid Task subclass'.format(current_action_name)
                 self.show_message(msg, title)
                 raise TypeError(msg)
 
-            self.testmethod = testClassChosen
-            self.handle_initial_image(self.testmethod)
+            self.taskmethod = taskClassChosen
+            self.handle_initial_image(self.taskmethod)
 
-            self.statusbar.showMessage('Press Run button to start the test selected')
+            self.statusbar.showMessage('Press Run button to start the task selected')
 
-            self.testResult.setText(self.testmethod.__doc__)
-            self.testParameterFrame.layout().removeWidget(self.testParameter)
-            self.testParameter.deleteLater()
-            self.testParameter = InputPanel(self.testmethod)
-            self.testParameterFrame.layout().addWidget(self.testParameter)
+            self.taskResult.setText(self.taskmethod.__doc__)
+            self.taskParameterFrame.layout().removeWidget(self.taskParameter)
+            self.taskParameter.deleteLater()
+            self.taskParameter = InputPanel(self.taskmethod)
+            self.taskParameterFrame.layout().addWidget(self.taskParameter)
         except Exception as e:
             logger.error(e)
 
     def onRun(self):
         try:
-            if self.is_test_running():
-                self.show_message('Another test is running', 'Error')
+            if self.is_task_running():
+                self.show_message('Another task is running', 'Error')
                 return
-            if self.testmethod is None:
+            if self.taskmethod is None:
                 raise TypeError("No Task selected")
-            if not issubclass(self.testmethod, Task):
-                raise TypeError("{} is not a subclass of BaseTest".format(self.testmethod.__name__))
+            if not issubclass(self.taskmethod, Task):
+                raise TypeError("{} is not a subclass of Task".format(self.taskmethod.__name__))
 
-            self.test = self.testmethod(self)
-            self.test.name = self.current_action.text()
-            self.test.set_figure(self.figure)
-            self.test.set_inst_dict(self.inst_dict)
-            self.test.set_session_handler(self.session_handler)
-            self.test.text_written_available.connect(self.print_redirect)
-            self.test.data_available.connect(self.test.update)
-            self.test.scan_started.connect(self.test.update_on_scan_started)
-            self.test.scan_finished.connect(self.test.update_on_scan_finished)
-            self.test.parameter_changed.connect(self.testParameter.update)
-            self.test.finished.connect(self.onTestFinished)
-            self.test.new_question.connect(self.display_question)
-            self.testResult.clear()
+            self.task = self.taskmethod(self)
+            self.task.name = self.current_action.text()
+            self.task.set_figure(self.figure)
+            self.task.set_inst_dict(self.inst_dict)
+            self.task.set_session_handler(self.session_handler)
+            self.task.text_written_available.connect(self.print_redirect)
+            self.task.data_available.connect(self.task.update)
+            self.task.scan_started.connect(self.task.update_on_scan_started)
+            self.task.scan_finished.connect(self.task.update_on_scan_finished)
+            self.task.parameter_changed.connect(self.taskParameter.update)
+            self.task.finished.connect(self.onTaskFinished)
+            self.task.new_question.connect(self.display_question)
+            self.taskResult.clear()
 
-            # logger.info('{} starting'.format(type(self.test)))
-            self.onTestStarted()
+            # logger.info('{} starting'.format(type(self.task)))
+            self.onTaskStarted()
             self.plotDockWidget.toolbar.show()
-            self.test.start()
+            self.task.start()
         except Exception as e:
             logger.error(e)
 
     def onStop(self):
-        if self.test is not None:
-            logger.info('{} stopped'.format(self.test.name))
-            self.test.stop()
+        if self.task is not None:
+            logger.info('{} stopped'.format(self.task.name))
+            self.task.stop()
 
     def onNew(self):
         logger.info('Creating a file..')
@@ -335,7 +335,7 @@ class CalMain(QMainWindow, Ui_CalMain):
                                                        "TaskConfig files (*.taskconfig)")
             if file_name:
                 self.default_config_file = file_name
-                self.load_tests()
+                self.load_tasks()
                 logger.info('file opened: {}'.format(file_name))
         except Exception as e:
             logger.error(e)
@@ -386,13 +386,13 @@ class CalMain(QMainWindow, Ui_CalMain):
     def okToContinue(self):
         return True
 
-    def create_test_result_in_session(self, test):
+    def create_task_result_in_session(self, task):
         if not self.session_handler.is_open():
-            logger.error('No session is open when the test is finished')
+            logger.error('No session is open when the task is finished')
             return
-        self.session_handler.create_new_test_result(test.result)
+        self.session_handler.create_new_task_result(task.result)
         self.session_handler.close_file()
-        logger.debug('A test result for DUT is created')
+        logger.debug('A task result for DUT is created')
 
     @staticmethod
     def show_message(msg, title=''):
@@ -407,7 +407,7 @@ class CalMain(QMainWindow, Ui_CalMain):
             self.question_result = None
             self.question_result_value = None
             text = '<font size=12>{}</font>'.format(question)
-            title = self.test.name if self.test is not None else ""
+            title = self.task.name if self.task is not None else ""
 
             if return_type is None:
                 msg_box = QMessageBox()
@@ -454,7 +454,7 @@ class CalMain(QMainWindow, Ui_CalMain):
             # Close instruments
             inst_dict = self.inst_dict
             for key in inst_dict:
-                if issubclass(type(inst_dict[key]), BaseInst):
+                if issubclass(type(inst_dict[key]), Instrument):
                     inst_dict[key].disconnect()
         else:
             event.ignore()
@@ -551,13 +551,13 @@ class CalMain(QMainWindow, Ui_CalMain):
         except Exception as e:
             logger.error(f"Error in display_image: {e}")
 
-    def handle_initial_image(self, test_class):
+    def handle_initial_image(self, task_class):
         attr = 'InitialImage'
-        if not hasattr(test_class, attr):
+        if not hasattr(task_class, attr):
             self.display_image(self.config.get_logo_file())
             return
 
-        image_file = getattr(test_class, attr)
+        image_file = getattr(task_class, attr)
         if image_file is None:
             self.display_image(self.config.get_logo_file())
             return
@@ -570,15 +570,15 @@ class CalMain(QMainWindow, Ui_CalMain):
             ax.axis('off')
 
             attr = 'InitialLimits'
-            if hasattr(test_class, attr):
-                limits = getattr(test_class, attr)
+            if hasattr(task_class, attr):
+                limits = getattr(task_class, attr)
                 if limits is not None:
                     ax.set_xlim(limits[0])
                     ax.set_ylim(limits[1])
 
             attr = 'InitialMarkers'
-            if hasattr(test_class, attr):
-                markers = getattr(test_class, attr)
+            if hasattr(task_class, attr):
+                markers = getattr(task_class, attr)
                 if markers is not None:
                     for marker in markers:
                         ax.plot(marker[0], marker[1], **marker[2])

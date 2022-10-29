@@ -31,19 +31,19 @@ def round_float(number, fmt='{:.4e}'):
 
 
 class Task(QThread):
-    """ Base class for all testcal classes
+    """ Base class for all task classes
     """
 
-    class TestException(Exception): pass
-    class TestSetupFailed(TestException): pass
-    class TestRunFailed(TestException): pass
+    class TaskException(Exception): pass
+    class TaskSetupFailed(TaskException): pass
+    class TaskRunFailed(TaskException): pass
 
     # Data directory is handled by SessionHandler now
     # DefaultDirectory = str(Path.home() / "tcal-results")
     # DataDirectory = 'data_dir'  # directory to hold all data files
 
     # When parent is not None, parent should have these attributes.
-    InstrumentDict = 'inst_dict'  # all instruments to use in test
+    InstrumentDict = 'inst_dict'  # all instruments to use in a task
     DeviceUnderTest = 'dut'      # dict key for main test device
     MatplotlibFigure = 'figure'  # to display plots
     SessionHandler = 'session_handler'
@@ -62,10 +62,10 @@ class Task(QThread):
         "Constant value": FloatInput(1.0)
     }
 
-    _is_running = False  # class wide flag to tell if any test is running
-    _is_optional = False  # result status will set sd success initially if a test class is optional
+    _is_running = False  # class wide flag to tell if any task is running
+    _is_optional = False  # result status will set as success initially if a task class is optional
 
-    # Multiple scans is run during the test
+    # Multiple scans is run during a task
     scan_started = Signal()
     scan_finished = Signal()
 
@@ -95,17 +95,17 @@ class Task(QThread):
         self._keep_running = False
         self._aborted = False
         self._error_raised = False
-        self._test_passed = False
+        self._task_passed = False
         self._log_error_detail = False  # Enables logging traceback information
 
-        self.name = 'Base Test'
-        self.logger_prefix = ''  # used for logger name for multi-threaded tests
+        self.name = 'Base Task'
+        self.logger_prefix = ''  # used for logger name for multi-threaded tasks
         self.logger = None
         self.result = None
         self.result_log_handler = None
         self.session_handler = None
 
-        # inst_dict holds all the instrument to use in test
+        # inst_dict holds all the instrument to use in task
         self.inst_dict = {}
 
         self.data_dict = {}
@@ -117,7 +117,7 @@ class Task(QThread):
     def setup(self):
         """
         Subclass needs  to override this method.
-        Put all preparation for test in the derived method.
+        Put all preparation for a task in the overridden method.
         """
         raise NotImplementedError("No setup implemented!!")
 
@@ -127,12 +127,12 @@ class Task(QThread):
         Check if is_running() is true to continue.
         Add data using in add_details, create_table, and add_data_to_table.
         """
-        raise NotImplementedError("We need a real test!!")
+        raise NotImplementedError("We need a real task!!")
 
     def cleanup(self):
         """
         Subclass has to override this method
-        Put any cleanup after test in the derived method
+        Put any cleanup after task in the overridden method
         """
         raise NotImplementedError("No cleanup implemented!!")
 
@@ -194,7 +194,7 @@ class Task(QThread):
                 msg = '<font color="red"><b>' + msg + '</b></font>'
                 self.logger.info(msg)
                 self.result.set_aborted()
-            elif self._test_passed:
+            elif self._task_passed:
                 msg = '{} PASSED'.format(self.name)
                 self.display_result(msg)
                 self.update_status(msg)
@@ -221,9 +221,9 @@ class Task(QThread):
             try:
                 self.setup()  # setup from the subclass
                 try:
-                    self.logger.debug("{} test started".format(self.name))
+                    self.logger.debug("{} task started".format(self.name))
                     self.test()
-                    self.logger.debug("{} test completed".format(self.name))
+                    self.logger.debug("{} task completed".format(self.name))
                 except Exception as e:
                     self._error_raised = True
                     self.log_exception(e)
@@ -238,8 +238,8 @@ class Task(QThread):
 
     # Override for QThread start
     def start(self, priority=QThread.InheritPriority):
-        # if BaseTest._is_running: # Disable for multiple tests running
-        #     raise RuntimeError('Another test is running')
+        # if Task._is_running: # Disable for multiple tasks running
+        #     raise RuntimeError('Another task is running')
 
         self._keep_running = True
         self._aborted = False
@@ -263,8 +263,8 @@ class Task(QThread):
 
     def set_figure(self, figure=None):
         """
-        If parent did not have figure, a MatplotLib figure object,
-        you can provide the test needs a plot, provide one now.
+        If parent does  not have a figure, a MatplotLib figure object,
+        you can provide a task with  one with this method.
         """
         if figure is not None and not hasattr(figure, 'canvas'):
             raise AttributeError('A Matplotlib figure should have canvas')
@@ -289,37 +289,37 @@ class Task(QThread):
     def is_optional(cls):
         return cls._is_optional
 
-    def is_test_passed(self):
-        return self._test_passed
+    def is_task_passed(self):
+        return self._task_passed
 
-    def set_test_passed(self, status):
+    def set_task_passed(self, status):
         if status:
             self._aborted = False
-        self._test_passed = status
+        self._task_passed = status
         self.result.set_passed(status)
 
     def is_error_raised(self):
         return self._error_raised
 
-    # Set to stop the test selection from running further
+    # Set to stop the task selection from running further
     def set_error_raised(self):
         self._error_raised = True
 
-    # Wrapper for TestResult.add_details
+    # Wrapper for TaskResult.add_details
     def add_details(self, msg: str, key='summary'):
         self.result.add_details(msg, key)
 
-    # Wrapper for TestResult.create_table
+    # Wrapper for TaskResult.create_table
     def create_table(self, name: str, *args):
         self.result.create_table(name, *args)
 
-    # Wrapper for TestResult.add_data_to_table
+    # Wrapper for TaskResult.add_data_to_table
     def add_data_to_table(self, name: str, *args, ):
         self.result.add_data_to_table(name, *args)
 
     # The file for raw data is created by SessionHandler automatically.
     # You can sequentially add data to the table until you create another new table.
-    # TestResult is attached to the file in the last before closed.
+    # TaskResult is attached to the file in the last before closed.
 
     def create_table_in_file(self, name, *args):
         if self.session_handler is None:
@@ -442,7 +442,7 @@ class Task(QThread):
                          .format(type(inst), BaseInst.__class__.__name__))
 
         if not inst.is_connected():
-            raise Task.TestSetupFailed('{} is not connected'.format(name))
+            raise Task.TaskSetupFailed('{} is not connected'.format(name))
             return None
 
         model, sn, version = inst.check_id()
@@ -480,7 +480,7 @@ class Task(QThread):
                     return self.parent.question_result_value
             else:
                 self.question_background_update()
-        raise Task.TestRunFailed("Timeout at '{}'".format(self.current_question))
+        raise Task.TaskRunFailed("Timeout at '{}'".format(self.current_question))
 
     def question_background_update(self):
         time.sleep(0.1)

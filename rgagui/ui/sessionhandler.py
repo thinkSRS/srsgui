@@ -32,8 +32,8 @@ class SessionHandler(object):
         if use_file or use_db:
             if not hasattr(config, 'base_data_dir'):
                 raise AttributeError('Parent has no base_data_dir')
-            if not hasattr(config, 'test_dict_name'):
-                raise AttributeError('Parent has no test_dict_name')
+            if not hasattr(config, 'task_dict_name'):
+                raise AttributeError('Parent has no task_dict_name')
 
         self.config = config
 
@@ -77,7 +77,7 @@ class SessionHandler(object):
         self.current_session = None
         logger.info('Current session is closed as {}.'.format('PASS' if is_passed else 'FAIL'))
 
-    def create_new_test_result(self, result: TestResult):
+    def create_new_task_result(self, result: TestResult):
         if self.use_file:
             # Make sure output_file open
             self.add_dict_to_file('TestResult', result.__dict__)
@@ -111,20 +111,20 @@ class SessionHandler(object):
     def get_session_status(self):
         """ extract pass states of test result in the current session"""
 
-        test_status_dict = {}
+        task_status_dict = {}
         results = self.client.get_test_session_results(self.current_session['id'])
         if self.use_api:
             results.reverse()
         for result in results:
-            test_status_dict[result.test_class_name] = True if result.passed else False
-        return test_status_dict
+            task_status_dict[result.task_class_name] = True if result.passed else False
+        return task_status_dict
 
-    def create_file(self, test_name):
+    def create_file(self, task_name):
         self.path = Path(self.data_dir)
         if not self.path.exists():
             self.path.mkdir(parents=True)
-        # file_name = test_name + '-' + datetime.now().strftime('%Y%m%d-%H%M%S') + '.txt'
-        file_name = '{}-{}.txt'.format(test_name, datetime.now().strftime('%Y%m%d-%H%M%S'))
+        # file_name = task_name + '-' + datetime.now().strftime('%Y%m%d-%H%M%S') + '.txt'
+        file_name = '{}-{}.txt'.format(task_name, datetime.now().strftime('%Y%m%d-%H%M%S'))
         logger.debug('Output file opened as {}\\{}'.format(self.path, file_name))
         self.output_file = open(self.path / file_name, 'w')
         self.is_file_open = True
@@ -167,11 +167,11 @@ class SessionHandler(object):
         return False
 
     def get_data_dir(self, serial_number, reuse_last_run_number=True):
-        # Dir for test_dict
-        test_data_dir = self.config.base_data_dir + '/' + self.config.test_dict_name
+        # Dir for task_dict
+        task_data_dir = self.config.base_data_dir + '/' + self.config.task_dict_name
 
         # Dir for connected DUT
-        unit_data_dir = test_data_dir + '/SN' + str(serial_number).strip()
+        unit_data_dir = task_data_dir + '/SN' + str(serial_number).strip()
         unit_path = Path(unit_data_dir)
         if not unit_path.exists():
             unit_path.mkdir(parents=True)

@@ -47,10 +47,11 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
                 elif type(self.dut.comm) is SerialInterface:
                     self.commTabWidget.setCurrentIndex(0)
             else:
-                raise TypeError('Instrument class does not have communications class')
+                raise TypeError('Invalid Instrument class to connect : {}'.format(type(dut)))
         except Exception as e:
             logger.error(e)
             QMessageBox.warning(self, 'Error', str(e))
+
 
     def onStateChanged(self):
         if self.loginCB.isChecked():
@@ -100,7 +101,7 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
 
         elif self.commTabWidget.currentIndex() == 0: #Serial Tab
             try:            
-                #self.dut.comm = SerialInterface()
+                # self.dut.comm = SerialInterface()
                 self.dut.connect(
                               Interface.SERIAL,
                               self.serialPortComboBox.currentText(),
