@@ -6,7 +6,7 @@ from importlib import import_module, invalidate_caches
 from rgagui.basetask import Task, GreenNormal, RedNormal
 
 # from srs_insts.baseinsts import BaseInst
-from rga.baseinst import Instrument as BaseInst
+from rga.base import Instrument
 
 logger = logging.getLogger(__name__)
 
@@ -125,8 +125,8 @@ class Config(object):
             logger.error('Invalid inst class')
             return
 
-        if not issubclass(inst_class, BaseInst):
-            logger.error('Not BaseInst subclass')
+        if not issubclass(inst_class, Instrument):
+            logger.error('Not a Instrument subclass')
             return
 
         self.inst_dict[inst_key] = inst_class()
@@ -145,7 +145,7 @@ class Config(object):
                             inst_key, parameter_string)))
 
                     if self.multi_inst is True and inst_key != self.Dut and \
-                            self.inst_dict[inst_key].comm.type == BaseInst.TCPIP:
+                            self.inst_dict[inst_key].comm.type == Instrument.TCPIP:
                         # Try if it is a proxy class. If so, open another instance as a sub
                         reply = self.inst_dict[inst_key].query_text('GETPARAM? name')
                         self.inst_dict[inst_key].send('QUERYONLY FALSE')
@@ -175,7 +175,7 @@ class Config(object):
         params = parameter_string.split(':')
         num = len(params)
         interface_type = params[0].strip().lower()
-        if interface_type == BaseInst.SERIAL:
+        if interface_type == Instrument.SERIAL:
             if num > 4:
                 return False # too many parameters
             if num > 1:
@@ -187,7 +187,7 @@ class Config(object):
                 inst.default_connect_parameters.append(params[3].upper == 'TRUE')  # hardware flow control
             return True
 
-        elif interface_type == BaseInst.TCPIP:
+        elif interface_type == Instrument.TCPIP:
             if num > 5:
                 return False
             inst.default_connect_parameters.append(interface_type)  # 'tcpip'

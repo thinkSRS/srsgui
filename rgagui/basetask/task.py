@@ -16,7 +16,7 @@ import logging
 from .inputs import FloatInput
 from .taskresult import TaskResult, ResultLogHandler
 
-from rga.baseinst import Instrument as BaseInst
+from rga.base import Instrument
 
 # HTML formatter for QTextBrowser
 Bold = '<font color="black"><b>{}</b></font>'
@@ -257,8 +257,8 @@ class Task(QThread):
     def set_inst_dict(self, inst_dict):
         if self.DeviceUnderTest not in inst_dict:
             raise AttributeError('Inst_dict has no DUT')
-        if not issubclass(type(inst_dict[self.DeviceUnderTest]), BaseInst):
-            raise AttributeError('DUT is not a subclass of BaseInst.')
+        if not issubclass(type(inst_dict[self.DeviceUnderTest]), Instrument):
+            raise AttributeError('DUT is not a subclass of Instrument.')
         setattr(self, self.InstrumentDict, inst_dict)
 
     def set_figure(self, figure=None):
@@ -437,13 +437,12 @@ class Task(QThread):
             return None
 
         inst = inst_dict[name]
-        if not isinstance(inst, BaseInst):
+        if not isinstance(inst, Instrument):
             self.logger.error('{} is not an instance of {}.'
-                         .format(type(inst), BaseInst.__class__.__name__))
+                         .format(type(inst), Instrument.__class__.__name__))
 
         if not inst.is_connected():
             raise Task.TaskSetupFailed('{} is not connected'.format(name))
-            return None
 
         model, sn, version = inst.check_id()
         self.logger.info('{} Device model: {} Version: {} S/N: {}'.format(name, model, version, sn))

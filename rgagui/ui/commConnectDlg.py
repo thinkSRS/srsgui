@@ -5,8 +5,8 @@ from PyQt5.QtCore import QSettings
 
 from PyQt5.QtWidgets import QDialog, QMessageBox, QApplication
 
-from rga.baseinst.serial_ports import serial_ports
-from rga.baseinst import Interface, SerialInterface, TcpipInterface
+from rga.base.serial_ports import serial_ports
+from rga.base import Interface, SerialInterface, TcpipInterface
 from .ui_commConnectDlg import Ui_CommConnectDlg
 
 logger = logging.getLogger(__name__)
@@ -51,7 +51,6 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
         except Exception as e:
             logger.error(e)
             QMessageBox.warning(self, 'Error', str(e))
-
 
     def onStateChanged(self):
         if self.loginCB.isChecked():
@@ -99,7 +98,7 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
                 logger.info('Connected to IP: {}'.format(
                     self.ipAddressLineEdit.text()))
 
-        elif self.commTabWidget.currentIndex() == 0: #Serial Tab
+        elif self.commTabWidget.currentIndex() == 0:  # Serial Tab
             try:            
                 # self.dut.comm = SerialInterface()
                 self.dut.connect(

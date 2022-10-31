@@ -2,7 +2,7 @@
 
 from PyQt5.QtWidgets import QFrame, QMessageBox
 
-from rga.baseinst import Instrument as BaseInst
+from rga.base import Instrument
 
 from .ui_commandTerminal import Ui_CommandTerminal
 
@@ -25,7 +25,7 @@ class CommandTerminal(QFrame, Ui_CommandTerminal):
     def on_send(self):
         try:
             inst = self.parent.get_dut()
-            if not (isinstance(inst, BaseInst) and inst.is_connected()):
+            if not (isinstance(inst, Instrument) and inst.is_connected()):
                 msg_box = QMessageBox()
                 msg_box.setText("No DUT connected")
                 msg_box.exec()

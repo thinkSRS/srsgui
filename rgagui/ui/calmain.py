@@ -32,7 +32,7 @@ from .qtloghandler import QtLogHandler
 from .sessionhandler import SessionHandler
 
 from rgagui.basetask import Task, Bold
-from rga.baseinst import Instrument
+from rga.base import Instrument
 
 SuccessSound = str(Path(__file__).parent / 'sounds/successSound.wav')
 FailSound = str(Path(__file__).parent / 'sounds/errorSound.wav')
