@@ -3,7 +3,7 @@ import logging
 from pathlib import Path
 from importlib import import_module, invalidate_caches
 
-from rgagui.basetask import Task, GreenNormal, RedNormal
+from rgagui.base import Task, GreenNormal, RedNormal
 
 # from srs_insts.baseinsts import BaseInst
 from rga.base import Instrument
@@ -39,6 +39,7 @@ class Config(object):
         if not p.exists():
             p.mkdir(parents=True)
         self.base_log_file_name = self.get_base_log_file_name()
+
     def load(self, file_name, multi_inst=False):
         self.multi_inst = multi_inst
         current_line = ""
@@ -64,7 +65,7 @@ class Config(object):
                         k, v = current_line.split(':', 1)
                         k = k.strip().lower()
                         v = v.strip()
-                        if k == 'test':
+                        if k == 'task':
                             self.load_task_from_line(v)
 
                         elif k == 'inst':
@@ -137,7 +138,7 @@ class Config(object):
                                                           parameter_string)
             if success:
                 try:
-                    self.open_with_default_parameters(self.inst_dict[inst_key])
+                    self.connect_with_default_parameters(self.inst_dict[inst_key])
                     # logger.debug('check_id returns: {}, {}, {}'.format(
                     # self.inst_dict[inst_key].check_id()))
                     logger.info(GreenNormal.format(
@@ -154,7 +155,7 @@ class Config(object):
                         self.inst_dict[inst_key] = inst_class()
                         success = self.set_default_connect_parameters(self.inst_dict[inst_key],
                                                                       parameter_string)
-                        self.open_with_default_parameters(self.inst_dict[inst_key])
+                        self.connect_with_default_parameters(self.inst_dict[inst_key])
                         # logger.debug('check_id returns: {}, {}, {}'.format(
                         # self.inst_dict[inst_key].check_id()))
                         logger.info(GreenNormal.format(
@@ -184,7 +185,6 @@ class Config(object):
             except:
                 pass
         return return_value
-
 
     def set_default_connect_parameters(self, inst, parameter_string):
         inst.default_connect_parameters = []
@@ -225,9 +225,9 @@ class Config(object):
                 inst.default_connect_parameters.append(params[3])  # password
                 inst.default_connect_parameters.append(int(params[4]))  # port number
                 return True
-        self.default_connect_parameters.clear()
+        inst.default_connect_parameters.clear()
         print("Invalid connect parameters", params)
         return False
 
-    def open_with_default_parameters(self, inst):
-        inst.open(*inst.default_connect_parameters)
+    def connect_with_default_parameters(self, inst):
+        inst.connect(*inst.default_connect_parameters)

@@ -23,7 +23,7 @@ from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as Navigatio
 
 from .commConnectDlg import CommConnectDlg
 
-from .ui_calmain import Ui_CalMain
+from .ui_taskmain import Ui_TaskMain
 from .inputpanel import InputPanel
 from .commandTerminal import CommandTerminal
 from .config import Config
@@ -31,7 +31,7 @@ from .stdout import StdOut
 from .qtloghandler import QtLogHandler
 from .sessionhandler import SessionHandler
 
-from rgagui.basetask import Task, Bold
+from rgagui.base import Task, Bold
 from rga.base import Instrument
 
 SuccessSound = str(Path(__file__).parent / 'sounds/successSound.wav')
@@ -40,10 +40,10 @@ FailSound = str(Path(__file__).parent / 'sounds/errorSound.wav')
 logger = logging.getLogger(__name__)
 
 
-class CalMain(QMainWindow, Ui_CalMain):
+class TaskMain(QMainWindow, Ui_TaskMain):
 
     def __init__(self, parent=None):
-        super(CalMain, self).__init__(parent)
+        super(TaskMain, self).__init__(parent)
         self.setupUi(self)
         # self.taskResult.setFontFamily('monospace')
 

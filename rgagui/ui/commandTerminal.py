@@ -11,9 +11,10 @@ class CommandTerminal(QFrame, Ui_CommandTerminal):
     def __init__(self, parent):
         super().__init__(parent)
         self.setupUi(self)
+
         self.parent = parent
-        if not hasattr(parent, 'get_dut'):
-            raise AttributeError('Parent has no get_dut()')
+        if not hasattr(parent, 'inst_dict'):
+            raise AttributeError('Parent has no inst_dict')
 
         self.pbClear.clicked.connect(self.on_clear)
         self.pbSend.clicked.connect(self.on_send)
@@ -39,10 +40,16 @@ class CommandTerminal(QFrame, Ui_CommandTerminal):
                 self.tbCommand.clear()
                 return
 
-            if cmd.startswith('dut.'):
+            keys = self.parent.inst_dict.keys()
+            if cmd.split('.', 1)[0] in keys:
                 reply = self.eval(cmd)
             else:
-                reply = inst.handle_command(cmd)
+                inst_name = cmd.split(':', 1)[0]
+                if inst_name in keys:
+                    command = cmd.split(':', 1)[1]
+                    reply = self.parent.inst_dict[inst_name].handle_command(command)
+                else:
+                    reply = inst.handle_command(cmd)
 
             if reply != '':
                 self.tbCommand.append(reply)
@@ -51,12 +58,11 @@ class CommandTerminal(QFrame, Ui_CommandTerminal):
             self.tbCommand.append('Error: {}'.format(str(e)))
 
     def eval(self, cmd):
-        dut = self.parent.get_dut()
         if '=' in cmd:
-            exec(cmd, {}, {'dut': dut})
+            exec(cmd, {}, self.parent.inst_dict)
             return ''
         else:
-            reply = str(eval(cmd, {}, {'dut': dut}))
+            reply = eval(cmd, {}, self.parent.inst_dict)
             if reply is not None:
-                return reply
+                return str(reply)
             return ''

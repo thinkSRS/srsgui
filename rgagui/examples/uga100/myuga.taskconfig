@@ -1,21 +1,28 @@
-
+# Line that starts with '#' is a comment line
 # MyRGA Task list for rgagui
 
 # The name is used for the main window title
+
 Name: My UGA Tasks
 
-# Specify srs_insts used in the test suite
+# Specify Instruments used in the task suite
+# A line that starts with 'inst' adds an instrument to be used in the following tasks
+# an instrument is a subclass derived from Instrument class in 'rga' package
+# The second column is the Python module or package that contains the instrument class.
+# The thrid column is a instrument class in the module
+
 inst: dut,     rga,    UGA100
+inst: rga,     rga,    RGA120, tcpip:172.25.70.181:admin:admin:818
 
 
-# A line starts with 'test: ' adds a test to the test_dict.
-# The first column is the test name that will be used as a dictionary key
-# of the test, displayed in GUI list widget for selection, and used in database.
-# The Second column is the python module that contains the test class.
-# The third column is a test class that is a Task subclass
+# A line that starts with 'task: ' adds a task to the task config file.
+# The first column is the task name that will be used as a dictionary key
+# of the task, displayed in GUI Tak menu for selection, and used in task result data file.
+# The Second column is the Python module that contains the task class with relative path from the Task config file.
+# The third column is a task class  that is a Task subclass in the module.
 
-test: Filament Control,            myugatasks.filamentcontroltask,         FilamentControlTask
-test: CEM Control,                 myugatasks.cemcontroltask,              CEMControlTask
-test: Analog Scan,                 myugatasks.analogscantask,              AnalogScanTask
-test: Histogram Scan,              myugatasks.histogramscantask,           HistogramScanTask
-test: CEM Gain Tuning,             myugatasks.cemgaintask,                 CEMGainTask
+task: Filament Control,            tasks.filamentcontroltask,         FilamentControlTask
+task: CEM Control,                 tasks.cemcontroltask,              CEMControlTask
+task: Analog Scan,                 tasks.analogscantask,              AnalogScanTask
+task: Histogram Scan,              tasks.histogramscantask,           HistogramScanTask
+task: CEM Gain Tuning,             tasks.cemgaintask,                 CEMGainTask

@@ -7,7 +7,7 @@ from datetime import datetime
 # from wip.local_results import LocalClient
 # from wip.wip_api import DutNotRegisteredError
 
-from rgagui.basetask.taskresult import TaskResult
+from rgagui.base.taskresult import TaskResult
 
 RedBold = '<font color="red"><b>{}</b></font>'
 logger = logging.getLogger(__name__)
