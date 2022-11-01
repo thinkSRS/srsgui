@@ -1,0 +1,21 @@
+
+# MyRGA Task list for rgagui
+
+# The name is used for the main window title
+Name: My UGA Tasks
+
+# Specify srs_insts used in the test suite
+inst: dut,     rga,    UGA100
+
+
+# A line starts with 'test: ' adds a test to the test_dict.
+# The first column is the test name that will be used as a dictionary key
+# of the test, displayed in GUI list widget for selection, and used in database.
+# The Second column is the python module that contains the test class.
+# The third column is a test class that is a Task subclass
+
+test: Filament Control,            myugatasks.filamentcontroltask,         FilamentControlTask
+test: CEM Control,                 myugatasks.cemcontroltask,              CEMControlTask
+test: Analog Scan,                 myugatasks.analogscantask,              AnalogScanTask
+test: Histogram Scan,              myugatasks.histogramscantask,           HistogramScanTask
+test: CEM Gain Tuning,             myugatasks.cemgaintask,                 CEMGainTask
