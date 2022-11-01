@@ -35,6 +35,10 @@ class CommandTerminal(QFrame, Ui_CommandTerminal):
             self.tbCommand.append(cmd)
             self.leCommand.clear()
 
+            if cmd.lower() == 'cls':
+                self.tbCommand.clear()
+                return
+
             if cmd.startswith('dut.'):
                 reply = self.eval(cmd)
             else:
@@ -52,4 +56,7 @@ class CommandTerminal(QFrame, Ui_CommandTerminal):
             exec(cmd, {}, {'dut': dut})
             return ''
         else:
-            return str(eval(cmd, {}, {'dut': dut}))
+            reply = str(eval(cmd, {}, {'dut': dut}))
+            if reply is not None:
+                return reply
+            return ''

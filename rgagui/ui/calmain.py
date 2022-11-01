@@ -71,6 +71,7 @@ class CalMain(QMainWindow, Ui_CalMain):
             self.default_config_file = 'rga120tasks/rga120.taskconfig'
             self.config = Config()
             self.base_data_dir = self.config.base_data_dir
+            self.base_log_file_name = self.config.base_log_file_name
 
             self.success_icon = QIcon(str(Path(__file__).parent / 'icons/o.png'))
             self.fail_icon = QIcon(str(Path(__file__).parent / 'icons/x.png'))
@@ -100,12 +101,14 @@ class CalMain(QMainWindow, Ui_CalMain):
 
         self.init_terminal()
 
-        log_file = self.base_data_dir + '/calmainlog.txt'
         self.qt_log_handler = QtLogHandler(self.console)
         self.qt_log_handler.setLevel(logging.INFO)
 
+        log_file = self.base_log_file_name
+
         self.file_log_handler = logging.handlers.RotatingFileHandler(
             log_file, maxBytes=100000, backupCount=10)
+
         logging.basicConfig(handlers=[self.qt_log_handler, self.file_log_handler],
                             format='%(asctime)s-%(name)s-%(levelname)s-%(message)s',
                             level=logging.DEBUG)
@@ -149,7 +152,7 @@ class CalMain(QMainWindow, Ui_CalMain):
 
             self.inst_dict = self.config.inst_dict
 
-            self.dut_sn_prefix = self.config.dut_sn_prefix
+            self.dut_sn_prefix = '0'  # self.config.dut_sn_prefix
             self.task_dict = self.config.task_dict
 
             self.setWindowTitle(self.config.task_dict_name)
@@ -470,13 +473,14 @@ class CalMain(QMainWindow, Ui_CalMain):
 
     def get_current_serial_number(self):
         DefaultSN = '99999'
-        api_sn = '999' + DefaultSN
+
 
         if self.dut_sn_prefix:
             api_prefix = self.dut_sn_prefix
         else:
             api_prefix = '999'
 
+        api_sn = '999' + DefaultSN
         serial_number = None
         try:
             dut = self.get_dut()

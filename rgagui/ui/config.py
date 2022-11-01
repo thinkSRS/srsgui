@@ -38,7 +38,7 @@ class Config(object):
         p = Path(self.base_data_dir)
         if not p.exists():
             p.mkdir(parents=True)
-
+        self.base_log_file_name = self.get_base_log_file_name()
     def load(self, file_name, multi_inst=False):
         self.multi_inst = multi_inst
         current_line = ""
@@ -169,6 +169,22 @@ class Config(object):
 
     def get_logo_file(self):
         return self.LogoFile
+
+    def get_base_log_file_name(self):
+        max_file_number = 20
+        return_value = None
+        file_name_format = self.base_data_dir + '/mainlog-{:02d}.txt'
+        for i in range(max_file_number):
+            try:
+                file_name = file_name_format.format(i)
+                if os.path.exists(file_name):
+                    os.remove(file_name)
+                return_value = file_name
+                break
+            except:
+                pass
+        return return_value
+
 
     def set_default_connect_parameters(self, inst, parameter_string):
         inst.default_connect_parameters = []

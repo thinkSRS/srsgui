@@ -7,7 +7,7 @@ from datetime import datetime
 # from wip.local_results import LocalClient
 # from wip.wip_api import DutNotRegisteredError
 
-from rgagui.basetask.taskresult import TaskResult as TestResult
+from rgagui.basetask.taskresult import TaskResult
 
 RedBold = '<font color="red"><b>{}</b></font>'
 logger = logging.getLogger(__name__)
@@ -77,17 +77,17 @@ class SessionHandler(object):
         self.current_session = None
         logger.info('Current session is closed as {}.'.format('PASS' if is_passed else 'FAIL'))
 
-    def create_new_task_result(self, result: TestResult):
+    def create_new_task_result(self, result: TaskResult):
         if self.use_file:
             # Make sure output_file open
-            self.add_dict_to_file('TestResult', result.__dict__)
-            logger.debug('Test result Saved')
+            self.add_dict_to_file('TaskResult', result.__dict__)
+            logger.debug('Task result Saved')
 
         if self.use_api:
             self.client.create_new_test_result(self.current_session, result)
-            logger.debug('Test result added to API session')
+            logger.debug('Task result added to API session')
         elif self.use_db:
-            logger.debug('Test result added to the local DB')
+            logger.debug('Task result added to the local DB')
             self.client.create_new_test_result(self.current_session, result)
 
     def upload_local_results(self, serial_number):
