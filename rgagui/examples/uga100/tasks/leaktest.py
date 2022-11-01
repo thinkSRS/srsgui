@@ -4,8 +4,8 @@ import time
 import math
 import numpy as np
 
-from rgagui.basetask.task import Task, round_float
-from rgagui.basetask.inputs import FloatInput, IntegerInput, StringInput
+from rgagui.base.task import Task, round_float
+from rgagui.base.inputs import FloatInput, IntegerInput, StringInput
 import logging
 
 from instruments.inst_http import InstHttpMixin

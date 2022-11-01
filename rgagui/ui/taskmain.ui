@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CalMain</class>
- <widget class="QMainWindow" name="CalMain">
+ <class>TaskMain</class>
+ <widget class="QMainWindow" name="TaskMain">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -46,7 +46,7 @@
          <item>
           <widget class="QLabel" name="label_3">
            <property name="text">
-            <string>Test Parameters</string>
+            <string>Task Parameters</string>
            </property>
           </widget>
          </item>
@@ -67,7 +67,7 @@
          <item>
           <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>Test Result</string>
+            <string>Task Result</string>
            </property>
            <property name="buddy">
             <cstring>taskResult</cstring>
@@ -96,7 +96,7 @@
      <x>0</x>
      <y>0</y>
      <width>1140</width>
-     <height>29</height>
+     <height>23</height>
     </rect>
    </property>
    <property name="font">
@@ -287,7 +287,7 @@
   <connection>
    <sender>action_Open</sender>
    <signal>triggered()</signal>
-   <receiver>CalMain</receiver>
+   <receiver>TaskMain</receiver>
    <slot>onOpen()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -303,7 +303,7 @@
   <connection>
    <sender>action_New</sender>
    <signal>triggered()</signal>
-   <receiver>CalMain</receiver>
+   <receiver>TaskMain</receiver>
    <slot>onNew()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -319,7 +319,7 @@
   <connection>
    <sender>action_Save</sender>
    <signal>triggered()</signal>
-   <receiver>CalMain</receiver>
+   <receiver>TaskMain</receiver>
    <slot>onSave()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -335,7 +335,7 @@
   <connection>
    <sender>actionE_xit</sender>
    <signal>triggered()</signal>
-   <receiver>CalMain</receiver>
+   <receiver>TaskMain</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -351,7 +351,7 @@
   <connection>
    <sender>actionConsole</sender>
    <signal>triggered()</signal>
-   <receiver>CalMain</receiver>
+   <receiver>TaskMain</receiver>
    <slot>onConsole()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -367,7 +367,7 @@
   <connection>
    <sender>actionRun</sender>
    <signal>triggered()</signal>
-   <receiver>CalMain</receiver>
+   <receiver>TaskMain</receiver>
    <slot>onRun()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -383,7 +383,7 @@
   <connection>
    <sender>actionStop</sender>
    <signal>triggered()</signal>
-   <receiver>CalMain</receiver>
+   <receiver>TaskMain</receiver>
    <slot>onStop()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -399,7 +399,7 @@
   <connection>
    <sender>actionQuit</sender>
    <signal>triggered()</signal>
-   <receiver>CalMain</receiver>
+   <receiver>TaskMain</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -415,7 +415,7 @@
   <connection>
    <sender>actionConnect</sender>
    <signal>triggered()</signal>
-   <receiver>CalMain</receiver>
+   <receiver>TaskMain</receiver>
    <slot>onConnect()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -431,7 +431,7 @@
   <connection>
    <sender>actionDisconnect</sender>
    <signal>triggered()</signal>
-   <receiver>CalMain</receiver>
+   <receiver>TaskMain</receiver>
    <slot>onDisconnect()</slot>
    <hints>
     <hint type="sourcelabel">

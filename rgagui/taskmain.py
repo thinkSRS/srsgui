@@ -3,12 +3,12 @@
 import sys
 
 from PyQt5.QtWidgets import QApplication
-from .ui.calmain import CalMain
+from .ui.taskmain import TaskMain
 
 
 def main():
     app = QApplication(sys.argv)
-    main_window = CalMain()
+    main_window = TaskMain()
     main_window.show()
     app.exec()
 

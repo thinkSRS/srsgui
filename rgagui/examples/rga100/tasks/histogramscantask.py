@@ -2,8 +2,8 @@
 import numpy
 from datetime import datetime
 
-from rgagui.basetask.task import Task, round_float
-from rgagui.basetask.inputs import ListInput, IntegerInput
+from rgagui.base.task import Task, round_float
+from rgagui.base.inputs import ListInput, IntegerInput
 from . import get_rga
 
 class HistogramScanTask(Task):

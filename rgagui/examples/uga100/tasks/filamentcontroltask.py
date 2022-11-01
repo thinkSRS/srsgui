@@ -1,6 +1,6 @@
 
-from rgagui.basetask.task import Task
-from rgagui.basetask.inputs import FloatInput
+from rgagui.base.task import Task
+from rgagui.base.inputs import FloatInput
 from . import get_rga
 
 class FilamentControlTask(Task):
