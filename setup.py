@@ -14,13 +14,15 @@ def find_version(*args):
         raise ValueError('Version string is not enclosed inside " ".')
     return version_strings[1]
 
+
 def get_file_names(directory):
     paths=[]
     for (path, directories, filenames) in os.walk(directory):
         for filename in filenames:
             paths.append(os.path.join('..', path, filename))
     return paths
-        
+
+
 description = open('readme.md').read()
 version_string = find_version('rgagui', '__init__.py')
 
@@ -43,7 +45,7 @@ setup(
     install_requires=[
         "PyQt5",
         "matplotlib",
-        "playsound == 1.2.2",
+        # "playsound == 1.2.2",
         "rga >= 0.1.8"
     ],
     

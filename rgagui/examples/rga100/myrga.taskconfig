@@ -9,7 +9,7 @@ Name: My RGA Tasks
 # A line that starts with 'inst' adds an instrument to be used in the following tasks
 # an instrument is a subclass derived from Instrument class in 'rga' package
 # The second column is the Python module or package that contains the instrument class.
-# The thrid column is a instrument class in the module
+# The third column is a instrument class in the module
 
 inst: dut,     rga,    RGA100
 
