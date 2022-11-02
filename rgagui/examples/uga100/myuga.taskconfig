@@ -12,7 +12,7 @@ Name: My UGA Tasks
 # The thrid column is a instrument class in the module
 
 inst: dut,     rga,    UGA100
-inst: rga,     rga,    RGA120, tcpip:172.25.70.181:admin:admin:818
+# inst: rga,     rga,    RGA100, tcpip:172.25.70.181:admin:admin:818
 
 
 # A line that starts with 'task: ' adds a task to the task config file.

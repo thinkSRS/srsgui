@@ -44,7 +44,7 @@ setup(
         "PyQt5",
         "matplotlib",
         "playsound == 1.2.2",
-        "rga >= 0.1.7"
+        "rga >= 0.1.8"
     ],
     
     entry_points={
