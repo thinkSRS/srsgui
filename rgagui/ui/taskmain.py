@@ -6,7 +6,6 @@ import webbrowser
 import logging
 import logging.handlers
 
-from playsound import playsound
 from pathlib import Path
 
 from PyQt5.QtCore import Qt, QEvent, QTimer, QSettings, QItemSelectionModel, QByteArray
@@ -234,13 +233,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self._busy_flag = False
 
             self.create_task_result_in_session(self.task)
-
-            if self.task.is_task_passed():
-                # self.change_task_status(self.taskst.name, True)
-                playsound(SuccessSound, block=False)
-            else:
-                # self.change_task_status(self.task.name, False)
-                playsound(FailSound, block=False)
 
             # try:
             #     self.task.deleteLater()
@@ -650,6 +642,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    mw = CalMain()
+    mw = TaskMain()
     mw.show()
     sys.exit(app.exec_())
