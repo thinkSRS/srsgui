@@ -1,3 +1,0 @@
-recursive-include rgagui/ui/sounds *
-recursive-include rgagui/ui/icons *
-recursive-include rgagui/ui/images *
