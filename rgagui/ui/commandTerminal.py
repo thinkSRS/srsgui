@@ -8,6 +8,38 @@ from .ui_commandTerminal import Ui_CommandTerminal
 
 
 class CommandTerminal(QFrame, Ui_CommandTerminal):
+    """
+    Terminal to control instruments defined in the .taskconfig file
+
+    help - Show this message
+    cls  - Clear the terminal window.
+
+    inst_name:remote_command - 'inst_name' is the first item after the
+           prefix  "inst:" in a line in the .taskconfig file.
+           'remote_command' after the colon is a raw remote command of the instrument.
+           Terminals send the 'remote_command' directly to the instrument 'inst_name',
+           and display a reply if the instrument sends one back.
+
+           dut:*idn?
+           dut:mi10
+
+    inst_name.instrument_command - when you use .before a command,
+           the command is interpreted as a instance of a Command class or a method defined in Instrument subclass,
+           which is the third item in the line starting with 'inst:' used in .taskconfig file.
+
+           inst_name.(subcomponents.)dir - it shows all available components, commands,and methods in the
+                  instrument or its component in a Python directory format.
+
+                  dut.dir
+                  dut.status.dir
+
+           dut.status.id_string - this is a command defined in dut.status component.
+           rga.scan.get_analog_scan()  - this is a method defined in the rga.scan component.
+
+           With 'inst_name', you can specify which instrument receive the following command,
+           a raw remote command or a Python package define instrument command.
+    """
+
     def __init__(self, parent):
         super().__init__(parent)
         self.setupUi(self)
@@ -15,7 +47,7 @@ class CommandTerminal(QFrame, Ui_CommandTerminal):
         self.parent = parent
         if not hasattr(parent, 'inst_dict'):
             raise AttributeError('Parent has no inst_dict')
-
+        self.leCommand.setText("Type  'help'  for more info")
         self.pbClear.clicked.connect(self.on_clear)
         self.pbSend.clicked.connect(self.on_send)
         self.leCommand.returnPressed.connect(self.on_send)
@@ -37,10 +69,12 @@ class CommandTerminal(QFrame, Ui_CommandTerminal):
             reply = ''
             self.tbCommand.append(cmd)
             self.leCommand.clear()
-
-            if cmd.lower() == 'cls':
+            cmd_lower = cmd.lower()
+            if cmd_lower == 'cls':
                 self.tbCommand.clear()
                 return
+            if cmd_lower == 'help':
+                self.tbCommand.append(self.__doc__)
 
             keys = list(self.parent.inst_dict.keys())
             inst_name = cmd.split('.', 1)[0]
