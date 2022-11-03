@@ -23,16 +23,18 @@ class CommandTerminal(QFrame, Ui_CommandTerminal):
     def on_clear(self):
         self.tbCommand.clear()
 
+    def _check_connected(self, inst):
+        if not (isinstance(inst, Instrument) and inst.is_connected()):
+            msg_box = QMessageBox()
+            msg_box.setText("No DUT connected")
+            msg_box.exec()
+            return False
+        return True
+
     def on_send(self):
         try:
-            inst = self.parent.get_dut()
-            if not (isinstance(inst, Instrument) and inst.is_connected()):
-                msg_box = QMessageBox()
-                msg_box.setText("No DUT connected")
-                msg_box.exec()
-                return
-
             cmd = self.leCommand.text().strip()
+            reply = ''
             self.tbCommand.append(cmd)
             self.leCommand.clear()
 
@@ -40,16 +42,23 @@ class CommandTerminal(QFrame, Ui_CommandTerminal):
                 self.tbCommand.clear()
                 return
 
-            keys = self.parent.inst_dict.keys()
-            if cmd.split('.', 1)[0] in keys:
-                reply = self.eval(cmd)
+            keys = list(self.parent.inst_dict.keys())
+            inst_name = cmd.split('.', 1)[0]
+            if inst_name in keys:
+                inst = self.parent.get_inst(inst_name)
+                if self._check_connected(inst):
+                    reply = self.eval(cmd)
             else:
                 inst_name = cmd.split(':', 1)[0]
                 if inst_name in keys:
-                    command = cmd.split(':', 1)[1]
-                    reply = self.parent.inst_dict[inst_name].handle_command(command)
+                    inst = self.parent.get_inst(inst_name)
+                    if self._check_connected(inst):
+                        command = cmd.split(':', 1)[1]
+                        reply = inst.handle_command(command)
                 else:
-                    reply = inst.handle_command(cmd)
+                    inst = self.parent.get_inst(keys[0])
+                    if self._check_connected(inst):
+                        reply = inst.handle_command(cmd)
 
             if reply != '':
                 self.tbCommand.append(reply)

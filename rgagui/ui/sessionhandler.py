@@ -171,7 +171,7 @@ class SessionHandler(object):
         task_data_dir = self.config.base_data_dir + '/' + self.config.task_dict_name
 
         # Dir for connected DUT
-        unit_data_dir = task_data_dir + '/SN' + str(serial_number).strip()
+        unit_data_dir = task_data_dir  # No SN + '/SN' + str(serial_number).strip()
         unit_path = Path(unit_data_dir)
         if not unit_path.exists():
             unit_path.mkdir(parents=True)
