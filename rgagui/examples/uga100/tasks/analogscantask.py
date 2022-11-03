@@ -123,7 +123,7 @@ class AnalogScanTask(Task):
             if not self.is_running():
                 break
             try:
-                self.rga.scan.get_analog_scan()
+                self.rga.scan.get_analog_scan(True)
                 self.logger.debug('scan {} finished'.format(i))
 
                 # write the spectrum in to the data file

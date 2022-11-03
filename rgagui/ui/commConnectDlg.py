@@ -41,9 +41,10 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
                 self.comm = dut.comm
                 if type(self.dut.comm) is TcpipInterface:
                     self.commTabWidget.setCurrentIndex(1)
-                    self.ipAddressLineEdit.setText(self.dut.comm.ip_address)
-                    self.userNameLineEdit.setText(self.dut.comm.userid)
-                    self.passwordLineEdit.setText(self.dut.comm.password)
+                    self.ipAddressLineEdit.setText(self.dut.comm._ip_address)
+                    self.userNameLineEdit.setText(self.dut.comm._userid)
+                    self.passwordLineEdit.setText(self.dut.comm._password)
+                    self.portNumberSB.setValue(self.dut.comm._tcp_port)
                 elif type(self.dut.comm) is SerialInterface:
                     self.commTabWidget.setCurrentIndex(0)
             else:
@@ -56,11 +57,11 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
         if self.loginCB.isChecked():
             self.userNameLineEdit.setEnabled(True)
             self.passwordLineEdit.setEnabled(True)
-            self.portNumberSB.setValue(818)
+            self.portNumberSB.setValue(self.dut.comm.RGA_PORT)
         else:
             self.userNameLineEdit.setEnabled(False)
             self.passwordLineEdit.setEnabled(False)
-            self.portNumberSB.setValue(23)
+            self.portNumberSB.setValue(self.dut.comm.TELNET_PORT)
     
     def accept(self):
         if self.dut.comm.is_connected():
@@ -74,18 +75,18 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
                                      self.userNameLineEdit.text(),
                                      self.passwordLineEdit.text(),
                                      self.portNumberSB.value())
-                    self.dut.comm.ip_address = self.ipAddressLineEdit.text()
-                    self.dut.comm.userid = self.userNameLineEdit.text()
-                    self.dut.comm.password = self.passwordLineEdit.text()
-                    self.dut.comm.tcp_port = self.portNumberSB.value()
+                    self.dut.comm._ip_address = self.ipAddressLineEdit.text()
+                    self.dut.comm._userid = self.userNameLineEdit.text()
+                    self.dut.comm._password = self.passwordLineEdit.text()
+                    self.dut.comm._tcp_port = self.portNumberSB.value()
                 else:
                     self.dut.connect(Interface.TCPIP,
                                   self.ipAddressLineEdit.text(),
                                   self.portNumberSB.value())            
-                    self.dut.comm.ip_address = self.ipAddressLineEdit.text()
-                    self.dut.comm.userid = ''
-                    self.dut.comm.password = ''
-                    self.dut.comm.tcp_port = self.portNumberSB.value()
+                    self.dut.comm._ip_address = self.ipAddressLineEdit.text()
+                    self.dut.comm._userid = ''
+                    self.dut.comm._password = ''
+                    self.dut.comm._tcp_port = self.portNumberSB.value()
                 self.dut.interface_type = 'tcpip'
 
             except Exception as e:
