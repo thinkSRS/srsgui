@@ -96,7 +96,7 @@
      <x>0</x>
      <y>0</y>
      <width>1140</width>
-     <height>29</height>
+     <height>23</height>
     </rect>
    </property>
    <property name="font">
@@ -116,8 +116,8 @@
     <property name="title">
      <string>&amp;Control</string>
     </property>
-    <addaction name="actionConnect"/>
-    <addaction name="actionDisconnect"/>
+    <addaction name="actionRun_2"/>
+    <addaction name="actionStop_2"/>
    </widget>
    <widget class="QMenu" name="menu_View">
     <property name="title">
@@ -234,14 +234,14 @@
     <string>E&amp;xit</string>
    </property>
   </action>
-  <action name="actionConnect">
+  <action name="actionRun_2">
    <property name="text">
-    <string>Connect</string>
+    <string>Run</string>
    </property>
   </action>
-  <action name="actionDisconnect">
+  <action name="actionStop_2">
    <property name="text">
-    <string>Disconnect</string>
+    <string>Stop</string>
    </property>
   </action>
   <action name="actionConsole">
@@ -419,10 +419,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionConnect</sender>
+   <sender>actionRun_2</sender>
    <signal>triggered()</signal>
    <receiver>TaskMain</receiver>
-   <slot>onConnect()</slot>
+   <slot>onRun()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -435,10 +435,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionDisconnect</sender>
+   <sender>actionStop_2</sender>
    <signal>triggered()</signal>
    <receiver>TaskMain</receiver>
-   <slot>onDisconnect()</slot>
+   <slot>onStop()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>

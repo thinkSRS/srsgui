@@ -12,8 +12,6 @@ logger = logging.getLogger(__name__)
 
 
 class Config(object):
-    Dut = Task.DeviceUnderTest
-
     DataRootDirectory = str(Path.home() / "tcal-results")
 
     LogoFile = str(Path(__file__).parent / 'images/srslogo.jpg')
@@ -25,14 +23,9 @@ class Config(object):
     WIPParameters = (WIPRootUrl, WIPTestStationUrl, WIPTestTypeUrl)
 
     def __init__(self):
-        self.dut_sn_prefix = None
-        self.inst_dict = {
-            self.Dut: None
-        }
+        self.inst_dict = {}
         self.task_dict = {}
-        self.sn_prefix_dict = {}
         self.task_dict_name = 'No tasks loaded'
-        self.dut_class = None
         self.local_db_name = None
         self.base_data_dir = self.DataRootDirectory
         p = Path(self.base_data_dir)
@@ -40,18 +33,13 @@ class Config(object):
             p.mkdir(parents=True)
         self.base_log_file_name = self.get_base_log_file_name()
 
-    def load(self, file_name, multi_inst=False):
-        self.multi_inst = multi_inst
+    def load(self, file_name):
         current_line = ""
         try:
             with open(file_name, "r") as f:
-                self.dut_sn_prefix = None
                 invalidate_caches()
-                self.inst_dict = {
-                    self.Dut: None
-                }
+                self.inst_dict = {}
                 self.task_dict = {}
-                self.sn_prefix_dict = {}
 
                 # Delete existing WIP attributes
                 if hasattr(self, self.WIPRootAttr):
@@ -120,8 +108,6 @@ class Config(object):
         logger.debug('{} {} {}'.format(inst_key, inst_module_name, inst_class_name))
         if hasattr(mod, inst_class_name):
             inst_class = getattr(mod, inst_class_name)
-            if inst_key == self.Dut:
-                self.dut_class = inst_class
         else:
             logger.error('Invalid inst class')
             return
@@ -144,23 +130,6 @@ class Config(object):
                     logger.info(GreenNormal.format(
                         '{} is connected with default parameters: {}'.format(
                             inst_key, parameter_string)))
-
-                    if self.multi_inst is True and inst_key != self.Dut and \
-                            self.inst_dict[inst_key].comm.type == Instrument.TCPIP:
-                        # Try if it is a proxy class. If so, open another instance as a sub
-                        reply = self.inst_dict[inst_key].query_text('GETPARAM? name')
-                        self.inst_dict[inst_key].send('QUERYONLY FALSE')
-
-                        inst_key += '_sub'
-                        self.inst_dict[inst_key] = inst_class()
-                        success = self.set_default_connect_parameters(self.inst_dict[inst_key],
-                                                                      parameter_string)
-                        self.connect_with_default_parameters(self.inst_dict[inst_key])
-                        # logger.debug('check_id returns: {}, {}, {}'.format(
-                        # self.inst_dict[inst_key].check_id()))
-                        logger.info(GreenNormal.format(
-                            '{} is connected with default parameters: {}'.format(
-                                inst_key, parameter_string)))
 
                 except Exception as e:
                     logger.error(e)

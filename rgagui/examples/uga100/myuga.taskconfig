@@ -10,9 +10,13 @@ Name: My UGA Tasks
 # an instrument is a subclass derived from Instrument class in 'rga' package
 # The second column is the Python module or package that contains the instrument class.
 # The third column is a instrument class in the module
+# The fourth column is connection parameters.
+# if given, the instrument will be connected using the parameters when the config file is loaded.
 
 inst: dut,     rga,    UGA100
-# inst: rga,     rga,    RGA100, tcpip:172.25.70.181:admin:admin:818
+inst: rga,     rga,    RGA100
+# inst: rga2,   rga,    RGA100,    tcpip:172.25.40.37:admin:admin:818
+# inst: rga3,  rga,     RGA100,    serial:com3:28800:True
 
 
 # A line that starts with 'task: ' adds a task to the task config file.

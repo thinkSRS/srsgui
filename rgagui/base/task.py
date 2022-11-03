@@ -43,10 +43,9 @@ class Task(QThread):
     # DataDirectory = 'data_dir'  # directory to hold all data files
 
     # When parent is not None, parent should have these attributes.
-    InstrumentDict = 'inst_dict'  # all instruments to use in a task
-    DeviceUnderTest = 'dut'      # dict key for main test device
-    MatplotlibFigure = 'figure'  # to display plots
-    SessionHandler = 'session_handler'
+    InstrumentDictName = 'inst_dict'  # all instruments to use in a task
+    MatplotlibFigureName = 'figure'  # to display plots
+    SessionHandlerName = 'session_handler'
 
     # Escape string use in stdout redirection to GUI
     EscapeForResult = '@RESULT@'
@@ -106,10 +105,8 @@ class Task(QThread):
         self.session_handler = None
 
         # inst_dict holds all the instrument to use in task
-        self.inst_dict = {}
-
+        setattr(self, Task.InstrumentDictName, {})
         self.data_dict = {}
-        self.first_data = True
 
         # figure is expected to be Matplotlib figure object.
         self.figure = None
@@ -148,13 +145,13 @@ class Task(QThread):
 
     def basic_setup(self):
         self.logger = self.get_logger(__name__)
-        figure = getattr(self, self.MatplotlibFigure)
+        figure = getattr(self, self.MatplotlibFigureName)
         if figure is None or not hasattr(figure, 'canvas'):
             raise AttributeError('Invalid figure')
-        inst_dict = getattr(self, self.InstrumentDict)
+        inst_dict = getattr(self, self.InstrumentDictName)
 
-        if (inst_dict is None) or (self.DeviceUnderTest not in inst_dict):
-            raise AttributeError('inst_dict has no DUT')
+        if not self._check_inst_dict(inst_dict):
+            raise AttributeError('Invalid inst_dict detected during basic setup')
 
         # We want Exception to be handled in run()
         Task._is_running = True
@@ -254,12 +251,19 @@ class Task(QThread):
     def set_session_handler(self, session_handler):
         self.session_handler = session_handler
 
+    @staticmethod
+    def _check_inst_dict(inst_dict):
+        if type(inst_dict) is not dict:
+            return False
+        for instr in inst_dict:
+            if not issubclass(type(inst_dict[instr]), Instrument):
+                return False
+        return True
+
     def set_inst_dict(self, inst_dict):
-        if self.DeviceUnderTest not in inst_dict:
-            raise AttributeError('Inst_dict has no DUT')
-        if not issubclass(type(inst_dict[self.DeviceUnderTest]), Instrument):
-            raise AttributeError('DUT is not a subclass of Instrument.')
-        setattr(self, self.InstrumentDict, inst_dict)
+        if not self._check_inst_dict(inst_dict):
+            raise AttributeError('invalid inst_dict for Task class')
+        setattr(self, self.InstrumentDictName, inst_dict)
 
     def set_figure(self, figure=None):
         """
@@ -430,7 +434,7 @@ class Task(QThread):
     def get_instrument(self, name):
         """Get an instrument from parent's inst_dict and check its validity"""
 
-        inst_dict = getattr(self, Task.InstrumentDict)
+        inst_dict = getattr(self, Task.InstrumentDictName)
         if name not in inst_dict:
             self.logger.error("{} is not in Instrument dict.".format(name))
             # self.stop()
@@ -439,7 +443,7 @@ class Task(QThread):
         inst = inst_dict[name]
         if not isinstance(inst, Instrument):
             self.logger.error('{} is not an instance of {}.'
-                         .format(type(inst), Instrument.__class__.__name__))
+                              .format(type(inst), Instrument.__class__.__name__))
 
         if not inst.is_connected():
             raise Task.TaskSetupFailed('{} is not connected'.format(name))

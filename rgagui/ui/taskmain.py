@@ -59,12 +59,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
         # Get Instrument dict name from Task
         # the dict holds instances of subclass of Instrument
-        self.InstDict = Task.InstrumentDict
-        self.Dut = Task.DeviceUnderTest
+        self.InstDictName = Task.InstrumentDictName
 
-        self.inst_dict = {
-            self.Dut: Instrument()
-        }
+        self.inst_dict = {}
 
         try:
             self.default_config_file = 'rga120tasks/rga120.taskconfig'
@@ -133,10 +130,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                 for key in prev_inst_dict:
                     instr = prev_inst_dict[key]
                     if hasattr(instr, 'disconnect'):
-                        if key == self.Dut:
-                            self.onDisconnect()
-                        else:
-                            instr.disconnect()
+                        self.onDisconnect(key)
             except Exception as e:
                 logger.error(e)
 
@@ -169,7 +163,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
         try:
             try:
-                # diconnect with none connected causes an exception
+                # Disconnect with none connected causes an exception
                 self.menu_Instruments.triggered.disconnect()
             except:
                 pass
@@ -180,11 +174,12 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             for item in self.inst_dict:
                 action_inst = QAction(self)
                 action_inst.setText(item)
-                action_inst.setCheckable(True)
                 self.menu_Instruments.addAction(action_inst)
-                if hasattr(self.inst_dict[item], 'is_connected') and self.inst_dict[item].is_connected():
-                    action_inst.setChecked(True)
-            self.menu_Instruments.triggered.connect(self.onInstruemtnSelect)
+
+                # action_inst.setCheckable(True)
+                # if hasattr(self.inst_dict[item], 'is_connected') and self.inst_dict[item].is_connected():
+                #    action_inst.setChecked(True)
+            self.menu_Instruments.triggered.connect(self.onInstrumentSelect)
 
             try:
                 self.menu_Tasks.triggered.disconnect()
@@ -203,8 +198,15 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         except Exception as e:
             print(e)
 
-    def onInstrumentSelect(self):
-        pass
+    def onInstrumentSelect(self, inst_action):
+        try:
+            name = inst_action.text()
+            if self.inst_dict[name].is_connected():
+                self.onDisconnect(name)
+            else:
+                self.onConnect(name)
+        except Exception as e:
+            logger.error(e)
 
     def print_redirect(self, text):
         try:
@@ -274,8 +276,11 @@ class TaskMain(QMainWindow, Ui_TaskMain):
     def is_task_running(self):
         return self._busy_flag
 
-    def get_dut(self):
-        return self.inst_dict[self.Dut]
+    def get_inst(self, inst):
+        if inst in self.inst_dict:
+            return self.inst_dict[inst]
+        else:
+            return None
 
     def onTaskSelect(self, action):
         try:
@@ -361,21 +366,20 @@ class TaskMain(QMainWindow, Ui_TaskMain):
     def onSave(self):
         logger.info('Saving a file..')
 
-    def onConnect(self):
-        logger.info('Connecting to DUT...')
+    def onConnect(self, inst_name):
+        logger.info('Connecting to {}...'.format(inst_name))
         try:
-            dut = self.get_dut()
-            logger.debug(dut.__class__.__name__)
-            form = CommConnectDlg(dut)
+            inst = self.get_inst(inst_name)
+            form = CommConnectDlg(inst)
             form.exec_()
 
             self.display_image(self.config.get_logo_file())
             self.console.clear()
 
-            if dut.is_connected():
-                msg = ''  # Name: {} \n S/N: {} \n F/W version: {} \n\n'.format(*dut.check_id())
-                msg += ' Info: {} \n\n\n'.format(dut.get_info())
-                msg += ' Status: {} \n'.format(dut.get_status())
+            if inst.is_connected():
+                msg = ''  # Name: {} \n S/N: {} \n F/W version: {} \n\n'.format(*inst.check_id())
+                msg += ' Info: {} \n\n\n'.format(inst.get_info())
+                msg += ' Status: {} \n'.format(inst.get_status())
                 logger.debug(msg.replace('\n', ''))
                 self.deviceInfo.clear()
                 self.deviceInfo.append(msg)
@@ -385,22 +389,28 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
                 self.session_handler.open_session(sn)
             else:
-                logger.info('Connection aborted')
+                logger.info('Connection to {} aborted'.format(inst_name))
         except Exception as e:
             logger.error(e)
 
-    def onDisconnect(self):
-        dut = self.get_dut()
-        if dut.is_connected():
+    def onDisconnect(self, inst_name):
+        inst = self.get_inst(inst_name)
+        if inst.is_connected():
 
-            dut.disconnect()
-            self.deviceInfo.clear()
-            msg = "Disconnected"
-            self.deviceInfo.append(msg)
-            self.sub_assemblies = {}
-            logger.info('DUT is disconnected')
+            msg_box = QMessageBox()
+            msg_box.setText("Do you want disconnect '{}' ?".format(inst_name))
+            msg_box.setWindowTitle('Disconnect')
+            msg_box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+            msg_box.setDefaultButton(QMessageBox.No)
+            reply = msg_box.exec()
+            if reply == QMessageBox.Yes:
+                inst.disconnect()
+                self.deviceInfo.clear()
+                msg = "Disconnected"
+                self.deviceInfo.append(msg)
+                logger.info('{} is disconnected'.format(inst_name))
+                self.session_handler.close_session(True)
 
-            self.session_handler.close_session(True)
     def okToContinue(self):
         return True
 
