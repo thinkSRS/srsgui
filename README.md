@@ -30,21 +30,24 @@ Make a copy of the example directory, Python/Lib/site-packages/rgagui/examples/r
 to you Documents directory.
 
 Run rgagui.exe, click the menu/File/open config, and select the config file,
-"myrga.taskconfig" int the example directory. The line with 'name:' in the file shows up as 
-the **rgagui** window title, the lines with 'inst:' are the instruments you will use, 
-and lines with 'task:' show in the rgagui menu bar under the menu/Tasks.
+"myrga.taskconfig" in the example directory. 
 
-Connect to an RGA, select a task and press run button from the tool bar.
+Connect to an RGA, from the menu/Control, and select a task and press run button from the tool bar.
 
-From terminal window, type 'dut.dir' to see available components, 
-commands, methods. Type the following to see how it changes:
+From the terminal window, type 'dut.dir' to see available components, 
+commands, and methods. Type the following to see how it changes:
+
     dut.scan.dir
     dut.scan.initial_mass    
     dut.scan.initial_mass = 10
     dut.scan.initial_mass   
 
+Look through the Task config file to see how to organize instruments and tasks.
+In the file, the line with 'name:' appears as the **rgagui** window title, 
+the lines with 'inst:' are the instruments you will use, 
+and lines with 'task:' show in the rgagui menu bar under the menu/Tasks.
 
 Review the task files in the rga100/tasks directory to see how to a script written.
 
-Write your own tasks!!
+Write your own tasks for test and measurement!
 
