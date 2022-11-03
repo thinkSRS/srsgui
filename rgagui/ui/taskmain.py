@@ -81,6 +81,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.taskParameterFrame.setLayout(layout)
 
             # Load task configuration after init
+            self.initial_load = True
             QTimer.singleShot(0, self.load_tasks)
 
         except Exception as e:
@@ -139,8 +140,10 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             except Exception as e:
                 logger.error(e)
 
-            if len(sys.argv) == 2 and sys.argv[1].split('.')[-1].lower() == 'taskconfig':
+            # Check if argument is given in the command line
+            if self.initial_load and len(sys.argv) == 2 and sys.argv[1].split('.')[-1].lower() == 'taskconfig':
                 self.default_config_file = sys.argv[1]
+                self.initial_load = False
                 
             current_dir = str(Path(self.default_config_file).parent)
             sys.path.insert(0, current_dir)
@@ -167,6 +170,23 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         try:
             try:
                 # diconnect with none connected causes an exception
+                self.menu_Instruments.triggered.disconnect()
+            except:
+                pass
+            actions = self.menu_Instruments.actions()
+            for action in actions:
+                self.menu_Instruments.removeAction(action)
+
+            for item in self.inst_dict:
+                action_inst = QAction(self)
+                action_inst.setText(item)
+                action_inst.setCheckable(True)
+                self.menu_Instruments.addAction(action_inst)
+                if hasattr(self.inst_dict[item], 'is_connected') and self.inst_dict[item].is_connected():
+                    action_inst.setChecked(True)
+            self.menu_Instruments.triggered.connect(self.onInstruemtnSelect)
+
+            try:
                 self.menu_Tasks.triggered.disconnect()
             except:
                 pass
@@ -176,12 +196,15 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                 self.menu_Tasks.removeAction(action)
 
             for item in self.task_dict:
-                action_measure = QAction(self)
-                action_measure.setText(item)
-                self.menu_Tasks.addAction(action_measure)
-            self.menu_Tasks.triggered.connect(self.onMenuSelect)
+                action_task = QAction(self)
+                action_task.setText(item)
+                self.menu_Tasks.addAction(action_task)
+            self.menu_Tasks.triggered.connect(self.onTaskSelect)
         except Exception as e:
             print(e)
+
+    def onInstrumentSelect(self):
+        pass
 
     def print_redirect(self, text):
         try:
@@ -254,7 +277,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
     def get_dut(self):
         return self.inst_dict[self.Dut]
 
-    def onMenuSelect(self, action):
+    def onTaskSelect(self, action):
         try:
             if self.is_task_running():  # Another task is running
                 return

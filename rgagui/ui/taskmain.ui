@@ -96,7 +96,7 @@
      <x>0</x>
      <y>0</y>
      <width>1140</width>
-     <height>23</height>
+     <height>29</height>
     </rect>
    </property>
    <property name="font">
@@ -135,8 +135,14 @@
      <string>Tasks</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menu_Instruments">
+    <property name="title">
+     <string>Instruments</string>
+    </property>
+   </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Control"/>
+   <addaction name="menu_Instruments"/>
    <addaction name="menu_Tasks"/>
    <addaction name="menu_View"/>
    <addaction name="menuHelp"/>
