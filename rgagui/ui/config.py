@@ -41,10 +41,6 @@ class Config(object):
                 self.inst_dict = {}
                 self.task_dict = {}
 
-                # Delete existing WIP attributes
-                if hasattr(self, self.WIPRootAttr):
-                    delattr(self, self.WIPRootAttr)
-
                 for line in f:
                     current_line = line.strip()
                     if current_line.startswith('#'):
@@ -61,8 +57,10 @@ class Config(object):
 
                         elif k == 'name':
                             self.task_dict_name = v
+                        else:
+                            raise KeyError('Invalid key: {}'.format(k))
 
-            logger.debug('Read testlist file successfully')
+            logger.info('Read Taskconfig file successfully')
 
             # Local DB file name for SessionHandler
             self.data_dir = self.base_data_dir + '/' + self.task_dict_name
@@ -72,6 +70,7 @@ class Config(object):
 
         except FileNotFoundError:
             logger.error('File {} not found'.format(file_name))
+
         except Exception as e:
             logger.error("load_config_error: {}".format(e))
             logger.error("Error in line: {}".format(current_line))
@@ -89,7 +88,7 @@ class Config(object):
             logger.error('No task class: {} in module: {}'.format(task_class_name, task_module))
             return
         if not issubclass(task_class, Task):
-            logger.error('Not BaseTest subclass')
+            logger.error('{} is NOT a Task subclass'.format(task_class_name))
             return
         self.task_dict[task_key] = task_class
 

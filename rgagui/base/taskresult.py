@@ -84,8 +84,6 @@ class TaskResult:
         self.stop_time = None
         self.passed = None
         self.log = ""
-        self._key_ordering = []
-        self._plots = []
         TaskResult.reserved = list(self.__dict__.keys())
 
         logger.debug('Reserved for TestResults: {}'.format(self.reserved))
@@ -95,8 +93,6 @@ class TaskResult:
         self.stop_time = None
         self.passed = None
         self.log = ""
-        self._key_ordering = []
-        self._plots = []
         if hasattr(self, 'error'):
             delattr(self, 'error')
 
@@ -127,7 +123,6 @@ class TaskResult:
 
         if not hasattr(self, key):
             setattr(self, key, msg)
-            self._key_ordering.append(key)
         else:
             setattr(self, key, getattr(self, key) + ' {}'.format(msg))
 

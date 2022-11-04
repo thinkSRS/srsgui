@@ -120,18 +120,20 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         self.stdout = StdOut(self.print_redirect)
 
     def load_tasks(self):
+
         try:
             # Clear console and result display
             self.console.clear()
             self.taskResult.clear()
+            self.terminal_widget.tbCommand.clear()
 
             # Disconnect previously used instruments
+            prev_inst_dict = self.inst_dict
             try:
-                prev_inst_dict = self.inst_dict
                 for key in prev_inst_dict:
                     instr = prev_inst_dict[key]
                     if hasattr(instr, 'disconnect'):
-                        self.onDisconnect(key)
+                        instr.disconnect()
             except Exception as e:
                 logger.error(e)
 
@@ -143,10 +145,11 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             current_dir = str(Path(self.default_config_file).parent)
             sys.path.insert(0, current_dir)
             os.chdir(current_dir)
-
             self.config.load(self.default_config_file)
             logger.debug('Taskconfig file: "{}"  loading done'.format(self.default_config_file))
 
+            for instr in prev_inst_dict:
+                del instr
             self.inst_dict = self.config.inst_dict
 
             self.dut_sn_prefix = '0'  # self.config.dut_sn_prefix
@@ -160,7 +163,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.session_handler.open_session(sn)
 
         except Exception as e:
-            logger.error(str(e))
+            logger.error(e)
 
         try:
             try:

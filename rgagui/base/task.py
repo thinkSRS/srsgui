@@ -369,7 +369,8 @@ class Task(QThread):
     def get_input_parameter(self, name):
         if name in self.__class__.input_parameters:
             value = self.__class__.input_parameters[name].value
-            self.add_details(str(value), name)
+            if not hasattr(self.result, name):
+                self.add_details(str(value), name)
             return value
         else:
             raise KeyError('{} not in input_parameters'.format(name))

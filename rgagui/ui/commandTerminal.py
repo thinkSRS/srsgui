@@ -12,28 +12,33 @@ class CommandTerminal(QFrame, Ui_CommandTerminal):
     Terminal to control instruments defined in the .taskconfig file
            Type a command in one of the following ways
 
-    inst_name:remote_command - 'inst_name' is the first item after the
-           prefix  "inst:" in a line in the .taskconfig file.
-           'remote_command' after the colon is a raw remote command of the instrument.
-           Terminals send the 'remote_command' directly to the instrument 'inst_name',
-           and display a reply if the instrument sends one back.
+    inst_name:remote_command
+
+           'inst_name' is the first item after the prefix  "inst:" in a line in
+           the .taskconfig file. 'Remote_command' after the colon is a raw remote
+           command of the instrument. Terminals send the 'remote_command' directly
+           to the instrument 'inst_name', and display a reply if the instrument sends
+           one back.
 
            dut:*idn?
            dut:mi10
 
-    inst_name.instrument_command - when you use .before a command,
-           the command is interpreted as a instance of a Command class or a method
-           defined in Instrument subclass, which is the third item in the line starting
-           with 'inst:' used in .taskconfig file.
+    inst_name.instrument_command
+
+           When you use .before a command, the command is interpreted as a instance of
+           a Command class using Python descriptor or a method defined in Instrument
+           subclass, which is the third item in the line starting with 'inst:' used
+           in .taskconfig file.
 
            inst_name.(components.)dir - it shows all available components, commands,
-           and methods in the instrument or its component in a Python directory format.
+                   and methods in the instrument or its component in a Python directory
+                   format.
 
-                  dut.dir
-                  dut.status.dir
+                        dut.dir
+                        dut.status.dir
 
-           dut.status.id_string - this is a Python instrument command defined in the
-                                  dut.status component.
+           dut.status.id_string - this is a Python descriptor command defined in the
+                   dut.status component.
 
            rga.scan.get_analog_scan() - this is a method defined in the rga.scan component.
 
@@ -41,7 +46,9 @@ class CommandTerminal(QFrame, Ui_CommandTerminal):
            instrument receive the following command, as either a raw remote command or
            a instrument command defined in a Instrument subclass.
 
-    command - if you type a command without 'inst_name.' or 'inst_name:', the command goes
+    command
+
+           if you type a command without 'inst_name.' or 'inst_name:', the command goes
            to the first instrument in the .taskconfig file. Because a Python instrument
            command always contains dot(s), a command with dot(s) is interpreted as
            Python instrument command or methods. A command without any dot will be sent

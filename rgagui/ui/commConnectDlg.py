@@ -18,6 +18,7 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
             super(CommConnectDlg, self).__init__(parent)
             self.setModal(True)
             self.setupUi(self)
+            self.last_ip = ''
             self.settings = QSettings()
             self.setWindowTitle('Connect using {}'.format(type(dut)))
 
@@ -46,6 +47,7 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
                     self.portNumberSB.setValue(self.dut.comm._tcp_port)
                 elif type(self.dut.comm) is SerialInterface:
                     self.commTabWidget.setCurrentIndex(0)
+                    self.ipAddressLineEdit.setText(self.last_ip)
             else:
                 raise TypeError('Invalid Instrument class to connect : {}'.format(type(dut)))
         except Exception as e:
@@ -139,6 +141,8 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
         QDialog.accept(self)  # This ends the dialog box.
 
     def load_settings(self):
+        self.last_ip = self.settings.value("ConnectDlg/IP", "", type=str)
+
         port = self.settings.value("ConnectDlg/ComPort", "", type=str)
         baud = str(self.settings.value("ConnectDlg/BaudRate", 115200, type=int))
         index = self.serialPortComboBox.findText(port)
@@ -150,11 +154,13 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
             self.baudRateComboBox.setCurrentIndex(index)
 
     def save_settings(self):
+
         if self.dut.is_connected():
             if self.dut.interface_type == 'serial':
                 self.settings.setValue("ConnectDlg/ComPort", self.dut.comm.port)
                 self.settings.setValue("ConnectDlg/BaudRate", self.dut.comm.baud)
-
+            elif self.dut.interface_type == 'tcpip':
+                self.settings.setValue("ConnectDlg/IP", self.dut.comm._ip_address)
 
 if __name__ == "__main__":    
     app = QApplication(sys.argv)
