@@ -24,20 +24,30 @@ class CommandTerminal(QFrame, Ui_CommandTerminal):
            dut:mi10
 
     inst_name.instrument_command - when you use .before a command,
-           the command is interpreted as a instance of a Command class or a method defined in Instrument subclass,
-           which is the third item in the line starting with 'inst:' used in .taskconfig file.
+           the command is interpreted as a instance of a Command class or a method
+           defined in Instrument subclass, which is the third item in the line starting
+           with 'inst:' used in .taskconfig file.
 
-           inst_name.(subcomponents.)dir - it shows all available components, commands,and methods in the
-                  instrument or its component in a Python directory format.
+           inst_name.(components.)dir - it shows all available components, commands,
+           and methods in the instrument or its component in a Python directory format.
 
                   dut.dir
                   dut.status.dir
 
-           dut.status.id_string - this is a command defined in dut.status component.
-           rga.scan.get_analog_scan()  - this is a method defined in the rga.scan component.
+           dut.status.id_string - this is a Python instrument command defined in the
+                                  dut.status component.
 
-           With 'inst_name', you can specify which instrument receive the following command,
-           a raw remote command or a Python package define instrument command.
+           rga.scan.get_analog_scan() - this is a method defined in the rga.scan component.
+
+           With 'inst_name', you can specify which instrument receive the following
+           command, either a raw remote command or a Python package define instrument
+           command.
+
+    command - if you type a command without 'inst_name.' or 'inst_name:', the command goes
+           to the first instrument in the .taskconfig file. Because an Python instrument
+           command always contains dot(s), if a command with dot(s) is interpreted as
+           Python instrument command or methods. A command without any dot will be sent
+           to the first instrument in the file directly as a raw remote command.
     """
 
     def __init__(self, parent):

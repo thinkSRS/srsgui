@@ -26,8 +26,8 @@ def get_file_names(directory):
 description = open('readme.md').read()
 version_string = find_version('rgagui', '__init__.py')
 
-files = get_file_names('rgagui/examples') + get_file_names('rgagui/ui/icons') \
-        + get_file_names('rgagui/ui/images') + get_file_names('rgagui/ui/sounds')
+files = get_file_names('rgagui/examples') + get_file_names('rgagui/ui/images')
+        # get_file_names('rgagui/ui/icons') + get_file_names('rgagui/ui/sounds')
 
 setup(
     name='rgagui',
@@ -46,7 +46,7 @@ setup(
         "PyQt5",
         "matplotlib",
         # "playsound == 1.2.2",
-        "rga >= 0.1.8"
+        "rga >= 0.1.10"
     ],
     
     entry_points={

@@ -23,6 +23,7 @@ from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as Navigatio
 from .commConnectDlg import CommConnectDlg
 
 from .ui_taskmain import Ui_TaskMain
+
 from .inputpanel import InputPanel
 from .commandTerminal import CommandTerminal
 from .config import Config
@@ -69,9 +70,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.base_data_dir = self.config.base_data_dir
             self.base_log_file_name = self.config.base_log_file_name
 
-            self.success_icon = QIcon(str(Path(__file__).parent / 'icons/o.png'))
-            self.fail_icon = QIcon(str(Path(__file__).parent / 'icons/x.png'))
-
             self.taskParameter = QTextBrowser()
             layout = QVBoxLayout()
             layout.addWidget(self.taskParameter)
@@ -87,6 +85,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         # Setup toolbar buttons
         self.actionRun.setEnabled(True)
         self.actionStop.setEnabled(False)
+        self.actionRun_2.setEnabled(True)
+        self.actionStop_2.setEnabled(False)
+
         # busy flag is used to tell if a task is running
         self._busy_flag = False
         self.is_selection_running = False
@@ -144,7 +145,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             os.chdir(current_dir)
 
             self.config.load(self.default_config_file)
-            logger.info('Taskconfig file: "{}"  loading done'.format(self.default_config_file))
+            logger.debug('Taskconfig file: "{}"  loading done'.format(self.default_config_file))
 
             self.inst_dict = self.config.inst_dict
 
@@ -245,6 +246,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         # setup toolbar buttons
         self.actionRun.setEnabled(False)
         self.actionStop.setEnabled(True)
+        self.actionRun_2.setEnabled(False)
+        self.actionStop_2.setEnabled(True)
+
         self._busy_flag = True
 
         self.session_handler.create_file(self.task.__class__.__name__)
@@ -255,6 +259,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             # Setup toolbar buttons
             self.actionRun.setEnabled(True)
             self.actionStop.setEnabled(False)
+            self.actionRun_2.setEnabled(True)
+            self.actionStop_2.setEnabled(False)
+
             self._busy_flag = False
 
             self.create_task_result_in_session(self.task)

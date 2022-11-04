@@ -209,8 +209,8 @@
   </action>
   <action name="action_Open">
    <property name="icon">
-    <iconset>
-     <normaloff>icons/fileopen.png</normaloff>icons/fileopen.png</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/fileopen.png</normaloff>:/icons/fileopen.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Open Config</string>
@@ -262,8 +262,8 @@
   </action>
   <action name="actionRun">
    <property name="icon">
-    <iconset>
-     <normaloff>icons/run.png</normaloff>icons/run.png</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/run.png</normaloff>:/icons/run.png</iconset>
    </property>
    <property name="text">
     <string>Run</string>
@@ -277,8 +277,8 @@
   </action>
   <action name="actionStop">
    <property name="icon">
-    <iconset>
-     <normaloff>icons/stop.png</normaloff>icons/stop.png</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/stop.png</normaloff>:/icons/stop.png</iconset>
    </property>
    <property name="text">
     <string>Stop</string>
@@ -288,7 +288,9 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>action_Open</sender>

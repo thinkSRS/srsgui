@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="/icons">
+    <file alias="run.png">icons/run.png</file>
+    <file alias="stop.png">icons/stop.png</file>
+    <file alias="fileopen.png">icons/fileopen.png</file>
+  </qresource>
+</RCC>
+<!-- run pyrcc5 resource.qrc -o resource_rc.py -->
