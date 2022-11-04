@@ -19,8 +19,7 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
             self.setModal(True)
             self.setupUi(self)
             self.settings = QSettings()
-            self.setWindowTitle('Connect to {}'.format(type(dut)))
-            # self.ipAddressLineEdit.setText('192.025.128.015')
+            self.setWindowTitle('Connect using {}'.format(type(dut)))
 
             self.serialPortComboBox.addItems(serial_ports())
             self.ipAddressLineEdit.setInputMask('000.000.000.000;_')

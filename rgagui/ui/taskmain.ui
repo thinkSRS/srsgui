@@ -29,15 +29,29 @@
          <item>
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>Device Info</string>
-           </property>
-           <property name="buddy">
-            <cstring>deviceInfo</cstring>
+            <string>Instrument Info</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QTextBrowser" name="deviceInfo"/>
+          <widget class="QTabWidget" name="deviceInfoTabWidget">
+           <property name="tabPosition">
+            <enum>QTabWidget::North</enum>
+           </property>
+           <property name="currentIndex">
+            <number>0</number>
+           </property>
+           <widget class="QWidget" name="tab">
+            <attribute name="title">
+             <string>Dut</string>
+            </attribute>
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QTextBrowser" name="deviceInfo"/>
+             </item>
+            </layout>
+           </widget>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -96,7 +110,7 @@
      <x>0</x>
      <y>0</y>
      <width>1140</width>
-     <height>23</height>
+     <height>29</height>
     </rect>
    </property>
    <property name="font">

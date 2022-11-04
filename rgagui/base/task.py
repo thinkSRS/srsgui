@@ -312,6 +312,7 @@ class Task(QThread):
     # Wrapper for TaskResult.add_details
     def add_details(self, msg: str, key='summary'):
         self.result.add_details(msg, key)
+        self.display_result('{}: {}'.format(key, msg))
 
     # Wrapper for TaskResult.create_table
     def create_table(self, name: str, *args):

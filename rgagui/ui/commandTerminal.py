@@ -10,9 +10,7 @@ from .ui_commandTerminal import Ui_CommandTerminal
 class CommandTerminal(QFrame, Ui_CommandTerminal):
     """
     Terminal to control instruments defined in the .taskconfig file
-
-    help - Show this message
-    cls  - Clear the terminal window.
+           Type a command in one of the following ways
 
     inst_name:remote_command - 'inst_name' is the first item after the
            prefix  "inst:" in a line in the .taskconfig file.
@@ -39,15 +37,15 @@ class CommandTerminal(QFrame, Ui_CommandTerminal):
 
            rga.scan.get_analog_scan() - this is a method defined in the rga.scan component.
 
-           With 'inst_name', you can specify which instrument receive the following
-           command, either a raw remote command or a Python package define instrument
-           command.
+           With the prefix of 'inst_name:' or 'inst_name.', you can specify which
+           instrument receive the following command, as either a raw remote command or
+           a instrument command defined in a Instrument subclass.
 
     command - if you type a command without 'inst_name.' or 'inst_name:', the command goes
-           to the first instrument in the .taskconfig file. Because an Python instrument
-           command always contains dot(s), if a command with dot(s) is interpreted as
+           to the first instrument in the .taskconfig file. Because a Python instrument
+           command always contains dot(s), a command with dot(s) is interpreted as
            Python instrument command or methods. A command without any dot will be sent
-           to the first instrument in the file directly as a raw remote command.
+           directly to the first instrument in the .taskconfig file as a raw remote command.
     """
 
     def __init__(self, parent):
@@ -57,10 +55,11 @@ class CommandTerminal(QFrame, Ui_CommandTerminal):
         self.parent = parent
         if not hasattr(parent, 'inst_dict'):
             raise AttributeError('Parent has no inst_dict')
-        self.leCommand.setText("Type  'help'  for more info")
         self.pbClear.clicked.connect(self.on_clear)
         self.pbSend.clicked.connect(self.on_send)
         self.leCommand.returnPressed.connect(self.on_send)
+        self.leCommand.setText("Type  'help'  for more info")
+        self.leCommand.selectAll()
 
     def on_clear(self):
         self.tbCommand.clear()
