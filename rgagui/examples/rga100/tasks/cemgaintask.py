@@ -6,7 +6,7 @@ import numpy as np
 
 from rgagui.base.task import Task
 from rgagui.base.inputs import FloatInput, IntegerInput, StringInput
-from . import get_rga
+from instruments.get_instruments import get_rga
 
 
 class CEMGainTask(Task):

@@ -14,7 +14,7 @@ Name: My RGA Tasks
 # The fourth column is connection parameters.
 # if given, the instrument will be connected using the parameters when the config file is loaded.
 
-inst: dut,     rga,    RGA100
+inst: rga,     rga,    RGA100
 inst: uga,     rga,    UGA100
 # inst: rga2,   rga,    RGA100,    tcpip:172.25.40.37:admin:admin:818
 # inst: rga3,  rga,     RGA100,    serial:com3:28800:True
