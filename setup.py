@@ -27,7 +27,6 @@ description = open('readme.md').read()
 version_string = find_version('rgagui', '__init__.py')
 
 files = get_file_names('rgagui/examples') + get_file_names('rgagui/ui/images')
-        # get_file_names('rgagui/ui/icons') + get_file_names('rgagui/ui/sounds')
 
 setup(
     name='rgagui',

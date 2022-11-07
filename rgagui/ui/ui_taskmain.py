@@ -193,7 +193,7 @@ class Ui_TaskMain(object):
         _translate = QtCore.QCoreApplication.translate
         TaskMain.setWindowTitle(_translate("TaskMain", "MainWindow"))
         self.label_2.setText(_translate("TaskMain", "Instrument Info"))
-        self.deviceInfoTabWidget.setTabText(self.deviceInfoTabWidget.indexOf(self.tab), _translate("TaskMain", "Dut"))
+        self.deviceInfoTabWidget.setTabText(self.deviceInfoTabWidget.indexOf(self.tab), _translate("TaskMain", "Instrument"))
         self.label_3.setText(_translate("TaskMain", "Task Parameters"))
         self.label_4.setText(_translate("TaskMain", "Task Result"))
         self.menu_File.setTitle(_translate("TaskMain", "&File"))
