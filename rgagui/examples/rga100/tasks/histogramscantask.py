@@ -4,7 +4,7 @@ from datetime import datetime
 
 from rgagui.base.task import Task, round_float
 from rgagui.base.inputs import ListInput, IntegerInput
-from . import get_rga
+from instruments.get_instruments import get_rga
 
 class HistogramScanTask(Task):
     """Task ro run histogram scans.

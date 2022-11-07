@@ -31,7 +31,6 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
 
             self.ipAddressLineEdit.selectAll()
             self.passwordLineEdit.setEchoMode(self.passwordLineEdit.Password)
-
             self.loginCB.stateChanged.connect(self.onStateChanged)
 
             self.load_settings()
@@ -39,12 +38,13 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
             self.dut = dut
             if hasattr(self.dut, 'comm'):
                 self.comm = dut.comm
+                info = self.comm.get_info()
                 if type(self.dut.comm) is TcpipInterface:
                     self.commTabWidget.setCurrentIndex(1)
-                    self.ipAddressLineEdit.setText(self.dut.comm._ip_address)
+                    self.ipAddressLineEdit.setText(info['ip_addres'])
                     self.userNameLineEdit.setText(self.dut.comm._userid)
                     self.passwordLineEdit.setText(self.dut.comm._password)
-                    self.portNumberSB.setValue(self.dut.comm._tcp_port)
+                    self.portNumberSB.setValue(info['port'])
                 elif type(self.dut.comm) is SerialInterface:
                     self.commTabWidget.setCurrentIndex(0)
                     self.ipAddressLineEdit.setText(self.last_ip)
@@ -76,19 +76,10 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
                                      self.userNameLineEdit.text(),
                                      self.passwordLineEdit.text(),
                                      self.portNumberSB.value())
-                    self.dut.comm._ip_address = self.ipAddressLineEdit.text()
-                    self.dut.comm._userid = self.userNameLineEdit.text()
-                    self.dut.comm._password = self.passwordLineEdit.text()
-                    self.dut.comm._tcp_port = self.portNumberSB.value()
                 else:
                     self.dut.connect(Interface.TCPIP,
                                   self.ipAddressLineEdit.text(),
                                   self.portNumberSB.value())            
-                    self.dut.comm._ip_address = self.ipAddressLineEdit.text()
-                    self.dut.comm._userid = ''
-                    self.dut.comm._password = ''
-                    self.dut.comm._tcp_port = self.portNumberSB.value()
-                self.dut.interface_type = 'tcpip'
 
             except Exception as e:
                 err_string = 'Error connecting to {0}\n {1}'\
@@ -107,7 +98,6 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
                               Interface.SERIAL,
                               self.serialPortComboBox.currentText(),
                               int(self.baudRateComboBox.currentText()))
-                self.dut.interface_type = 'serial'
                 self.dut.comm.port = self.serialPortComboBox.currentText()
                 self.dut.comm.baud = int(self.baudRateComboBox.currentText())
             except Exception as e:
@@ -141,26 +131,30 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
         QDialog.accept(self)  # This ends the dialog box.
 
     def load_settings(self):
-        self.last_ip = self.settings.value("ConnectDlg/IP", "", type=str)
+        try:
+            self.last_ip = self.settings.value("ConnectDlg/IP", "", type=str)
 
-        port = self.settings.value("ConnectDlg/ComPort", "", type=str)
-        baud = str(self.settings.value("ConnectDlg/BaudRate", 115200, type=int))
-        index = self.serialPortComboBox.findText(port)
-        if index > -1:
-            self.serialPortComboBox.setCurrentIndex(index)
+            port = self.settings.value("ConnectDlg/ComPort", "", type=str)
+            baud = str(self.settings.value("ConnectDlg/BaudRate", 115200, type=int))
+            index = self.serialPortComboBox.findText(port)
+            if index > -1:
+                self.serialPortComboBox.setCurrentIndex(index)
 
-        index = self.baudRateComboBox.findText(baud)
-        if index > -1:
-            self.baudRateComboBox.setCurrentIndex(index)
-
+            index = self.baudRateComboBox.findText(baud)
+            if index > -1:
+                self.baudRateComboBox.setCurrentIndex(index)
+        except Exception as e:
+            logger.error("Error in load_settings: {}".format(e))
     def save_settings(self):
-
-        if self.dut.is_connected():
-            if self.dut.interface_type == 'serial':
-                self.settings.setValue("ConnectDlg/ComPort", self.dut.comm.port)
-                self.settings.setValue("ConnectDlg/BaudRate", self.dut.comm.baud)
-            elif self.dut.interface_type == 'tcpip':
-                self.settings.setValue("ConnectDlg/IP", self.dut.comm._ip_address)
+        try:
+            if self.dut.is_connected():
+                if self.dut.comm.type == 'serial':
+                    self.settings.setValue("ConnectDlg/ComPort", self.dut.comm.port)
+                    self.settings.setValue("ConnectDlg/BaudRate", self.dut.comm.baud)
+                elif self.dut.comm.type == 'tcpip':
+                    self.settings.setValue("ConnectDlg/IP", self.dut.comm._ip_address)
+        except Exception as e:
+            logger.error("Error in save_settings: {}".format(e))
 
 if __name__ == "__main__":    
     app = QApplication(sys.argv)

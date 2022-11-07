@@ -13,10 +13,9 @@ Name: My UGA Tasks
 # The fourth column is connection parameters.
 # if given, the instrument will be connected using the parameters when the config file is loaded.
 
-inst: dut,     rga,    UGA100
-inst: rga,     rga,    RGA100
-# inst: rga2,   rga,    RGA100,    tcpip:172.25.40.37:admin:admin:818
-# inst: rga3,  rga,     RGA100,    serial:com3:28800:True
+inst: uga,     rga,    UGA100
+# inst: rga2,   rga,    UGA100,    tcpip:172.25.40.37:srsuga:srsuga:818
+# inst: rga3,  rga,     UGA100,    serial:com3:28800:True
 
 
 # A line that starts with 'task: ' adds a task to the task config file.
@@ -25,8 +24,10 @@ inst: rga,     rga,    RGA100
 # The Second column is the Python module that contains the task class with relative path from the Task config file.
 # The third column is a task class  that is a Task subclass in the module.
 
-task: Filament Control,            tasks.filamentcontroltask,         FilamentControlTask
-task: CEM Control,                 tasks.cemcontroltask,              CEMControlTask
-task: Analog Scan,                 tasks.analogscantask,              AnalogScanTask
-task: Histogram Scan,              tasks.histogramscantask,           HistogramScanTask
-task: CEM Gain Tuning,             tasks.cemgaintask,                 CEMGainTask
+task: Filament Control,            rgagui.examples.rga100.tasks.filamentcontroltask,         FilamentControlTask
+task: CEM Control,                 rgagui.examples.rga100.tasks.cemcontroltask,              CEMControlTask
+task: Analog Scan,                 rgagui.examples.rga100.tasks.analogscantask,              AnalogScanTask
+task: Histogram Scan,              rgagui.examples.rga100.tasks.histogramscantask,           HistogramScanTask
+task: CEM Gain Tuning,             rgagui.examples.rga100.tasks.cemgaintask,                 CEMGainTask
+
+# There is no real UGA task added yet, all from RGA task examples.

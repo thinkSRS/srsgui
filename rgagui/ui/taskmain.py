@@ -509,7 +509,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
     def get_current_serial_number(self):
         DefaultSN = '99999'
 
-
         if self.dut_sn_prefix:
             api_prefix = self.dut_sn_prefix
         else:

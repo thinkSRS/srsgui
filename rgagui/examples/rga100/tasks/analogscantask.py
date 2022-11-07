@@ -3,11 +3,11 @@ from datetime import datetime
 
 from rgagui.base.task import Task, round_float
 from rgagui.base.inputs import ListInput, IntegerInput
-from . import get_rga
+from instruments.get_instruments import get_rga
 
 
 class AnalogScanTask(Task):
-    """Task ro run analog scans.
+    """Task to run analog scans.
     """
 
     StartMass = 'start mass'
@@ -70,7 +70,6 @@ class AnalogScanTask(Task):
     def init_scan(self):
         # Get the instrument to use
         self.rga = get_rga(self)
-
         self.id_string = self.rga.status.id_string
         emission_current = self.rga.ionizer.emission_current
         cem_voltage = self.rga.cem.voltage

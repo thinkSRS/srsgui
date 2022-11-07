@@ -1,7 +1,7 @@
 
 from rgagui.base.task import Task
 from rgagui.base.inputs import FloatInput
-from . import get_rga
+from instruments.get_instruments import get_rga
 
 class FilamentControlTask(Task):
     """
