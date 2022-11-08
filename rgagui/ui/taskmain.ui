@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>rgagui</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -110,7 +110,7 @@
      <x>0</x>
      <y>0</y>
      <width>1140</width>
-     <height>29</height>
+     <height>23</height>
     </rect>
    </property>
    <property name="font">
