@@ -1,7 +1,8 @@
+import sys
 import os
 import logging
 from pathlib import Path
-from importlib import import_module, invalidate_caches
+from importlib import import_module, reload, invalidate_caches
 
 from rgagui.base import Task, GreenNormal, RedNormal
 
@@ -13,14 +14,8 @@ logger = logging.getLogger(__name__)
 
 class Config(object):
     DataRootDirectory = str(Path.home() / "tcal-results")
-
     LogoFile = str(Path(__file__).parent / 'images/srslogo.jpg')
-
-    WIPRootAttr = 'wip'
-    WIPRootUrl = 'wip root url'
-    WIPTestStationUrl = 'wip test station url'
-    WIPTestTypeUrl = 'wip test type url'
-    WIPParameters = (WIPRootUrl, WIPTestStationUrl, WIPTestTypeUrl)
+    LocalModulePath = ['tasks', 'instruments']
 
     def __init__(self):
         self.inst_dict = {}
@@ -33,9 +28,21 @@ class Config(object):
             p.mkdir(parents=True)
         self.base_log_file_name = self.get_base_log_file_name()
 
+    def _remove_modules(self):
+        for root in self.LocalModulePath:
+            if root in sys.modules:
+                sys.modules.pop(root)
+
+            keys = list(sys.modules.keys())
+            for mod in keys:
+                if mod.startswith(root + '.'):
+                    sys.modules.pop(mod)
+
     def load(self, file_name):
         current_line = ""
         try:
+            self._remove_modules()
+
             with open(file_name, "r") as f:
                 invalidate_caches()
                 self.inst_dict = {}
@@ -79,7 +86,12 @@ class Config(object):
         task_key, task_module_name, task_class_name = v.split(',', 2)
         task_key = task_key.strip()
         task_module = task_module_name.strip()
-        mod = import_module(task_module)
+
+        if task_module in sys.modules:
+            reload(sys.modules[task_module])
+            mod = sys.modules[task_module]
+        else:
+            mod = import_module(task_module)
 
         task_class_name = task_class_name.strip()
         if hasattr(mod, task_class_name):

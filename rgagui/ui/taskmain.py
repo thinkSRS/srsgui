@@ -141,7 +141,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             if self.initial_load and len(sys.argv) == 2 and sys.argv[1].split('.')[-1].lower() == 'taskconfig':
                 self.default_config_file = sys.argv[1]
                 self.initial_load = False
-                
+            else:
+                sys.path.pop()
+
             current_dir = str(Path(self.default_config_file).parent)
             sys.path.insert(0, current_dir)
             os.chdir(current_dir)
