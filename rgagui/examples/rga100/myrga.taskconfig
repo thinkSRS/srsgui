@@ -26,6 +26,7 @@ inst: uga,     rga,    UGA100
 # The Second column is the Python module that contains the task class with relative path from the Task config file.
 # The third column is a task class  that is a Task subclass in the module.
 
+task: Search LAN for RGAs,         tasks.searchlan,                   SearchLanTask
 task: Filament Control,            tasks.filamentcontroltask,         FilamentControlTask
 task: CEM Control,                 tasks.cemcontroltask,              CEMControlTask
 task: Analog Scan,                 tasks.analogscantask,              AnalogScanTask
