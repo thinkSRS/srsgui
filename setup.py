@@ -44,8 +44,7 @@ setup(
     install_requires=[
         "PyQt5",
         "matplotlib",
-        # "playsound == 1.2.2",
-        "rga >= 0.1.10"
+        "rga >= 0.1.12"
     ],
     
     entry_points={

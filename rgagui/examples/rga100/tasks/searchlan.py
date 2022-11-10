@@ -35,7 +35,7 @@ class SearchLanTask(Task):
             return
 
         self.display_result('\nAvailable RGAs')
-        self.display_result('===============')
+        self.display_result('================')
         for p in sicp.packet_list:
             if self.display_option_value == 0:
                 self.logger.info('Name: {:20s}, SN: {}, IP: {}, Status: {}'

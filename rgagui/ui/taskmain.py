@@ -390,8 +390,8 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
             if inst.is_connected():
                 msg = ''  # Name: {} \n S/N: {} \n F/W version: {} \n\n'.format(*inst.check_id())
-                msg += ' Info: {} \n\n\n'.format(inst.get_info())
-                msg += ' Status: {} \n'.format(inst.get_status())
+                msg += '  * Info *\n {} \n\n'.format(inst.get_info())
+                msg += '  * Status *\n {} \n'.format(inst.get_status())
                 logger.debug(msg.replace('\n', ''))
                 self.deviceInfo.clear()
                 self.deviceInfo.append(msg)

@@ -143,7 +143,7 @@ class SessionHandler(object):
 
     def add_to_table_in_file(self, *args, format_list=None):
         if len(args) != self.no_of_columns:
-            raise ValueError('Length of data doe not match with header')
+            raise ValueError('Length of data does not match with header')
 
         if format_list:
             self.output_file.write(', '.join(format_list).format(*args) + '\n')

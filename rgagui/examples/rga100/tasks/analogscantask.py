@@ -88,7 +88,7 @@ class AnalogScanTask(Task):
                                      self.speed_value,
                                      self.step_value)
 
-    # The scan calls this callback whne data is available
+    # The scan calls this callback when data is available
     def update_callback(self, index):
         self.data_dict['x'] = self.mass_axis[:index]
         self.data_dict['y'] = self.rga.scan.spectrum[:index] * self.conversion_factor

@@ -128,6 +128,8 @@ class Config(object):
             return
 
         self.inst_dict[inst_key] = inst_class()
+        self.inst_dict[inst_key].set_name(inst_key)
+
         num = len(items)
         if num == 4:
             parameter_string = items[3]
