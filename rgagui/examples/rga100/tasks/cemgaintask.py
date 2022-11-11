@@ -5,7 +5,7 @@ import math
 import numpy as np
 
 from rgagui.base.task import Task
-from rgagui.base.inputs import FloatInput, IntegerInput, StringInput
+from rgagui.base.inputs import FloatInput, IntegerInput, InstrumentInput
 from instruments.get_instruments import get_rga
 
 
@@ -13,6 +13,7 @@ class CEMGainTask(Task):
     """<b>Test to measure CEM gain at different CEM HV<br> \
 
     """
+    InstrumentName = 'instrument to control'
     GainToSet = 'gain to set'
     MassToMeasure = 'mass to measure'
     StartVoltage = 'start cem voltage'
@@ -25,6 +26,7 @@ class CEMGainTask(Task):
 
     # input_parameters values can be changed interactively from GUI
     input_parameters = {
+        InstrumentName: InstrumentInput(),
         GainToSet: IntegerInput(1000, " ", 100, 1000000, 100),
         MassToMeasure: IntegerInput(28, " AMU", 1, 320, 1),
         ScanSpeed: IntegerInput(3, " ", 0, 7, 1),
@@ -41,6 +43,7 @@ class CEMGainTask(Task):
         self.data_dict['i'] = []  # intensity
 
         # Get value to use for test from input_parameters
+        self.instrument_name_value = self.get_input_parameter(self.InstrumentName)
         self.gain_to_set_value = self.get_input_parameter(self.GainToSet)
         self.mass_to_measure_value = self.get_input_parameter(self.MassToMeasure)
         self.start_voltage_value = 800
@@ -70,12 +73,11 @@ class CEMGainTask(Task):
         self.ax2.set_yscale('log')
 
         # Initialize RGA
-        self.rga = get_rga(self)
+        self.rga = get_rga(self, self.instrument_name_value)
         print(self.rga.status.id_string)
         self.id_string = self.rga.status.id_string
         self.old_speed = self.rga.scan.speed
         self.old_hv = self.rga.cem.voltage
-
 
     def test(self):
         self.rga.scan.speed = self.speed_value

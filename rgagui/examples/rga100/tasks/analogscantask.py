@@ -2,14 +2,14 @@
 from datetime import datetime
 
 from rgagui.base.task import Task, round_float
-from rgagui.base.inputs import ListInput, IntegerInput
+from rgagui.base.inputs import ListInput, IntegerInput, InstrumentInput
 from instruments.get_instruments import get_rga
 
 
 class AnalogScanTask(Task):
     """Task to run analog scans.
     """
-
+    InstrumentName = 'instrument to control'
     StartMass = 'start mass'
     StopMass = 'stop mass'
     ScanSpeed = 'scan speed'
@@ -19,6 +19,7 @@ class AnalogScanTask(Task):
 
     # input_parameters values can be changed interactively from GUI
     input_parameters = {
+        InstrumentName: InstrumentInput(),
         StartMass: IntegerInput(1, " AMU", 0, 319, 1),
         StopMass: IntegerInput(50, " AMU", 1, 320, 1),
         ScanSpeed: IntegerInput(3, " ", 0, 9, 1),
@@ -31,6 +32,7 @@ class AnalogScanTask(Task):
         self._log_error_detail = False
 
         # Get values to use for task  from input_parameters in GUI
+        self.instrument_name_value = self.get_input_parameter(self.InstrumentName)
         self.start_value = self.get_input_parameter(self.StartMass)
         self.stop_value  = self.get_input_parameter(self.StopMass)
         self.speed_value = self.get_input_parameter(self.ScanSpeed)
@@ -69,7 +71,7 @@ class AnalogScanTask(Task):
 
     def init_scan(self):
         # Get the instrument to use
-        self.rga = get_rga(self)
+        self.rga = get_rga(self, self.instrument_name_value)
         self.id_string = self.rga.status.id_string
         emission_current = self.rga.ionizer.emission_current
         cem_voltage = self.rga.cem.voltage

@@ -1,6 +1,6 @@
 
 from rgagui.base.task import Task
-from rgagui.base.inputs import FloatInput
+from rgagui.base.inputs import FloatInput, InstrumentInput
 from instruments.get_instruments import get_rga
 
 class FilamentControlTask(Task):
@@ -8,10 +8,12 @@ class FilamentControlTask(Task):
     Task to set filament emission current
     """
     # Input parameter name
+    InstrumentName = 'instrument to control'
     EmissionCurrent = 'emission current'
 
     # input_parameters values are used to change interactively from GUI
     input_parameters = {
+        InstrumentName: InstrumentInput(),
         EmissionCurrent: FloatInput(1.0, " mA", 0.0, 3.5, 0.02),
     }
 
@@ -20,10 +22,10 @@ class FilamentControlTask(Task):
         self.logger = self.get_logger(__name__)
 
         # Get the input parameters from GUI
+        self.instrument_name_value = self.get_input_parameter(self.InstrumentName)        
         self.emission_current_value = self.get_input_parameter(self.EmissionCurrent)
-
-        # Get instrument to use
-        self.rga = get_rga(self)
+        # Get rga from the instrument
+        self.rga = get_rga(self, self.instrument_name_value)
 
     def test(self):
         self.logger.info('Filament emission current before change: {} mA'.format(self.rga.ionizer.emission_current))

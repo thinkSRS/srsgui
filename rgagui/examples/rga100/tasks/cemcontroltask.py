@@ -1,6 +1,6 @@
 
 from rgagui.base.task import Task
-from rgagui.base.inputs import FloatInput, IntegerInput, StringInput, ListInput
+from rgagui.base.inputs import ListInput, InstrumentInput
 from instruments.get_instruments import get_rga
 
 
@@ -8,11 +8,12 @@ class CEMControlTask(Task):
     """
     Task to set CEM high voltage
     """
-
+    InstrumentName = 'instrument to control'
     CEMState = 'cem high voltage'
 
     # input_parameters values can be changed interactively from GUI
     input_parameters = {
+        InstrumentName: InstrumentInput(),
         CEMState: ListInput(['Off', 'On']),
     }
 
@@ -20,9 +21,10 @@ class CEMControlTask(Task):
 
         self.logger = self.get_logger(__name__)
 
+        self.instrument_name_value = self.get_input_parameter(self.InstrumentName)
         self.cem_state_value = self.get_input_parameter(self.CEMState)
 
-        self.rga = get_rga(self)
+        self.rga = get_rga(self, self.instrument_name_value)
 
     def test(self):
         self.set_task_passed(True)
