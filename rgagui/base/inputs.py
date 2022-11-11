@@ -36,4 +36,11 @@ class ListInput:
         self.item_list = item_list
         self.default_value = default_index
         self.value = default_index
+        self.text = ''
 
+
+class InstrumentInput:
+    def __init__(self, default_index=0):
+        self.default_value = default_index
+        self.value = default_index
+        self.text = ''

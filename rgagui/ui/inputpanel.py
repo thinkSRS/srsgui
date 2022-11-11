@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QWidget, QDoubleSpinBox, QSpinBox, QComboBox, \
                             QLineEdit, QLabel, QGridLayout, QPushButton
 
 from rgagui.base.task  import Task
-from rgagui.base.inputs import IntegerInput, FloatInput, StringInput, ListInput
+from rgagui.base.inputs import IntegerInput, FloatInput, StringInput, ListInput, InstrumentInput
 
 import logging
 logger = logging.getLogger(__name__)
@@ -21,9 +21,12 @@ class InputPanel(QWidget):
             if not issubclass(task_class, Task):
                 raise TypeError(" not a subclass of Task")
             super().__init__()
-            layout = QGridLayout()
+
+            self.parent = parent
             self.task_class = task_class
             params = self.task_class.input_parameters
+
+            layout = QGridLayout()
             row = 0
             for i in params.keys():
                 p = params[i]
@@ -40,6 +43,7 @@ class InputPanel(QWidget):
                     widget = QComboBox()
                     widget.addItems(p.item_list)
                     widget.setCurrentIndex(p.value)
+                    p.text = widget.currentText()
 
                     setattr(self, i, widget)
                     label = QLabel(i.capitalize())
@@ -47,7 +51,21 @@ class InputPanel(QWidget):
                     layout.addWidget(widget, row, self.SecondColumn)
                     row += 1
                     continue
+                elif type(p) == InstrumentInput:
+                    if not (self.parent and hasattr(self.parent, 'inst_dict')):
+                        logger.error('No inst_dict available for InstrumentInput')
+                        continue
+                    widget = QComboBox()
+                    widget.addItems(self.parent.inst_dict.keys())
+                    widget.setCurrentIndex(p.default_value)
+                    p.text = widget.currentText()
 
+                    setattr(self, i, widget)
+                    label = QLabel(i.capitalize())
+                    layout.addWidget(label, row, self.FirstColumn)
+                    layout.addWidget(widget, row, self.SecondColumn)
+                    row += 1
+                    continue
                 elif type(p) == FloatInput:
                     widget = QDoubleSpinBox()
                     setattr(self, i, widget)
@@ -128,6 +146,7 @@ class InputPanel(QWidget):
                 params[i].value = widget.text()
             elif type(widget) == QComboBox:
                 params[i].value = widget.currentIndex()
+                params[i].text = widget.currentText()
             else:
                 params[i].value = widget.value()
         logger.debug("{} apply parameters from panel".format(self.__class__.__name__))

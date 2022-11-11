@@ -30,6 +30,7 @@ from .config import Config
 from .stdout import StdOut
 from .qtloghandler import QtLogHandler
 from .sessionhandler import SessionHandler
+from .deviceinfohandler import DeviceInfoHandler
 
 from rgagui.base import Task, Bold
 from rga.base import Instrument
@@ -63,6 +64,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         self.InstDictName = Task.InstrumentDictName
 
         self.inst_dict = {}
+        self.inst_info_handler = DeviceInfoHandler(self)
 
         try:
             self.default_config_file = 'rga120tasks/rga120.taskconfig'
@@ -153,6 +155,14 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             for instr in prev_inst_dict:
                 del instr
             self.inst_dict = self.config.inst_dict
+
+            self.inst_info_handler.update_tabs()
+            for inst_name in self.inst_dict:
+                inst = self.get_inst(inst_name)
+                if inst and inst.is_connected():
+                    self.onConnected(inst_name)
+                else:
+                    self.onDisconnected(inst_name)
 
             self.dut_sn_prefix = '0'  # self.config.dut_sn_prefix
             self.task_dict = self.config.task_dict
@@ -319,7 +329,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.taskResult.setText(self.taskmethod.__doc__)
             self.taskParameterFrame.layout().removeWidget(self.taskParameter)
             self.taskParameter.deleteLater()
-            self.taskParameter = InputPanel(self.taskmethod)
+            self.taskParameter = InputPanel(self.taskmethod, self)
             self.taskParameterFrame.layout().addWidget(self.taskParameter)
         except Exception as e:
             logger.error(e)
@@ -386,29 +396,29 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             form.exec_()
 
             self.display_image(self.config.get_logo_file())
-            self.console.clear()
+            # self.console.clear()
 
             if inst.is_connected():
-                msg = ''  # Name: {} \n S/N: {} \n F/W version: {} \n\n'.format(*inst.check_id())
-                msg += '  * Info *\n {} \n\n'.format(inst.get_info())
-                msg += '  * Status *\n {} \n'.format(inst.get_status())
-                logger.debug(msg.replace('\n', ''))
-                self.deviceInfo.clear()
-                self.deviceInfo.append(msg)
-
-                # if API server is available, upload.
-                sn = self.get_current_serial_number()
-
-                self.session_handler.open_session(sn)
+                self.onConnected(inst_name)
             else:
                 logger.info('Connection to {} aborted'.format(inst_name))
         except Exception as e:
             logger.error(e)
 
+    def onConnected(self, inst_name):
+        inst = self.get_inst(inst_name)
+        if inst and inst.is_connected():
+            self.inst_info_handler.set_browser(inst_name)
+            msg = ''  # Name: {} \n S/N: {} \n F/W version: {} \n\n'.format(*inst.check_id())
+            msg += '  * Info *\n {} \n\n'.format(inst.get_info())
+            msg += '  * Status *\n {} \n'.format(inst.get_status())
+            logger.debug(msg.replace('\n', ''))
+            self.deviceInfo.clear()
+            self.deviceInfo.append(msg)
+
     def onDisconnect(self, inst_name):
         inst = self.get_inst(inst_name)
         if inst.is_connected():
-
             msg_box = QMessageBox()
             msg_box.setText("Do you want disconnect '{}' ?".format(inst_name))
             msg_box.setWindowTitle('Disconnect')
@@ -417,11 +427,16 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             reply = msg_box.exec()
             if reply == QMessageBox.Yes:
                 inst.disconnect()
-                self.deviceInfo.clear()
-                msg = "Disconnected"
-                self.deviceInfo.append(msg)
-                logger.info('{} is disconnected'.format(inst_name))
-                self.session_handler.close_session(True)
+                self.onDisconnected(inst_name)
+
+    def onDisconnected(self, inst_name):
+        inst = self.get_inst(inst_name)
+        if inst and not inst.is_connected():
+            self.inst_info_handler.set_browser(inst_name)
+            self.deviceInfo.clear()
+            msg = "Disconnected"
+            self.deviceInfo.append(msg)
+            logger.info('{} is disconnected'.format(inst_name))
 
     def okToContinue(self):
         return True
