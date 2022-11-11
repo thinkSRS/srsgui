@@ -13,7 +13,7 @@ import sys
 import traceback
 import logging
 
-from .inputs import FloatInput
+from .inputs import FloatInput, InstrumentInput
 from .taskresult import TaskResult, ResultLogHandler
 
 from rga.base import Instrument
@@ -344,15 +344,25 @@ class Task(QThread):
     def update_status(self, message):
         self.write_text(self.EscapeForStatus + message)
 
-    def display_device_info(self, message):
-        """output for device info window
+    def display_device_info(self, message, device_name=None, clear=False):
+        """output to device info windows
         """
-        self.write_text(self.EscapeForDevice + message)
+        if clear:
+            if device_name:
+                self.write_text('{}{}:cls'.format(self.EscapeForDevice, device_name))
+            else:
+                self.write_text('{}cls'.fomrat(self.EscapeForDevice))
+        if device_name:
+            self.write_text('{}{}:{}'.format(self.EscapeForDevice, device_name, message))
+        else:
+            self.write_text('{}{}'.format(self.EscapeForDevice, message))
 
-    def display_result(self, message):
-        """ output for result window
+    def display_result(self, message, clear=False):
+        """ output to the result window
         """
-        self.write_text(self.EscapeForResult + message)
+        if clear:
+            self.write_text('{}cls'.format(self.EscapeForResult))
+        self.write_text('{}{}'.format(self.EscapeForResult, message))
 
     def __notify_start(self):
         self.write_text(self.EscapeForStart + self.name)
@@ -368,7 +378,11 @@ class Task(QThread):
 
     def get_input_parameter(self, name):
         if name in self.__class__.input_parameters:
-            value = self.__class__.input_parameters[name].value
+            param = self.__class__.input_parameters[name]
+            if type(param) == InstrumentInput:
+                value = self.__class__.input_parameters[name].text
+            else:
+                value = self.__class__.input_parameters[name].value
             if not hasattr(self.result, name):
                 self.add_details(str(value), name)
             return value

@@ -217,6 +217,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
     def onInstrumentSelect(self, inst_action):
         try:
             name = inst_action.text()
+            self.inst_info_handler.select_browser(name)
             if self.inst_dict[name].is_connected():
                 self.onDisconnect(name)
             else:
@@ -238,11 +239,30 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             msg = text.split(Task.EscapeForResult[0], 2)
             if len(msg) != 3: return
             if text.startswith(Task.EscapeForResult):
-                self.taskResult.append(msg[2])
-                sb = self.taskResult.verticalScrollBar()
-                sb.setValue(sb.maximum())
+                if msg[2] == 'cls':
+                    self.taskResult.clear()
+                else:
+                    self.taskResult.append(msg[2])
+                    sb = self.taskResult.verticalScrollBar()
+                    sb.setValue(sb.maximum())
+
             elif text.startswith(Task.EscapeForDevice):
-                self.deviceInfo.append(msg[2])
+                # Check if the message starts with an inst name
+                sub_msgs = msg[2].split(':', 1)
+                if len(sub_msgs) == 2 and sub_msgs[0] in self.inst_dict:
+                    self.inst_info_handler.select_browser(sub_msgs[0])
+                    if sub_msgs[1] == 'cls':
+                        self.deviceInfo.clear()
+                    else:
+                        self.deviceInfo.append(sub_msgs[1])
+
+                # if not, keep using the current device info browser
+                else:
+                    if msg[2] == 'cls':
+                        self.deviceInfo.clear()
+                    else:
+                        self.deviceInfo.append(msg[2])
+
             elif text.startswith(Task.EscapeForStatus):
                 self.statusbar.showMessage(msg[2])
             elif text.startswith(Task.EscapeForStart):
@@ -395,7 +415,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             form = CommConnectDlg(inst)
             form.exec_()
 
-            self.display_image(self.config.get_logo_file())
+            # self.display_image(self.config.get_logo_file())
             # self.console.clear()
 
             if inst.is_connected():
@@ -408,7 +428,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
     def onConnected(self, inst_name):
         inst = self.get_inst(inst_name)
         if inst and inst.is_connected():
-            self.inst_info_handler.set_browser(inst_name)
+            self.inst_info_handler.select_browser(inst_name)
             msg = ''  # Name: {} \n S/N: {} \n F/W version: {} \n\n'.format(*inst.check_id())
             msg += '  * Info *\n {} \n\n'.format(inst.get_info())
             msg += '  * Status *\n {} \n'.format(inst.get_status())
@@ -432,7 +452,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
     def onDisconnected(self, inst_name):
         inst = self.get_inst(inst_name)
         if inst and not inst.is_connected():
-            self.inst_info_handler.set_browser(inst_name)
+            self.inst_info_handler.select_browser(inst_name)
             self.deviceInfo.clear()
             msg = "Disconnected"
             self.deviceInfo.append(msg)
