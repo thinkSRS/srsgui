@@ -20,22 +20,40 @@ class DeviceInfoHandler(object):
         self.tabs = []
         self.browsers = []
         self.names = []
+        self.current_browser = -1
         if self.tabWidget.count() != 1:
             raise AttributeError('deviceInfoTabWidget is expected to have one tab')
         self.tabs.append(self.tabWidget.currentWidget())
         self.browsers.append(parent.deviceInfo)
         self.names.append('N/A')
 
-    def select_browser(self, name):
+    def select_browser(self, inst_name):
         """
         Set parent.deviceInfo browser to the tab associated with the name
         """
-        if name not in self.names:
-            logger.error("'inst '{}' is not registered with DeviceInfoHandler".format(name))
+        if inst_name not in self.names:
+            logger.error("'inst '{}' is not registered with DeviceInfoHandler".format(inst_name))
         else:
-            i = self.names.index(name)
+            i = self.names.index(inst_name)
             self.parent.deviceInfo = self.browsers[i]
             self.tabWidget.setCurrentIndex(i)
+            self.current_browser = i
+        return self.browsers[self.current_browser]
+
+    def update_info(self, inst_name):
+        browser = self.select_browser(inst_name)
+        inst = self.parent.inst_dict[inst_name]
+
+        if inst.is_connected():
+            msg = ''  # Name: {} \n S/N: {} \n F/W version: {} \n\n'.format(*inst.check_id())
+            msg += '  * Info *\n {} \n\n'.format(inst.get_info())
+            msg += '  * Status *\n {} \n'.format(inst.get_status())
+        else:
+            msg = "Disconnected"
+
+        browser.clear()
+        browser.append(msg)
+        logger.debug(msg.replace('\n', ''))
 
     def update_tabs(self):
         """

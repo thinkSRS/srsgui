@@ -344,14 +344,23 @@ class Task(QThread):
     def update_status(self, message):
         self.write_text(self.EscapeForStatus + message)
 
-    def display_device_info(self, message, device_name=None, clear=False):
+    def display_device_info(self, message='', device_name=None, update=False,  clear=False):
         """output to device info windows
         """
+        if update:
+            if device_name:
+                self.write_text('{}{}:update'.format(self.EscapeForDevice, device_name))
+            else:
+                name = list(self.inst_dict.keys())[0]
+                self.write_text('{}{}:update'.format(self.EscapeForDevice, name))
+            return
+
         if clear:
             if device_name:
                 self.write_text('{}{}:cls'.format(self.EscapeForDevice, device_name))
             else:
                 self.write_text('{}cls'.fomrat(self.EscapeForDevice))
+
         if device_name:
             self.write_text('{}{}:{}'.format(self.EscapeForDevice, device_name, message))
         else:
