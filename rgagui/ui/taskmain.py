@@ -31,6 +31,7 @@ from .stdout import StdOut
 from .qtloghandler import QtLogHandler
 from .sessionhandler import SessionHandler
 from .deviceinfohandler import DeviceInfoHandler
+from .dockhandler import DockHandler
 
 from rgagui.base import Task, Bold
 from rga.base import Instrument
@@ -54,17 +55,23 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
         # The dict holds subclass of Task
         self.task_dict = {}
-        self.current_action = None
+        self.current_task_action = None
         self.task = None
+        self.task_method = None
+
         self.question_result = None
         self.question_result_value = None
 
-        # Get Instrument dict name from Task
-        # the dict holds instances of subclass of Instrument
-        self.InstDictName = Task.InstrumentDictName
-
+        # self.inst_dict holds instances of subclass of Instrument
         self.inst_dict = {}
         self.inst_info_handler = DeviceInfoHandler(self)
+
+        # self.dock_dict holds all the QDeckWidget instances
+        self.dock_dict = {}
+        self.dock_handler = DockHandler(self)
+        self.figure = self.dock_handler.get_figure()
+        self.plotDockWidget = self.dock_dict['Plot']
+        self.terminal_widget = self.dock_dict['Command Terminal'].widget()
 
         try:
             self.default_config_file = 'rga120tasks/rga120.taskconfig'
@@ -93,13 +100,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         # busy flag is used to tell if a task is running
         self._busy_flag = False
         self.is_selection_running = False
-
-        self.taskmethod = None
-
-        self.init_plot()
-        self.figure = self.plotDockWidget.figure
-
-        self.init_terminal()
 
         self.qt_log_handler = QtLogHandler(self.console)
         self.qt_log_handler.setLevel(logging.INFO)
@@ -168,8 +168,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.display_image(self.config.get_logo_file())
 
             self.session_handler = SessionHandler(self.config, True, False, False)
-            sn = self.get_current_serial_number()
-            self.session_handler.open_session(sn)
+            self.session_handler.open_session(0)
 
         except Exception as e:
             logger.error(e)
@@ -327,7 +326,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
             self.plotDockWidget.toolbar.hide()
 
-            self.current_action = action
+            self.current_task_action = action
             current_action_name = action.text()
             logger.info('Task {} is selected.'.format(Bold.format(current_action_name)))
             taskClassChosen = self.task_dict[current_action_name]
@@ -337,15 +336,15 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                 self.show_message(msg, title)
                 raise TypeError(msg)
 
-            self.taskmethod = taskClassChosen
-            self.handle_initial_image(self.taskmethod)
+            self.task_method = taskClassChosen
+            self.handle_initial_image(self.task_method)
 
             self.statusbar.showMessage('Press Run button to start the task selected')
 
-            self.taskResult.setText(self.taskmethod.__doc__)
+            self.taskResult.setText(self.task_method.__doc__)
             self.taskParameterFrame.layout().removeWidget(self.taskParameter)
             self.taskParameter.deleteLater()
-            self.taskParameter = InputPanel(self.taskmethod, self)
+            self.taskParameter = InputPanel(self.task_method, self)
             self.taskParameterFrame.layout().addWidget(self.taskParameter)
         except Exception as e:
             logger.error(e)
@@ -355,13 +354,13 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             if self.is_task_running():
                 self.show_message('Another task is running', 'Error')
                 return
-            if self.taskmethod is None:
+            if self.task_method is None:
                 raise TypeError("No Task selected")
-            if not issubclass(self.taskmethod, Task):
-                raise TypeError("{} is not a subclass of Task".format(self.taskmethod.__name__))
+            if not issubclass(self.task_method, Task):
+                raise TypeError("{} is not a subclass of Task".format(self.task_method.__name__))
 
-            self.task = self.taskmethod(self)
-            self.task.name = self.current_action.text()
+            self.task = self.task_method(self)
+            self.task.name = self.current_task_action.text()
             self.task.set_figure(self.figure)
             self.task.set_inst_dict(self.inst_dict)
             self.task.set_session_handler(self.session_handler)
@@ -512,97 +511,8 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         else:
             event.ignore()
 
-    def onConsole(self):
-        widget = self.loggingDockWidget
-        if widget.isVisible():
-            widget.setVisible(False)
-            self.menu_View.actions()[0].setChecked(False)
-        else:
-            widget.setVisible(True)
-            self.menu_View.actions()[0].setChecked(True)
-
-    def get_current_serial_number(self):
-        DefaultSN = '99999'
-
-        if self.dut_sn_prefix:
-            api_prefix = self.dut_sn_prefix
-        else:
-            api_prefix = '999'
-
-        api_sn = '999' + DefaultSN
-        serial_number = None
-        try:
-            dut = self.get_dut()
-            _, serial_number, _ = dut.check_id()
-            if serial_number is None:
-                api_sn = api_prefix + DefaultSN
-            elif len(serial_number) <= 5:
-                api_sn = api_prefix + '0' * (5 - len(serial_number)) + serial_number
-            else:
-                api_sn = serial_number
-        finally:
-            logger.debug('Current DUT SN: {}'.format(api_sn))
-            return api_sn
-
-    @staticmethod
-    def setup_figure_canvas(widget):
-        widget.figure = plt.figure()
-        widget.canvas = FigureCanvas(widget.figure)
-        widget.toolbar = NavigationToolbar(widget.canvas, widget)
-        layout = QVBoxLayout()
-        layout.addWidget(widget.canvas)
-        layout.addWidget(widget.toolbar)
-
-        # use setWidget to put inside DockWidget
-        # setLayout works for putting into QFrame
-        child = QWidget()
-        child.setLayout(layout)
-        widget.setWidget(child)
-
-    def init_plot(self):
-        try:
-            self.plotDockWidget = QDockWidget(self)
-            self.plotDockWidget.setFloating(False)
-            self.plotDockWidget.setObjectName("plotDockWidget")
-            self.plotDockWidget.setWindowTitle("Plot")
-            self.addDockWidget(Qt.RightDockWidgetArea, self.plotDockWidget)
-
-            self.setup_figure_canvas(self.plotDockWidget)
-            self.plotDockWidget.toolbar.hide()
-
-            self.actionplot = QAction(self)
-            self.actionplot.setCheckable(True)
-            self.actionplot.setObjectName("actionplot")
-            self.actionplot.setText("plot")
-            self.actionplot.triggered.connect(self.onPlot)
-            self.menu_View.addAction(self.actionplot)
-
-            self.plotDockWidget.menu = self.menu_View
-            self.plotDockWidget.menu_index = len(self.menu_View.actions()) - 1
-
-        except Exception as e:
-            logger.error(e)
-
-    def onPlot(self):
-        widget = self.plotDockWidget
-        action = widget.menu.actions()[widget.menu_index]
-        if widget.isVisible():
-            widget.setVisible(False)
-            action.setChecked(False)
-        else:
-            widget.setVisible(True)
-            action.setChecked(True)
-
     def display_image(self, image_file):
-        try:
-            self.figure.clear()
-            img = mpimg.imread(image_file)
-            ax = self.figure.subplots()
-            ax.imshow(img)
-            ax.axis('off')
-            self.figure.canvas.draw_idle()
-        except Exception as e:
-            logger.error(f"Error in display_image: {e}")
+        self.dock_handler.display_image(image_file)
 
     def handle_initial_image(self, task_class):
         attr = 'InitialImage'
@@ -639,42 +549,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.figure.canvas.draw_idle()
         except Exception as e:
             logger.error(f"Error in handle_initial_image: {e}")
-
-    def init_terminal(self):
-        try:
-            self.terminalDockWidget = QDockWidget(self)
-            self.terminalDockWidget.setFloating(False)
-            self.terminalDockWidget.setObjectName("terminalDockWidget")
-            self.terminalDockWidget.setWindowTitle("Command Terminal")
-
-            self.terminal_widget = CommandTerminal(self)
-            self.terminalDockWidget.setWidget(self.terminal_widget)
-            self.addDockWidget(Qt.RightDockWidgetArea, self.terminalDockWidget)
-
-            self.actionTerminal = QAction(self)
-            self.actionTerminal.setCheckable(True)
-            self.actionTerminal.setObjectName("actionTerminal")
-            self.actionTerminal.setText("Terminal")
-            self.actionTerminal.triggered.connect(self.onTerminal)
-            self.menu_View.addAction(self.actionTerminal)
-
-            self.terminalDockWidget.menu = self.menu_View
-            self.terminalDockWidget.menu_index = len(self.menu_View.actions()) - 1
-        except Exception as e:
-            logger.error(e)
-
-    def onTerminal(self):
-        try:
-            widget = self.terminalDockWidget
-            action = widget.menu.actions()[widget.menu_index]
-            if widget.isVisible():
-                widget.setVisible(False)
-                action.setChecked(False)
-            else:
-                widget.setVisible(True)
-                action.setChecked(True)
-        except Exception as e:
-            logger.error(e)
 
     def load_settings(self):
         self.default_config_file = self.settings.value("ConfigFile", "", type=str)
