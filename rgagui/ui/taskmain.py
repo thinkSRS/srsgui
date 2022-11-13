@@ -70,8 +70,8 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         self.dock_dict = {}
         self.dock_handler = DockHandler(self)
         self.figure = self.dock_handler.get_figure()
-        self.plotDockWidget = self.dock_dict['Plot']
-        self.terminal_widget = self.dock_dict['Command Terminal'].widget()
+        self.plotDockWidget = self.dock_handler.get_dock()
+        self.terminal_widget = self.dock_handler.get_terminal()
 
         try:
             self.default_config_file = 'rga120tasks/rga120.taskconfig'

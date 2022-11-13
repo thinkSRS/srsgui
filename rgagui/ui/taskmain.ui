@@ -198,9 +198,6 @@
    <attribute name="dockWidgetArea">
     <number>2</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_3">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
       <widget class="QTextBrowser" name="console">
        <property name="font">
         <font>
@@ -208,9 +205,6 @@
         </font>
        </property>
       </widget>
-     </item>
-    </layout>
-   </widget>
   </widget>
   <action name="action_New">
    <property name="icon">

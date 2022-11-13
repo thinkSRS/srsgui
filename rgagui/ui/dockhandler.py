@@ -16,6 +16,10 @@ logger = logging.getLogger(__name__)
 
 
 class DockHandler(object):
+    DefaultConsoleName = 'Console'
+    DefaultTerminalName = 'Terminal'
+    DefaultFigureName = 'Plot'
+
     def __init__(self, parent):
         if not (hasattr(parent, 'loggingDockWidget') and
                 hasattr(parent, 'dock_dict') and
@@ -35,22 +39,31 @@ class DockHandler(object):
         actions = parent.menu_View.actions()
         for action in actions:
             parent.menu_View.removeAction(action)
-        parent.dock_dict = {'Console': parent.loggingDockWidget}
 
+        parent.dock_dict = {self.DefaultConsoleName: parent.loggingDockWidget}
+
+        parent.removeDockWidget(parent.loggingDockWidget)
+
+        self.init_figure_dock(self.DefaultFigureName)
         self.init_terminal()
-        self.init_figure_dock('Plot')
-        self.figure = self.get_figure('Plot')
 
+        parent.addDockWidget(Qt.RightDockWidgetArea, parent.loggingDockWidget)
+        parent.loggingDockWidget.setVisible(True)
+        parent.tabifyDockWidget(self.get_dock(self.DefaultTerminalName),
+                                parent.loggingDockWidget)
+        self.default_dock = parent.dock_dict[self.DefaultFigureName]
+        self.default_figure = parent.dock_dict[self.DefaultFigureName].figure
+
+        parent.menu_View.triggered.connect(self.onDockMenuSelected)
         for key in parent.dock_dict:
             action_dock = QAction(parent)
             action_dock.setText(key)
             action_dock.setCheckable(True)
             parent.menu_View.addAction(action_dock)
-            parent.menu_View.triggered.connect(self.onDocks)
 
     def init_terminal(self):
         try:
-            name = 'Command Terminal'
+            name = self.DefaultTerminalName
             terminal_dock = QDockWidget(self.parent)
             terminal_dock.setObjectName(name)
             terminal_dock.setFloating(False)
@@ -59,7 +72,6 @@ class DockHandler(object):
             terminal_widget = CommandTerminal(self.parent)
             terminal_dock.setWidget(terminal_widget)
             self.parent.addDockWidget(Qt.RightDockWidgetArea, terminal_dock)
-            self.parent.tabifyDockWidget(self.parent.dock_dict['Console'], terminal_dock)
             self.parent.dock_dict[name] = terminal_dock
         except Exception as e:
             logger.error(e)
@@ -82,7 +94,7 @@ class DockHandler(object):
     def display_image(self, image_file, figure=None):
         try:
             if figure is None:
-                figure = self.figure
+                figure = self.default_figure
             figure.clear()
             img = mpimg.imread(image_file)
             ax = figure.subplots()
@@ -103,15 +115,31 @@ class DockHandler(object):
 
             self.parent.addDockWidget(Qt.RightDockWidgetArea, figure_dock)
             self.parent.dock_dict[name] = figure_dock
+            if len(self.parent.dock_dict) > 3:
+                self.parent.tabifyDockWidget(self.get_dock(), figure_dock)
         except Exception as e:
             logger.error(e)
 
+    def get_terminal(self):
+        return self.parent.dock_dict[self.DefaultTerminalName].widget()
+
     def get_figure(self, name=None) -> Figure:
         if name is None:
-            return self.figure
+            return self.default_figure
+
+        if name not in self.parent.dock_dict:
+            raise KeyError('No figure named {}'.format(name))
         return self.parent.dock_dict[name].figure
 
-    def onDocks(self, action):
+    def get_dock(self, name=None) -> QDockWidget:
+        if name is None:
+            return self.default_dock
+
+        if name not in self.parent.dock_dict:
+            raise KeyError('No dock widget named {}'.format(name))
+        return self.parent.dock_dict[name]
+
+    def onDockMenuSelected(self, action):
         try:
             name = action.text()
             widget = self.parent.dock_dict[name]
