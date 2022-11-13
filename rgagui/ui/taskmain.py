@@ -69,12 +69,15 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         # self.dock_dict holds all the QDeckWidget instances
         self.dock_dict = {}
         self.dock_handler = DockHandler(self)
+        self.console = self.dock_handler.console
+        self.terminal_widget = self.dock_handler.terminal_widget
         self.figure = self.dock_handler.get_figure()
         self.plotDockWidget = self.dock_handler.get_dock()
-        self.terminal_widget = self.dock_handler.get_terminal()
+
 
         try:
-            self.default_config_file = 'rga120tasks/rga120.taskconfig'
+            self.default_config_file = str(Path(__file__).parent.parent /
+                                           'examples/rga100/myrga.taskconfig')
             self.config = Config()
             self.base_data_dir = self.config.base_data_dir
             self.base_log_file_name = self.config.base_log_file_name
@@ -94,8 +97,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         # Setup toolbar buttons
         self.actionRun.setEnabled(True)
         self.actionStop.setEnabled(False)
-        self.actionRun_2.setEnabled(True)
-        self.actionStop_2.setEnabled(False)
 
         # busy flag is used to tell if a task is running
         self._busy_flag = False
@@ -276,8 +277,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         # setup toolbar buttons
         self.actionRun.setEnabled(False)
         self.actionStop.setEnabled(True)
-        self.actionRun_2.setEnabled(False)
-        self.actionStop_2.setEnabled(True)
 
         self._busy_flag = True
 
@@ -289,8 +288,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             # Setup toolbar buttons
             self.actionRun.setEnabled(True)
             self.actionStop.setEnabled(False)
-            self.actionRun_2.setEnabled(True)
-            self.actionStop_2.setEnabled(False)
 
             self._busy_flag = False
 

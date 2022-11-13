@@ -21,17 +21,14 @@ class DockHandler(object):
     DefaultFigureName = 'Plot'
 
     def __init__(self, parent):
-        if not (hasattr(parent, 'loggingDockWidget') and
-                hasattr(parent, 'dock_dict') and
+        if not (hasattr(parent, 'dock_dict') and
                 hasattr(parent, 'menu_View') and
-                type(parent.loggingDockWidget) == QDockWidget and
                 type(parent.dock_dict) == dict and
                 type(parent.menu_View) == QMenu
                 ):
             raise AttributeError('Parent does not have all Attributes required')
         self.parent = parent
         self.unused_figure_docks = []
-
         try:
             parent.menu_View.triggered.disconnect()
         except:
@@ -40,17 +37,14 @@ class DockHandler(object):
         for action in actions:
             parent.menu_View.removeAction(action)
 
-        parent.dock_dict = {self.DefaultConsoleName: parent.loggingDockWidget}
-
-        parent.removeDockWidget(parent.loggingDockWidget)
+        parent.dock_dict = {}
 
         self.init_figure_dock(self.DefaultFigureName)
         self.init_terminal()
+        self.init_console()
 
-        parent.addDockWidget(Qt.RightDockWidgetArea, parent.loggingDockWidget)
-        parent.loggingDockWidget.setVisible(True)
         parent.tabifyDockWidget(self.get_dock(self.DefaultTerminalName),
-                                parent.loggingDockWidget)
+                                self.get_dock(self.DefaultConsoleName))
         self.default_dock = parent.dock_dict[self.DefaultFigureName]
         self.default_figure = parent.dock_dict[self.DefaultFigureName].figure
 
@@ -61,6 +55,21 @@ class DockHandler(object):
             action_dock.setCheckable(True)
             parent.menu_View.addAction(action_dock)
 
+    def init_console(self):
+        try:
+            name = self.DefaultConsoleName
+            console_dock = QDockWidget(self.parent)
+            console_dock.setObjectName(name)
+            console_dock.setFloating(False)
+            console_dock.setWindowTitle(name)
+
+            self.console = QTextBrowser(self.parent)
+            console_dock.setWidget(self.console)
+            self.parent.addDockWidget(Qt.RightDockWidgetArea, console_dock)
+            self.parent.dock_dict[name] = console_dock
+        except Exception as e:
+            logger.error(e)
+
     def init_terminal(self):
         try:
             name = self.DefaultTerminalName
@@ -69,8 +78,8 @@ class DockHandler(object):
             terminal_dock.setFloating(False)
             terminal_dock.setWindowTitle(name)
 
-            terminal_widget = CommandTerminal(self.parent)
-            terminal_dock.setWidget(terminal_widget)
+            self.terminal_widget = CommandTerminal(self.parent)
+            terminal_dock.setWidget(self.terminal_widget)
             self.parent.addDockWidget(Qt.RightDockWidgetArea, terminal_dock)
             self.parent.dock_dict[name] = terminal_dock
         except Exception as e:
@@ -91,19 +100,6 @@ class DockHandler(object):
         child.setLayout(layout)
         widget.setWidget(child)
 
-    def display_image(self, image_file, figure=None):
-        try:
-            if figure is None:
-                figure = self.default_figure
-            figure.clear()
-            img = mpimg.imread(image_file)
-            ax = figure.subplots()
-            ax.imshow(img)
-            ax.axis('off')
-            figure.canvas.draw_idle()
-        except Exception as e:
-            logger.error(f"Error in display_image: {e}")
-
     def init_figure_dock(self, name):
         try:
             figure_dock = QDockWidget(self.parent)
@@ -119,6 +115,19 @@ class DockHandler(object):
                 self.parent.tabifyDockWidget(self.get_dock(), figure_dock)
         except Exception as e:
             logger.error(e)
+
+    def display_image(self, image_file, figure=None):
+        try:
+            if figure is None:
+                figure = self.default_figure
+            figure.clear()
+            img = mpimg.imread(image_file)
+            ax = figure.subplots()
+            ax.imshow(img)
+            ax.axis('off')
+            figure.canvas.draw_idle()
+        except Exception as e:
+            logger.error(f"Error in display_image: {e}")
 
     def get_terminal(self):
         return self.parent.dock_dict[self.DefaultTerminalName].widget()

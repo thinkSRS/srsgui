@@ -130,14 +130,13 @@
     <property name="title">
      <string>&amp;Control</string>
     </property>
-    <addaction name="actionRun_2"/>
-    <addaction name="actionStop_2"/>
+    <addaction name="actionRun"/>
+    <addaction name="actionStop"/>
    </widget>
    <widget class="QMenu" name="menu_View">
     <property name="title">
      <string>&amp;View</string>
     </property>
-    <addaction name="actionConsole"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -182,30 +181,6 @@
    <addaction name="actionRun"/>
    <addaction name="actionStop"/>
   </widget>
-  <widget class="QDockWidget" name="loggingDockWidget">
-   <property name="toolTip">
-    <string extracomment="Logging console"/>
-   </property>
-   <property name="whatsThis">
-    <string extracomment="Logging console"/>
-   </property>
-   <property name="floating">
-    <bool>false</bool>
-   </property>
-   <property name="windowTitle">
-    <string>Output Console</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>2</number>
-   </attribute>
-      <widget class="QTextBrowser" name="console">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-      </widget>
-  </widget>
   <action name="action_New">
    <property name="icon">
     <iconset>
@@ -240,16 +215,6 @@
    </property>
    <property name="text">
     <string>E&amp;xit</string>
-   </property>
-  </action>
-  <action name="actionRun_2">
-   <property name="text">
-    <string>Run</string>
-   </property>
-  </action>
-  <action name="actionStop_2">
-   <property name="text">
-    <string>Stop</string>
    </property>
   </action>
   <action name="actionConsole">
@@ -401,38 +366,6 @@
    <signal>triggered()</signal>
    <receiver>TaskMain</receiver>
    <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>569</x>
-     <y>343</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionRun_2</sender>
-   <signal>triggered()</signal>
-   <receiver>TaskMain</receiver>
-   <slot>onRun()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>569</x>
-     <y>343</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionStop_2</sender>
-   <signal>triggered()</signal>
-   <receiver>TaskMain</receiver>
-   <slot>onStop()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
