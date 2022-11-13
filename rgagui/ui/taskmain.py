@@ -66,14 +66,11 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         self.inst_dict = {}
         self.inst_info_handler = DeviceInfoHandler(self)
 
-        # self.dock_dict holds all the QDeckWidget instances
-        self.dock_dict = {}
         self.dock_handler = DockHandler(self)
         self.console = self.dock_handler.console
         self.terminal_widget = self.dock_handler.terminal_widget
         self.figure = self.dock_handler.get_figure()
         self.plotDockWidget = self.dock_handler.get_dock()
-
 
         try:
             self.default_config_file = str(Path(__file__).parent.parent /
@@ -334,6 +331,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                 raise TypeError(msg)
 
             self.task_method = taskClassChosen
+            self.dock_handler.update_figures(self.task_method.figure_names)
             self.handle_initial_image(self.task_method)
 
             self.statusbar.showMessage('Press Run button to start the task selected')
@@ -358,7 +356,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
             self.task = self.task_method(self)
             self.task.name = self.current_task_action.text()
-            self.task.set_figure(self.figure)
+            self.task.set_figure_dict(self.dock_handler.get_figure_dict())
             self.task.set_inst_dict(self.inst_dict)
             self.task.set_session_handler(self.session_handler)
             self.task.text_written_available.connect(self.print_redirect)

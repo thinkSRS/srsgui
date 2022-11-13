@@ -1,17 +1,14 @@
 
+import sys
+import traceback
+import logging
 import time
-
-# import sys
-# from pathlib import Path
-# from datetime import datetime
 
 from PyQt5.QtCore import QThread
 from PyQt5.QtCore import pyqtSignal as Signal
 from PyQt5.QtCore import pyqtSlot as Slot
 
-import sys
-import traceback
-import logging
+from matplotlib.figure import Figure
 
 from .inputs import FloatInput, InstrumentInput
 from .taskresult import TaskResult, ResultLogHandler
@@ -38,13 +35,9 @@ class Task(QThread):
     class TaskSetupFailed(TaskException): pass
     class TaskRunFailed(TaskException): pass
 
-    # Data directory is handled by SessionHandler now
-    # DefaultDirectory = str(Path.home() / "tcal-results")
-    # DataDirectory = 'data_dir'  # directory to hold all data files
-
     # When parent is not None, parent should have these attributes.
     InstrumentDictName = 'inst_dict'  # all instruments to use in a task
-    MatplotlibFigureName = 'figure'  # to display plots
+    FigureDictName = 'figure_dict'  # all matplotlib figures to use in a task
     SessionHandlerName = 'session_handler'
 
     # Escape string use in stdout redirection to GUI
@@ -60,6 +53,10 @@ class Task(QThread):
         "Define variables before use!!": FloatInput(10.0, " Hz", 1.0, 1000.0, 1.0),
         "Constant value": FloatInput(1.0)
     }
+
+    # Names for multiple  Matplotlib figures you will use in this task
+    # If empty, you will have one figure named 'Figure' as a default
+    figure_names = []  # e.g., ['Scan Plots','Temperature Plots']
 
     _is_running = False  # class wide flag to tell if any task is running
     _is_optional = False  # result status will set as success initially if a task class is optional
@@ -105,10 +102,11 @@ class Task(QThread):
         self.session_handler = None
 
         # inst_dict holds all the instrument to use in task
-        setattr(self, Task.InstrumentDictName, {})
+        self.inst_dict = {}
         self.data_dict = {}
 
         # figure is expected to be Matplotlib figure object.
+        self.figure_dict = {}
         self.figure = None
 
     def setup(self):
@@ -145,12 +143,10 @@ class Task(QThread):
 
     def basic_setup(self):
         self.logger = self.get_logger(__name__)
-        figure = getattr(self, self.MatplotlibFigureName)
-        if figure is None or not hasattr(figure, 'canvas'):
+        if self.figure is None or not hasattr(self.figure, 'canvas'):
             raise AttributeError('Invalid figure')
-        inst_dict = getattr(self, self.InstrumentDictName)
 
-        if not self._check_inst_dict(inst_dict):
+        if not self._check_dict_items(self.inst_dict, Instrument):
             raise AttributeError('Invalid inst_dict detected during basic setup')
 
         # We want Exception to be handled in run()
@@ -176,7 +172,7 @@ class Task(QThread):
         self.logger.info(GreenBold.format(msg))
 
         self.__notify_start()
-        self.clear_figure()
+        self.clear_figures()
 
     def basic_cleanup(self):
         try:
@@ -252,39 +248,44 @@ class Task(QThread):
         self.session_handler = session_handler
 
     @staticmethod
-    def _check_inst_dict(inst_dict):
-        if type(inst_dict) is not dict:
+    def _check_dict_items(item_dict, item_class):
+        if type(item_dict) is not dict:
             return False
-        for instr in inst_dict:
-            if not issubclass(type(inst_dict[instr]), Instrument):
+        for value in item_dict.values():
+            if not issubclass(type(value), item_class):
                 return False
         return True
 
     def set_inst_dict(self, inst_dict):
-        if not self._check_inst_dict(inst_dict):
+        if not self._check_dict_items(inst_dict, Instrument):
             raise AttributeError('invalid inst_dict for Task class')
-        setattr(self, self.InstrumentDictName, inst_dict)
+        self.inst_dict = inst_dict
 
-    def set_figure(self, figure=None):
-        """
-        If parent does  not have a figure, a MatplotLib figure object,
-        you can provide a task with  one with this method.
-        """
-        if figure is not None and not hasattr(figure, 'canvas'):
-            raise AttributeError('A Matplotlib figure should have canvas')
+    def set_figure_dict(self, figure_dict):
+        if not self._check_dict_items(figure_dict, Figure):
+            raise AttributeError('invalid figure_dict for Task class')
+        self.figure_dict = figure_dict
+        if figure_dict:
+            self.figure = list(figure_dict.values())[0]
         else:
-            self.figure = figure
+            self.logger.error('No figure to set as default')
+            self.figure = None
 
-        if hasattr(figure, 'canvas'):
-            self.clear_figure()
+    def get_figure(self, name=None) -> Figure:
+        if name is None:
+            name = list(self.figure_dict.keys())[0]
+        if name in self.figure_dict:
+            return self.figure_dict[name]
+        raise KeyError('Invalid figure name: {}'.fomrat(name))
 
-    def clear_figure(self):
+    def clear_figures(self):
         """
-        Clear figure
+        Clear figures
         """
-        if self.figure is not None and hasattr(self.figure, 'canvas'):
-            self.figure.clear()
-            self.figure.canvas.draw_idle()
+        for fig in self.figure_dict.values():
+            if hasattr(fig, 'canvas'):
+                fig.clear()
+                fig.canvas.draw_idle()
 
     def is_running(self):
         return self._keep_running
@@ -409,7 +410,6 @@ class Task(QThread):
         else:
             raise KeyError('{} not in input_parameters'.format(name))
 
-
     # Notify UI to input_parameters for display update
     def notify_parameter_changed(self):
         self.parameter_changed.emit()
@@ -459,13 +459,11 @@ class Task(QThread):
     def get_instrument(self, name):
         """Get an instrument from parent's inst_dict and check its validity"""
 
-        inst_dict = getattr(self, Task.InstrumentDictName)
-        if name not in inst_dict:
+        if name not in self.inst_dict:
             self.logger.error("{} is not in Instrument dict.".format(name))
-            # self.stop()
             return None
 
-        inst = inst_dict[name]
+        inst = self.inst_dict[name]
         if not isinstance(inst, Instrument):
             self.logger.error('{} is not an instance of {}.'
                               .format(type(inst), Instrument.__class__.__name__))
