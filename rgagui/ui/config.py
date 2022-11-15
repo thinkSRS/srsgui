@@ -67,7 +67,7 @@ class Config(object):
                         else:
                             raise KeyError('Invalid key: {}'.format(k))
 
-            logger.info('Read Taskconfig file successfully')
+            logger.info('TaskConfig file "{}" loaded'.format(file_name))
 
             # Local DB file name for SessionHandler
             self.data_dir = self.base_data_dir + '/' + self.task_dict_name
@@ -76,11 +76,13 @@ class Config(object):
                 p.mkdir(parents=True)
 
         except FileNotFoundError:
-            logger.error('File {} not found'.format(file_name))
+            logger.error('File "{}" not found'.format(file_name))
+            raise FileNotFoundError
 
         except Exception as e:
             logger.error("load_config_error: {}".format(e))
             logger.error("Error in line: {}".format(current_line))
+            raise e.__class__
 
     def load_task_from_line(self, v):
         task_key, task_module_name, task_class_name = v.split(',', 2)
@@ -92,10 +94,12 @@ class Config(object):
             mod = sys.modules[task_module]
         else:
             mod = import_module(task_module)
+            logger.debug('Task module {} for "{}" loaded '.format(mod.__file__, task_key))
 
         task_class_name = task_class_name.strip()
         if hasattr(mod, task_class_name):
             task_class = getattr(mod, task_class_name)
+            logger.debug('Task class {} for "{}" loaded'.format(task_class_name, task_key))
         else:
             logger.error('No task class: {} in module: {}'.format(task_class_name, task_module))
             return
@@ -115,10 +119,12 @@ class Config(object):
         inst_class_name = items[2]
         inst_key = inst_key.strip()
         mod = import_module(inst_module_name.strip())
+        logger.debug('Instrument module {} for "{}" loaded'.format(mod.__file__, inst_key))
         inst_class_name = inst_class_name.strip()
-        logger.debug('{} {} {}'.format(inst_key, inst_module_name, inst_class_name))
+
         if hasattr(mod, inst_class_name):
             inst_class = getattr(mod, inst_class_name)
+            logger.debug('Instrument class {} for "{}" loaded'.format(inst_class_name, inst_key))
         else:
             logger.error('Invalid inst class')
             return

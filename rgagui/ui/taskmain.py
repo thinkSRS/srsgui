@@ -1,29 +1,23 @@
 import os
 import sys
 
-import webbrowser
+# import webbrowser
 
 import logging
 import logging.handlers
 
 from pathlib import Path
 
-from PyQt5.QtCore import Qt, QEvent, QTimer, QSettings, QItemSelectionModel, QByteArray
-from PyQt5.QtGui import QBrush, QColor, QIcon
-from PyQt5.QtWidgets import QWidget, QMainWindow, QApplication, QTextBrowser,\
-                            QVBoxLayout, QMessageBox, QDockWidget, \
+from PyQt5.QtCore import QTimer, QSettings, QByteArray
+from PyQt5.QtWidgets import QMainWindow, QApplication, QTextBrowser,\
+                            QVBoxLayout, QMessageBox, \
                             QInputDialog, QFileDialog, \
-                            QAbstractItemView, QAction
+                            QAction
 
-import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-
-from .commConnectDlg import CommConnectDlg
 
 from .ui_taskmain import Ui_TaskMain
-
+from .commConnectDlg import CommConnectDlg
 from .inputpanel import InputPanel
 from .commandTerminal import CommandTerminal
 from .config import Config
@@ -35,9 +29,6 @@ from .dockhandler import DockHandler
 
 from rgagui.base import Task, Bold
 from rga.base import Instrument
-
-SuccessSound = str(Path(__file__).parent / 'sounds/successSound.wav')
-FailSound = str(Path(__file__).parent / 'sounds/errorSound.wav')
 
 logger = logging.getLogger(__name__)
 
@@ -73,7 +64,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         self.plotDockWidget = self.dock_handler.get_dock()
 
         try:
-            self.default_config_file = str(Path(__file__).parent.parent /
+            default_config_file = str(Path(__file__).parent.parent /
                                            'examples/rga100/myrga.taskconfig')
             self.config = Config()
             self.base_data_dir = self.config.base_data_dir
@@ -115,6 +106,8 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         self.session_handler = None
 
         self.load_settings()
+        if not self.default_config_file:
+            self.default_config_file = default_config_file
 
         self.statusbar.showMessage('Waiting for selection')
         self.stdout = StdOut(self.print_redirect)
@@ -148,7 +141,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             sys.path.insert(0, current_dir)
             os.chdir(current_dir)
             self.config.load(self.default_config_file)
-            logger.debug('Taskconfig file: "{}"  loading done'.format(self.default_config_file))
+            logger.debug('TaskConfig file: "{}"  loading done'.format(self.default_config_file))
 
             for instr in prev_inst_dict:
                 del instr
@@ -169,7 +162,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.session_handler.open_session(0)
 
         except Exception as e:
-            logger.error(e)
+            logger.error('{}: {}'.format(e.__class__.__name__, e))
 
         try:
             try:
@@ -370,7 +363,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
             # logger.info('{} starting'.format(type(self.task)))
             self.onTaskStarted()
-            self.plotDockWidget.toolbar.show()
+            self.dock_handler.show_toolbar()
             self.task.start()
         except Exception as e:
             logger.error(e)
@@ -385,13 +378,13 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
     def onOpen(self):
         try:
-            logger.info('Opening a taskconfig file..')
-            file_name, _ = QFileDialog.getOpenFileName(self, "Select a taskconfig file", ".",
+            logger.info('Opening a TaskConfig file..')
+            file_name, _ = QFileDialog.getOpenFileName(self, "Select a .taskconfig file", ".",
                                                        "TaskConfig files (*.taskconfig)")
             if file_name:
                 self.default_config_file = file_name
                 self.load_tasks()
-                logger.info('file opened: {}'.format(file_name))
+                logger.info('File opened: {}'.format(file_name))
         except Exception as e:
             logger.error(e)
 
@@ -510,6 +503,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         self.dock_handler.display_image(image_file)
 
     def handle_initial_image(self, task_class):
+        self.dock_handler.clear_figures()
         attr = 'InitialImage'
         if not hasattr(task_class, attr):
             self.display_image(self.config.get_logo_file())

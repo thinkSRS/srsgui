@@ -3,6 +3,8 @@ from datetime import datetime
 
 from rgagui.base.task import Task, round_float
 from rgagui.base.inputs import ListInput, IntegerInput, InstrumentInput
+from rgagui.base.plots import AnalogScanPlot
+
 from instruments.get_instruments import get_rga
 
 
@@ -45,29 +47,10 @@ class AnalogScanTask(Task):
         self.logger.info('Start: {} Stop: {} Speed: {} Step: {}'.format(
             self.start_value, self.stop_value, self.speed_value, self.step_value))
 
-        self.data_dict['x'] = []
-        self.data_dict['y'] = []
-
-        self.init_plot()
         self.init_scan()
 
-    def init_plot(self):
-        # Set up a plot using matplotlib axes
-        # self.figure is used to draw on the GUI window.
-        self.ax = self.figure.add_subplot(111)
-        self.ax.set_title(self.__class__.__name__)
-        self.ax.set_xlabel("Mass (AMU)")
-        self.ax.set_ylabel('Ion Current(0.1fA)')
-
-        if self.unit_value == 0:
-            self.ax.set_ylabel('Ion Current (fA)')
-            self.ax.set_ylim(-1000, 100000, auto=False)
-        else:
-            self.ax.set_ylabel('Partial pressure (Torr)')
-            self.ax.set_ylim(-1e-10, 1e-9, auto=False)
-
-        self.line, = self.ax.plot(self.data_dict['x'], self.data_dict['y'])
-        self.ax.set_xlim(self.start_value, self.stop_value, auto=False)
+        self.ax = self.get_figure().add_subplot(111)
+        self.plot = AnalogScanPlot(self.ax, self.rga.scan, 'Analog Scan')
 
     def init_scan(self):
         # Get the instrument to use
@@ -83,31 +66,10 @@ class AnalogScanTask(Task):
 
         self.logger.info('Emission current: {:.2f} mA CEM HV: {} V'.format(emission_current, cem_voltage))
 
-        self.rga.scan.set_callbacks(self.update_callback, None, self.update_on_scan_finished)
-
         self.rga.scan.set_parameters(self.start_value,
                                      self.stop_value,
                                      self.speed_value,
                                      self.step_value)
-
-    # The scan calls this callback when data is available
-    def update_callback(self, index):
-        self.data_dict['x'] = self.mass_axis[:index]
-        self.data_dict['y'] = self.rga.scan.spectrum[:index] * self.conversion_factor
-        self.line.set_xdata(self.data_dict['x'])
-        self.line.set_ydata(self.data_dict['y'])
-
-        # Tell GUI to redraw the plot
-        self.notify_data_available()
-
-    def update_on_scan_finished(self):
-        self.data_dict['x'] = self.mass_axis
-        self.data_dict['y'] = self.rga.scan.spectrum * self.conversion_factor
-        self.line.set_xdata(self.data_dict['x'])
-        self.line.set_ydata(self.data_dict['y'])
-
-        # Tell GUI to redraw the plot
-        self.notify_data_available()
 
     def test(self):
         self.set_task_passed(True)
@@ -137,6 +99,7 @@ class AnalogScanTask(Task):
 
     def cleanup(self):
         self.logger.info('Task finished')
+        self.plot.cleanup()
 
 
 if __name__ == '__main__':

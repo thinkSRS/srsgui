@@ -61,7 +61,7 @@ class DeviceInfoHandler(object):
         """
         inst_dict = self.parent.inst_dict
         if len(inst_dict) == 0:
-            logger.error('No item in inst_dict')
+            logger.error('No instruments in inst_dict')
 
         while self.tabWidget.count() > 0:
             self.remove_tab()

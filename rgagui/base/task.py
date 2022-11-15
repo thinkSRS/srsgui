@@ -172,7 +172,7 @@ class Task(QThread):
         self.logger.info(GreenBold.format(msg))
 
         self.__notify_start()
-        self.clear_figures()
+        self.clear()
 
     def basic_cleanup(self):
         try:
@@ -278,7 +278,7 @@ class Task(QThread):
             return self.figure_dict[name]
         raise KeyError('Invalid figure name: {}'.fomrat(name))
 
-    def clear_figures(self):
+    def clear(self):
         """
         Clear figures
         """

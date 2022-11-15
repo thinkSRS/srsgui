@@ -207,5 +207,16 @@ class DockHandler(object):
         for name, dock in self.dock_dict.items():
             if hasattr(dock, 'figure'):
                 fig_dict[name] = dock.figure
-        print(fig_dict)
         return fig_dict
+
+    def clear_figures(self, name=None):
+        if name is None:
+            for fig in self.get_figure_dict():
+                self.get_figure(fig).clear()
+        else:
+            self.get_figure(name).clear()
+
+    def show_toolbar(self):
+        for dock in self.dock_dict.values():
+            if hasattr(dock, 'toolbar'):
+                dock.toolbar.show()
