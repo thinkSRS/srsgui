@@ -24,6 +24,10 @@ inst: uga,     rga,    UGA100
 # The Second column is the Python module that contains the task class with relative path from the Task config file.
 # The third column is a task class  that is a Task subclass in the module.
 
+task: UGA state monitor,           tasks.ugastatemonitortask,                                UGAStateMonitorTask
+task: UGA mode control,            tasks.ugamodecontroltask,                                 UGAModeControlTask
+task: UGA Multi Plot,              tasks.ugamultiplottask,                                   UGAMultiplotTask
+
 task: Filament Control,            rgagui.examples.rga100.tasks.filamentcontroltask,         FilamentControlTask
 task: CEM Control,                 rgagui.examples.rga100.tasks.cemcontroltask,              CEMControlTask
 task: Analog Scan,                 rgagui.examples.rga100.tasks.analogscantask,              AnalogScanTask

@@ -4,7 +4,10 @@ from datetime import datetime
 
 from rgagui.base.task import Task, round_float
 from rgagui.base.inputs import ListInput, IntegerInput, InstrumentInput
+from rgagui.plots.histogramscanplot import HistogramScanPlot
+
 from instruments.get_instruments import get_rga
+
 
 class HistogramScanTask(Task):
     """Task ro run histogram scans.
@@ -31,88 +34,46 @@ class HistogramScanTask(Task):
         self._log_error_detail = False
 
         # Get values to use for task  from input_parameters in GUI
-        self.instrument_name_value = self.get_input_parameter(self.InstrumentName)
-        self.start_value = self.get_input_parameter(self.StartMass)
-        self.stop_value  = self.get_input_parameter(self.StopMass)
-        self.speed_value = self.get_input_parameter(self.ScanSpeed)
-        self.unit_value  = self.get_input_parameter(self.IntensityUnit)
-        self.reps_value  = self.get_input_parameter(self.Reps)
-
+        self.params = self.get_all_input_parameters()
         # Get logger to use
         self.logger = self.get_logger(__name__)
-        self.logger.info('Start: {} Stop: {} Speed: {}'.format(
-            self.start_value, self.stop_value, self.speed_value))
+
+        self.logger.info('Start: {} Stop: {} Speed: {} '.format(
+            self.params[self.StartMass], self.params[self.StopMass],
+            self.params[self.ScanSpeed]))
 
         self.init_scan()
 
-        self.data_dict['x'] = self.mass_axis
-        self.data_dict['y'] = numpy.zeros_like(self.mass_axis)
-        self.init_plot()
+        # Set up an analog scan plot for the test
+        self.ax = self.get_figure().add_subplot(111)
+
+        self.plot = HistogramScanPlot(self, self.ax, self.rga.scan, 'Histogram')
+
+        if self.params[self.IntensityUnit] == 0:
+            self.conversion_factor = 0.1
+            self.plot.set_conversion_factor(self.conversion_factor, 'fA')
+        else:
+            self.conversion_factor = self.rga.pressure.get_partial_pressure_sensitivity_in_torr()
+            self.plot.set_conversion_factor(self.conversion_factor, 'Torr')
+        self.logger.debug('Conversion factor: {:.3e}'.format(self.conversion_factor))
 
     def init_scan(self):
         # Get the instrument to use
-        self.rga = get_rga(self, self.instrument_name_value)
-        print(self.rga.status.id_string)
+        self.rga = get_rga(self, self.params[self.InstrumentName])
+        self.id_string = self.rga.status.id_string
+        emission_current = self.rga.ionizer.emission_current
+        cem_voltage = self.rga.cem.voltage
 
-        if self.unit_value == 0:
-            self.conversion_factor = 0.1
-        else:
-            self.conversion_factor = self.rga.pressure.get_partial_pressure_sensitivity_in_torr()
-
-        self.logger.debug('Conversion factor: {:.3e}'.format(self.conversion_factor))
-        self.logger.info('Emission current: {:.2f} mA CEM HV: {} V'
-                         .format(self.rga.ionizer.emission_current, self.rga.cem.voltage))
-
-        self.rga.scan.set_callbacks(self.update_callback, self.scan_started_callback, None)
-
-        self.rga.scan.set_parameters(self.start_value,
-                                     self.stop_value,
-                                     self.speed_value)
+        self.logger.info('Emission current: {:.2f} mA CEM HV: {} V'.format(emission_current, cem_voltage))
+        self.rga.scan.set_parameters(self.params[self.StartMass],
+                                     self.params[self.StopMass],
+                                     self.params[self.ScanSpeed])
         self.mass_axis = self.rga.scan.get_mass_axis(False)  # Get the mass axis for histogram scan
-
-    def scan_started_callback(self):
-        self.last_index = 0
-
-        # Initialize the rectangles in the bar plot when a scan started
-        for rect in self.rects:
-            rect.set_height(0)
-
-        # Tell GUI to redraw the plot
-        self.notify_data_available()
-
-    # The scan calls this callback when data is available
-    def update_callback(self, index):
-        i = self.last_index
-        while i <= index:
-            # Update rectangles for new data
-            self.rects[i].set_height(self.rga.scan.spectrum[i] * self.conversion_factor)
-            i += 1
-
-        self.last_index = index
-        self.notify_data_available()
-
-    def init_plot(self):
-        # Set up a plot using matplotlib axes
-        # self.figure is used to draw on the GUI window.
-        self.ax = self.figure.add_subplot(111)
-        self.ax.set_title(self.__class__.__name__)
-        self.ax.set_xlabel("Mass (AMU)")
-        self.ax.set_ylabel('Ion Current(0.1fA)')
-
-        if self.unit_value == 0:
-            self.ax.set_ylabel('Ion Current (fA)')
-            self.ax.set_ylim(-1000, 100000, auto=False)
-        else:
-            self.ax.set_ylabel('Partial pressure (Torr)')
-            self.ax.set_ylim(-1e-10, 1e-9, auto=False)
-
-        self.rects = self.ax.bar(self.data_dict['x'], self.data_dict['y'])
-        self.ax.set_xlim(self.start_value, self.stop_value, auto=False)
 
     def test(self):
         self.set_task_passed(True)
 
-        number_of_iteration = self.reps_value
+        number_of_iteration = self.params[self.Reps]
         self.add_details('{}'.format(self.rga.status.id_string), key='ID')
 
         # Create a table in the data file

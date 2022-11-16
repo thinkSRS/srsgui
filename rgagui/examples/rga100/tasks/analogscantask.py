@@ -3,7 +3,7 @@ from datetime import datetime
 
 from rgagui.base.task import Task, round_float
 from rgagui.base.inputs import ListInput, IntegerInput, InstrumentInput
-from rgagui.base.plots import AnalogScanPlot
+from rgagui.plots.analogscanplot import AnalogScanPlot
 
 from instruments.get_instruments import get_rga
 
@@ -31,54 +31,51 @@ class AnalogScanTask(Task):
     }
 
     def setup(self):
+        # if True, detailed traceback info, when an exception happens
         self._log_error_detail = False
 
         # Get values to use for task  from input_parameters in GUI
-        self.instrument_name_value = self.get_input_parameter(self.InstrumentName)
-        self.start_value = self.get_input_parameter(self.StartMass)
-        self.stop_value  = self.get_input_parameter(self.StopMass)
-        self.speed_value = self.get_input_parameter(self.ScanSpeed)
-        self.step_value  = self.get_input_parameter(self.StepSize)
-        self.unit_value  = self.get_input_parameter(self.IntensityUnit)
-        self.reps_value  = self.get_input_parameter(self.Reps)
+        self.params = self.get_all_input_parameters()
 
         # Get logger to use
         self.logger = self.get_logger(__name__)
         self.logger.info('Start: {} Stop: {} Speed: {} Step: {}'.format(
-            self.start_value, self.stop_value, self.speed_value, self.step_value))
+            self.params[self.StartMass], self.params[self.StopMass],
+            self.params[self.ScanSpeed], self.params[self.StepSize]))
 
         self.init_scan()
 
+        # Set up an analog scan plot for the test
         self.ax = self.get_figure().add_subplot(111)
-        self.plot = AnalogScanPlot(self.ax, self.rga.scan, 'Analog Scan')
+        self.plot = AnalogScanPlot(self, self.ax, self.rga.scan, 'Analog Scan')
+
+        if self.params[self.IntensityUnit] == 0:
+            self.conversion_factor = 0.1
+            self.plot.set_conversion_factor(self.conversion_factor, 'fA')
+        else:
+            self.conversion_factor = self.rga.pressure.get_partial_pressure_sensitivity_in_torr()
+            self.plot.set_conversion_factor(self.conversion_factor, 'Torr')
 
     def init_scan(self):
         # Get the instrument to use
-        self.rga = get_rga(self, self.instrument_name_value)
+        self.rga = get_rga(self, self.params[self.InstrumentName])
         self.id_string = self.rga.status.id_string
         emission_current = self.rga.ionizer.emission_current
         cem_voltage = self.rga.cem.voltage
 
-        if self.unit_value == 0:
-            self.conversion_factor = 0.1
-        else:
-            self.conversion_factor = self.rga.pressure.get_partial_pressure_sensitivity_in_torr()
-
         self.logger.info('Emission current: {:.2f} mA CEM HV: {} V'.format(emission_current, cem_voltage))
-
-        self.rga.scan.set_parameters(self.start_value,
-                                     self.stop_value,
-                                     self.speed_value,
-                                     self.step_value)
+        self.rga.scan.set_parameters(self.params[self.StartMass],
+                                     self.params[self.StopMass],
+                                     self.params[self.ScanSpeed],
+                                     self.params[self.StepSize])
 
     def test(self):
         self.set_task_passed(True)
 
-        number_of_iteration = self.reps_value
+        number_of_iteration = self.params[self.Reps]
         self.add_details('{}'.format(self.id_string), key='ID')
 
         self.mass_axis = self.rga.scan.get_mass_axis()
-
         # Create a table in the data file
         self.create_table_in_file('Mass spectra', 'time', *map(round_float, self.mass_axis))
 
@@ -99,7 +96,7 @@ class AnalogScanTask(Task):
 
     def cleanup(self):
         self.logger.info('Task finished')
-        self.plot.cleanup()
+        self.plot.cleanup() # Detach callback functions
 
 
 if __name__ == '__main__':
