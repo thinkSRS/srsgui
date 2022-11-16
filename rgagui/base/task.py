@@ -61,18 +61,17 @@ class Task(QThread):
     _is_running = False  # class wide flag to tell if any task is running
     _is_optional = False  # result status will set as success initially if a task class is optional
 
-    # Multiple scans is run during a task
-    scan_started = Signal()
-    scan_finished = Signal()
-
     # signal for text output to UI
     text_written_available = Signal(str)
 
-    # emit when you need UI update for newly available data
-    data_available = Signal(dict)
-
     # emit to change UI input panel values for new parameters
     parameter_changed = Signal()
+
+    # Update a specific figure when multiple figures are used in a task
+    figure_update_requested = Signal(Figure)
+
+    # emit when you need UI update for newly available data
+    data_available = Signal(dict)
 
     # signal used to get an answer for a question from UI
     new_question = Signal(str, object)
@@ -399,6 +398,13 @@ class Task(QThread):
         else:
             raise KeyError('{} not in input_parameters'.format(name))
 
+    def get_all_input_parameters(self):
+        d = {}
+        for name in self.__class__.input_parameters:
+            value = self.get_input_parameter(name)
+            d[name] = value
+        return d
+
     @classmethod
     def set_input_parameter(cls, name, value):
         if name in cls.input_parameters:
@@ -413,6 +419,17 @@ class Task(QThread):
     # Notify UI to input_parameters for display update
     def notify_parameter_changed(self):
         self.parameter_changed.emit()
+
+    def request_figure_update(self, figure=None):
+        if type(figure) is not Figure:
+            figure = self.figure
+        self.figure_update_requested.emit(figure)
+
+    @Slot(Figure)
+    def update_figure(self, figure: Figure):
+        if type(figure) is not Figure:
+            raise TypeError('{} is not  a Figure'.format(type(figure)))
+        figure.canvas.draw_idle()
 
     # It needs a matching update() as a slot to run from UI
     def notify_data_available(self, data_dict={}):
@@ -433,28 +450,6 @@ class Task(QThread):
         self.figure.canvas.draw_idle()
         # self.logger.error("Derive update() to use data_available signal")
         # raise NotImplementedError("Derive update() to use data_available signal")
-
-    def scan_started_callback(self, *args):
-        self.scan_started.emit()
-
-    @Slot()
-    def update_on_scan_started(self):
-        """
-        This method handles scan_started signal.
-        """
-        self.logger.error("Derive update_on_scan_started to use scan_started signal")
-        # raise NotImplementedError("Derive update_on_scan_started to use scan_started signal")
-
-    def scan_finished_callback(self, *args):
-        self.scan_finished.emit()
-
-    @Slot()
-    def update_on_scan_finished(self):
-        """
-        This method handles scan_finished signal.
-        """
-        self.logger.error("Derive update_on_scan_finished() to use scan_finished signal")
-        # raise NotImplementedError("Derive update_on_scan_finished() to use scan_finished signal")
 
     def get_instrument(self, name):
         """Get an instrument from parent's inst_dict and check its validity"""

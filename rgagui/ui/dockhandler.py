@@ -65,6 +65,7 @@ class DockHandler(object):
             console_dock.setObjectName(name)
             console_dock.setFloating(False)
             console_dock.setWindowTitle(name)
+            console_dock.setMinimumWidth(300)
 
             self.console = QTextBrowser(self.parent)
             console_dock.setWidget(self.console)
@@ -109,6 +110,7 @@ class DockHandler(object):
             figure_dock.setObjectName(name)
             figure_dock.setFloating(False)
             figure_dock.setWindowTitle(name)
+            figure_dock.setMinimumSize(300, 300)
             self.setup_figure_canvas(figure_dock)
             figure_dock.toolbar.hide()
 

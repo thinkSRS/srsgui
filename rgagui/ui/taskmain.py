@@ -156,7 +156,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.task_dict = self.config.task_dict
 
             self.setWindowTitle(self.config.task_dict_name)
-            self.display_image(self.config.get_logo_file())
+            self.dock_handler.display_image(self.config.get_logo_file())
 
             self.session_handler = SessionHandler(self.config, True, False, False)
             self.session_handler.open_session(0)
@@ -354,8 +354,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.task.set_session_handler(self.session_handler)
             self.task.text_written_available.connect(self.print_redirect)
             self.task.data_available.connect(self.task.update)
-            self.task.scan_started.connect(self.task.update_on_scan_started)
-            self.task.scan_finished.connect(self.task.update_on_scan_finished)
+            self.task.figure_update_requested.connect(self.task.update_figure)
             self.task.parameter_changed.connect(self.taskParameter.update)
             self.task.finished.connect(self.onTaskFinished)
             self.task.new_question.connect(self.display_question)
@@ -397,9 +396,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             inst = self.get_inst(inst_name)
             form = CommConnectDlg(inst)
             form.exec_()
-
-            # self.display_image(self.config.get_logo_file())
-            # self.console.clear()
 
             if inst.is_connected():
                 self.inst_info_handler.update_info(inst_name)
@@ -499,43 +495,17 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         else:
             event.ignore()
 
-    def display_image(self, image_file):
-        self.dock_handler.display_image(image_file)
-
     def handle_initial_image(self, task_class):
-        self.dock_handler.clear_figures()
-        attr = 'InitialImage'
-        if not hasattr(task_class, attr):
-            self.display_image(self.config.get_logo_file())
-            return
-
-        image_file = getattr(task_class, attr)
-        if image_file is None:
-            self.display_image(self.config.get_logo_file())
-            return
-
         try:
-            self.figure.clear()
-            img = mpimg.imread(image_file)
-            ax = self.figure.subplots()
-            ax.imshow(img)
-            ax.axis('off')
-
-            attr = 'InitialLimits'
+            self.dock_handler.clear_figures()
+            attr = 'InitialImage'
+            image_file = self.config.get_logo_file()
             if hasattr(task_class, attr):
-                limits = getattr(task_class, attr)
-                if limits is not None:
-                    ax.set_xlim(limits[0])
-                    ax.set_ylim(limits[1])
-
-            attr = 'InitialMarkers'
-            if hasattr(task_class, attr):
-                markers = getattr(task_class, attr)
-                if markers is not None:
-                    for marker in markers:
-                        ax.plot(marker[0], marker[1], **marker[2])
-
-            self.figure.canvas.draw_idle()
+                i_file = getattr(task_class, attr)
+                if i_file:
+                    image_file = i_file
+            self.dock_handler.display_image(image_file)
+            return
         except Exception as e:
             logger.error(f"Error in handle_initial_image: {e}")
 
