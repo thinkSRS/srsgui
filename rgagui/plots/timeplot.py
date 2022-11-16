@@ -43,3 +43,6 @@ class TimePlot:
             self.ax.set_ylim(min_value - abs(min_value)/2, max_value + abs(max_value)/2)
         if update_figure:
             self.parent.request_figure_update(self.ax.figure)
+
+    def cleanup(self):
+        pass

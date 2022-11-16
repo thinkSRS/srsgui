@@ -275,7 +275,7 @@ class Task(QThread):
             name = list(self.figure_dict.keys())[0]
         if name in self.figure_dict:
             return self.figure_dict[name]
-        raise KeyError('Invalid figure name: {}'.fomrat(name))
+        raise KeyError('Invalid figure name: {}'.format(name))
 
     def clear(self):
         """
@@ -359,7 +359,7 @@ class Task(QThread):
             if device_name:
                 self.write_text('{}{}:cls'.format(self.EscapeForDevice, device_name))
             else:
-                self.write_text('{}cls'.fomrat(self.EscapeForDevice))
+                self.write_text('{}cls'.format(self.EscapeForDevice))
 
         if device_name:
             self.write_text('{}{}:{}'.format(self.EscapeForDevice, device_name, message))
