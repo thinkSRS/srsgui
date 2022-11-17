@@ -14,12 +14,10 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QTextBrowser,\
                             QInputDialog, QFileDialog, \
                             QAction
 
-import matplotlib.image as mpimg
-
 from .ui_taskmain import Ui_TaskMain
 from .commConnectDlg import CommConnectDlg
 from .inputpanel import InputPanel
-from .commandTerminal import CommandTerminal
+
 from .config import Config
 from .stdout import StdOut
 from .qtloghandler import QtLogHandler
@@ -65,7 +63,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
         try:
             default_config_file = str(Path(__file__).parent.parent /
-                                           'examples/rga100/myrga.taskconfig')
+                                      'examples/rga100/myrga.taskconfig')
             self.config = Config()
             self.base_data_dir = self.config.base_data_dir
             self.base_log_file_name = self.config.base_log_file_name
@@ -105,7 +103,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         # Session handler for TaskResult output
         self.session_handler = None
 
-        self.load_settings()
+        # self.load_settings()
+        QTimer.singleShot(0, self.load_settings)
+        self.default_config_file = self.settings.value("ConfigFile", "", type=str)
         if not self.default_config_file:
             self.default_config_file = default_config_file
 
@@ -113,7 +113,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         self.stdout = StdOut(self.print_redirect)
 
     def load_tasks(self):
-
         try:
             # Clear console and result display
             self.console.clear()
@@ -152,7 +151,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                 inst = self.get_inst(inst_name)
                 self.inst_info_handler.update_info(inst_name)
 
-            self.dut_sn_prefix = '0'  # self.config.dut_sn_prefix
             self.task_dict = self.config.task_dict
 
             self.setWindowTitle(self.config.task_dict_name)
@@ -372,9 +370,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             logger.info('{} stopped'.format(self.task.name))
             self.task.stop()
 
-    def onNew(self):
-        logger.info('Creating a file..')
-
     def onOpen(self):
         try:
             logger.info('Opening a TaskConfig file..')
@@ -386,9 +381,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                 logger.info('File opened: {}'.format(file_name))
         except Exception as e:
             logger.error(e)
-
-    def onSave(self):
-        logger.info('Saving a file..')
 
     def onConnect(self, inst_name):
         logger.info('Connecting to {}...'.format(inst_name))

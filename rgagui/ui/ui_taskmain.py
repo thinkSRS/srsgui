@@ -158,8 +158,6 @@ class Ui_TaskMain(object):
         self.retranslateUi(TaskMain)
         self.deviceInfoTabWidget.setCurrentIndex(0)
         self.action_Open.triggered.connect(TaskMain.onOpen)
-        self.action_New.triggered.connect(TaskMain.onNew)
-        self.action_Save.triggered.connect(TaskMain.onSave)
         self.actionE_xit.triggered.connect(TaskMain.close)
         self.actionRun.triggered.connect(TaskMain.onRun)
         self.actionStop.triggered.connect(TaskMain.onStop)

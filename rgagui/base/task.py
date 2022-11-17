@@ -37,7 +37,7 @@ class Task(QThread):
 
     # When parent is not None, parent should have these attributes.
     InstrumentDictName = 'inst_dict'  # all instruments to use in a task
-    FigureDictName = 'figure_dict'  # all matplotlib figures to use in a task
+    FigureDictName = 'figure_dict'  # all Matplotlib figures to use in a task
     SessionHandlerName = 'session_handler'
 
     # Escape string use in stdout redirection to GUI
@@ -78,8 +78,6 @@ class Task(QThread):
 
     # Image information for parent to display instead of the default logo image before instantiated
     InitialImage = None  # None for default image
-    InitialLimits = None
-    InitialMarkers = None
 
     def __init__(self, parent=None):
         """ parent should have instrument dict,
@@ -170,14 +168,14 @@ class Task(QThread):
         self.update_status(msg)
         self.logger.info(GreenBold.format(msg))
 
-        self.__notify_start()
+        self._notify_start()
         self.clear()
 
     def basic_cleanup(self):
         try:
             Task._is_running = False
             self._keep_running = False
-            self.__notify_finish()
+            self._notify_finish()
             self.result.set_stop_time_now()
             if self._aborted:
                 msg = '{} ABORTED'.format(self.name)
@@ -373,11 +371,11 @@ class Task(QThread):
             self.write_text('{}cls'.format(self.EscapeForResult))
         self.write_text('{}{}'.format(self.EscapeForResult, message))
 
-    def __notify_start(self):
+    def _notify_start(self):
         self.write_text(self.EscapeForStart + self.name)
         self.update_status(self.name + ' running')
 
-    def __notify_finish(self):
+    def _notify_finish(self):
         self.write_text(self.EscapeForStop + self.name)
         self.update_status(self.name + ' stopped')
 
