@@ -1,2 +1,2 @@
 
-__version__ = "0.0.16"  # Global version number
+__version__ = "0.0.18"  # Global version number

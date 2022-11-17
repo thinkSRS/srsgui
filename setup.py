@@ -16,7 +16,7 @@ def find_version(*args):
 
 
 def get_file_names(directory):
-    paths=[]
+    paths = []
     for (path, directories, filenames) in os.walk(directory):
         for filename in filenames:
             paths.append(os.path.join('..', path, filename))
@@ -27,12 +27,11 @@ description = open('readme.md').read()
 version_string = find_version('rgagui', '__init__.py')
 
 files = get_file_names('rgagui/examples') + get_file_names('rgagui/ui/images')
-
 setup(
     name='rgagui',
     version=version_string,
     description='GUI Interface for RGA Instruments and Tasks',
-    packages=['rgagui', 'rgagui.ui', 'rgagui.base'],
+    packages=['rgagui', 'rgagui.ui', 'rgagui.base', 'rgagui.plots'],
     package_data={
         'rgagui': files,
         # get_file_names('rgagui/examples') ,
@@ -49,7 +48,7 @@ setup(
     
     entry_points={
         'console_scripts': [
-            'rgagui = rgagui.taskmain:main'
+            'rgagui = rgagui.__main__:main'
         ],
         
     },
