@@ -56,7 +56,7 @@ class Task(QThread):
 
     # Names for multiple  Matplotlib figures you will use in this task
     # If empty, you will have one figure named 'Figure' as a default
-    figure_names = []  # e.g., ['Scan Plots','Temperature Plots']
+    additional_figure_names = []  # e.g., ['Scan Plots','Temperature Plots']
 
     _is_running = False  # class wide flag to tell if any task is running
     _is_optional = False  # result status will set as success initially if a task class is optional

@@ -18,7 +18,7 @@ class UGAMultiplotTask(Task):
         InstrumentName: InstrumentInput(),
     }
 
-    figure_names = ['Analog Scan', 'Histogram Scan', 'RGA Analog Scan']
+    additional_figure_names = ['analog_scan', 'histogram_scan', 'rga_analog_scan']
 
     def setup(self):
         self.logger = self.get_logger(__name__)
@@ -32,9 +32,9 @@ class UGAMultiplotTask(Task):
         self.rga = get_rga(self, 'rga')
 
         self.ax = self.get_figure().subplots(nrows=1, ncols=2, sharex=True)
-        self.ax_analog = self.get_figure('Analog Scan').add_subplot(111)
-        self.ax_histogram = self.get_figure('Histogram Scan').add_subplot(111)
-        self.ax_rga_analog = self.get_figure('RGA Analog Scan').add_subplot(111)
+        self.ax_analog = self.get_figure('analog_scan').add_subplot(111)
+        self.ax_histogram = self.get_figure('histogram_scan').add_subplot(111)
+        self.ax_rga_analog = self.get_figure('rga_analog_scan').add_subplot(111)
 
         self.pressure_plot = TimePlot(self, self.ax[0], 'Pressure', 
             ['IG pressure', 'PG pressure', 'CM pressure'])

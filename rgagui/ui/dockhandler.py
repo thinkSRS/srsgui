@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 class DockHandler(object):
     DefaultConsoleName = 'Console'
     DefaultTerminalName = 'Terminal'
-    DefaultFigureName = 'Plot'
+    DefaultFigureName = 'plot'
     MenuName = 'menu_View'
 
     def __init__(self, parent):
@@ -28,7 +28,7 @@ class DockHandler(object):
             raise AttributeError('Parent does not have all Attributes required')
         self.parent = parent
         self.dock_dict = {}
-        self.named_figure_docks = []
+        self.removed_figure_docks = []
         self.fig_dock_area = Qt.RightDockWidgetArea
         try:
             parent.menu_View.triggered.disconnect()
@@ -173,12 +173,12 @@ class DockHandler(object):
             while len(self.dock_dict) > 3:
                 name, fig = self.dock_dict.popitem()
                 self.parent.removeDockWidget(fig)
-                self.named_figure_docks.append(fig)
+                self.removed_figure_docks.append(fig)
                 # logger.deubg('removed {} {}'.format(name, fig))
 
             for name in name_list:
-                if self.named_figure_docks:
-                    dock = self.named_figure_docks.pop()
+                if self.removed_figure_docks:
+                    dock = self.removed_figure_docks.pop()
                     dock.setWindowTitle(name)
                     dock.setObjectName(name)
                     self.dock_dict[name] = dock

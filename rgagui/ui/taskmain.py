@@ -59,6 +59,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         self.console = self.dock_handler.console
         self.terminal_widget = self.dock_handler.terminal_widget
         self.figure = self.dock_handler.get_figure()
+        self.figure_dict = self.dock_handler.get_figure_dict()
         self.plotDockWidget = self.dock_handler.get_dock()
 
         try:
@@ -322,7 +323,8 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                 raise TypeError(msg)
 
             self.task_method = taskClassChosen
-            self.dock_handler.update_figures(self.task_method.figure_names)
+            self.dock_handler.update_figures(self.task_method.additional_figure_names)
+            self.figure_dict = self.dock_handler.get_figure_dict()
             self.handle_initial_image(self.task_method)
 
             self.statusbar.showMessage('Press Run button to start the task selected')

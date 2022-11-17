@@ -73,7 +73,7 @@ class CommandTerminal(QFrame, Ui_CommandTerminal):
     def _check_connected(self, inst):
         if not (isinstance(inst, Instrument) and inst.is_connected()):
             msg_box = QMessageBox()
-            msg_box.setText("No DUT connected")
+            msg_box.setText('"{}" is NOT connected'.format(inst.get_name()))
             msg_box.exec()
             return False
         return True
@@ -99,6 +99,8 @@ class CommandTerminal(QFrame, Ui_CommandTerminal):
                 inst = self.parent.get_inst(inst_name)
                 if self._check_connected(inst):
                     reply = self.eval(cmd)
+            elif inst_name in self.parent.figure_dict:
+                reply = self.eval(cmd)
             else:
                 inst_name = cmd.split(':', 1)[0]
                 if inst_name in keys:
@@ -122,7 +124,7 @@ class CommandTerminal(QFrame, Ui_CommandTerminal):
             exec(cmd, {}, self.parent.inst_dict)
             return ''
         else:
-            reply = eval(cmd, {}, self.parent.inst_dict)
+            reply = eval(cmd, self.parent.figure_dict, self.parent.inst_dict)
             if reply is not None:
                 return str(reply)
             return ''
