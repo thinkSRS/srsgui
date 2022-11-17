@@ -362,7 +362,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
             # logger.info('{} starting'.format(type(self.task)))
             self.onTaskStarted()
-            self.dock_handler.show_toolbar()
+            self.dock_handler.show_toolbar(True)
             self.task.start()
         except Exception as e:
             logger.error(e)

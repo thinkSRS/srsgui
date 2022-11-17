@@ -19,11 +19,14 @@ class DockHandler(object):
     DefaultConsoleName = 'Console'
     DefaultTerminalName = 'Terminal'
     DefaultFigureName = 'plot'
-    MenuName = 'menu_View'
+    MenuDocksName = 'menu_Docks'
+    MenuPlotName = 'menu_Plot'
 
     def __init__(self, parent):
-        if not (hasattr(parent, self.MenuName) and
-                type(parent.menu_View) == QMenu
+        if not (hasattr(parent, self.MenuDocksName) and
+                type(parent.menu_Docks) == QMenu and
+                hasattr(parent, self.MenuPlotName) and
+                type(parent.menu_Plot) == QMenu
                 ):
             raise AttributeError('Parent does not have all Attributes required')
         self.parent = parent
@@ -31,12 +34,12 @@ class DockHandler(object):
         self.removed_figure_docks = []
         self.fig_dock_area = Qt.RightDockWidgetArea
         try:
-            parent.menu_View.triggered.disconnect()
+            parent.menu_Docks.triggered.disconnect()
         except:
             pass
-        actions = parent.menu_View.actions()
+        actions = parent.menu_Docks.actions()
         for action in actions:
-            parent.menu_View.removeAction(action)
+            parent.menu_Docks.removeAction(action)
 
         self.dock_dict = {}
 
@@ -51,12 +54,47 @@ class DockHandler(object):
         self.default_dock = self.dock_dict[self.DefaultFigureName]
         self.default_figure = self.dock_dict[self.DefaultFigureName].figure
 
-        parent.menu_View.triggered.connect(self.onDockMenuSelected)
+        parent.menu_Docks.triggered.connect(self.onMenuDocksSelected)
         for key in self.dock_dict:
             action_dock = QAction(parent)
             action_dock.setText(key)
             action_dock.setCheckable(True)
-            parent.menu_View.addAction(action_dock)
+            parent.menu_Docks.addAction(action_dock)
+        self.init_plot_menu()
+
+    def init_plot_menu(self):
+        try:
+            self.parent.menu_Plot.triggered.disconnect()
+        except:
+            pass
+        actions = self.parent.menu_Plot.actions()
+        for action in actions:
+            self.parent.menu_Plot.removeAction(action)
+
+        # self.parent.menu_Plot.triggered.connect(self.onMenuPlotSelected)
+        self.action_tight_layout = QAction(self.parent)
+        self.action_tight_layout.setText('Tight Layout')
+        self.action_tight_layout.triggered.connect(self.onTightLayout)
+        self.parent.menu_Plot.addAction(self.action_tight_layout)
+
+        self.action_toolbar = QAction(self.parent)
+        self.show_toolbar(False)
+        self.action_toolbar.triggered.connect(self.onToolbar)
+        self.parent.menu_Plot.addAction(self.action_toolbar)
+
+    def onTightLayout(self):
+        for fig in self.get_figure_dict().values():
+            if len(fig.get_axes()) > 0:
+                fig.tight_layout()
+
+    def onToolbar(self):
+        if self.toolbar_visible:
+            self.show_toolbar(False)
+        else:
+            self.show_toolbar(True)
+
+
+
 
     def init_console(self):
         try:
@@ -154,17 +192,12 @@ class DockHandler(object):
             raise KeyError('No dock widget named {}'.format(name))
         return self.dock_dict[name]
 
-    def onDockMenuSelected(self, action):
+    def onMenuDocksSelected(self, action):
         try:
             name = action.text()
             widget = self.dock_dict[name]
-            if not widget.isVisible():
-                widget.setVisible(True)
-                action.setChecked(True)
-            else:
-                widget.setVisible(False)
-                action.setChecked(False)
-
+            widget.setVisible(True)
+            widget.raise_()
         except Exception as e:
             logger.error(e)
 
@@ -194,16 +227,16 @@ class DockHandler(object):
             logger.error(e)
 
     def update_menu(self):
-        if not hasattr(self.parent, self.MenuName):
+        if not hasattr(self.parent, self.MenuDocksName):
             return
-        actions = self.parent.menu_View.actions()
+        actions = self.parent.menu_Docks.actions()
         for action in actions:
-            self.parent.menu_View.removeAction(action)
+            self.parent.menu_Docks.removeAction(action)
         for key in self.dock_dict:
             action_dock = QAction(self.parent)
             action_dock.setText(key)
-            action_dock.setCheckable(True)
-            self.parent.menu_View.addAction(action_dock)
+            # action_dock.setCheckable(True)
+            self.parent.menu_Docks.addAction(action_dock)
 
     def get_figure_dict(self):
         fig_dict = {}
@@ -219,7 +252,16 @@ class DockHandler(object):
         else:
             self.get_figure(name).clear()
 
-    def show_toolbar(self):
-        for dock in self.dock_dict.values():
-            if hasattr(dock, 'toolbar'):
-                dock.toolbar.show()
+    def show_toolbar(self, state=True):
+        if state:
+            self.action_toolbar.setText('Hide Toolbar')
+            self.toolbar_visible = True
+            for dock in self.dock_dict.values():
+                if hasattr(dock, 'toolbar'):
+                    dock.toolbar.show()
+        else:
+            self.action_toolbar.setText('Show Toolbar')
+            self.toolbar_visible = False
+            for dock in self.dock_dict.values():
+                if hasattr(dock, 'toolbar'):
+                    dock.toolbar.hide()

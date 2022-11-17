@@ -113,7 +113,7 @@
      <x>0</x>
      <y>0</y>
      <width>1140</width>
-     <height>23</height>
+     <height>29</height>
     </rect>
    </property>
    <property name="font">
@@ -136,32 +136,38 @@
     <addaction name="actionRun"/>
     <addaction name="actionStop"/>
    </widget>
-   <widget class="QMenu" name="menu_View">
+   <widget class="QMenu" name="menu_Docks">
     <property name="title">
-     <string>&amp;View</string>
+     <string>&amp;Docks</string>
     </property>
    </widget>
-   <widget class="QMenu" name="menuHelp">
+   <widget class="QMenu" name="menu_Help">
     <property name="title">
-     <string>Help</string>
+     <string>&amp;Help</string>
     </property>
    </widget>
    <widget class="QMenu" name="menu_Tasks">
     <property name="title">
-     <string>Tasks</string>
+     <string>&amp;Tasks</string>
     </property>
    </widget>
    <widget class="QMenu" name="menu_Instruments">
     <property name="title">
-     <string>Instruments</string>
+     <string>&amp;Instruments</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menu_Plot">
+    <property name="title">
+     <string>&amp;Plot</string>
     </property>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Control"/>
    <addaction name="menu_Instruments"/>
    <addaction name="menu_Tasks"/>
-   <addaction name="menu_View"/>
-   <addaction name="menuHelp"/>
+   <addaction name="menu_Docks"/>
+   <addaction name="menu_Plot"/>
+   <addaction name="menu_Help"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="font">
