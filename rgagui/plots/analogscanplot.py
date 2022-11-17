@@ -25,7 +25,7 @@ class AnalogScanPlot:
         self.ax.set_xlabel("Mass (AMU)")
         self.ax.set_ylabel('Ion Current ({})'.format(self.unit))
         self.line, = self.ax.plot(self.data['x'], self.data['y'])
-
+        self.ax.set_ylim(1, 100000)
         self.reset()
 
     def reset(self):
@@ -39,8 +39,12 @@ class AnalogScanPlot:
                                 self.update_on_scan_finished)
 
     def set_conversion_factor(self, factor=0.1, unit='fA'):
+        old_factor = self.conversion_factor
         self.conversion_factor = factor
         self.unit = unit
+        factor_ratio = self.conversion_factor / old_factor
+        bottom, top = self.ax.get_ylim()
+        self.ax.set_ylim(bottom * factor_ratio, top * factor_ratio)
         self.ax.set_ylabel('Ion Current ({})'.format(self.unit))
 
     def update_on_scan_data_available(self, index):

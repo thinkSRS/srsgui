@@ -41,7 +41,8 @@ class UGAMultiplotTask(Task):
         self.pressure_plot.ax.set_yscale('log')
         
         self.temperature_plot = TimePlot(self, self.ax[1], 'Temperature', 
-            ['Chamber Temperature', 'Elbow Temperature', 'Sample Inlet Temperature', 'Turbo Pump Temperature'])
+            ['Chamber Temperature', 'Elbow Temperature', 'Sample Inlet Temperature',
+             'Capillary Temperature', 'Turbo Pump Temperature'])
 
         self.analog_scan_plot = AnalogScanPlot(self, self.ax_analog, self.uga.rga.scan, 'Analog Scan')
         self.histogram_scan_plot = HistogramScanPlot(self, self.ax_histogram, self.uga.rga.scan, 'Histogram Scan')

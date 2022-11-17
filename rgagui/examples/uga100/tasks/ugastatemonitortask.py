@@ -20,11 +20,8 @@ class UGAStateMonitorTask(Task):
 
     def setup(self):
         self.logger = self.get_logger(__name__)
-        
-        self.instrument_name_value = self.get_input_parameter(self.InstrumentName)
-        self.update_period_value = self.get_input_parameter(self.UpdatePeriod)
-        self.uga = get_uga(self, self.instrument_name_value)
-
+        self.params = self.get_all_input_parameters()
+        self.uga = get_uga(self, self.params[self.InstrumentName])
         self.ax = self.figure.subplots(nrows=1, ncols=2, sharex=True)
         
         self.pressure_plot = TimePlot(self, self.ax[0], 'Pressure', 
@@ -32,7 +29,8 @@ class UGAStateMonitorTask(Task):
         self.pressure_plot.ax.set_yscale('log')
         
         self.temperature_plot = TimePlot(self, self.ax[1], 'Temperature', 
-            ['Chamber Temperature', 'Elbow Temperature', 'Sample Inlet Temperature', 'Turbo Pump Temperature'])
+            ['Chamber Temperature', 'Elbow Temperature', 'Sample Inlet Temperature',
+             'Capillary Temperature', 'Turbo Pump Temperature'])
    
     def test(self):
         while True:
@@ -48,7 +46,7 @@ class UGAStateMonitorTask(Task):
                          self.uga.temperature.sample_inlet, self.uga.temperature.capillary,
                          self.uga.temperature.turbo_pump], True)
                          
-            time.sleep(self.update_period_value)
+            time.sleep(self.params[self.UpdatePeriod])
             
     def cleanup(self):
         pass

@@ -65,7 +65,7 @@ class DockHandler(object):
             console_dock.setObjectName(name)
             console_dock.setFloating(False)
             console_dock.setWindowTitle(name)
-            console_dock.setMinimumWidth(300)
+            console_dock.setMinimumSize(250, 250)
 
             self.console = QTextBrowser(self.parent)
             console_dock.setWidget(self.console)
@@ -81,6 +81,7 @@ class DockHandler(object):
             terminal_dock.setObjectName(name)
             terminal_dock.setFloating(False)
             terminal_dock.setWindowTitle(name)
+            terminal_dock.setMinimumSize(250, 250)
 
             self.terminal_widget = CommandTerminal(self.parent)
             terminal_dock.setWidget(self.terminal_widget)
