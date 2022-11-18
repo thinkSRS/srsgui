@@ -27,7 +27,7 @@ class SessionHandler(object):
         self.path = None
         self.output_file = None
         self.is_file_open = False
-        self.no_of_columns = 0
+        self.column_sizes = {}
 
         if use_file or use_db:
             if not hasattr(config, 'base_data_dir'):
@@ -132,23 +132,27 @@ class SessionHandler(object):
     def add_dict_to_file(self, name, data_dict):
         if not self.is_file_open:
             raise IOError('File is not open')
-        self.output_file.write(':::DICT-{}:::\n'.format(name))
+        self.output_file.write('\n:::DICT-{}:::\n'.format(name))
         json.dump(data_dict, self.output_file)
+        self.output_file.write('\n:::DICTEND-{}:::\n'.format(name))
 
     def create_table_in_file(self, name, *args):
         """argv: list of header string"""
-        self.no_of_columns = len(args)
-        self.output_file.write(':::TABLE-{}:::\n'.format(name))
+        self.column_sizes[name] = len(args)
+        self.output_file.write('THEAD:{}, '.format(name))
         self.output_file.write(', '.join(map(str, args)) + '\n')
 
-    def add_to_table_in_file(self, *args, format_list=None):
-        if len(args) != self.no_of_columns:
-            raise ValueError('Length of data does not match with header')
-
+    def add_to_table_in_file(self, name, *args, format_list=None):
+        no_of_cols = len(args)
+        if name not in self.column_sizes:
+            raise KeyError('Invalid table name: {}'.format(name))
+        if no_of_cols != self.column_sizes[name]:
+            raise ValueError('Length of data does not match with header in "{}"'.format(name))
+        self.output_file.write('TDATA:{}, '.format(name))
         if format_list:
             self.output_file.write(', '.join(format_list).format(*args) + '\n')
         else:
-            self.output_file.write(', '.join(['{}'] * self.no_of_columns).format(*args) + '\n')
+            self.output_file.write(', '.join(['{}'] * no_of_cols).format(*args) + '\n')
 
     def close_file(self):
         self.output_file.close()

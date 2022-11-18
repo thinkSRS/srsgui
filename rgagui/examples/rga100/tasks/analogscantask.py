@@ -76,8 +76,6 @@ class AnalogScanTask(Task):
         self.add_details('{}'.format(self.id_string), key='ID')
 
         self.mass_axis = self.rga.scan.get_mass_axis()
-        # Create a table in the data file
-        self.create_table_in_file('Mass spectra', 'time', *map(round_float, self.mass_axis))
 
         for i in range(number_of_iteration):
             if not self.is_running():
@@ -85,10 +83,6 @@ class AnalogScanTask(Task):
             try:
                 self.rga.scan.get_analog_scan()
                 self.logger.debug('scan {} finished'.format(i))
-
-                # write the spectrum in to the data file
-                timestamp = datetime.now().strftime('%H:%M:%S')
-                self.add_to_table_in_file(timestamp, *self.rga.scan.spectrum)
 
             except Exception as e:
                 self.set_task_passed(False)

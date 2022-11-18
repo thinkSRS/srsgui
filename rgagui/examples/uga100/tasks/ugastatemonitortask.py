@@ -37,7 +37,7 @@ class UGAStateMonitorTask(Task):
             if not self.is_running():
                 break
                 
-            self.display_device_info(device_name=self.instrument_name_value, update=True)
+            self.display_device_info(device_name=self.params[self.InstrumentName], update=True)
             
             self.pressure_plot.add_data([self.uga.ig.get_pressure(), self.uga.rp.get_pressure(),
                          self.uga.bp.get_pressure()])

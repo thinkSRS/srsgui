@@ -93,9 +93,6 @@ class DockHandler(object):
         else:
             self.show_toolbar(True)
 
-
-
-
     def init_console(self):
         try:
             name = self.DefaultConsoleName

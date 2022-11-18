@@ -158,7 +158,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.dock_handler.display_image(self.config.get_logo_file())
 
             self.session_handler = SessionHandler(self.config, True, False, False)
-            self.session_handler.open_session(0)
+            self.session_handler.open_session(0, False)
 
         except Exception as e:
             logger.error('{}: {}'.format(e.__class__.__name__, e))

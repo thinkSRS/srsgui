@@ -76,9 +76,6 @@ class HistogramScanTask(Task):
         number_of_iteration = self.params[self.Reps]
         self.add_details('{}'.format(self.rga.status.id_string), key='ID')
 
-        # Create a table in the data file
-        self.create_table_in_file('Mass spectra', 'time', *map(round_float, self.mass_axis))
-
         for i in range(number_of_iteration):
             if not self.is_running():
                 break
@@ -86,13 +83,9 @@ class HistogramScanTask(Task):
                 self.rga.scan.get_histogram_scan()
                 self.logger.debug('scan {} finished'.format(i))
 
-                # write the spectrum in to the data file
-                timestamp = datetime.now().strftime('%H:%M:%S')
-                self.add_to_table_in_file(timestamp, *self.rga.scan.spectrum)
-
             except Exception as e:
                 self.set_task_passed(False)
-                self.logger.error(e)
+                self.logger.error('{}: {}'.format(e.__class__.__name__, e))
 
     def cleanup(self):
         self.logger.info('Task finished')

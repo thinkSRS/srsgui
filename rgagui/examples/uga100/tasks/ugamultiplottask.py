@@ -8,7 +8,7 @@ from rgagui.plots.histogramscanplot import HistogramScanPlot
 
 from instruments.get_instruments import get_uga, get_rga
 
-            
+
 class UGAMultiplotTask(Task):
     """
     Run multiple plots for UGA
@@ -44,9 +44,15 @@ class UGAMultiplotTask(Task):
             ['Chamber Temperature', 'Elbow Temperature', 'Sample Inlet Temperature',
              'Capillary Temperature', 'Turbo Pump Temperature'])
 
+        self.uga.rga.scan.set_parameters(1, 50, 5, 10)
         self.analog_scan_plot = AnalogScanPlot(self, self.ax_analog, self.uga.rga.scan, 'Analog Scan')
+        self.analog_scan_plot.set_conversion_factor(
+            self.uga.rga.pressure.get_partial_pressure_sensitivity_in_torr(), 'Torr')
+
+        self.uga.rga.scan.set_parameters(10, 45, 3, 10)
         self.histogram_scan_plot = HistogramScanPlot(self, self.ax_histogram, self.uga.rga.scan, 'Histogram Scan')
 
+        self.rga.scan.set_parameters(1, 50, 3, 10)
         self.rga_analog_scan_plot = AnalogScanPlot(self, self.ax_rga_analog,
                                                    self.rga.scan, 'RGA analog')
 
@@ -64,16 +70,18 @@ class UGAMultiplotTask(Task):
                          self.uga.temperature.sample_inlet, self.uga.temperature.capillary,
                          self.uga.temperature.turbo_pump], True)
 
-            self.uga.rga.scan.set_parameters(1, 50, 5, 10)
-            self.analog_scan_plot.reset()
-            self.uga.rga.scan.get_analog_scan()
+            self.rga.scan.set_parameters(1, 50, 3, 10)
+            self.rga.scan.get_analog_scan()
 
             self.uga.rga.scan.set_parameters(10, 45, 3, 10)
             self.histogram_scan_plot.reset()
             self.uga.rga.scan.get_histogram_scan()
 
-            self.rga.scan.set_parameters(1, 50, 3, 10)
-            self.rga.scan.get_analog_scan()
+            self.uga.rga.scan.set_parameters(1, 50, 5, 10)
+            self.analog_scan_plot.reset()
+            self.uga.rga.scan.get_analog_scan()
+
+
 
     def cleanup(self):
         self.analog_scan_plot.cleanup()
