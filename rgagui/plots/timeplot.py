@@ -1,7 +1,11 @@
 
 import time
+import logging
+
 from matplotlib.axes import Axes
 from rgagui.base import Task, round_float
+
+logger = logging.getLogger(__name__)
 
 
 class TimePlot:
@@ -10,11 +14,19 @@ class TimePlot:
             raise TypeError('Invalid parent {} is not a Task subclass'.format(type(parent)))
         # if type(ax) is not Axes or AxesSubplot:
         #    raise TypeError('ax is not a Matplotlib Axes class, but "{}"'.format(type(ax)))
-            
+
+        self.type = 'time_plot'
         self.parent = parent                    
         self.ax = ax
         self.name = plot_name
-        self.save_data = save_data
+
+        if hasattr(self.parent, 'session_handler') and self.parent.session_handler:
+            self.save_data = save_data
+        else:
+            self.save_data = False
+            logger.error('parent has no session_handler')
+
+        self.unit = ''
 
         self.data_keys = data_names
         self.init_time = time.time()
@@ -30,9 +42,7 @@ class TimePlot:
         self.ax.set_xlim(0, 300)
         self.ax.legend()
 
-        if self.save_data:
-            self.parent.create_table_in_file(self.name, 'Elapsed time', *self.data_keys)
-
+        self.header_saved = False
         self.initial_time = time.time()
 
     def add_data(self, data_list=(0,), update_figure=False):
@@ -53,10 +63,32 @@ class TimePlot:
             self.parent.request_figure_update(self.ax.figure)
 
         if self.save_data:
-            # write the spectrum in to the data file
-            elapsed_time = round_float(time.time() - self.initial_time)
-            # timestamp = datetime.now().strftime('%H:%M:%S')
-            self.parent.add_to_table_in_file(self.name, elapsed_time, *map(round_float, data_list))
+            self.save_scan_data(data_list)
+
+    def save_scan_data(self, data_list):
+        if not self.header_saved:
+            self.parent.session_handler.add_dict_to_file(self.name, self.get_plot_info())
+            self.parent.create_table_in_file(self.name, 'Elapsed time', *self.data_keys)
+            self.header_saved = True
+
+        # write the spectrum in to the data file
+        elapsed_time = round_float(time.time() - self.initial_time)
+        # timestamp = datetime.now().strftime('%H:%M:%S')
+        self.parent.add_to_table_in_file(self.name, elapsed_time, *map(round_float, data_list))
+
+    def get_plot_info(self):
+        return {
+            'type': self.type,
+            'xunit': 's',
+            'yunit': self.unit,
+            'axes_title': self.ax.get_title(),
+            'axes_xlabel': self.ax.get_xlabel(),
+            'axes_ylabel': self.ax.get_ylabel(),
+            'axes_xlim': self.ax.get_xlim(),
+            'axes_ylim': self.ax.get_ylim(),
+            'axes_xsclae': self.ax.get_xscale(),
+            'axes_yscale': self.ax.get_yscale(),
+        }
 
     def cleanup(self):
         pass

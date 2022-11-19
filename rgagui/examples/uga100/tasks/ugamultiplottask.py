@@ -71,6 +71,7 @@ class UGAMultiplotTask(Task):
                          self.uga.temperature.turbo_pump], True)
 
             self.rga.scan.set_parameters(1, 50, 3, 10)
+            self.rga_analog_scan_plot.reset()
             self.rga.scan.get_analog_scan()
 
             self.uga.rga.scan.set_parameters(10, 45, 3, 10)
@@ -80,8 +81,6 @@ class UGAMultiplotTask(Task):
             self.uga.rga.scan.set_parameters(1, 50, 5, 10)
             self.analog_scan_plot.reset()
             self.uga.rga.scan.get_analog_scan()
-
-
 
     def cleanup(self):
         self.analog_scan_plot.cleanup()

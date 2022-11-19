@@ -1,6 +1,6 @@
 
-
-from PyQt5.QtWidgets import QFrame, QMessageBox
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtWidgets import QFrame, QMessageBox, QShortcut
 
 from rga.base import Instrument
 
@@ -66,9 +66,42 @@ class CommandTerminal(QFrame, Ui_CommandTerminal):
         self.leCommand.returnPressed.connect(self.on_send)
         self.leCommand.setText("Type  'help'  for more info")
         self.leCommand.selectAll()
+        self.down_key = QShortcut(QKeySequence('DOWN'), self, self.on_down_pressed)
+        self.up_key = QShortcut(QKeySequence('UP'), self, self.on_up_pressed)
+
+        self.history_buffer = []
+        self.buffer_index = 0
+        self.buffer_size = 40
 
     def on_clear(self):
         self.tbCommand.clear()
+        self.leCommand.clear()
+
+    def on_up_pressed(self):
+        try:
+            if len(self.history_buffer) == 0:
+                return
+            self.buffer_index -= 1
+            if self.buffer_index >= len(self.history_buffer):
+                self.buffer_index = 0
+            elif self.buffer_index < 0:
+                self.buffer_index = len(self.history_buffer) - 1
+            self.leCommand.setText(self.history_buffer[self.buffer_index])
+        except Exception as e:
+            self.tbCommand.append('{}'.format(e))
+
+    def on_down_pressed(self):
+        try:
+            if len(self.history_buffer) == 0:
+                return
+            self.buffer_index += 1
+            if self.buffer_index >= len(self.history_buffer):
+                self.buffer_index = 0
+            elif self.buffer_index < 0:
+                self.buffer_index = len(self.history_buffer) - 1
+            self.leCommand.setText(self.history_buffer[self.buffer_index])
+        except Exception as e:
+            self.tbCommand.append('{}'.format(e))
 
     def _check_connected(self, inst):
         if not (isinstance(inst, Instrument) and inst.is_connected()):
@@ -84,6 +117,12 @@ class CommandTerminal(QFrame, Ui_CommandTerminal):
             reply = ''
             self.tbCommand.append(cmd)
             self.leCommand.clear()
+
+            self.history_buffer.append(cmd)
+            if len(self.history_buffer) > self.buffer_size:
+                self.history_buffer.pop(0)
+            self.buffer_index = len(self.history_buffer)
+
             cmd_lower = cmd.lower()
             if cmd_lower == 'cls':
                 self.tbCommand.clear()

@@ -22,7 +22,7 @@ class SearchLanTask(Task):
         self.logger = self.get_logger(__name__)
 
         # Get the input parameters from GUI
-        self.display_option_value = self.get_input_parameter(self.DisplayOption)
+        self.params = self.get_all_input_parameters()
 
     def test(self):
         sicp = SICP()
@@ -37,7 +37,7 @@ class SearchLanTask(Task):
         self.display_result('\nAvailable RGAs')
         self.display_result('================')
         for p in sicp.packet_list:
-            if self.display_option_value == 0:
+            if self.params[self.DisplayOption] == 0:
                 self.logger.info('Name: {:20s}, SN: {}, IP: {}, Status: {}'
                                  .format(p.device_name, p.serial_number,
                                          p.convert_to_ip_format(p.ip_address),

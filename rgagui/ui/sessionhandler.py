@@ -45,11 +45,10 @@ class SessionHandler(object):
         self.local_db_name = self.config.local_db_name
 
         if self.use_api:
-            self.client = self.config.get_WIP_client()
+            pass
 
         elif self.use_db:
-            self.client = LocalClient(self.local_db_name)
-            self.client.connect()
+            pass
 
     def is_open(self):
         return self._is_session_open
@@ -83,42 +82,6 @@ class SessionHandler(object):
             self.add_dict_to_file('TaskResult', result.__dict__)
             logger.debug('Task result Saved')
 
-        if self.use_api:
-            self.client.create_new_test_result(self.current_session, result)
-            logger.debug('Task result added to API session')
-        elif self.use_db:
-            logger.debug('Task result added to the local DB')
-            self.client.create_new_test_result(self.current_session, result)
-
-    def upload_local_results(self, serial_number):
-        if self.use_api:
-            try:
-                self.client.api.get_built_part(serial_number)
-                logger.info(f'S/N {serial_number} registered with API server')
-                sessions = self.client.search_test_sessions(uploaded=False,
-                                                            serial_number=serial_number,
-                                                            sessions_only=None,
-                                                            results_only=None)
-                if len(sessions) > 0:
-                    ids = [s['rowid'] for s in sessions]
-                    self.client.upload_local_results(ids)
-                    logger.info(f'rowid {ids} uploaded')
-            except DutNotRegisteredError:
-                logger.error(RedBold.format(f'S/N: {serial_number} not registered with API server'))
-            except Exception as e:
-                logger.error(e)
-
-    def get_session_status(self):
-        """ extract pass states of test result in the current session"""
-
-        task_status_dict = {}
-        results = self.client.get_test_session_results(self.current_session['id'])
-        if self.use_api:
-            results.reverse()
-        for result in results:
-            task_status_dict[result.task_class_name] = True if result.passed else False
-        return task_status_dict
-
     def create_file(self, task_name):
         self.path = Path(self.data_dir)
         if not self.path.exists():
@@ -126,18 +89,18 @@ class SessionHandler(object):
         # file_name = task_name + '-' + datetime.now().strftime('%Y%m%d-%H%M%S') + '.txt'
         file_name = '{}-{}.txt'.format(task_name, datetime.now().strftime('%Y%m%d-%H%M%S'))
         logger.debug('Output file opened as {}\\{}'.format(self.path, file_name))
-        self.output_file = open(self.path / file_name, 'w')
+        self.output_file = open(self.path / file_name, 'w', 1)
         self.is_file_open = True
 
     def add_dict_to_file(self, name, data_dict):
         if not self.is_file_open:
             raise IOError('File is not open')
-        self.output_file.write('\n:::DICT-{}:::\n'.format(name))
+        self.output_file.write('\n:::JSON-{}:::\n'.format(name))
         json.dump(data_dict, self.output_file)
-        self.output_file.write('\n:::DICTEND-{}:::\n'.format(name))
+        self.output_file.write('\n:::JSONEND-{}:::\n'.format(name))
 
     def create_table_in_file(self, name, *args):
-        """argv: list of header string"""
+        """args: list of header string"""
         self.column_sizes[name] = len(args)
         self.output_file.write('THEAD:{}, '.format(name))
         self.output_file.write(', '.join(map(str, args)) + '\n')

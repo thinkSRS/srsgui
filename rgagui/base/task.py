@@ -406,11 +406,18 @@ class Task(QThread):
     @classmethod
     def set_input_parameter(cls, name, value):
         if name in cls.input_parameters:
-            if type(cls.input_parameters[name].value) == type(value):
+            param = cls.input_parameters[name]
+            if type(param) == InstrumentInput:
+                if type(cls.input_parameters[name].text) == type(value):
+                    cls.input_parameters[name].text = value
+                else:
+                    raise TypeError('Type for input_parameter "{}" is {}'
+                                    .format(name, type(value)))
+            elif type(cls.input_parameters[name].value) == type(value):
                 cls.input_parameters[name].value = value
             else:
-                 raise TypeError('Type for input_parameter {} does not match with type of {}'
-                                 .format(name, value))
+                raise TypeError('Type for input_parameter "{}" is {}'
+                                .format(name, type(value)))
         else:
             raise KeyError('{} not in input_parameters'.format(name))
 

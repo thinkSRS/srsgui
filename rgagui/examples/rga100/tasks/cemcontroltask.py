@@ -21,10 +21,9 @@ class CEMControlTask(Task):
 
         self.logger = self.get_logger(__name__)
 
-        self.instrument_name_value = self.get_input_parameter(self.InstrumentName)
-        self.cem_state_value = self.get_input_parameter(self.CEMState)
+        self.params = self.get_all_input_parameters()
 
-        self.rga = get_rga(self, self.instrument_name_value)
+        self.rga = get_rga(self, self.params[self.InstrumentName])
 
     def test(self):
         self.set_task_passed(True)
@@ -33,7 +32,7 @@ class CEMControlTask(Task):
             self.logger.info('Saved CEM gain: {:.0f}'.format(self.rga.cem.stored_gain))
             self.logger.info('Current CEM voltage: {} V'.format(self.rga.cem.voltage))
 
-            if self.cem_state_value:
+            if self.params[self.CEMState]:
                 set_voltage = self.rga.cem.stored_voltage
                 set_gain = self.rga.cem.stored_gain
                 if set_voltage > 2500:

@@ -10,7 +10,7 @@ from instruments.get_instruments import get_rga
 
 
 class HistogramScanTask(Task):
-    """Task ro run histogram scans.
+    """Task to run histogram scans.
     """
 
     InstrumentName = 'instrument to control'
@@ -35,6 +35,7 @@ class HistogramScanTask(Task):
 
         # Get values to use for task  from input_parameters in GUI
         self.params = self.get_all_input_parameters()
+
         # Get logger to use
         self.logger = self.get_logger(__name__)
 
@@ -68,7 +69,6 @@ class HistogramScanTask(Task):
         self.rga.scan.set_parameters(self.params[self.StartMass],
                                      self.params[self.StopMass],
                                      self.params[self.ScanSpeed])
-        self.mass_axis = self.rga.scan.get_mass_axis(False)  # Get the mass axis for histogram scan
 
     def test(self):
         self.set_task_passed(True)
@@ -98,16 +98,19 @@ if __name__ == '__main__':
 
     logging.basicConfig(level=logging.INFO)
 
-    test = HistogramScanTask()
-    test.figure = plt.figure()
+    task = HistogramScanTask()
+
     rga = Rga('serial', 'COM3', 115200, True)
     rga.comm.set_callbacks(logging.info, logging.info)
-    test.inst_dict = {'dut': rga}
+    task.inst_dict = {'dut': rga}
 
-    test.set_input_parameter(test.Reps, 1)
-    
-    test.start()
-    test.wait()
-    test.update_on_scan_finished()
+    task.figure = plt.figure()
+    task.figure_dict = {'plot': task.figure}
+
+    task.set_input_parameter(task.Reps, 1)
+    task.set_input_parameter(task.InstrumentName, 'dut')
+
+    task.start()
+    task.wait()
     plt.show()
 

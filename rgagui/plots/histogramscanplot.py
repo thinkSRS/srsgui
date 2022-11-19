@@ -1,10 +1,14 @@
 
 
 import time
+import logging
 import numpy
 from matplotlib.axes import Axes
 from rgagui.base import Task, round_float
 from rga.rga100.scans import Scans
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 
 class HistogramScanPlot:
@@ -14,19 +18,25 @@ class HistogramScanPlot:
         if not hasattr(ax, 'figure'):
             raise TypeError('ax has no figure attribute. type: "{}"'.format(type(ax)))
 
+        self.type = 'bar_plot'
         self.parent = parent
         self.ax = ax
         self.scan = scan
         self.name = plot_name
-        self.save_data = save_data
+
+        if hasattr(self.parent, 'session_handler') and self.parent.session_handler:
+            self.save_data = save_data
+        else:
+            self.save_data = False
+            logger.error('parent has no session_handler')
+
+        self.conversion_factor = 0.1
+        self.unit = 'fA'
 
         self.mass_axis = self.scan.get_mass_axis(False)
         x = self.mass_axis
         y = numpy.zeros_like(x)
         self.data = {'x': x, 'y': y, 'prev_x': x, 'prev_y': y}
-
-        self.conversion_factor = 0.1
-        self.unit = 'fA'
 
         self.ax.set_title(plot_name)
         self.ax.set_xlabel("Mass (AMU)")
@@ -38,9 +48,7 @@ class HistogramScanPlot:
 
         self.reset()
 
-        if self.save_data:
-            self.parent.create_table_in_file(self.name, 'Elapsed time', *map(round_float, self.mass_axis))
-
+        self.header_saved = False
         self.initial_time = time.time()
 
     def reset(self):
@@ -98,10 +106,33 @@ class HistogramScanPlot:
 
     def scan_finished_callback(self):
         if self.save_data:
+            self.save_scan_data()
+
+    def save_scan_data(self):
+        if self.save_data:
+            if not self.header_saved:
+                self.parent.session_handler.add_dict_to_file(self.name, self.get_plot_info())
+                self.parent.create_table_in_file(self.name, 'Elapsed time', *map(round_float, self.mass_axis))
+                self.header_saved = True
+
             # write the spectrum in to the data file
             elapsed_time = round_float(time.time() - self.initial_time)
             # timestamp = datetime.now().strftime('%H:%M:%S')
             self.parent.add_to_table_in_file(self.name, elapsed_time, *self.scan.spectrum)
+
+    def get_plot_info(self):
+        return {
+            'type': self.type,
+            'xunit': 's',
+            'yunit': self.unit,
+            'axes_title': self.ax.get_title(),
+            'axes_xlabel': self.ax.get_xlabel(),
+            'axes_ylabel': self.ax.get_ylabel(),
+            'axes_xlim': self.ax.get_xlim(),
+            'axes_ylim': self.ax.get_ylim(),
+            'axes_xsclae': self.ax.get_xscale(),
+            'axes_yscale': self.ax.get_yscale(),
+        }
 
     def cleanup(self):
         """

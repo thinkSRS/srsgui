@@ -100,16 +100,19 @@ if __name__ == '__main__':
 
     logging.basicConfig(level=logging.INFO)
 
-    test = AnalogScanTask()
-    test.figure = plt.figure()
+    task = AnalogScanTask()
+
     rga = Rga('serial', 'COM3', 115200, True)
     rga.comm.set_callbacks(logging.info, logging.info)
-    test.inst_dict = {'dut': rga}
+    task.inst_dict = {'dut': rga}
 
-    test.set_input_parameter(test.Reps, 1)
-    
-    test.start()
-    test.wait()
-    test.update_on_scan_finished()
+    task.figure = plt.figure()
+    task.figure_dict = {'plot': task.figure}
+
+    task.set_input_parameter(task.Reps, 1)
+    task.set_input_parameter(task.InstrumentName, 'dut')
+
+    task.start()
+    task.wait()
     plt.show()
 
