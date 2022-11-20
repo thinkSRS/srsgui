@@ -202,9 +202,10 @@ class DockHandler(object):
         try:
             while len(self.dock_dict) > 3:
                 name, fig = self.dock_dict.popitem()
+                fig.setVisible(False)
                 self.parent.removeDockWidget(fig)
                 self.removed_figure_docks.append(fig)
-                # logger.deubg('removed {} {}'.format(name, fig))
+                # logger.debug('removed {} {}'.format(name, fig))
 
             for name in name_list:
                 if self.removed_figure_docks:

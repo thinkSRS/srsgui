@@ -13,8 +13,8 @@ Name: My UGA Tasks
 # The fourth column is connection parameters.
 # if given, the instrument will be connected using the parameters when the config file is loaded.
 
-inst: uga,     rga,    UGA100, tcpip:172.25.128.13:srsuga:srsuga:818
-inst: rga,     rga,    RGA100, tcpip:172.25.70.181:admin:admin:818
+inst: uga,     rga,    UGA100
+inst: rga,     rga,    RGA100
 
 # inst: rga2,   rga,    UGA100,    tcpip:172.25.40.37:srsuga:srsuga:818
 # inst: rga3,  rga,     UGA100,    serial:com3:28800:True
@@ -26,8 +26,8 @@ inst: rga,     rga,    RGA100, tcpip:172.25.70.181:admin:admin:818
 # The Second column is the Python module that contains the task class with relative path from the Task config file.
 # The third column is a task class  that is a Task subclass in the module.
 
-task: UGA state monitor,           tasks.ugastatemonitortask,                                UGAStateMonitorTask
-task: UGA mode control,            tasks.ugamodecontroltask,                                 UGAModeControlTask
+task: UGA State Monitor,           tasks.ugastatemonitortask,                                UGAStateMonitorTask
+task: UGA Mode Control,            tasks.ugamodecontroltask,                                 UGAModeControlTask
 task: UGA Multi Plot,              tasks.ugamultiplottask,                                   UGAMultiplotTask
 
 task: Filament Control,            rgagui.examples.rga100.tasks.filamentcontroltask,         FilamentControlTask

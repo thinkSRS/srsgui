@@ -62,6 +62,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         self.figure_dict = self.dock_handler.get_figure_dict()
         self.plotDockWidget = self.dock_handler.get_dock()
 
+        self.geometry_dict = {}
         try:
             default_config_file = str(Path(__file__).parent.parent /
                                       'examples/rga100/myrga.taskconfig')
@@ -310,11 +311,19 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             if self.is_task_running():  # Another task is running
                 return
 
-            self.plotDockWidget.toolbar.hide()
+            self.dock_handler.show_toolbar(False)
+            if self.task_method:
+                old_task_name = self.task_method.__name__
+            else:
+                old_task_name = 'Default'
+            self.geometry_dict[old_task_name] = (self.saveGeometry(),
+                                                 self.saveState(),
+                                                 self.centralwidget.width())
 
             self.current_task_action = action
             current_action_name = action.text()
             logger.info('Task {} is selected.'.format(Bold.format(current_action_name)))
+
             taskClassChosen = self.task_dict[current_action_name]
             if not issubclass(taskClassChosen, Task):
                 title = 'Error'
@@ -323,9 +332,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                 raise TypeError(msg)
 
             self.task_method = taskClassChosen
-            self.dock_handler.update_figures(self.task_method.additional_figure_names)
-            self.figure_dict = self.dock_handler.get_figure_dict()
-            self.handle_initial_image(self.task_method)
 
             self.statusbar.showMessage('Press Run button to start the task selected')
 
@@ -334,6 +340,18 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.taskParameter.deleteLater()
             self.taskParameter = InputPanel(self.task_method, self)
             self.taskParameterFrame.layout().addWidget(self.taskParameter)
+
+            self.dock_handler.update_figures(self.task_method.additional_figure_names)
+            self.figure_dict = self.dock_handler.get_figure_dict()
+            self.handle_initial_image(self.task_method)
+
+            new_task_name = self.task_method.__name__
+            if new_task_name in self.geometry_dict:
+                geo, state, width = self.geometry_dict[new_task_name]
+                self.restoreState(state)
+                self.restoreGeometry(geo)
+                self.centralwidget.resize(width, self.centralwidget.height())
+
         except Exception as e:
             logger.error(e)
 
