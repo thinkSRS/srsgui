@@ -41,7 +41,7 @@ setup(
     long_description=description,
     long_description_content_type='text/markdown',    
     install_requires=[
-        "PyQt5",
+        "pyqt5",
         "matplotlib",
         "rga >= 0.1.12"
     ],
@@ -52,4 +52,18 @@ setup(
         ],
         
     },
+
+    license="GPL v3",
+    keywords=["instrument control", "data acquisition", "data visualization"],
+    author="Chulhoon Kim",
+    author_email="chulhoonk@yahoo.com",
+    classifiers=[
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Science/Research",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python :: 3.7",
+        "Topic :: Scientific/Engineering"
+    ]
+
 )

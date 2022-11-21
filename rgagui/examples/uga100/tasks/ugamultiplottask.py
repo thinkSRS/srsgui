@@ -14,6 +14,7 @@ class UGAMultiplotTask(Task):
     Run multiple plots for UGA
     """
     InstrumentName = 'uga to monitor'
+
     input_parameters = {
         InstrumentName: InstrumentInput(),
     }
@@ -67,8 +68,8 @@ class UGAMultiplotTask(Task):
                          self.uga.bp.get_pressure()])
                          
             self.temperature_plot.add_data([self.uga.temperature.chamber, self.uga.temperature.elbow,
-                         self.uga.temperature.sample_inlet, self.uga.temperature.capillary,
-                         self.uga.temperature.turbo_pump], True)
+                 self.uga.temperature.sample_inlet, self.uga.temperature.capillary,
+                 self.uga.temperature.turbo_pump], True)
 
             self.rga.scan.set_parameters(1, 50, 3, 10)
             self.rga_analog_scan_plot.reset()

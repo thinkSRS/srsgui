@@ -7,33 +7,22 @@ from matplotlib.axes import Axes
 from rgagui.base import Task, round_float
 from rga.rga100.scans import Scans
 
+from .basescanplot import BaseScanPlot
+
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
 
 
-class HistogramScanPlot:
-    def __init__(self, parent: Task, ax: Axes, scan: Scans, plot_name='', save_data=True):
+class HistogramScanPlot(BaseScanPlot):
+    def __init__(self, parent: Task, ax: Axes, scan: Scans, plot_name='', save_to_file=True):
         if not issubclass(type(parent), Task):
             raise TypeError('Invalid parent {} is not a Task subclass'.format(type(parent)))
         if not hasattr(ax, 'figure'):
             raise TypeError('ax has no figure attribute. type: "{}"'.format(type(ax)))
+        super().__init__(ax, plot_name, save_to_file, parent)
 
-        self.type = 'bar_plot'
-        self.parent = parent
-        self.ax = ax
         self.scan = scan
-        self.name = plot_name
-
-        if hasattr(self.parent, 'session_handler') and self.parent.session_handler:
-            self.save_data = save_data
-        else:
-            self.save_data = False
-            logger.error('parent has no session_handler')
-
-        self.conversion_factor = 0.1
-        self.unit = 'fA'
-
         self.mass_axis = self.scan.get_mass_axis(False)
+
         x = self.mass_axis
         y = numpy.zeros_like(x)
         self.data = {'x': x, 'y': y, 'prev_x': x, 'prev_y': y}
@@ -41,15 +30,12 @@ class HistogramScanPlot:
         self.ax.set_title(plot_name)
         self.ax.set_xlabel("Mass (AMU)")
         self.ax.set_ylim(1, 100000)
-        self.ax.set_ylabel('Ion Current ({})'.format(self.unit))
+        self.ax.set_ylabel('Intensity ({})'.format(self.unit))
 
         self.prev_rects = self.ax.bar(self.data['x'], self.data['y'])
         self.rects = self.ax.bar(self.data['x'], self.data['y'])
 
         self.reset()
-
-        self.header_saved = False
-        self.initial_time = time.time()
 
     def reset(self):
         self.initial_mass = self.scan.initial_mass
@@ -63,18 +49,6 @@ class HistogramScanPlot:
         self.scan.set_callbacks(self.update_callback,
                                 self.scan_started_callback,
                                 self.scan_finished_callback)
-
-    def set_conversion_factor(self, factor=0.1, unit='fA'):
-        old_factor = self.conversion_factor
-        self.conversion_factor = factor
-        self.unit = unit
-        self.parent.add_details(' {:.4e} '.format(self.conversion_factor), 'Conversion factor')
-        self.parent.add_details(' {} '.format(self.unit), 'Converted unit')
-
-        factor_ratio = self.conversion_factor / old_factor
-        bottom, top = self.ax.get_ylim()
-        self.ax.set_ylim(bottom * factor_ratio, top * factor_ratio)
-        self.ax.set_ylabel('Ion Current ({})'.format(self.unit))
 
     # The scan calls this callback when data is available
     def update_callback(self, index):
@@ -105,34 +79,7 @@ class HistogramScanPlot:
         self.parent.request_figure_update(self.ax.figure)
 
     def scan_finished_callback(self):
-        if self.save_data:
-            self.save_scan_data()
-
-    def save_scan_data(self):
-        if self.save_data:
-            if not self.header_saved:
-                self.parent.session_handler.add_dict_to_file(self.name, self.get_plot_info())
-                self.parent.create_table_in_file(self.name, 'Elapsed time', *map(round_float, self.mass_axis))
-                self.header_saved = True
-
-            # write the spectrum in to the data file
-            elapsed_time = round_float(time.time() - self.initial_time)
-            # timestamp = datetime.now().strftime('%H:%M:%S')
-            self.parent.add_to_table_in_file(self.name, elapsed_time, *self.scan.spectrum)
-
-    def get_plot_info(self):
-        return {
-            'type': self.type,
-            'xunit': 's',
-            'yunit': self.unit,
-            'axes_title': self.ax.get_title(),
-            'axes_xlabel': self.ax.get_xlabel(),
-            'axes_ylabel': self.ax.get_ylabel(),
-            'axes_xlim': self.ax.get_xlim(),
-            'axes_ylim': self.ax.get_ylim(),
-            'axes_xsclae': self.ax.get_xscale(),
-            'axes_yscale': self.ax.get_yscale(),
-        }
+        self.save_scan_data()
 
     def cleanup(self):
         """

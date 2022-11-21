@@ -57,7 +57,7 @@ class InputPanel(QWidget):
                         continue
                     widget = QComboBox()
                     widget.addItems(self.parent.inst_dict.keys())
-                    widget.setCurrentIndex(p.default_value)
+                    widget.setCurrentIndex(p.value)
                     p.text = widget.currentText()
 
                     setattr(self, i, widget)
