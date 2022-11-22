@@ -32,6 +32,7 @@ logger = logging.getLogger(__name__)
 
 
 class TaskMain(QMainWindow, Ui_TaskMain):
+    DefaultConfigFile = "rga.taskconfig"
 
     def __init__(self, parent=None):
         super(TaskMain, self).__init__(parent)
@@ -64,8 +65,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
         self.geometry_dict = {}
         try:
-            default_config_file = str(Path(__file__).parent.parent /
-                                      'examples/rga100/myrga.taskconfig')
+            default_config_file = self.DefaultConfigFile
             self.config = Config()
             self.base_data_dir = self.config.base_data_dir
             self.base_log_file_name = self.config.base_log_file_name

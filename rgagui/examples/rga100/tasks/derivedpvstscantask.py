@@ -3,8 +3,10 @@
 from rgagui.base.task import Task, round_float
 from rgagui.base.inputs import ListInput, IntegerInput, StringInput, InstrumentInput
 from rgagui.plots.timeplot import TimePlot
+from rgagui.plots.analogscanplot import AnalogScanPlot
 
 from instruments.get_instruments import get_rga
+
 
 class DerivedPvsTScanTask(Task):
 
@@ -43,29 +45,48 @@ class DerivedPvsTScanTask(Task):
         cem_voltage = self.rga.cem.voltage
         self.logger.info('Emission current: {:.2f} mA CEM HV: {} V'.format(emission_current, cem_voltage))
 
-        if self.params[self.IntensityUnit] == 0:
-            self.conversion_factor = 0.1
-            self.plot.set_conversion_factor(self.conversion_factor, 'fA')
-        else:
-            self.conversion_factor = self.rga.pressure.get_partial_pressure_sensitivity_in_torr()
-            self.plot.set_conversion_factor(self.conversion_factor, 'Torr')
-
         # Set up an derived P vs T plot
         self.ax_pvst = self.get_figure(self.DerivedPvsTPlot).add_subplot(111)
         key_list = list(map(str, self.mass_list))
-        self.pvst_plot = TimePlot(self, self.ax, 'P vs T Scan', key_list)
+        self.pvst_plot = TimePlot(self, self.ax_pvst, 'Derived P vs T', key_list)
         self.pvst_plot.ax.set_yscale('log')
+
+        self.rga.scan.set_parameters(1, 50, 3, 10)
+        # Set up a log plot for the last full analog scan
+        self.ax_log = self.get_figure(self.LogPlot).add_subplot(111)
+        self.plot_log = AnalogScanPlot(self, self.ax_log, self.rga.scan, 'Analog Scan In Log')
+        self.ax_log.set_yscale('log')
 
         # Set up an analog scan plot
         self.ax_analog = self.get_figure().add_subplot(111) # use the default figure
+        self.plot_analog = AnalogScanPlot(self, self.ax_analog, self.rga.scan, 'Analog Scan')
 
-
-        # Set up a log plot for the last full analog scan
-        self.ax_log = self.get_figure(self.LogPlot).add_subplot(111)
-
+        if self.params[self.IntensityUnit] == 0:
+            self.conversion_factor = 0.1
+            self.plot_analog.set_conversion_factor(self.conversion_factor, 'fA')
+            self.plot_log.set_conversion_factor(self.conversion_factor, 'fA')
+        else:
+            self.conversion_factor = self.rga.pressure.get_partial_pressure_sensitivity_in_torr()
+            self.plot_analog.set_conversion_factor(self.conversion_factor, 'Torr')
+            self.plot_log.set_conversion_factor(self.conversion_factor, 'Torr')
 
     def test(self):
-        pass
+        self.set_task_passed(True)
+        while True:
+            if not self.is_running():
+                break
+
+            try:
+                self.rga.scan.get_analog_scan()
+                self.plot_log.line.set_xdata(self.plot_log.mass_axis)
+                self.plot_log.line.set_ydata(self.plot_log.scan.spectrum)
+                self.request_figure_update(self.plot_log.ax.figure)
+
+            except Exception as e:
+                self.set_task_passed(False)
+                self.logger.error('{}: {}'.format(e.__class__.__name__, e))
+                if not self.rga.is_connected():
+                    break
 
     def cleanup(self):
         pass

@@ -1,6 +1,7 @@
 import os
 from setuptools import setup, find_packages
 
+
 def find_version(*args):
     """ Find version string starting with __version__ in a file"""
 
@@ -50,7 +51,6 @@ setup(
         'console_scripts': [
             'rgagui = rgagui.__main__:main'
         ],
-        
     },
 
     license="GPL v3",

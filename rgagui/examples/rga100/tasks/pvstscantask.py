@@ -35,6 +35,12 @@ class PvsTScanTask(Task):
         cem_voltage = self.rga.cem.voltage
         self.logger.info('Emission current: {:.2f} mA CEM HV: {} V'.format(emission_current, cem_voltage))
 
+        # Set a time plot
+        self.ax = self.get_figure().add_subplot(111)
+        key_list = list(map(str, self.mass_list))
+        self.plot = TimePlot(self, self.ax, 'P vs T Scan', key_list)
+        self.plot.ax.set_yscale('log')
+
         if self.params[self.IntensityUnit] == 0:
             self.conversion_factor = 0.1
             self.plot.set_conversion_factor(self.conversion_factor, 'fA')
@@ -42,12 +48,6 @@ class PvsTScanTask(Task):
             self.conversion_factor = self.rga.pressure.get_partial_pressure_sensitivity_in_torr()
             self.plot.set_conversion_factor(self.conversion_factor, 'Torr')
 
-        # Set a time plot
-        self.ax = self.get_figure().add_subplot(111)
-        key_list = list(map(str, self.mass_list))
-        self.plot = TimePlot(self, self.ax, 'P vs T Scan', key_list)
-        self.plot.ax.set_yscale('log')
-        
     def test(self):
         while True:
             if not self.is_running():
