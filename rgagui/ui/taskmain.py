@@ -206,6 +206,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             name = inst_action.text()
             self.inst_info_handler.select_browser(name)
             if self.inst_dict[name].is_connected():
+                self.inst_info_handler.update_info(name)
                 self.onDisconnect(name)
             else:
                 self.onConnect(name)
@@ -288,12 +289,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             # except Exception as e:
             #     logger.error('Error with deleteLater in onTaskFinished: {}'.format(e))
 
-            if self.task.is_error_raised():  # No more task runs with error raised
-                self.onStop()
-                return
-
             self.task = None
-
+            for inst in self.inst_dict:
+                self.inst_info_handler.update_info(inst)
         except Exception as e:
             logger.error('Error onTaskFinished: {}'.format(e))
 

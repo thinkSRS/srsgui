@@ -18,6 +18,9 @@ class AnalogScanPlot(BaseScanPlot):
 
         super().__init__(ax, plot_name, save_to_file, parent)
 
+        self.conversion_factor = 0.1
+        self.unit = 'fA'
+
         self.scan = scan
         self.data = {'x': [], 'y': [], 'prev_x': [], 'prev_y': []}
 

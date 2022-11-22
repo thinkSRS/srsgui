@@ -1,6 +1,4 @@
 
-from datetime import datetime
-
 from rgagui.base.task import Task, round_float
 from rgagui.base.inputs import ListInput, IntegerInput, InstrumentInput
 from rgagui.plots.analogscanplot import AnalogScanPlot
@@ -17,7 +15,6 @@ class AnalogScanTask(Task):
     ScanSpeed = 'scan speed'
     StepSize = 'step per AMU'
     IntensityUnit = 'intensity unit'
-    Reps = 'Repetition'
 
     # input_parameters values can be changed interactively from GUI
     input_parameters = {
@@ -27,21 +24,14 @@ class AnalogScanTask(Task):
         ScanSpeed: IntegerInput(3, " ", 0, 9, 1),
         StepSize: IntegerInput(20, " steps per AMU", 10, 80, 1),
         IntensityUnit: ListInput(['Ion current (fA)', 'Partial Pressure (Torr)']),
-        Reps: IntegerInput(100, " scans", 1, 1000000, 1),
     }
 
     def setup(self):
-        # if True, detailed traceback info, when an exception happens
-        self._log_error_detail = False
-
         # Get values to use for task  from input_parameters in GUI
         self.params = self.get_all_input_parameters()
 
         # Get logger to use
         self.logger = self.get_logger(__name__)
-        self.logger.info('Start: {} Stop: {} Speed: {} Step: {}'.format(
-            self.params[self.StartMass], self.params[self.StopMass],
-            self.params[self.ScanSpeed], self.params[self.StepSize]))
 
         self.init_scan()
 
@@ -71,22 +61,19 @@ class AnalogScanTask(Task):
 
     def test(self):
         self.set_task_passed(True)
-
-        number_of_iteration = self.params[self.Reps]
         self.add_details('{}'.format(self.id_string), key='ID')
 
-        self.mass_axis = self.rga.scan.get_mass_axis()
-
-        for i in range(number_of_iteration):
+        while True:
             if not self.is_running():
                 break
+
             try:
                 self.rga.scan.get_analog_scan()
-                self.logger.debug('scan {} finished'.format(i))
-
             except Exception as e:
                 self.set_task_passed(False)
-                self.logger.error(e)
+                self.logger.error('{}: {}'.format(e.__class__.__name__, e))
+                if not self.rga.is_connected():
+                    break
 
     def cleanup(self):
         self.logger.info('Task finished')

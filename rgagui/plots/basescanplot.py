@@ -15,11 +15,11 @@ class BaseScanPlot:
         self.ax = ax
         self.name = plot_name
 
-        self.conversion_factor = 0.1
-        self.unit = 'fA'
-        self.save_to_file = False
+        self.conversion_factor = 1
+        self.unit = ''
 
-        if save_to_file and hasattr(self.parent, 'session_handler') and self.parent.session_handler:
+        self.save_to_file = False
+        if hasattr(self.parent, 'session_handler') and self.parent.session_handler:
             self.save_to_file = True
         else:
             logger.error('parent has no session_handler')

@@ -20,6 +20,9 @@ class HistogramScanPlot(BaseScanPlot):
             raise TypeError('ax has no figure attribute. type: "{}"'.format(type(ax)))
         super().__init__(ax, plot_name, save_to_file, parent)
 
+        self.conversion_factor = 0.1
+        self.unit = 'fA'
+
         self.scan = scan
         self.mass_axis = self.scan.get_mass_axis(False)
 

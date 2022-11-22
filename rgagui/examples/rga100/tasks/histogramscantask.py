@@ -18,7 +18,6 @@ class HistogramScanTask(Task):
     StopMass = 'stop mass'
     ScanSpeed = 'scan speed'
     IntensityUnit = 'intensity unit'
-    Reps = 'Repetition'
 
     # input_parameters values can be changed interactively from GUI
     input_parameters = {
@@ -27,7 +26,6 @@ class HistogramScanTask(Task):
         StopMass: IntegerInput(50, " AMU", 1, 320, 1),
         ScanSpeed: IntegerInput(3, " ", 0, 9, 1),
         IntensityUnit: ListInput(['Ion current (fA)', 'Partial Pressure (Torr)']),
-        Reps: IntegerInput(100, " scans", 1, 1000000, 1),
     }
 
     def setup(self):
@@ -38,10 +36,6 @@ class HistogramScanTask(Task):
 
         # Get logger to use
         self.logger = self.get_logger(__name__)
-
-        self.logger.info('Start: {} Stop: {} Speed: {} '.format(
-            self.params[self.StartMass], self.params[self.StopMass],
-            self.params[self.ScanSpeed]))
 
         self.init_scan()
 
@@ -72,20 +66,18 @@ class HistogramScanTask(Task):
 
     def test(self):
         self.set_task_passed(True)
-
-        number_of_iteration = self.params[self.Reps]
         self.add_details('{}'.format(self.rga.status.id_string), key='ID')
 
-        for i in range(number_of_iteration):
+        while True:
             if not self.is_running():
                 break
             try:
                 self.rga.scan.get_histogram_scan()
-                self.logger.debug('scan {} finished'.format(i))
-
             except Exception as e:
                 self.set_task_passed(False)
                 self.logger.error('{}: {}'.format(e.__class__.__name__, e))
+                if not self.rga.is_connected():
+                    break
 
     def cleanup(self):
         self.logger.info('Task finished')

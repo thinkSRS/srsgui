@@ -15,7 +15,6 @@ Name: My RGA Tasks
 # if given, the instrument will be connected using the parameters when the config file is loaded.
 
 inst: rga,     rga,    RGA100
-inst: uga,     rga,    UGA100
 # inst: rga2,   rga,    RGA100,    tcpip:172.25.40.37:admin:admin:818
 # inst: rga3,  rga,     RGA100,    serial:com3:28800:True
 
@@ -31,4 +30,6 @@ task: Filament Control,            tasks.filamentcontroltask,         FilamentCo
 task: CEM Control,                 tasks.cemcontroltask,              CEMControlTask
 task: Analog Scan,                 tasks.analogscantask,              AnalogScanTask
 task: Histogram Scan,              tasks.histogramscantask,           HistogramScanTask
+task: Pressure vs. Time Scan,      tasks.pvstscantask,                PvsTScanTask
+task: Derived P vs. T Scan,        tasks.derivedpvstscantask,         DerivedPvsTScanTask
 task: CEM Gain Tuning,             tasks.cemgaintask,                 CEMGainTask
