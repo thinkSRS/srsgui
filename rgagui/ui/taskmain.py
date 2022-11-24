@@ -33,14 +33,16 @@ logger = logging.getLogger(__name__)
 
 class TaskMain(QMainWindow, Ui_TaskMain):
     DefaultConfigFile = "rga.taskconfig"
+    OrganizationName = 'SRS'
+    ApplicationName = 'rgagui'
 
     def __init__(self, parent=None):
         super(TaskMain, self).__init__(parent)
         self.setupUi(self)
         # self.taskResult.setFontFamily('monospace')
 
-        QApplication.setOrganizationName("SRS")
-        QApplication.setApplicationName('rgagui')
+        QApplication.setOrganizationName(self.OrganizationName)
+        QApplication.setApplicationName(self.ApplicationName)
         self.settings = QSettings()
 
         # The dict holds subclass of Task
@@ -121,6 +123,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.taskResult.clear()
             self.terminal_widget.tbCommand.clear()
 
+            if self.initial_load:
+                logger.info('Python started from "{}"'.format(sys.exec_prefix))
+                logger.info('rgagui started from "{}"'.format(Path(__file__).parent.parent))
             # Disconnect previously used instruments
             prev_inst_dict = self.inst_dict
             try:

@@ -5,8 +5,10 @@ from rgagui.plots.timeplot import TimePlot
 
 from instruments.get_instruments import get_rga
 
-class PvsTScanTask(Task):
 
+class PvsTScanTask(Task):
+    """Task to measure continuously ion intensity for multiple masses
+    """
     InstrumentName = 'instrument to control'
     MassesToMeasure = 'masses to measure'
     ScanSpeed = 'scan speed'

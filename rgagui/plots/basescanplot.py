@@ -13,7 +13,7 @@ class BaseScanPlot:
         self.type = self.__class__.__name__
         self.parent = parent
         self.ax = ax
-        self.name = plot_name
+        self.name = plot_name.strip()
 
         self.conversion_factor = 1
         self.unit = ''

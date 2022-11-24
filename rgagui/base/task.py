@@ -23,7 +23,7 @@ RedBold = '<font color="red"><b>{}</b></font>'
 RedNormal = '<font color="red">{}</font>'
 
 
-def round_float(number, fmt='{:.4e}'):
+def round_float(number, fmt='{:.6e}'):
     return float(fmt.format(number))
 
 

@@ -114,19 +114,18 @@ class Config(object):
             logger.error('invalid inst line: {}'.format(v))
             return
 
-        inst_key = items[0]
-        inst_module_name = items[1]
-        inst_class_name = items[2]
-        inst_key = inst_key.strip()
-        mod = import_module(inst_module_name.strip())
+        inst_key = items[0].strip()
+        inst_module_name = items[1].strip()
+        inst_class_name = items[2].strip()
+        mod = import_module(inst_module_name)
         logger.debug('Instrument module {} for "{}" loaded'.format(mod.__file__, inst_key))
-        inst_class_name = inst_class_name.strip()
+        inst_class_name = inst_class_name
 
         if hasattr(mod, inst_class_name):
             inst_class = getattr(mod, inst_class_name)
             logger.debug('Instrument class {} for "{}" loaded'.format(inst_class_name, inst_key))
         else:
-            logger.error('Invalid inst class')
+            logger.error('No inst class "{}" in module "{}"'.format(inst_class_name, inst_module_name))
             return
 
         if not issubclass(inst_class, Instrument):
