@@ -1,8 +1,8 @@
 
 import time
 from rga.uga100.components import Status
-from rgagui.base.task import Task
-from rgagui.base.inputs import InstrumentInput, ListInput, IntegerInput
+from rgagui.basetask.task import Task
+from rgagui.basetask.inputs import InstrumentInput, ListInput, IntegerInput
 from instruments.get_instruments import get_uga
 
 

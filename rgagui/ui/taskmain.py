@@ -25,7 +25,7 @@ from .sessionhandler import SessionHandler
 from .deviceinfohandler import DeviceInfoHandler
 from .dockhandler import DockHandler
 
-from rgagui.base import Task, Bold
+from rgagui.basetask import Task, Bold
 from rga.base import Instrument
 
 logger = logging.getLogger(__name__)

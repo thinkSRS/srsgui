@@ -2,8 +2,8 @@
 import numpy
 from datetime import datetime
 
-from rgagui.base.task import Task
-from rgagui.base.inputs import ListInput, IntegerInput, InstrumentInput
+from rgagui.basetask.task import Task
+from rgagui.basetask.inputs import ListInput, IntegerInput, InstrumentInput
 from rgagui.plots.histogramscanplot import HistogramScanPlot
 
 from instruments.get_instruments import get_rga

@@ -1,7 +1,6 @@
 
 
 from datetime import datetime
-from dateutil.tz import tzlocal
 
 import logging
 logger = logging.getLogger(__name__)
@@ -9,8 +8,7 @@ logger.setLevel(logging.INFO)
 
 
 def timestamp_now():
-    """Create an ISO 8601 timestamp with the timezone offset"""
-    return datetime.now(tzlocal()).isoformat()
+    return datetime.now().isoformat()
 
 
 def strip_tags(message):

@@ -4,7 +4,7 @@ import logging
 from pathlib import Path
 from importlib import import_module, reload, invalidate_caches
 
-from rgagui.base import Task, GreenNormal, RedNormal
+from rgagui.basetask import Task, GreenNormal, RedNormal
 
 # from srs_insts.baseinsts import BaseInst
 from rga.base import Instrument

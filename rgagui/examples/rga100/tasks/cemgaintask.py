@@ -4,8 +4,8 @@ import time
 import math
 import numpy as np
 
-from rgagui.base.task import Task
-from rgagui.base.inputs import FloatInput, IntegerInput, InstrumentInput
+from rgagui.basetask.task import Task
+from rgagui.basetask.inputs import FloatInput, IntegerInput, InstrumentInput
 from instruments.get_instruments import get_rga
 
 

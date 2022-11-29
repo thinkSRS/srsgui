@@ -1,7 +1,7 @@
 
 
-from rgagui.base.task import Task
-from rgagui.base.inputs import ListInput
+from rgagui.basetask.task import Task
+from rgagui.basetask.inputs import ListInput
 from rga import SICP, Packet
 
 

@@ -7,7 +7,7 @@ from datetime import datetime
 # from wip.local_results import LocalClient
 # from wip.wip_api import DutNotRegisteredError
 
-from rgagui.base.taskresult import TaskResult
+from rgagui.basetask.taskresult import TaskResult
 
 RedBold = '<font color="red"><b>{}</b></font>'
 logger = logging.getLogger(__name__)
@@ -91,6 +91,7 @@ class SessionHandler(object):
         logger.debug('Output file opened as {}\\{}'.format(self.path, file_name))
         self.output_file = open(self.path / file_name, 'w', 1)
         self.is_file_open = True
+        self.table_info = {}
 
     def add_dict_to_file(self, name, data_dict):
         if not self.is_file_open:

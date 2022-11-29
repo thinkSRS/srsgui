@@ -1,4 +1,4 @@
-from rgagui.base import Task
+from rgagui.basetask import Task
 from rga import RGA100, UGA100
 
 

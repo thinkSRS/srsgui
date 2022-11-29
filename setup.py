@@ -32,7 +32,7 @@ setup(
     name='rgagui',
     version=version_string,
     description='GUI Interface for RGA Instruments and Tasks',
-    packages=['rgagui', 'rgagui.ui', 'rgagui.base', 'rgagui.plots'],
+    packages=['rgagui', 'rgagui.ui', 'rgagui.basetask', 'rgagui.plots'],
     package_data={
         'rgagui': files,
         # get_file_names('rgagui/examples') ,

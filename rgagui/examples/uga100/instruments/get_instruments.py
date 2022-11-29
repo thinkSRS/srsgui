@@ -1,5 +1,5 @@
 import logging
-from rgagui.base.task import Task
+from rgagui.basetask.task import Task
 from rga import UGA100, RGA100
 
 UgaName = 'uga'

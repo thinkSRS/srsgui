@@ -1,7 +1,7 @@
 import time
 import numpy as np
-from rgagui.base.task import Task
-from rgagui.base.inputs import InstrumentInput, IntegerInput
+from rgagui.basetask.task import Task
+from rgagui.basetask.inputs import InstrumentInput, IntegerInput
 from rgagui.plots.timeplot import TimePlot
 
 from instruments.get_instruments import get_uga

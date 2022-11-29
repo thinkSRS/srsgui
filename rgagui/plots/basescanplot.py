@@ -2,7 +2,7 @@
 import time
 import logging
 from matplotlib.axes import Axes
-from rgagui.base import Task
+from rgagui.basetask import Task
 from rga.rga100.scans import Scans
 
 logger = logging.getLogger(__name__)
@@ -54,7 +54,8 @@ class BaseScanPlot:
         if not self.save_to_file:
             return
         if not self.header_saved:
-            self.parent.session_handler.add_dict_to_file(self.name, self.get_plot_info())
+            dict_name = '{}.plot'.format(self.name)
+            self.parent.session_handler.add_dict_to_file(dict_name, self.get_plot_info())
             self.parent.create_table_in_file(self.name, 'Elapsed time', *map(self.round_float, self.x_axis))
             self.header_saved = True
 

@@ -1,6 +1,6 @@
 
-from rgagui.base.task import Task
-from rgagui.base.inputs import FloatInput, InstrumentInput
+from rgagui.basetask.task import Task
+from rgagui.basetask.inputs import FloatInput, InstrumentInput
 from instruments.get_instruments import get_rga
 
 

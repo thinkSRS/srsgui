@@ -1,7 +1,7 @@
 import time
 import logging
 from matplotlib.axes import Axes
-from rgagui.base import Task
+from rgagui.basetask import Task
 from rga.rga100.scans import Scans
 
 from .basescanplot import BaseScanPlot
