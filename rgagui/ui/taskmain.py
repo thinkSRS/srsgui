@@ -18,13 +18,13 @@ from .ui_taskmain import Ui_TaskMain
 from .commConnectDlg import CommConnectDlg
 from .inputpanel import InputPanel
 
-from .config import Config
 from .stdout import StdOut
 from .qtloghandler import QtLogHandler
-from .sessionhandler import SessionHandler
 from .deviceinfohandler import DeviceInfoHandler
 from .dockhandler import DockHandler
 
+from rgagui.basetask.config import Config
+from rgagui.basetask.sessionhandler import SessionHandler
 from rgagui.basetask import Task, Bold
 from rga.base import Instrument
 
