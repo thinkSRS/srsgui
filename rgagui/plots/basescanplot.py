@@ -2,7 +2,7 @@
 import time
 import logging
 from matplotlib.axes import Axes
-from rgagui.base import Task, round_float
+from rgagui.base import Task
 from rga.rga100.scans import Scans
 
 logger = logging.getLogger(__name__)
@@ -27,6 +27,7 @@ class BaseScanPlot:
         self.mass_axis = []
         self.data = {}
 
+        self.round_float_resolution = 4
         self.header_saved = False
         self.initial_time = time.time()
 
@@ -45,18 +46,27 @@ class BaseScanPlot:
         self.ax.set_ylim(bottom * factor_ratio, top * factor_ratio)
         self.ax.set_ylabel('Intensity ({})'.format(self.unit))
 
-    def save_scan_data(self):
+    def set_x_axis(self, x_axis):
+        self.x_axis = x_axis
+        self.ax.set_xlim(min(self.x_axis), max(self.x_axis))
+
+    def save_scan_data(self, data_list):
         if not self.save_to_file:
             return
         if not self.header_saved:
             self.parent.session_handler.add_dict_to_file(self.name, self.get_plot_info())
-            self.parent.create_table_in_file(self.name, 'Elapsed time', *map(round_float, self.mass_axis))
+            self.parent.create_table_in_file(self.name, 'Elapsed time', *map(self.round_float, self.x_axis))
             self.header_saved = True
 
         # write the spectrum in to the data file
-        elapsed_time = round_float(time.time() - self.initial_time)
+        elapsed_time = self.round_float(time.time() - self.initial_time)
         # timestamp = datetime.now().strftime('%H:%M:%S')
-        self.parent.add_to_table_in_file(self.name, elapsed_time, *self.scan.spectrum)
+        self.parent.add_to_table_in_file(self.name, elapsed_time, *data_list)
+
+    def round_float(self, number):
+        # set the resolution of the number with self.round_float_resolution
+        fmt = '{{:.{}e}}'.format(self.round_float_resolution)
+        return float(fmt.format(number))
 
     def get_plot_info(self):
         return {
@@ -73,4 +83,4 @@ class BaseScanPlot:
         }
 
     def cleanup(self):
-        raise NotImplementedError()
+        raise NotImplementedError('cleanup is not implemented')

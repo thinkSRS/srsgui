@@ -1,6 +1,5 @@
 
-
-from rgagui.base.task import Task, round_float
+from rgagui.base.task import Task
 from rgagui.base.inputs import ListInput, IntegerInput, StringInput, InstrumentInput
 from rgagui.plots.timeplot import TimePlot
 from rgagui.plots.analogscanplot import AnalogScanPlot
@@ -91,19 +90,21 @@ and extract ion intensity for the masses from the analog scans.
             try:
                 self.rga.scan.get_analog_scan()
 
-                self.plot_log.line.set_xdata(self.plot_log.mass_axis)
+                self.plot_log.line.set_xdata(self.plot_log.x_axis)
                 self.plot_log.line.set_ydata(self.plot_log.scan.spectrum)
                 self.request_figure_update(self.plot_log.ax.figure)
 
                 intensity = []
                 for m in self.mass_list:
                     intensity.append(self.rga.scan.get_peak_intensity_from_analog_scan_spectrum(m, True))
+
                 self.pvst_plot.add_data(intensity, True)
 
             except Exception as e:
                 self.set_task_passed(False)
                 self.logger.error('{}: {}'.format(e.__class__.__name__, e))
                 if not self.rga.is_connected():
+                    self.logger.error('"{}" is disconnected'.format(self.params[self.InstrumentName]))
                     break
 
     def cleanup(self):

@@ -13,8 +13,10 @@ logger = logging.getLogger(__name__)
 
 
 class Config(object):
-    DataRootDirectory = str(Path.home() / "tcal-results")
-    LogoFile = str(Path(__file__).parent / 'images/srslogo.jpg')
+    ResultDirectory = 'task-results'
+    LogoImageFile = 'images/srslogo.jpg'
+    DataRootDirectory = str(Path.home() / ResultDirectory)
+    LogoFile = str(Path(__file__).parent / LogoImageFile)
     LocalModulePath = ['tasks', 'instruments']
 
     def __init__(self):

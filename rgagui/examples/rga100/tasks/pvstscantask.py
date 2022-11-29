@@ -1,5 +1,5 @@
 
-from rgagui.base.task import Task, round_float
+from rgagui.base.task import Task
 from rgagui.base.inputs import ListInput, IntegerInput, StringInput, InstrumentInput
 from rgagui.plots.timeplot import TimePlot
 

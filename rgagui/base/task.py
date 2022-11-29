@@ -23,10 +23,6 @@ RedBold = '<font color="red"><b>{}</b></font>'
 RedNormal = '<font color="red">{}</font>'
 
 
-def round_float(number, fmt='{:.6e}'):
-    return float(fmt.format(number))
-
-
 class Task(QThread):
     """ Base class for all task classes
     """
@@ -58,7 +54,7 @@ class Task(QThread):
     # If empty, you will have one figure named 'Figure' as a default
     additional_figure_names = []  # e.g., ['Scan Plots','Temperature Plots']
 
-    _is_running = False  # class wide flag to tell if any task is running
+    _is_running = False  # class wide flag to tell if any instance is running
     _is_optional = False  # result status will set as success initially if a task class is optional
 
     # signal for text output to UI
@@ -105,6 +101,8 @@ class Task(QThread):
         # figure is expected to be Matplotlib figure object.
         self.figure_dict = {}
         self.figure = None
+
+        self.round_float_resolution = 4
 
     def setup(self):
         """
@@ -337,6 +335,11 @@ class Task(QThread):
     def save_result(self, msg):
         self.logger.error('Do not use save_result. Use add_to_table_in_file, or result.add_details, instead.')
         # raise NotImplementedError()
+
+    def round_float(self, number):
+        # set the resolution of the number with self.round_float_resolution
+        fmt = '{{:.{}e}}'.format(self.round_float_resolution)
+        return float(fmt.format(number))
 
     # Following methods will be used with stdout redirection
     def update_status(self, message):

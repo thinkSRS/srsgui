@@ -1,10 +1,8 @@
 
-
-import time
 import logging
 import numpy
 from matplotlib.axes import Axes
-from rgagui.base import Task, round_float
+from rgagui.base import Task
 from rga.rga100.scans import Scans
 
 from .basescanplot import BaseScanPlot
@@ -43,7 +41,7 @@ class HistogramScanPlot(BaseScanPlot):
     def reset(self):
         self.initial_mass = self.scan.initial_mass
         self.final_mass = self.scan.final_mass
-        self.mass_axis = self.scan.get_mass_axis(False)
+        self.set_x_axis(self.scan.get_mass_axis(False))
 
         self.data['x'] = self.mass_axis
         self.data['y'] = numpy.zeros_like(self.mass_axis)
@@ -82,7 +80,7 @@ class HistogramScanPlot(BaseScanPlot):
         self.parent.request_figure_update(self.ax.figure)
 
     def scan_finished_callback(self):
-        self.save_scan_data()
+        self.save_scan_data(self.scan.spectrum)
 
     def cleanup(self):
         """

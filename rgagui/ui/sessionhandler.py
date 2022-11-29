@@ -27,7 +27,7 @@ class SessionHandler(object):
         self.path = None
         self.output_file = None
         self.is_file_open = False
-        self.column_sizes = {}
+        self.table_info = {}
 
         if use_file or use_db:
             if not hasattr(config, 'base_data_dir'):
@@ -101,17 +101,25 @@ class SessionHandler(object):
 
     def create_table_in_file(self, name, *args):
         """args: list of header string"""
-        self.column_sizes[name] = len(args)
-        self.output_file.write('THEAD:{}, '.format(name))
+        if name in self.table_info:
+            raise KeyError('Table "{}" already exists'.format(name))
+
+        self.table_info[name] = {'index': len(self.table_info),
+                                 'size': len(args)}
+        # Write the table name
+        self.output_file.write('\nTN:{}, {}\n'.format(self.table_info[name]['index'], name))
+        # Write the table header
+        self.output_file.write('TH:{}, '.format(self.table_info[name]['index']))
         self.output_file.write(', '.join(map(str, args)) + '\n')
 
     def add_to_table_in_file(self, name, *args, format_list=None):
         no_of_cols = len(args)
-        if name not in self.column_sizes:
+        if name not in self.table_info:
             raise KeyError('Invalid table name: {}'.format(name))
-        if no_of_cols != self.column_sizes[name]:
+        if no_of_cols != self.table_info[name]['size']:
             raise ValueError('Length of data does not match with header in "{}"'.format(name))
-        self.output_file.write('TDATA:{}, '.format(name))
+        # Write a table row
+        self.output_file.write('TD:{}, '.format(self.table_info[name]['index']))
         if format_list:
             self.output_file.write(', '.join(format_list).format(*args) + '\n')
         else:

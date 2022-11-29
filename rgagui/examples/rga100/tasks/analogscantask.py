@@ -1,5 +1,5 @@
 
-from rgagui.base.task import Task, round_float
+from rgagui.base.task import Task
 from rgagui.base.inputs import ListInput, IntegerInput, InstrumentInput
 from rgagui.plots.analogscanplot import AnalogScanPlot
 
@@ -73,6 +73,7 @@ class AnalogScanTask(Task):
                 self.set_task_passed(False)
                 self.logger.error('{}: {}'.format(e.__class__.__name__, e))
                 if not self.rga.is_connected():
+                    self.logger.error('"{}" is disconnected'.format(self.params[self.InstrumentName]))
                     break
 
     def cleanup(self):

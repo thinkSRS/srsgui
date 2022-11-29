@@ -2,7 +2,7 @@
 import numpy
 from datetime import datetime
 
-from rgagui.base.task import Task, round_float
+from rgagui.base.task import Task
 from rgagui.base.inputs import ListInput, IntegerInput, InstrumentInput
 from rgagui.plots.histogramscanplot import HistogramScanPlot
 

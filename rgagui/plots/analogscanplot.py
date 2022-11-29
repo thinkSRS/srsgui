@@ -1,7 +1,7 @@
 import time
 import logging
 from matplotlib.axes import Axes
-from rgagui.base import Task, round_float
+from rgagui.base import Task
 from rga.rga100.scans import Scans
 
 from .basescanplot import BaseScanPlot
@@ -36,7 +36,7 @@ class AnalogScanPlot(BaseScanPlot):
         self.initial_mass = self.scan.initial_mass
         self.final_mass = self.scan.final_mass
         self.resolution = self.scan.resolution
-        self.mass_axis = self.scan.get_mass_axis(True)
+        self.set_x_axis(self.scan.get_mass_axis(True))
 
         self.ax.set_xlim(self.initial_mass, self.final_mass, auto=False)
         self.scan.set_callbacks(self.scan_data_available_callback,
@@ -44,7 +44,7 @@ class AnalogScanPlot(BaseScanPlot):
                                 self.scan_finished_callback)
 
     def scan_data_available_callback(self, index):
-        self.data['x'] = self.mass_axis[:index]
+        self.data['x'] = self.x_axis[:index]
         self.data['y'] = self.scan.spectrum[:index] * self.conversion_factor
         self.line.set_xdata(self.data['x'])
         self.line.set_ydata(self.data['y'])
@@ -53,7 +53,7 @@ class AnalogScanPlot(BaseScanPlot):
         self.parent.request_figure_update(self.ax.figure)
 
     def scan_finished_callback(self):
-        self.data['x'] = self.mass_axis
+        self.data['x'] = self.x_axis
         self.data['y'] = self.scan.spectrum * self.conversion_factor
         self.data['prev_x'] = self.data['x']
         self.data['prev_y'] = self.data['y']
@@ -64,7 +64,7 @@ class AnalogScanPlot(BaseScanPlot):
 
         # Tell GUI to redraw the plot
         self.parent.request_figure_update(self.ax.figure)
-        self.save_scan_data()
+        self.save_scan_data(self.scan.spectrum)
 
     def cleanup(self):
         """

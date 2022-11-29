@@ -3,7 +3,7 @@ import time
 import logging
 import numpy
 from matplotlib.axes import Axes
-from rgagui.base import Task, round_float
+from rgagui.base import Task
 from .basescanplot import BaseScanPlot
 
 logger = logging.getLogger(__name__)
@@ -43,6 +43,9 @@ class TimePlot(BaseScanPlot):
         if len(self.time) == 1:
             min_value = min(data_list)
             max_value = max(data_list)
+            if min_value == 0 and max_value == 0:
+                min_value = -1.0
+                max_value = 1.0
             min_value *= self.conversion_factor
             max_value *= self.conversion_factor
             self.ax.set_ylim(min_value - abs(min_value)/2, max_value + abs(max_value)/2)
@@ -57,11 +60,10 @@ class TimePlot(BaseScanPlot):
             self.parent.session_handler.add_dict_to_file(self.name, self.get_plot_info())
             self.parent.create_table_in_file(self.name, 'Elapsed time', *self.data_keys)
             self.header_saved = True
-
         # write the spectrum in to the data file
-        elapsed_time = round_float(time.time() - self.initial_time)
+        elapsed_time = self.round_float(time.time() - self.initial_time)
         # timestamp = datetime.now().strftime('%H:%M:%S')
-        self.parent.add_to_table_in_file(self.name, elapsed_time, *map(round_float, data_list))
+        self.parent.add_to_table_in_file(self.name, elapsed_time, *map(self.round_float, data_list))
 
     def cleanup(self):
         pass
