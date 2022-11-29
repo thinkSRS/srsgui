@@ -53,7 +53,7 @@ setup(
         ],
     },
 
-    license="GPL v3",
+    license="GPLv3",
     keywords=["instrument control", "data acquisition", "data visualization"],
     author="Chulhoon Kim",
     author_email="chulhoonk@yahoo.com",

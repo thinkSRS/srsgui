@@ -5,8 +5,8 @@ from PyQt5.QtCore import QSettings
 
 from PyQt5.QtWidgets import QDialog, QMessageBox, QApplication
 
-from rga.base.serial_ports import serial_ports
-from rga.base import Interface, SerialInterface, TcpipInterface
+from rgagui.inst.serial_ports import serial_ports
+from rgagui.inst.communications import Interface, SerialInterface, TcpipInterface
 from .ui_commConnectDlg import Ui_CommConnectDlg
 
 logger = logging.getLogger(__name__)

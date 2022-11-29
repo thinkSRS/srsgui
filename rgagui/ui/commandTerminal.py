@@ -2,7 +2,7 @@
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QFrame, QMessageBox, QShortcut
 
-from rga.base import Instrument
+from rgagui.inst.instrument import Instrument
 
 from .ui_commandTerminal import Ui_CommandTerminal
 

@@ -3,13 +3,12 @@ import time
 import logging
 from matplotlib.axes import Axes
 from rgagui.basetask import Task
-from rga.rga100.scans import Scans
 
 logger = logging.getLogger(__name__)
 
 
 class BaseScanPlot:
-    def __init__(self, ax: Axes, plot_name='', save_to_file=False, parent=None):
+    def __init__(self, parent: Task, ax: Axes, plot_name='', save_to_file=False):
         self.type = self.__class__.__name__
         self.parent = parent
         self.ax = ax
@@ -20,7 +19,7 @@ class BaseScanPlot:
 
         self.save_to_file = False
         if hasattr(self.parent, 'session_handler') and self.parent.session_handler:
-            self.save_to_file = True
+            self.save_to_file = save_to_file
         else:
             logger.error('parent has no session_handler')
 

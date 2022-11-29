@@ -26,7 +26,7 @@ from .dockhandler import DockHandler
 from rgagui.basetask.config import Config
 from rgagui.basetask.sessionhandler import SessionHandler
 from rgagui.basetask import Task, Bold
-from rga.base import Instrument
+from rgagui.inst.instrument import Instrument
 
 logger = logging.getLogger(__name__)
 
@@ -35,6 +35,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
     DefaultConfigFile = "rga.taskconfig"
     OrganizationName = 'SRS'
     ApplicationName = 'rgagui'
+
+    LogoImageFile = 'images/srslogo.jpg'
+    LogoFile = str(Path(__file__).parent / LogoImageFile)
 
     def __init__(self, parent=None):
         super(TaskMain, self).__init__(parent)
@@ -161,7 +164,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.task_dict = self.config.task_dict
 
             self.setWindowTitle(self.config.task_dict_name)
-            self.dock_handler.display_image(self.config.get_logo_file())
+            self.dock_handler.display_image(self.get_logo_file())
 
             self.session_handler = SessionHandler(self.config, True, False, False)
             self.session_handler.open_session(0, False)
@@ -205,6 +208,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.menu_Tasks.triggered.connect(self.onTaskSelect)
         except Exception as e:
             print(e)
+
+    def get_logo_file(self):
+        return self.LogoFile
 
     def onInstrumentSelect(self, inst_action):
         try:
@@ -514,7 +520,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         try:
             self.dock_handler.clear_figures()
             attr = 'InitialImage'
-            image_file = self.config.get_logo_file()
+            image_file = self.get_logo_file()
             if hasattr(task_class, attr):
                 i_file = getattr(task_class, attr)
                 if i_file:

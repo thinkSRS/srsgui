@@ -13,7 +13,7 @@ from matplotlib.figure import Figure
 from .inputs import FloatInput, InstrumentInput
 from .taskresult import TaskResult, ResultLogHandler
 
-from rga.base import Instrument
+from rgagui.inst.instrument import Instrument
 
 # HTML formatter for QTextBrowser
 Bold = '<font color="black"><b>{}</b></font>'

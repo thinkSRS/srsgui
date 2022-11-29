@@ -7,16 +7,14 @@ from importlib import import_module, reload, invalidate_caches
 from rgagui.basetask import Task, GreenNormal, RedNormal
 
 # from srs_insts.baseinsts import BaseInst
-from rga.base import Instrument
+from rgagui.inst.instrument import Instrument
 
 logger = logging.getLogger(__name__)
 
 
 class Config(object):
     ResultDirectory = 'task-results'
-    LogoImageFile = 'images/srslogo.jpg'
     DataRootDirectory = str(Path.home() / ResultDirectory)
-    LogoFile = str(Path(__file__).parent / LogoImageFile)
     LocalModulePath = ['tasks', 'instruments']
 
     def __init__(self):
@@ -156,9 +154,6 @@ class Config(object):
                     logger.error(RedNormal.format(
                         '{} failed to connect with default parameters {}'.format(
                             inst_key, items[3])))
-
-    def get_logo_file(self):
-        return self.LogoFile
 
     def get_base_log_file_name(self):
         max_file_number = 20
