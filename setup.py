@@ -27,12 +27,12 @@ def get_file_names(directory):
 description = open('readme.md').read()
 version_string = find_version('rgagui', '__init__.py')
 
-files = get_file_names('rgagui/examples') + get_file_names('rgagui/ui/images')
+files = get_file_names('rgagui/ui/images')
 setup(
     name='rgagui',
     version=version_string,
     description='GUI Interface for RGA Instruments and Tasks',
-    packages=['rgagui', 'rgagui.ui', 'rgagui.basetask', 'rgagui.plots'],
+    packages=['rgagui', 'rgagui.ui', 'rgagui.basetask', 'rgagui.plots', 'rgagui.inst'],
     package_data={
         'rgagui': files,
         # get_file_names('rgagui/examples') ,
@@ -43,8 +43,7 @@ setup(
     long_description_content_type='text/markdown',    
     install_requires=[
         "pyqt5",
-        "matplotlib",
-        "rga >= 0.1.12"
+        "matplotlib"
     ],
     
     entry_points={
@@ -56,7 +55,7 @@ setup(
     license="GPLv3",
     keywords=["instrument control", "data acquisition", "data visualization"],
     author="Chulhoon Kim",
-    author_email="chulhoonk@yahoo.com",
+    # author_email="chulhoonk@yahoo.com",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Science/Research",
