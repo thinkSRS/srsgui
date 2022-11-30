@@ -1,5 +1,9 @@
-from rgagui.basetask.task import Task
-from rgagui.basetask.inputs import IntegerInput, FloatInput, StringInput, ListInput, InstrumentInput
+
+from rgagui.task.task import Task
+from rgagui.task.inputs import IntegerInput, FloatInput, StringInput, ListInput, InstrumentInput
 from rgagui.plots.timeplot import TimePlot
 
-__version__ = "0.1.0"  # Global version number
+from rgagui.inst.instrument import Instrument
+from rgagui.inst.component import Component
+
+__version__ = "0.1.1"  # Global version number

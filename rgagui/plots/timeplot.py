@@ -3,7 +3,7 @@ import time
 import logging
 import numpy
 from matplotlib.axes import Axes
-from rgagui.basetask import Task
+from rgagui.task import Task
 
 logger = logging.getLogger(__name__)
 
