@@ -3,8 +3,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QDoubleSpinBox, QSpinBox, QComboBox, \
                             QLineEdit, QLabel, QGridLayout, QPushButton
 
-from rgagui.basetask.task  import Task
-from rgagui.basetask.inputs import IntegerInput, FloatInput, StringInput, ListInput, InstrumentInput
+from rgagui.task.task  import Task
+from rgagui.task.inputs import IntegerInput, FloatInput, StringInput, ListInput, InstrumentInput
 
 import logging
 logger = logging.getLogger(__name__)

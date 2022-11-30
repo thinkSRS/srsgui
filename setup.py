@@ -27,25 +27,23 @@ def get_file_names(directory):
 description = open('readme.md').read()
 version_string = find_version('rgagui', '__init__.py')
 
-files = get_file_names('rgagui/ui/images')
+# files = get_file_names('rgagui/ui/images')
 setup(
     name='rgagui',
     version=version_string,
     description='GUI Interface for RGA Instruments and Tasks',
-    packages=['rgagui', 'rgagui.ui', 'rgagui.basetask', 'rgagui.plots', 'rgagui.inst'],
+    packages=['rgagui', 'rgagui.ui', 'rgagui.task', 'rgagui.plots', 'rgagui.inst'],
     package_data={
-        'rgagui': files,
-        # get_file_names('rgagui/examples') ,
-        # 'rgagui/ui': get_file_names('rgagui/ui/icons'),
+        'rgagui': ['../rgagui/ui/srslogo.jpg'],
     },
 
     long_description=description,
-    long_description_content_type='text/markdown',    
+    long_description_content_type='text/markdown',
     install_requires=[
         "pyqt5",
         "matplotlib"
     ],
-    
+
     entry_points={
         'console_scripts': [
             'rgagui = rgagui.__main__:main'
@@ -60,8 +58,9 @@ setup(
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Science/Research",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
-        "Operating System :: OS Independent",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Topic :: Scientific/Engineering"
     ]
 
