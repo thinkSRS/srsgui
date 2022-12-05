@@ -40,6 +40,7 @@ setup(
     long_description=description,
     long_description_content_type='text/markdown',
     install_requires=[
+        "pyserial>=3",
         "pyqt5",
         "matplotlib"
     ],
