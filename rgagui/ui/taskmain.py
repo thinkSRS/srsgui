@@ -17,6 +17,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QTextBrowser,\
 from .ui_taskmain import Ui_TaskMain
 from .commConnectDlg import CommConnectDlg
 from .inputpanel import InputPanel
+from .signalhandler import SignalHandler
 
 from .stdout import StdOut
 from .qtloghandler import QtLogHandler
@@ -286,7 +287,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
     def onTaskFinished(self):
         try:
-            logger.debug('onTaskFinished run started')
+            logger.debug('onTaskFinished started')
             # Setup toolbar buttons
             self.actionRun.setEnabled(True)
             self.actionStop.setEnabled(False)
@@ -299,10 +300,11 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             #     self.task.deleteLater()
             # except Exception as e:
             #     logger.error('Error with deleteLater in onTaskFinished: {}'.format(e))
-
             self.task = None
+
             for inst in self.inst_dict:
                 self.inst_info_handler.update_info(inst)
+
         except Exception as e:
             logger.error('Error onTaskFinished: {}'.format(e))
 
@@ -379,15 +381,17 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.task.set_figure_dict(self.dock_handler.get_figure_dict())
             self.task.set_inst_dict(self.inst_dict)
             self.task.set_session_handler(self.session_handler)
-            self.task.text_written_available.connect(self.print_redirect)
-            self.task.data_available.connect(self.task.update)
-            self.task.figure_update_requested.connect(self.task.update_figure)
-            self.task.parameter_changed.connect(self.taskParameter.update)
-            self.task.finished.connect(self.onTaskFinished)
-            self.task.new_question.connect(self.display_question)
-            self.taskResult.clear()
 
-            # logger.info('{} starting'.format(type(self.task)))
+            signal_handler = SignalHandler()
+            signal_handler.sig_text_available.connect(self.print_redirect)
+            signal_handler.sig_data_available.connect(self.task.update)
+            signal_handler.sig_figure_update_requested.connect(self.task.update_figure)
+            signal_handler.sig_parameter_changed.connect(self.taskParameter.update)
+            signal_handler.sig_new_question.connect(self.display_question)
+            signal_handler.sig_finished.connect(self.onTaskFinished)
+            self.task.set_signal_handler(signal_handler)
+
+            self.taskResult.clear()
             self.onTaskStarted()
             self.dock_handler.show_toolbar(True)
             self.task.start()

@@ -4,14 +4,13 @@ import traceback
 import logging
 import time
 
-from PyQt5.QtCore import QThread
-from PyQt5.QtCore import pyqtSignal as Signal
-from PyQt5.QtCore import pyqtSlot as Slot
+from threading import Thread
 
 from matplotlib.figure import Figure
 
 from .inputs import FloatInput, InstrumentInput
 from .taskresult import TaskResult, ResultLogHandler
+from .callbacks import Callbacks
 
 from rgagui.inst.instrument import Instrument
 
@@ -23,7 +22,7 @@ RedBold = '<font color="red"><b>{}</b></font>'
 RedNormal = '<font color="red">{}</font>'
 
 
-class Task(QThread):
+class Task(Thread):
     """ Base class for all task classes
     """
 
@@ -57,21 +56,6 @@ class Task(QThread):
     _is_running = False  # class wide flag to tell if any instance is running
     _is_optional = False  # result status will set as success initially if a task class is optional
 
-    # signal for text output to UI
-    text_written_available = Signal(str)
-
-    # emit to change UI input panel values for new parameters
-    parameter_changed = Signal()
-
-    # Update a specific figure when multiple figures are used in a task
-    figure_update_requested = Signal(Figure)
-
-    # emit when you need UI update for newly available data
-    data_available = Signal(dict)
-
-    # signal used to get an answer for a question from UI
-    new_question = Signal(str, object)
-
     # Image information for parent to display instead of the default logo image before instantiated
     InitialImage = None  # None for default image
 
@@ -93,6 +77,7 @@ class Task(QThread):
         self.result = None
         self.result_log_handler = None
         self.session_handler = None
+        self.callbacks = Callbacks()
 
         # inst_dict holds all the instrument to use in task
         self.inst_dict = {}
@@ -144,6 +129,8 @@ class Task(QThread):
         if not self._check_dict_items(self.inst_dict, Instrument):
             raise AttributeError('Invalid inst_dict detected during basic setup')
 
+        self.callbacks.started()
+
         # We want Exception to be handled in run()
         Task._is_running = True
         self._keep_running = True
@@ -194,7 +181,6 @@ class Task(QThread):
                 self.update_status(msg)
                 self.logger.info(RedBold.format(msg))
                 self.result.set_passed(False)
-
         except Exception as e:
             self.logger.error('Error during basic_cleanup: {}'.format(e))
         finally:
@@ -221,17 +207,18 @@ class Task(QThread):
                 self.log_exception(e)
             self.logger.debug("{} run completed".format(self.name))
             self.basic_cleanup()
+            self.callbacks.finished()
         except Exception as e:
             self.log_exception(e)
 
     # Override for QThread start
-    def start(self, priority=QThread.InheritPriority):
+    def start(self):
         # if Task._is_running: # Disable for multiple tasks running
         #     raise RuntimeError('Another task is running')
 
         self._keep_running = True
         self._aborted = False
-        super().start(priority)
+        super().start()
         # self.logger.debug("{} start completed".format(self.name))
 
     def stop(self):
@@ -241,6 +228,9 @@ class Task(QThread):
 
     def set_session_handler(self, session_handler):
         self.session_handler = session_handler
+
+    def set_signal_handler(self, signal_handler: Callbacks):
+        self.callbacks = signal_handler
 
     @staticmethod
     def _check_dict_items(item_dict, item_class):
@@ -384,7 +374,7 @@ class Task(QThread):
 
     # output text to UI
     def write_text(self, text):
-        self.text_written_available.emit(str(text))
+        self.callbacks.text_available(str(text))
 
     def get_input_parameter(self, name):
         if name in self.__class__.input_parameters:
@@ -426,14 +416,13 @@ class Task(QThread):
 
     # Notify UI to input_parameters for display update
     def notify_parameter_changed(self):
-        self.parameter_changed.emit()
+        self.callbacks.parameter_changed()
 
     def request_figure_update(self, figure=None):
         if type(figure) is not Figure:
             figure = self.figure
-        self.figure_update_requested.emit(figure)
+        self.callbacks.figure_update_requested(figure)
 
-    @Slot(Figure)
     def update_figure(self, figure: Figure):
         if type(figure) is not Figure:
             raise TypeError('{} is not  a Figure'.format(type(figure)))
@@ -441,15 +430,14 @@ class Task(QThread):
 
     # It needs a matching update() as a slot to run from UI
     def notify_data_available(self, data_dict={}):
-        self.data_available.emit(data_dict)
+        self.callbacks.data_available(data_dict)
 
     # These callbacks are used to update display for streaming data from another class or thread
     # Signals are wrapped as a callback functions 
 
     def data_available_callback(self, data_dict={}, *args):
-        self.data_available.emit(data_dict)
+        self.callbacks.data_available(data_dict)
 
-    @Slot(dict)
     def update(self, data: dict):
         """
         when data_available signal emits, this method handles new data.
@@ -492,7 +480,7 @@ class Task(QThread):
         self.parent.question_result = None
         self.parent.question_result_value = None
 
-        self.new_question.emit(question, return_type)
+        self.callbacks.new_question(question, return_type)
 
         start_time = time.time()
         while time.time() - start_time < self.question_timeout:
