@@ -3,7 +3,7 @@ from .exceptions import InstCommunicationError, InstSetError, InstQueryError, In
 from .communications import Interface
 
 
-class StrIndexCommand(object):
+class IndexCommand(object):
     """
     Command class for a remote command with index
     using **set** and **query** returning an **string**
@@ -95,7 +95,7 @@ class StrIndexCommand(object):
         return converted_index
 
 
-class StrGetIndexCommand(StrIndexCommand):
+class IndexGetCommand(IndexCommand):
     """
     Command class for a remote command with index
     using only **query** returning an **string**, without **set**.
@@ -106,7 +106,7 @@ class StrGetIndexCommand(StrIndexCommand):
                              .format(self.remote_command))
 
 
-class BoolIndexCommand(StrIndexCommand):
+class BoolIndexCommand(IndexCommand):
     """
     Command class for a remote command with index
     using **set** and **query** returning a **bool**
@@ -118,7 +118,7 @@ class BoolIndexCommand(StrIndexCommand):
         self._set_convert_function = lambda a: '1' if a else '0'
 
 
-class BoolGetIndexCommand(BoolIndexCommand):
+class BoolIndexGetCommand(BoolIndexCommand):
     """
     Command class for a remote command with index
     using only **query** returning a **bool**, without **set**.
@@ -129,7 +129,7 @@ class BoolGetIndexCommand(BoolIndexCommand):
                              .format(self.remote_command))
 
 
-class IntIndexCommand(StrIndexCommand):
+class IntIndexCommand(IndexCommand):
     """
     Command class for a remote command with index
     using **set** and **query** returning an **integer**
@@ -140,7 +140,7 @@ class IntIndexCommand(StrIndexCommand):
         self._get_convert_function = int
 
 
-class IntGetIndexCommand(IntIndexCommand):
+class IntIndexGetCommand(IntIndexCommand):
     """
     Command class for a remote command with index
     using only **query** returning an **integer**, without **set**.
@@ -151,7 +151,7 @@ class IntGetIndexCommand(IntIndexCommand):
                              .format(self.remote_command))
 
 
-class FloatIndexCommand(StrIndexCommand):
+class FloatIndexCommand(IndexCommand):
     """
     Command class for a remote command with index
     using **set** and **query** returning an **float**
@@ -162,7 +162,7 @@ class FloatIndexCommand(StrIndexCommand):
         self._get_convert_function = float
 
 
-class FloatGetIndexCommand(FloatIndexCommand):
+class FloatIndexGetCommand(FloatIndexCommand):
     """
     Command class for a remote command with index
     using only **query** returning an **float**, without **set**.

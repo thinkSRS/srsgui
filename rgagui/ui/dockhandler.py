@@ -16,6 +16,9 @@ from .commandTerminal import CommandTerminal
 
 logger = logging.getLogger(__name__)
 
+# define matplotlib level before importing to suppress debug messages
+logging.getLogger('matplotlib').setLevel(logging.WARNING)
+
 
 class DockHandler(object):
     DefaultConsoleName = 'Console'

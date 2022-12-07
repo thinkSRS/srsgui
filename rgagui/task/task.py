@@ -74,7 +74,7 @@ class Task(QThread):
 
         self.name = 'Base Task'
         self.logger_prefix = ''  # used for logger name for multi-threaded tasks
-        self.logger = self.logger = self.get_logger(__name__)
+        self.logger = None
 
         self.result = None
         self.result_log_handler = None
@@ -124,6 +124,7 @@ class Task(QThread):
         return logger
 
     def basic_setup(self):
+        self.logger = self.get_logger(__name__)
         if self.figure is None or not hasattr(self.figure, 'canvas'):
             raise AttributeError('Invalid figure')
 
@@ -254,8 +255,8 @@ class Task(QThread):
         if figure_dict:
             self.figure = list(figure_dict.values())[0]
         else:
-            self.logger.error('No figure to set as default')
             self.figure = None
+            raise ValueError('No figure in figure_dict to set as default')
 
     def get_figure(self, name=None) -> Figure:
         if name is None:

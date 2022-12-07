@@ -1,6 +1,6 @@
 from .communications import Interface
 from .commands import Command, GetCommand
-from .indexcommands import StrIndexCommand
+from .indexcommands import IndexCommand
 
 
 class Component(object):
@@ -139,7 +139,7 @@ class Component(object):
         for k in self.__class__.__dict__:
             instance = self.__class__.__dict__[k]
             if issubclass(instance.__class__, Command) or \
-               issubclass(instance.__class__, StrIndexCommand):
+               issubclass(instance.__class__, IndexCommand):
                 command_list.append((k, instance.__class__.__name__, instance.remote_command))
         return command_list
 

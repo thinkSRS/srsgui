@@ -145,11 +145,13 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                 self.default_config_file = sys.argv[1]
                 self.initial_load = False
             else:
-                sys.path.pop()
+                popped_path = sys.path.pop()
+                logger.debug('"{}" removed from sys.path'.format(popped_path))
 
             current_dir = str(Path(self.default_config_file).parent)
             sys.path.insert(0, current_dir)
             os.chdir(current_dir)
+            logger.debug('Set the current directory to "{}"'.format(current_dir))
             self.config.load(self.default_config_file)
             logger.debug('TaskConfig file: "{}"  loading done'.format(self.default_config_file))
 
