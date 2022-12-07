@@ -7,7 +7,6 @@ from .ui.taskmain import TaskMain
 
 
 def main():
-    TaskMain.DefaultConfigFile = str(Path(__file__).parent / "examples/rga100/myrga.taskconfig")
     app = QApplication(sys.argv)
     main_window = TaskMain()
     main_window.show()

@@ -74,11 +74,12 @@ class Task(QThread):
 
         self.name = 'Base Task'
         self.logger_prefix = ''  # used for logger name for multi-threaded tasks
-        self.logger = None
+        self.logger = self.logger = self.get_logger(__name__)
+
         self.result = None
         self.result_log_handler = None
         self.session_handler = None
-        self.callbacks = Callbacks()
+        self.callbacks = None
 
         # inst_dict holds all the instrument to use in task
         self.inst_dict = {}
@@ -95,22 +96,22 @@ class Task(QThread):
         Subclass needs  to override this method.
         Put all preparation for a task in the overridden method.
         """
-        raise NotImplementedError("No setup implemented!!")
+        self.logger.info("Task.setup() is not overridden!!")
 
     def test(self):
         """
-        Subclass has to override this method.
+        Subclass must override this method.
         Check if is_running() is true to continue.
         Add data using in add_details, create_table, and add_data_to_table.
         """
-        raise NotImplementedError("We need a real task!!")
+        raise NotImplementedError("We need a real test!!")
 
     def cleanup(self):
         """
-        Subclass has to override this method
+        Subclass need to override this method
         Put any cleanup after task in the overridden method
         """
-        raise NotImplementedError("No cleanup implemented!!")
+        self.logger.info('Task.cleanup() is NOT overridden!!')
 
     def get_logger(self, name):
         if self.logger_prefix:
@@ -123,7 +124,6 @@ class Task(QThread):
         return logger
 
     def basic_setup(self):
-        self.logger = self.get_logger(__name__)
         if self.figure is None or not hasattr(self.figure, 'canvas'):
             raise AttributeError('Invalid figure')
 
@@ -230,8 +230,8 @@ class Task(QThread):
     def set_session_handler(self, session_handler):
         self.session_handler = session_handler
 
-    def set_signal_handler(self, signal_handler: Callbacks):
-        self.callbacks = signal_handler
+    def set_callback_handler(self, callback_handler: Callbacks):
+        self.callbacks = callback_handler
 
     @staticmethod
     def _check_dict_items(item_dict, item_class):

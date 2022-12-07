@@ -22,6 +22,9 @@ class StdOut(QObject):
         pass
 
     def __del__(self):
-        sys.stdout = sys.__stdout__
-        sys.stderr = sys.__stderr__
-
+        try:
+            sys.stdout = sys.__stdout__
+            sys.stderr = sys.__stderr__
+        except:
+            # With PySide2, sys becomes None
+            pass

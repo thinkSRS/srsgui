@@ -389,7 +389,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             signal_handler.sig_parameter_changed.connect(self.taskParameter.update)
             signal_handler.sig_new_question.connect(self.display_question)
             signal_handler.sig_finished.connect(self.onTaskFinished)
-            self.task.set_signal_handler(signal_handler)
+            self.task.set_callback_handler(signal_handler)
 
             self.taskResult.clear()
             self.onTaskStarted()

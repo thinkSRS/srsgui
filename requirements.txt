@@ -1,3 +1,4 @@
+pyserial
 matplotlib
-PyQt5
-rga
+pyside2
+

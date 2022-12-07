@@ -41,7 +41,7 @@ setup(
     long_description_content_type='text/markdown',
     install_requires=[
         "pyserial>=3",
-        "pyqt5",
+        "pyside2",
         "matplotlib"
     ],
 
@@ -51,14 +51,14 @@ setup(
         ],
     },
 
-    license="GPLv3",
+    license="MIT license",
     keywords=["instrument control", "data acquisition", "data visualization"],
     author="Chulhoon Kim",
     # author_email="chulhoonk@yahoo.com",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Science/Research",
-        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+        "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
