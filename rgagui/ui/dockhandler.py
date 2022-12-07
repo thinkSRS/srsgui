@@ -1,8 +1,10 @@
 
 import logging
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDockWidget, QMenu, QAction, QWidget, \
-                            QVBoxLayout, QTextBrowser
+
+from .qt.QtCore import Qt
+from .qt.QtWidgets import QDockWidget, QMenu, QAction, QWidget, \
+                          QVBoxLayout, QTextBrowser
+
 
 from matplotlib.figure import Figure
 import matplotlib.image as mpimg

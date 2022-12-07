@@ -8,11 +8,11 @@ import logging.handlers
 
 from pathlib import Path
 
-from PyQt5.QtCore import QTimer, QSettings, QByteArray
-from PyQt5.QtWidgets import QMainWindow, QApplication, QTextBrowser,\
-                            QVBoxLayout, QMessageBox, \
-                            QInputDialog, QFileDialog, \
-                            QAction
+from .qt.QtCore import QTimer, QSettings, QByteArray
+from .qt.QtWidgets import QMainWindow, QApplication, QTextBrowser,\
+                                QVBoxLayout, QMessageBox, \
+                                QInputDialog, QFileDialog, \
+                                QAction
 
 from .ui_taskmain import Ui_TaskMain
 from .commConnectDlg import CommConnectDlg
@@ -535,16 +535,19 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             logger.error(f"Error in handle_initial_image: {e}")
 
     def load_settings(self):
-        self.default_config_file = self.settings.value("ConfigFile", "", type=str)
-        sizes = self.settings.value("MainWindow/Splitter1", [100, 200, 200])
-        self.splitter.setSizes([int(i) for i in sizes])
-        sizes = self.settings.value("MainWindow/Splitter2", [150, 500])
-        self.splitter_2.setSizes([int(i) for i in sizes])
-        # self.splitter.setSizes(self.settings.value("MainWindow/Splitter1", [100, 200, 200]))  #, type=int))
-        # self.splitter_2.setSizes(self.settings.value("MainWindow/Splitter2", [150, 500]))  #, type=int))
+        try:
+            self.default_config_file = self.settings.value("ConfigFile", "")  #, type=str)
+            sizes = self.settings.value("MainWindow/Splitter1", [100, 200, 200])
+            self.splitter.setSizes([int(i) for i in sizes])
+            sizes = self.settings.value("MainWindow/Splitter2", [150, 500])
+            self.splitter_2.setSizes([int(i) for i in sizes])
+            # self.splitter.setSizes(self.settings.value("MainWindow/Splitter1", [100, 200, 200]))  #, type=int))
+            # self.splitter_2.setSizes(self.settings.value("MainWindow/Splitter2", [150, 500]))  #, type=int))
 
-        self.restoreGeometry(self.settings.value("MainWindow/Geometry", type=QByteArray))
-        self.restoreState(self.settings.value("MainWindow/State", type=QByteArray))
+            self.restoreGeometry(self.settings.value("MainWindow/Geometry"))  #, type=QByteArray))
+            self.restoreState(self.settings.value("MainWindow/State"))  #, type=QByteArray))
+        except Exception as e:
+            logger.error('Duringload_setting, {}'.format(e))
 
     def save_settings(self):
         self.settings.setValue("ConfigFile", self.default_config_file)

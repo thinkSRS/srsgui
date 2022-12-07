@@ -1,6 +1,7 @@
 
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal as Signal
+from .qt.QtCore import QObject
+from .qt.QtCore import Signal
+
 from matplotlib.figure import Figure
 
 from rgagui.task.callbacks import Callbacks

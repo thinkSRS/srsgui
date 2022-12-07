@@ -4,7 +4,8 @@ import traceback
 import logging
 import time
 
-from threading import Thread
+# from threading import Thread
+from rgagui.ui.qt.QtCore import QThread
 
 from matplotlib.figure import Figure
 
@@ -22,7 +23,7 @@ RedBold = '<font color="red"><b>{}</b></font>'
 RedNormal = '<font color="red">{}</font>'
 
 
-class Task(Thread):
+class Task(QThread):
     """ Base class for all task classes
     """
 

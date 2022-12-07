@@ -1,9 +1,9 @@
 
 import sys
 import logging
-from PyQt5.QtCore import QSettings
 
-from PyQt5.QtWidgets import QDialog, QMessageBox, QApplication
+from .qt.QtCore import QSettings
+from .qt.QtWidgets import QDialog, QMessageBox, QApplication
 
 from rgagui.inst.serial_ports import serial_ports
 from rgagui.inst.communications import Interface, SerialInterface, TcpipInterface

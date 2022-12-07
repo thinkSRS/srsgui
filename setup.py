@@ -32,7 +32,7 @@ setup(
     name='rgagui',
     version=version_string,
     description='GUI Interface for RGA Instruments and Tasks',
-    packages=['rgagui', 'rgagui.ui', 'rgagui.task', 'rgagui.plots', 'rgagui.inst'],
+    packages=['rgagui', 'rgagui.ui', 'rgagui.ui.qt', 'rgagui.task', 'rgagui.plots', 'rgagui.inst'],
     package_data={
         'rgagui': ['../rgagui/ui/srslogo.jpg'],
     },

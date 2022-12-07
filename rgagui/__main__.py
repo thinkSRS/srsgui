@@ -2,7 +2,7 @@
 
 import sys
 from pathlib import Path
-from PyQt5.QtWidgets import QApplication
+from rgagui.ui.qt.QtWidgets import QApplication
 from .ui.taskmain import TaskMain
 
 
@@ -11,10 +11,8 @@ def main():
     app = QApplication(sys.argv)
     main_window = TaskMain()
     main_window.show()
-    app.exec()
+    app.exec_()
 
 
 if __name__ == '__main__':
     main()
-
-

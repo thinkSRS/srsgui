@@ -1,7 +1,8 @@
 
 import sys
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal as Signal
+
+from .qt.QtCore import QObject
+from .qt.QtCore import Signal
 
 
 # redirect STDOUT and STDERR to a function

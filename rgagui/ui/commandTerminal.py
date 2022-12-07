@@ -1,10 +1,9 @@
 
-from PyQt5.QtGui import QKeySequence
-from PyQt5.QtWidgets import QFrame, QMessageBox, QShortcut
+from .qt.QtGui import QKeySequence
+from .qt.QtWidgets import QFrame, QMessageBox, QShortcut
+from .ui_commandTerminal import Ui_CommandTerminal
 
 from rgagui.inst.instrument import Instrument
-
-from .ui_commandTerminal import Ui_CommandTerminal
 
 
 class CommandTerminal(QFrame, Ui_CommandTerminal):

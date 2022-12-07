@@ -1,6 +1,7 @@
 
 import logging
-from PyQt5.QtWidgets import QTabWidget, QWidget,  QTextBrowser, QHBoxLayout
+
+from .qt.QtWidgets import QTabWidget, QWidget,  QTextBrowser, QHBoxLayout
 
 logger = logging.getLogger(__name__)
 

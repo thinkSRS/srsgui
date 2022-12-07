@@ -6,15 +6,15 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-
-from PyQt5 import QtCore, QtGui, QtWidgets
+from .qt import QtCore, QtGui, QtWidgets
 
 
 class Ui_TaskMain(object):
     def setupUi(self, TaskMain):
         TaskMain.setObjectName("TaskMain")
         TaskMain.resize(1140, 688)
-        TaskMain.setDockOptions(QtWidgets.QMainWindow.AllowNestedDocks|QtWidgets.QMainWindow.AllowTabbedDocks|QtWidgets.QMainWindow.AnimatedDocks)
+        options = QtWidgets.QMainWindow.AllowNestedDocks|QtWidgets.QMainWindow.AllowTabbedDocks|QtWidgets.QMainWindow.AnimatedDocks
+        TaskMain.setDockOptions(options)
         self.centralwidget = QtWidgets.QWidget(TaskMain)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
