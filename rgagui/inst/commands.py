@@ -12,8 +12,8 @@ class Command(object):
     Descriptor for a remote command to
     **set** and **query** a **string** value
     """
-    get_command_format = '{}?'
-    set_command_format = '{} {}'
+    _get_command_format = '{}?'
+    _set_command_format = '{} {}'
 
     def __init__(self, remote_command_name):
         """
@@ -30,7 +30,7 @@ class Command(object):
         if instance is None:
             return self
 
-        query_string = self.get_command_format.format(self.remote_command)
+        query_string = self._get_command_format.format(self.remote_command)
         reply = None
         try:
             reply = instance.comm.query_text(query_string)
@@ -56,7 +56,7 @@ class Command(object):
                 converted_value = self._set_convert_function(value)
             else:
                 converted_value = value
-            set_string = self.set_command_format.format(self.remote_command, converted_value)
+            set_string = self._set_command_format.format(self.remote_command, converted_value)
             instance.comm.send(set_string)
 
         except InstCommunicationError:
