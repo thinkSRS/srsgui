@@ -39,6 +39,7 @@ setup(
 
     long_description=description,
     long_description_content_type='text/markdown',
+    python_requires='>=3.7',
     install_requires=[
         "pyserial>=3",
         "pyside2",

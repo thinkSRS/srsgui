@@ -63,7 +63,6 @@ class DockHandler(object):
         for key in self.dock_dict:
             action_dock = QAction(parent)
             action_dock.setText(key)
-            action_dock.setCheckable(True)
             parent.menu_Docks.addAction(action_dock)
         self.init_plot_menu()
 
@@ -105,7 +104,7 @@ class DockHandler(object):
             console_dock.setObjectName(name)
             console_dock.setFloating(False)
             console_dock.setWindowTitle(name)
-            console_dock.setMinimumSize(250, 200)
+            console_dock.setMinimumSize(250, 150)
 
             self.console = QTextBrowser(self.parent)
             console_dock.setWidget(self.console)
@@ -121,7 +120,7 @@ class DockHandler(object):
             terminal_dock.setObjectName(name)
             terminal_dock.setFloating(False)
             terminal_dock.setWindowTitle(name)
-            terminal_dock.setMinimumSize(250, 200)
+            terminal_dock.setMinimumSize(250, 150)
 
             self.terminal_widget = CommandTerminal(self.parent)
             terminal_dock.setWidget(self.terminal_widget)
@@ -238,7 +237,6 @@ class DockHandler(object):
         for key in self.dock_dict:
             action_dock = QAction(self.parent)
             action_dock.setText(key)
-            # action_dock.setCheckable(True)
             self.parent.menu_Docks.addAction(action_dock)
 
     def get_figure_dict(self):

@@ -1,14 +1,13 @@
+
 import os
 import sys
-
-# import webbrowser
 
 import logging
 import logging.handlers
 
 from pathlib import Path
 
-from .qt.QtCore import QTimer, QSettings, QByteArray
+from .qt.QtCore import QTimer, QSettings
 from .qt.QtWidgets import QMainWindow, QApplication, QTextBrowser,\
                                 QVBoxLayout, QMessageBox, \
                                 QInputDialog, QFileDialog, \
@@ -34,7 +33,7 @@ logger = logging.getLogger(__name__)
 
 class TaskMain(QMainWindow, Ui_TaskMain):
     DefaultConfigFile = "rga.taskconfig"
-    OrganizationName = 'SRS'
+    OrganizationName = 'srsinst'
     ApplicationName = 'rgagui'
 
     LogoImageFile = 'srslogo.jpg'
@@ -117,7 +116,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         if not self.default_config_file:
             self.default_config_file = default_config_file
 
-        self.statusbar.showMessage('Waiting for selection')
+        self.statusbar.showMessage('Waiting for task selection')
         self.stdout = StdOut(self.print_redirect)
 
     def load_tasks(self):
@@ -239,7 +238,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                 return
 
             msg = text.split(Task.EscapeForResult[0], 2)
-            if len(msg) != 3: return
+            if len(msg) != 3:
+                return
+
             if text.startswith(Task.EscapeForResult):
                 if msg[2] == 'cls':
                     self.taskResult.clear()
@@ -296,6 +297,10 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
             self._busy_flag = False
 
+            # PySide2 needs to refresh matplotlib display before starting a new task
+            # for live update. Hide and show toolbar does the trick.
+            self.dock_handler.show_toolbar(False)
+
             self.create_task_result_in_session(self.task)
 
             # try:
@@ -324,7 +329,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             if self.is_task_running():  # Another task is running
                 return
 
-            self.dock_handler.show_toolbar(False)
             if self.task_method:
                 old_task_name = self.task_method.__name__
             else:
@@ -356,6 +360,8 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
             self.dock_handler.update_figures(self.task_method.additional_figure_names)
             self.figure_dict = self.dock_handler.get_figure_dict()
+
+            self.dock_handler.show_toolbar(False)
             self.handle_initial_image(self.task_method)
 
             new_task_name = self.task_method.__name__
@@ -394,8 +400,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.task.set_callback_handler(signal_handler)
 
             self.taskResult.clear()
-            self.onTaskStarted()
             self.dock_handler.show_toolbar(True)
+
+            self.onTaskStarted()
             self.task.start()
         except Exception as e:
             logger.error(e)
@@ -538,18 +545,15 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
     def load_settings(self):
         try:
-            self.default_config_file = self.settings.value("ConfigFile", "")  #, type=str)
+            self.default_config_file = self.settings.value("ConfigFile", "")
             sizes = self.settings.value("MainWindow/Splitter1", [100, 200, 200])
             self.splitter.setSizes([int(i) for i in sizes])
             sizes = self.settings.value("MainWindow/Splitter2", [150, 500])
             self.splitter_2.setSizes([int(i) for i in sizes])
-            # self.splitter.setSizes(self.settings.value("MainWindow/Splitter1", [100, 200, 200]))  #, type=int))
-            # self.splitter_2.setSizes(self.settings.value("MainWindow/Splitter2", [150, 500]))  #, type=int))
-
-            self.restoreGeometry(self.settings.value("MainWindow/Geometry"))  #, type=QByteArray))
-            self.restoreState(self.settings.value("MainWindow/State"))  #, type=QByteArray))
+            self.restoreGeometry(self.settings.value("MainWindow/Geometry"))
+            self.restoreState(self.settings.value("MainWindow/State"))
         except Exception as e:
-            logger.error('Duringload_setting, {}'.format(e))
+            logger.error('During load_setting, {}'.format(e))
 
     def save_settings(self):
         self.settings.setValue("ConfigFile", self.default_config_file)

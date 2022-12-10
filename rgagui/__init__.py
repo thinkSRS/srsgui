@@ -6,4 +6,4 @@ from rgagui.plots.timeplot import TimePlot
 from rgagui.inst.instrument import Instrument
 from rgagui.inst.component import Component
 
-__version__ = "0.1.2"  # Global version number
+__version__ = "0.1.3"  # Global version number

@@ -96,7 +96,7 @@ class Task(QThread):
         Subclass needs  to override this method.
         Put all preparation for a task in the overridden method.
         """
-        self.logger.info("Task.setup() is not overridden!!")
+        self.logger.info("Task.setup() is not overridden.")
 
     def test(self):
         """
@@ -104,14 +104,14 @@ class Task(QThread):
         Check if is_running() is true to continue.
         Add data using in add_details, create_table, and add_data_to_table.
         """
-        raise NotImplementedError("We need a real test!!")
+        raise NotImplementedError("We need a real test() implemented!")
 
     def cleanup(self):
         """
         Subclass need to override this method
         Put any cleanup after task in the overridden method
         """
-        self.logger.info('Task.cleanup() is NOT overridden!!')
+        self.logger.info('Task.cleanup() is not overridden.')
 
     def get_logger(self, name):
         if self.logger_prefix:
@@ -445,7 +445,7 @@ class Task(QThread):
         when data_available signal emits, this method handles new data.
         By default, it only updates the matplotlib figure.
         """
-        self.figure.canvas.draw_idle()
+        self.request_figure_update()
         # self.logger.error("Derive update() to use data_available signal")
         # raise NotImplementedError("Derive update() to use data_available signal")
 
