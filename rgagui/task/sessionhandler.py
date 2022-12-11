@@ -16,8 +16,7 @@ logging.getLogger('urllib3').setLevel(logging.WARNING)
 
 
 class SessionHandler(object):
-    def __init__(self, config, use_file=False, use_db=False, use_api=False):
-        self.config = None
+    def __init__(self, use_file=False, use_db=False, use_api=False):
         self.use_file = False
         self.use_db = False
         self.use_api = False
@@ -29,20 +28,14 @@ class SessionHandler(object):
         self.is_file_open = False
         self.table_info = {}
 
-        if use_file or use_db:
-            if not hasattr(config, 'base_data_dir'):
-                raise AttributeError('Parent has no base_data_dir')
-            if not hasattr(config, 'task_dict_name'):
-                raise AttributeError('Parent has no task_dict_name')
-
-        self.config = config
-
         self.use_file = use_file
         self.use_db = use_db
         self.use_api = use_api
-        self.data_dir = self.config.base_data_dir
         self.current_session = None
-        self.local_db_name = self.config.local_db_name
+
+        self.base_data_dir = None
+        self.task_dict_name = None
+        self.data_dir = None
 
         if self.use_api:
             pass
@@ -53,9 +46,18 @@ class SessionHandler(object):
     def is_open(self):
         return self._is_session_open
 
+    def set_data_directory(self, base_dir, task_dict_name):
+        self.base_data_dir = base_dir
+        self.task_dict_name = task_dict_name
+
     def open_session(self, sn, reuse_last_session=True):
         self.serial_number = sn
         if self.use_file:
+            if not (self.base_data_dir and self.task_dict_name):
+                logger.error('Data directory is not set: use set_data_directory()')
+                self._is_session_open = False
+                return
+
             self.data_dir = self.get_data_dir(sn, reuse_last_session)
             logger.info(f'Session directory is set to {self.data_dir}.')
             self._is_session_open = True
@@ -144,7 +146,7 @@ class SessionHandler(object):
 
     def get_data_dir(self, serial_number, reuse_last_run_number=True):
         # Dir for task_dict
-        task_data_dir = self.config.base_data_dir + '/' + self.config.task_dict_name
+        task_data_dir = self.base_data_dir + '/' + self.task_dict_name
 
         # Dir for connected DUT
         unit_data_dir = task_data_dir  # No SN + '/SN' + str(serial_number).strip()

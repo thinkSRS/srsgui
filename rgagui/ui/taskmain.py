@@ -168,7 +168,8 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.setWindowTitle(self.config.task_dict_name)
             self.dock_handler.display_image(self.get_logo_file())
 
-            self.session_handler = SessionHandler(self.config, True, False, False)
+            self.session_handler = SessionHandler(True, False, False)
+            self.session_handler.set_data_directory(self.config.base_data_dir, self.config.task_dict_name)
             self.session_handler.open_session(0, False)
 
         except Exception as e:
@@ -284,6 +285,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         self.actionRun.setEnabled(False)
         self.actionStop.setEnabled(True)
 
+        self.taskResult.clear()
+        self.dock_handler.show_toolbar(True)
+
         self._busy_flag = True
 
         self.session_handler.create_file(self.task.__class__.__name__)
@@ -345,7 +349,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             if not issubclass(taskClassChosen, Task):
                 title = 'Error'
                 msg = 'The task chosen "{}" does not have a valid Task subclass'.format(current_action_name)
-                self.show_message(msg, title)
+                self.display_question(msg, None)
                 raise TypeError(msg)
 
             self.task_method = taskClassChosen
@@ -377,7 +381,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
     def onRun(self):
         try:
             if self.is_task_running():
-                self.show_message('Another task is running', 'Error')
+                self.display_question('Another task is running', None)
                 return
             if self.task_method is None:
                 raise TypeError("No Task selected")
@@ -390,17 +394,8 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.task.set_inst_dict(self.inst_dict)
             self.task.set_session_handler(self.session_handler)
 
-            signal_handler = SignalHandler()
-            signal_handler.sig_text_available.connect(self.print_redirect)
-            signal_handler.sig_data_available.connect(self.task.update)
-            signal_handler.sig_figure_update_requested.connect(self.task.update_figure)
-            signal_handler.sig_parameter_changed.connect(self.taskParameter.update)
-            signal_handler.sig_new_question.connect(self.display_question)
-            signal_handler.sig_finished.connect(self.onTaskFinished)
+            signal_handler = SignalHandler(self)
             self.task.set_callback_handler(signal_handler)
-
-            self.taskResult.clear()
-            self.dock_handler.show_toolbar(True)
 
             self.onTaskStarted()
             self.task.start()
@@ -409,7 +404,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
     def onStop(self):
         if self.task is not None:
-            logger.info('{} stopped'.format(self.task.name))
+            logger.info('{} stopping'.format(self.task.name))
             self.task.stop()
 
     def onOpen(self):
@@ -442,18 +437,17 @@ class TaskMain(QMainWindow, Ui_TaskMain):
     def onDisconnect(self, inst_name):
         inst = self.get_inst(inst_name)
         if inst.is_connected():
-            msg_box = QMessageBox()
-            msg_box.setText("Do you want disconnect '{}' ?".format(inst_name))
-            msg_box.setWindowTitle('Disconnect')
-            msg_box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-            msg_box.setDefaultButton(QMessageBox.No)
-            reply = msg_box.exec()
-            if reply == QMessageBox.Yes:
+            self.display_question("Do you want to disconnect '{}'?".format(inst_name))
+            if self.question_result_value:
                 inst.disconnect()
                 self.inst_info_handler.update_info(inst_name)
                 logger.info('{} is disconnected'.format(inst_name))
 
     def okToContinue(self):
+        if self.task and self.task.is_running():
+            self.display_question("Do you want to quit while a task is running?")
+            if not self.question_result_value:
+                return False
         return True
 
     def create_task_result_in_session(self, task):
@@ -464,19 +458,12 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         self.session_handler.close_file()
         logger.debug('A task result for DUT is created')
 
-    @staticmethod
-    def show_message(msg, title=''):
-        logger.error(msg)
-        msg_box = QMessageBox()
-        msg_box.setText(msg)
-        msg_box.setWindowTitle(title)
-        msg_box.exec_()
-
     def display_question(self, question, return_type=bool):
         try:
             self.question_result = None
             self.question_result_value = None
-            text = '<font size=12>{}</font>'.format(question)
+            # text = '<font size=12>{}</font>'.format(question)
+            text = question
             title = self.task.name if self.task is not None else ""
 
             if return_type is None:

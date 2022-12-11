@@ -43,6 +43,14 @@ class SignalHandler(QObject, Callbacks):
     def __init__(self, parent=None):
         super().__init__(parent)
 
+        # Connect signals from the main widget
+        self.sig_text_available.connect(parent.print_redirect)
+        self.sig_data_available.connect(parent.task.update)
+        self.sig_figure_update_requested.connect(parent.task.update_figure)
+        self.sig_parameter_changed.connect(parent.taskParameter.update)
+        self.sig_new_question.connect(parent.display_question)
+        self.sig_finished.connect(parent.onTaskFinished)
+
     def started(self):
         self.sig_started.emit()
 
