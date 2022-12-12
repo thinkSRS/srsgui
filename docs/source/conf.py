@@ -10,15 +10,15 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('/PyPI/rgagui'))
+sys.path.insert(0, os.path.abspath('/PyPI/srsgui'))
 
-from rgagui import __version__
+from srsgui import __version__
 
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'rgagui'
+project = 'srsgui'
 copyright = '2022, Chulhoon Kim'
 author = 'Chulhoon Kim'
 version = __version__

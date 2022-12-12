@@ -1,4 +1,4 @@
-rgagui package
+srsgui package
 ==============
 
 Subpackages
@@ -7,14 +7,14 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   rgagui.inst
-   rgagui.task
-   rgagui.ui
+   srsgui.inst
+   srsgui.task
+   srsgui.ui
 
 Module contents
 ---------------
 
-.. automodule:: rgagui
+.. automodule:: srsgui
    :members:
    :undoc-members:
    :show-inheritance:

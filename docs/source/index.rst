@@ -1,16 +1,16 @@
-.. rgagui documentation master file, created by
+.. srsgui documentation master file, created by
    sphinx-quickstart on Wed Dec  7 16:34:11 2022.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to rgagui's documentation!
+Welcome to srsgui's documentation!
 ==================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   rgagui.rst
+   modules.rst
 
 Indices and tables
 ==================

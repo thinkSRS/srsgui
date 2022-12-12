@@ -25,16 +25,16 @@ def get_file_names(directory):
 
 
 description = open('readme.md').read()
-version_string = find_version('rgagui', '__init__.py')
+version_string = find_version('srsgui', '__init__.py')
 
-# files = get_file_names('rgagui/ui/images')
+# files = get_file_names('srsgui/ui/images')
 setup(
-    name='rgagui',
+    name='srsgui',
     version=version_string,
     description='GUI Interface for RGA Instruments and Tasks',
-    packages=['rgagui', 'rgagui.ui', 'rgagui.ui.qt', 'rgagui.task', 'rgagui.plots', 'rgagui.inst'],
+    packages=['srsgui', 'srsgui.ui', 'srsgui.ui.qt', 'srsgui.task', 'srsgui.plots', 'srsgui.inst'],
     package_data={
-        'rgagui': ['../rgagui/ui/srslogo.jpg'],
+        'srsgui': ['../srsgui/ui/srslogo.jpg'],
     },
 
     long_description=description,
@@ -48,7 +48,7 @@ setup(
 
     entry_points={
         'console_scripts': [
-            'rgagui = rgagui.__main__:main'
+            'srsgui = srsgui.__main__:main'
         ],
     },
 

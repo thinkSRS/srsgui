@@ -1,61 +1,61 @@
-rgagui.inst package
+srsgui.inst package
 ===================
 
 Submodules
 ----------
 
-rgagui.inst.commands module
+srsgui.inst.commands module
 ---------------------------
 
-.. automodule:: rgagui.inst.commands
+.. automodule:: srsgui.inst.commands
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.inst.communications module
+srsgui.inst.communications module
 ---------------------------------
 
-.. automodule:: rgagui.inst.communications
+.. automodule:: srsgui.inst.communications
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.inst.component module
+srsgui.inst.component module
 ----------------------------
 
-.. automodule:: rgagui.inst.component
+.. automodule:: srsgui.inst.component
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.inst.exceptions module
+srsgui.inst.exceptions module
 -----------------------------
 
-.. automodule:: rgagui.inst.exceptions
+.. automodule:: srsgui.inst.exceptions
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.inst.indexcommands module
+srsgui.inst.indexcommands module
 --------------------------------
 
-.. automodule:: rgagui.inst.indexcommands
+.. automodule:: srsgui.inst.indexcommands
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.inst.instrument module
+srsgui.inst.instrument module
 -----------------------------
 
-.. automodule:: rgagui.inst.instrument
+.. automodule:: srsgui.inst.instrument
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.inst.serial\_ports module
+srsgui.inst.serial\_ports module
 --------------------------------
 
-.. automodule:: rgagui.inst.serial_ports
+.. automodule:: srsgui.inst.serial_ports
    :members:
    :undoc-members:
    :show-inheritance:
@@ -63,7 +63,7 @@ rgagui.inst.serial\_ports module
 Module contents
 ---------------
 
-.. automodule:: rgagui.inst
+.. automodule:: srsgui.inst
    :members:
    :undoc-members:
    :show-inheritance:

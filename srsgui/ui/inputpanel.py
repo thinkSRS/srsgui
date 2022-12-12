@@ -3,8 +3,8 @@ from .qt.QtCore import Qt
 from .qt.QtWidgets import QWidget, QDoubleSpinBox, QSpinBox, QComboBox, \
                           QLineEdit, QLabel, QGridLayout, QPushButton
 
-from rgagui.task.task  import Task
-from rgagui.task.inputs import IntegerInput, FloatInput, StringInput, ListInput, InstrumentInput
+from srsgui.task.task  import Task
+from srsgui.task.inputs import IntegerInput, FloatInput, StringInput, ListInput, InstrumentInput
 
 import logging
 logger = logging.getLogger(__name__)

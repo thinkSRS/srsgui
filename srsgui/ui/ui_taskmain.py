@@ -174,7 +174,7 @@ class Ui_TaskMain(object):
 
     def retranslateUi(self, TaskMain):
         _translate = QtCore.QCoreApplication.translate
-        TaskMain.setWindowTitle(_translate("TaskMain", "rgagui"))
+        TaskMain.setWindowTitle(_translate("TaskMain", "srsgui"))
         self.label_2.setText(_translate("TaskMain", "Instrument Info"))
         self.deviceInfoTabWidget.setTabText(self.deviceInfoTabWidget.indexOf(self.tab), _translate("TaskMain", "Instrument"))
         self.label_3.setText(_translate("TaskMain", "Task Parameters"))
@@ -198,4 +198,4 @@ class Ui_TaskMain(object):
         self.actionRun.setShortcut(_translate("TaskMain", "Alt+R"))
         self.actionStop.setText(_translate("TaskMain", "Stop"))
         self.actionStop.setToolTip(_translate("TaskMain", "Abort the current test"))
-import rgagui.ui.resource_rc
+import srsgui.ui.resource_rc

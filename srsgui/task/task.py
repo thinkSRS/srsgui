@@ -5,7 +5,7 @@ import logging
 import time
 
 # from threading import Thread
-from rgagui.ui.qt.QtCore import QThread
+from srsgui.ui.qt.QtCore import QThread
 
 from matplotlib.figure import Figure
 
@@ -13,7 +13,7 @@ from .inputs import FloatInput, InstrumentInput
 from .taskresult import TaskResult, ResultLogHandler
 from .callbacks import Callbacks
 
-from rgagui.inst.instrument import Instrument
+from srsgui.inst.instrument import Instrument
 
 # HTML formatter for QTextBrowser
 Bold = '<font color="black"><b>{}</b></font>'

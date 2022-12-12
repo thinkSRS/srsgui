@@ -1,1 +1,1 @@
-sphinx-apidoc -o .\source ..\rgagui
+sphinx-apidoc -o .\source ..\srsgui

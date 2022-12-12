@@ -4,10 +4,10 @@ import logging
 from pathlib import Path
 from importlib import import_module, reload, invalidate_caches
 
-from rgagui.task import Task, GreenNormal, RedNormal
+from srsgui.task import Task, GreenNormal, RedNormal
 
 # from srs_insts.baseinsts import BaseInst
-from rgagui.inst.instrument import Instrument
+from srsgui.inst.instrument import Instrument
 
 logger = logging.getLogger(__name__)
 

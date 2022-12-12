@@ -23,10 +23,10 @@ from .qtloghandler import QtLogHandler
 from .deviceinfohandler import DeviceInfoHandler
 from .dockhandler import DockHandler
 
-from rgagui.task.config import Config
-from rgagui.task.sessionhandler import SessionHandler
-from rgagui.task import Task, Bold
-from rgagui.inst.instrument import Instrument
+from srsgui.task.config import Config
+from srsgui.task.sessionhandler import SessionHandler
+from srsgui.task import Task, Bold
+from srsgui.inst.instrument import Instrument
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 class TaskMain(QMainWindow, Ui_TaskMain):
     DefaultConfigFile = "rga.taskconfig"
     OrganizationName = 'srsinst'
-    ApplicationName = 'rgagui'
+    ApplicationName = 'srsgui'
 
     LogoImageFile = 'srslogo.jpg'
     LogoFile = str(Path(__file__).parent / LogoImageFile)
@@ -128,7 +128,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
             if self.initial_load:
                 logger.info('Python started from "{}"'.format(sys.exec_prefix))
-                logger.info('rgagui started from "{}"'.format(Path(__file__).parent.parent))
+                logger.info('srsgui started from "{}"'.format(Path(__file__).parent.parent))
             # Disconnect previously used instruments
             prev_inst_dict = self.inst_dict
             try:

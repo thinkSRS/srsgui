@@ -4,7 +4,7 @@ from .qt.QtCore import Signal
 
 from matplotlib.figure import Figure
 
-from rgagui.task.callbacks import Callbacks
+from srsgui.task.callbacks import Callbacks
 
 
 class SignalHandler(QObject, Callbacks):

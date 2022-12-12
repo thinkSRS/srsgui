@@ -1,7 +1,7 @@
-rgagui
+srsgui
 ======
 
 .. toctree::
    :maxdepth: 4
 
-   rgagui
+   srsgui

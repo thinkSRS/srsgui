@@ -3,7 +3,7 @@ from .qt.QtGui import QKeySequence
 from .qt.QtWidgets import QFrame, QMessageBox, QShortcut
 from .ui_commandTerminal import Ui_CommandTerminal
 
-from rgagui.inst.instrument import Instrument
+from srsgui.inst.instrument import Instrument
 
 
 class CommandTerminal(QFrame, Ui_CommandTerminal):

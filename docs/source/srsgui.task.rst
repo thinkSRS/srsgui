@@ -1,53 +1,53 @@
-rgagui.task package
+srsgui.task package
 ===================
 
 Submodules
 ----------
 
-rgagui.task.callbacks module
+srsgui.task.callbacks module
 ----------------------------
 
-.. automodule:: rgagui.task.callbacks
+.. automodule:: srsgui.task.callbacks
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.task.config module
+srsgui.task.config module
 -------------------------
 
-.. automodule:: rgagui.task.config
+.. automodule:: srsgui.task.config
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.task.inputs module
+srsgui.task.inputs module
 -------------------------
 
-.. automodule:: rgagui.task.inputs
+.. automodule:: srsgui.task.inputs
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.task.sessionhandler module
+srsgui.task.sessionhandler module
 ---------------------------------
 
-.. automodule:: rgagui.task.sessionhandler
+.. automodule:: srsgui.task.sessionhandler
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.task.task module
+srsgui.task.task module
 -----------------------
 
-.. automodule:: rgagui.task.task
+.. automodule:: srsgui.task.task
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.task.taskresult module
+srsgui.task.taskresult module
 -----------------------------
 
-.. automodule:: rgagui.task.taskresult
+.. automodule:: srsgui.task.taskresult
    :members:
    :undoc-members:
    :show-inheritance:
@@ -55,7 +55,7 @@ rgagui.task.taskresult module
 Module contents
 ---------------
 
-.. automodule:: rgagui.task
+.. automodule:: srsgui.task
    :members:
    :undoc-members:
    :show-inheritance:

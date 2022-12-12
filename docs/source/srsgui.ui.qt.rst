@@ -1,29 +1,29 @@
-rgagui.ui.qt package
+srsgui.ui.qt package
 ====================
 
 Submodules
 ----------
 
-rgagui.ui.qt.QtCore module
+srsgui.ui.qt.QtCore module
 --------------------------
 
-.. automodule:: rgagui.ui.qt.QtCore
+.. automodule:: srsgui.ui.qt.QtCore
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.ui.qt.QtGui module
+srsgui.ui.qt.QtGui module
 -------------------------
 
-.. automodule:: rgagui.ui.qt.QtGui
+.. automodule:: srsgui.ui.qt.QtGui
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.ui.qt.QtWidgets module
+srsgui.ui.qt.QtWidgets module
 -----------------------------
 
-.. automodule:: rgagui.ui.qt.QtWidgets
+.. automodule:: srsgui.ui.qt.QtWidgets
    :members:
    :undoc-members:
    :show-inheritance:
@@ -31,7 +31,7 @@ rgagui.ui.qt.QtWidgets module
 Module contents
 ---------------
 
-.. automodule:: rgagui.ui.qt
+.. automodule:: srsgui.ui.qt
    :members:
    :undoc-members:
    :show-inheritance:

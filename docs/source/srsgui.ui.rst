@@ -1,4 +1,4 @@
-rgagui.ui package
+srsgui.ui package
 =================
 
 Subpackages
@@ -7,111 +7,111 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   rgagui.ui.qt
+   srsgui.ui.qt
 
 Submodules
 ----------
 
-rgagui.ui.commConnectDlg module
+srsgui.ui.commConnectDlg module
 -------------------------------
 
-.. automodule:: rgagui.ui.commConnectDlg
+.. automodule:: srsgui.ui.commConnectDlg
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.ui.commandTerminal module
+srsgui.ui.commandTerminal module
 --------------------------------
 
-.. automodule:: rgagui.ui.commandTerminal
+.. automodule:: srsgui.ui.commandTerminal
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.ui.deviceinfohandler module
+srsgui.ui.deviceinfohandler module
 ----------------------------------
 
-.. automodule:: rgagui.ui.deviceinfohandler
+.. automodule:: srsgui.ui.deviceinfohandler
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.ui.dockhandler module
+srsgui.ui.dockhandler module
 ----------------------------
 
-.. automodule:: rgagui.ui.dockhandler
+.. automodule:: srsgui.ui.dockhandler
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.ui.inputpanel module
+srsgui.ui.inputpanel module
 ---------------------------
 
-.. automodule:: rgagui.ui.inputpanel
+.. automodule:: srsgui.ui.inputpanel
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.ui.qtloghandler module
+srsgui.ui.qtloghandler module
 -----------------------------
 
-.. automodule:: rgagui.ui.qtloghandler
+.. automodule:: srsgui.ui.qtloghandler
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.ui.resource\_rc module
+srsgui.ui.resource\_rc module
 -----------------------------
 
-.. automodule:: rgagui.ui.resource_rc
+.. automodule:: srsgui.ui.resource_rc
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.ui.signalhandler module
+srsgui.ui.signalhandler module
 ------------------------------
 
-.. automodule:: rgagui.ui.signalhandler
+.. automodule:: srsgui.ui.signalhandler
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.ui.stdout module
+srsgui.ui.stdout module
 -----------------------
 
-.. automodule:: rgagui.ui.stdout
+.. automodule:: srsgui.ui.stdout
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.ui.taskmain module
+srsgui.ui.taskmain module
 -------------------------
 
-.. automodule:: rgagui.ui.taskmain
+.. automodule:: srsgui.ui.taskmain
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.ui.ui\_commConnectDlg module
+srsgui.ui.ui\_commConnectDlg module
 -----------------------------------
 
-.. automodule:: rgagui.ui.ui_commConnectDlg
+.. automodule:: srsgui.ui.ui_commConnectDlg
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.ui.ui\_commandTerminal module
+srsgui.ui.ui\_commandTerminal module
 ------------------------------------
 
-.. automodule:: rgagui.ui.ui_commandTerminal
+.. automodule:: srsgui.ui.ui_commandTerminal
    :members:
    :undoc-members:
    :show-inheritance:
 
-rgagui.ui.ui\_taskmain module
+srsgui.ui.ui\_taskmain module
 -----------------------------
 
-.. automodule:: rgagui.ui.ui_taskmain
+.. automodule:: srsgui.ui.ui_taskmain
    :members:
    :undoc-members:
    :show-inheritance:
@@ -119,7 +119,7 @@ rgagui.ui.ui\_taskmain module
 Module contents
 ---------------
 
-.. automodule:: rgagui.ui
+.. automodule:: srsgui.ui
    :members:
    :undoc-members:
    :show-inheritance:

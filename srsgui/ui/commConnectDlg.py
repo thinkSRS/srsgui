@@ -5,8 +5,8 @@ import logging
 from .qt.QtCore import QSettings
 from .qt.QtWidgets import QDialog, QMessageBox, QApplication
 
-from rgagui.inst.serial_ports import serial_ports
-from rgagui.inst.communications import Interface, SerialInterface, TcpipInterface
+from srsgui.inst.serial_ports import serial_ports
+from srsgui.inst.communications import Interface, SerialInterface, TcpipInterface
 from .ui_commConnectDlg import Ui_CommConnectDlg
 
 logger = logging.getLogger(__name__)

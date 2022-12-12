@@ -2,7 +2,7 @@
 
 import sys
 from pathlib import Path
-from rgagui.ui.qt.QtWidgets import QApplication
+from srsgui.ui.qt.QtWidgets import QApplication
 from .ui.taskmain import TaskMain
 
 
