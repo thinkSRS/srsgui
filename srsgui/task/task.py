@@ -4,9 +4,6 @@ import traceback
 import logging
 import time
 
-# from threading import Thread
-from srsgui.ui.qt.QtCore import QThread
-
 from matplotlib.figure import Figure
 
 from .inputs import FloatInput, InstrumentInput
@@ -22,8 +19,15 @@ GreenNormal = '<font color="green">{}</font>'
 RedBold = '<font color="red"><b>{}</b></font>'
 RedNormal = '<font color="red">{}</font>'
 
+try:
+    from srsgui.ui.qt.QtCore import QThread
+    thread_class = QThread
+except (ImportError, ModuleNotFoundError):
+    from threading import Thread
+    thread_class = Thread
 
-class Task(QThread):
+
+class Task(thread_class):
     """ Base class for all task classes
     """
 

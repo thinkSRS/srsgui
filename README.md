@@ -8,6 +8,7 @@ by adding it to a ".taskconfig" configuration file,
 and manage a task suite as a separate package, without 
 modification of the **srsgui** code.
 
-A task uses pre-defined interfaces to interact with **srsgui** for user input, 
-text output, real-time matplotlib plots, along with a remote command terminal 
+A task uses pre-defined application programming interfaces (APIs) 
+to interact with **srsgui** for user input, text output, logging, 
+and real-time matplotlib plots, along with a remote command terminal 
 to controls instruments.

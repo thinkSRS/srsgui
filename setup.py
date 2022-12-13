@@ -32,7 +32,8 @@ setup(
     name='srsgui',
     version=version_string,
     description='GUI Interface for RGA Instruments and Tasks',
-    packages=['srsgui', 'srsgui.ui', 'srsgui.ui.qt', 'srsgui.task', 'srsgui.plots', 'srsgui.inst'],
+    packages=['srsgui', 'srsgui.ui', 'srsgui.ui.qt', 'srsgui.task',
+              'srsgui.plots', 'srsgui.inst', 'srsgui.inst.communications'],
     package_data={
         'srsgui': ['../srsgui/ui/srslogo.jpg'],
     },
@@ -42,7 +43,6 @@ setup(
     python_requires='>=3.7',
     install_requires=[
         "pyserial>=3",
-        "pyside2",
         "matplotlib"
     ],
 
