@@ -9,6 +9,7 @@ from srsgui.inst.instrument import Instrument
 class CommandTerminal(QFrame, Ui_CommandTerminal):
     """
     Terminal to control instruments defined in the .taskconfig file
+
            Type a command in one of the following ways
 
     inst_name:remote_command

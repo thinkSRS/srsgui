@@ -1,6 +1,6 @@
 
 """
-Interface for input variables between BaseTest and InputPanel for GUI
+Interface for input variables between Task and InputPanel in GUI
 
 """
 
@@ -40,6 +40,10 @@ class ListInput:
 
 
 class InstrumentInput:
+    """
+    InputPanel will set a QComboBox widget with inst_dict
+    """
+
     def __init__(self, default_index=0):
         self.default_value = default_index
         self.value = default_index

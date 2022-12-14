@@ -1,9 +1,18 @@
 
 import time
-import serial
 
 from srsgui.inst.exceptions import InstCommunicationError, InstLoginFailureError
 from .interface import Interface
+from .serial_ports import serial_ports
+
+try:
+    import serial
+except (ImportError, ModuleNotFoundError):
+    msg = "\n\nPython module 'serial' not found." \
+          "\nInstall 'pyserial' using" \
+          "\n\npip install pyserial" \
+          "\n"
+    raise ModuleNotFoundError(msg)
 
 TERM_CHAR = b'\r'   # Termination character for RGA
 
@@ -189,3 +198,9 @@ class SerialInterface(Interface):
                 'baud': self._baud,
                 'hardware_flow_control': self._hw_flow_control}
 
+    @classmethod
+    def find(cls):
+        """
+        Find available serial ports and return a list of the ports.
+        """
+        return serial_ports()

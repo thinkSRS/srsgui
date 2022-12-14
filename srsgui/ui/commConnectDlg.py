@@ -5,7 +5,6 @@ import logging
 from .qt.QtCore import QSettings
 from .qt.QtWidgets import QDialog, QMessageBox, QApplication
 
-from srsgui.inst.communications import serial_ports
 from srsgui.inst.communications import Interface, SerialInterface, TcpipInterface
 from .ui_commConnectDlg import Ui_CommConnectDlg
 
@@ -22,7 +21,7 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
             self.settings = QSettings()
             self.setWindowTitle('Connect using {}'.format(type(dut)))
 
-            self.serialPortComboBox.addItems(serial_ports())
+            self.serialPortComboBox.addItems(SerialInterface.find())
             self.ipAddressLineEdit.setInputMask('000.000.000.000;_')
             # Alternate way of doing input masking
             # An octet in IP address expressed in RE

@@ -1,5 +1,8 @@
 
-from .communications import Interface, SerialInterface, TcpipInterface
+from .communications.interface import Interface
+from .communications.serialinterface import SerialInterface
+from .communications.tcpipinterface import TcpipInterface
+
 from .instrument import Instrument
 from .component import Component
 from .exceptions import InstException, InstCommunicationError, \
