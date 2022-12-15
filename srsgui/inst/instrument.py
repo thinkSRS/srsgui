@@ -30,6 +30,7 @@ class Instrument(Component):
         self._model_name = None
         self._serial_number = None
         self._firmware_version = None
+        self.interface_dict = self.get_available_interfaces()
         Instrument.connect(self, interface_type, *args)  # make sure not to run a subclass method
 
     def connect(self, interface_type, *args):
@@ -254,3 +255,21 @@ class Instrument(Component):
         Reset the instrument.
         """
         raise NotImplementedError()
+
+    def connect_with_parameter_string(self, parameter_string):
+        self.default_connect_parameters = []
+        params = parameter_string.split(':', 1)
+        if len(params) < 2:
+            raise ValueError('Not enough parameters in "{}"'.format(parameter_string))
+        interface_type = params[0].strip().lower()
+        if interface_type in self.interface_dict:
+            parameters = self.interface_dict[interface_type].parse_parameter_string(parameter_string)
+
+            self.connect(*parameters)
+        else:
+            raise KeyError('Interface type {} not available for {}'
+                           .format(interface_type, self.get_name()))
+        return True
+
+    def connect_with_default_parameters(self):
+        self.connect(*self.default_connect_parameters)

@@ -10,6 +10,9 @@ class Interface(object):
     A subclass should implement all the methods in the class
     """
 
+    connection_parameters = {}
+    """Define parameters to be used in GUI setting """
+
     def __init__(self):
         self.type = None
         self._term_char = TERM_CHAR
@@ -90,6 +93,19 @@ class Interface(object):
         :rtype: bool
         """
         return self._is_connected
+
+    @staticmethod
+    def parse_parameter_string(param_string):
+        """
+        Parse a connection parameter string used in .taskconfig file
+        """
+        raise NotImplementedError
+
+    def get_parameter_string_from_connection_parameters(self):
+        """
+        convert connection_parameter dictionary to parameter sting
+        """
+        raise NotImplementedError
 
     def set_term_char(self, ch):
         """

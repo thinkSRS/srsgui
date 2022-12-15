@@ -137,23 +137,12 @@ class Config(object):
 
         num = len(items)
         if num == 4:
-            parameter_string = items[3]
-            success = self.set_default_connect_parameters(self.inst_dict[inst_key],
-                                                          parameter_string)
-            if success:
-                try:
-                    self.connect_with_default_parameters(self.inst_dict[inst_key])
-                    # logger.debug('check_id returns: {}, {}, {}'.format(
-                    # self.inst_dict[inst_key].check_id()))
-                    logger.info(GreenNormal.format(
-                        '{} is connected with default parameters: {}'.format(
-                            inst_key, parameter_string)))
-
-                except Exception as e:
-                    logger.error(e)
-                    logger.error(RedNormal.format(
-                        '{} failed to connect with default parameters {}'.format(
-                            inst_key, items[3])))
+            try:
+                parameter_string = items[3]
+                inst = self.inst_dict[inst_key]
+                inst.connect_with_parameter_string(parameter_string)
+            except Exception as e:
+                logger.error(e)
 
     def get_base_log_file_name(self):
         max_file_number = 20
@@ -169,49 +158,3 @@ class Config(object):
             except:
                 pass
         return return_value
-
-    def set_default_connect_parameters(self, inst, parameter_string):
-        inst.default_connect_parameters = []
-        params = parameter_string.split(':')
-        num = len(params)
-        interface_type = params[0].strip().lower()
-        if interface_type == Instrument.SERIAL:
-            if num > 4:
-                return False # too many parameters
-            if num > 1:
-                inst.default_connect_parameters.append(interface_type)  # 'serial'
-                inst.default_connect_parameters.append(params[1])  # port name
-            if num > 2:
-                inst.default_connect_parameters.append(int(params[2]))  # baud rate
-            if num > 3:
-                inst.default_connect_parameters.append(params[3].upper == 'TRUE')  # hardware flow control
-            return True
-
-        elif interface_type == Instrument.TCPIP:
-            if num > 5:
-                return False
-            inst.default_connect_parameters.append(interface_type)  # 'tcpip'
-            if num == 2:
-                inst.default_connect_parameters.append(params[1])  # ip address
-                return True
-            if num == 3:
-                inst.default_connect_parameters.append(params[1])  # ip address
-                inst.default_connect_parameters.append(int(params[2]))  # port number
-                return True
-            if num == 4:
-                inst.default_connect_parameters.append(params[1])  # ip address
-                inst.default_connect_parameters.append(params[2])  # user name
-                inst.default_connect_parameters.append(params[3])  # password
-                return True
-            if num == 5:
-                inst.default_connect_parameters.append(params[1])  # ip address
-                inst.default_connect_parameters.append(params[2])  # user name
-                inst.default_connect_parameters.append(params[3])  # password
-                inst.default_connect_parameters.append(int(params[4]))  # port number
-                return True
-        inst.default_connect_parameters.clear()
-        print("Invalid connect parameters", params)
-        return False
-
-    def connect_with_default_parameters(self, inst):
-        inst.connect(*inst.default_connect_parameters)
