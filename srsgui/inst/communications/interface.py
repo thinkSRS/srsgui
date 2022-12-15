@@ -10,13 +10,6 @@ class Interface(object):
     A subclass should implement all the methods in the class
     """
 
-    # Currently available interface with sub classes
-    SERIAL = 'serial'
-    """serial interface type constant"""
-
-    TCPIP = 'tcpip'
-    """TCPIP interface type constant"""
-
     def __init__(self):
         self.type = None
         self._term_char = TERM_CHAR

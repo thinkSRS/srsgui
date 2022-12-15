@@ -19,10 +19,11 @@ TERM_CHAR = b'\r'   # Termination character for RGA
 
 class SerialInterface(Interface):
     """Interface to use RS232 serial communication"""
+    NAME = 'serial'
 
     def __init__(self):
         super(SerialInterface, self).__init__()
-        self.type = Interface.SERIAL
+        self.type = SerialInterface.NAME
         self._serial = None
         self._port = None
         self._baud = None

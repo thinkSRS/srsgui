@@ -35,34 +35,38 @@ class Task(thread_class):
     class TaskSetupFailed(TaskException): pass
     class TaskRunFailed(TaskException): pass
 
-    # When parent is not None, parent should have these attributes.
-    InstrumentDictName = 'inst_dict'  # all instruments to use in a task
-    FigureDictName = 'figure_dict'  # all Matplotlib figures to use in a task
-    SessionHandlerName = 'session_handler'
 
-    # Escape string use in stdout redirection to GUI
     EscapeForResult = '@RESULT@'
     EscapeForDevice = '@DEVICE@'
     EscapeForStatus = '@STATUS@'
     EscapeForStart = '@START@'
     EscapeForStop = '@STOP@'
+    """Escape string use in stdout redirection to GUI"""
 
-    # input_parameters values can be changed interactively from GUI
     input_parameters = {
         # Example float parameter
         "Define variables before use!!": FloatInput(10.0, " Hz", 1.0, 1000.0, 1.0),
         "Constant value": FloatInput(1.0)
     }
+    """
+    Class variable to define parameters used in the task.
+    values in input_parameters can be changed interactively from GUI before the task runs    
+    IntegerInput, FloatInput, StringInput, ListInput and InstrumentInput can be used 
+    as values.     
+    """
 
-    # Names for multiple  Matplotlib figures you will use in this task
-    # If empty, you will have one figure named 'Figure' as a default
     additional_figure_names = []  # e.g., ['Scan Plots','Temperature Plots']
+    """
+    Names for extra Matplotlib figures added to use in this task
+    If empty, you will have one figure named 'plot' as a default
+    """
 
     _is_running = False  # class wide flag to tell if any instance is running
-    _is_optional = False  # result status will set as success initially if a task class is optional
 
-    # Image information for parent to display instead of the default logo image before instantiated
     InitialImage = None  # None for default image
+    """
+    Image file for parent to display instead of the default logo image when the task is selected.
+    """
 
     def __init__(self, parent=None):
         """ parent should have instrument dict,
@@ -73,7 +77,7 @@ class Task(thread_class):
         self._keep_running = False
         self._aborted = False
         self._error_raised = False
-        self._task_passed = False
+        self._task_passed = True
         self._log_error_detail = False  # Enables logging traceback information
 
         self.name = 'Base Task'
@@ -118,6 +122,10 @@ class Task(thread_class):
         self.logger.info('Task.cleanup() is not overridden.')
 
     def get_logger(self, name):
+        """
+        Get a logger with its handler available from the parent
+        """
+
         if self.logger_prefix:
             n = f'{self.logger_prefix}.{name}'
         else:
@@ -128,6 +136,10 @@ class Task(thread_class):
         return logger
 
     def basic_setup(self):
+        """
+        basic_setup() runs before task-specific setup()
+        """
+
         self.logger = self.get_logger(__name__)
         if self.figure is None or not hasattr(self.figure, 'canvas'):
             raise AttributeError('Invalid figure')
@@ -163,6 +175,10 @@ class Task(thread_class):
         self.clear()
 
     def basic_cleanup(self):
+        """
+        basic_cleanup runs after task-specific cleanup()
+        """
+
         try:
             Task._is_running = False
             self._keep_running = False
@@ -176,7 +192,7 @@ class Task(thread_class):
                 self.logger.info(msg)
                 self.result.set_aborted()
             elif self._task_passed:
-                msg = '{} PASSED'.format(self.name)
+                msg = '{} FINISHED'.format(self.name)
                 self.display_result(msg)
                 self.update_status(msg)
                 self.logger.info(GreenBold.format(msg))
@@ -194,6 +210,9 @@ class Task(thread_class):
             self.logger.removeHandler(self.result_log_handler)
 
     def run(self):
+        """
+        Overrides Thread run() method. task-speciic test() runs inside this method.
+        """
         try:
             self.basic_setup()
             if self._keep_running:
@@ -217,8 +236,11 @@ class Task(thread_class):
         except Exception as e:
             self.log_exception(e)
 
-    # Override for QThread start
     def start(self):
+        """
+        Overrides Thread start() method.
+        """
+
         # if Task._is_running: # Disable for multiple tasks running
         #     raise RuntimeError('Another task is running')
 
@@ -228,14 +250,25 @@ class Task(thread_class):
         # self.logger.debug("{} start completed".format(self.name))
 
     def stop(self):
+        """
+        Make is_running() returns False. A task should check is_running()
+        frequently. Stop if it returns False.
+        """
+
         if self._keep_running:
             self._aborted = True
             self._keep_running = False
 
     def set_session_handler(self, session_handler):
+        """
+        Parent should set a session handler for Task to use file output.
+        """
         self.session_handler = session_handler
 
     def set_callback_handler(self, callback_handler: Callbacks):
+        """
+        Parent should set a callback handler to handle events from Task.
+        """
         self.callbacks = callback_handler
 
     @staticmethod
@@ -248,11 +281,19 @@ class Task(thread_class):
         return True
 
     def set_inst_dict(self, inst_dict):
+        """
+        Parent should set inst_dict for Task to use instruments available from the parent.
+        """
+
         if not self._check_dict_items(inst_dict, Instrument):
             raise AttributeError('invalid inst_dict for Task class')
         self.inst_dict = inst_dict
 
     def set_figure_dict(self, figure_dict):
+        """
+        Parent should set figure_dict for Task to use Matplotlib figures available from the parent.
+        """
+
         if not self._check_dict_items(figure_dict, Figure):
             raise AttributeError('invalid figure_dict for Task class')
         self.figure_dict = figure_dict
@@ -263,6 +304,11 @@ class Task(thread_class):
             raise ValueError('No figure in figure_dict to set as default')
 
     def get_figure(self, name=None) -> Figure:
+        """
+        Get a Matplotlib figure from figure_dict.
+        if name is None, it will reutrn the first figure in figure_dict as the defualt
+        """
+
         if name is None:
             name = list(self.figure_dict.keys())[0]
         if name in self.figure_dict:
@@ -271,7 +317,7 @@ class Task(thread_class):
 
     def clear(self):
         """
-        Clear figures
+        Clear all the figures in figure_dict
         """
         for fig in self.figure_dict.values():
             if hasattr(fig, 'canvas'):
@@ -279,11 +325,11 @@ class Task(thread_class):
                 fig.canvas.draw_idle()
 
     def is_running(self):
+        """
+        Task should check is_running() is True.
+        If it returns False, Task should stop ASAP.
+        """
         return self._keep_running
-
-    @classmethod
-    def is_optional(cls):
-        return cls._is_optional
 
     def is_task_passed(self):
         return self._task_passed
@@ -295,10 +341,15 @@ class Task(thread_class):
         self.result.set_passed(status)
 
     def is_error_raised(self):
+        """
+        Check if Task stopped with an error
+        """
         return self._error_raised
 
-    # Set to stop the task selection from running further
     def set_error_raised(self):
+        """
+        Mark Task is stopped with an error
+        """
         self._error_raised = True
 
     # Wrapper for TaskResult.add_details

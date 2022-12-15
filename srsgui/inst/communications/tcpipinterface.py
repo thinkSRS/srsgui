@@ -16,10 +16,11 @@ class TcpipInterface(Interface):
 
     RGA_PORT = 818
     TELNET_PORT = 23
+    NAME = 'tcpip'
 
     def __init__(self):
         super(TcpipInterface, self).__init__()
-        self.type = Interface.TCPIP
+        self.type = TcpipInterface.NAME
         try:
             # Create an AF_INET, STREAM socket (TCPIP)
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -131,6 +132,13 @@ class TcpipInterface(Interface):
                 self._query_callback('Queried Cmd: {} Reply: {}'.format(cmd, decoded_reply))
             return decoded_reply
 
+    def set_timeout(self, seconds):
+        self._timeout = seconds
+        self.socket.settimeout(seconds)
+
+    def get_timeout(self):
+        return self._timeout
+
     def connect_without_login(self, ip_address, port=TELNET_PORT):
         """
         Connect to a instrument that does not require login
@@ -152,14 +160,7 @@ class TcpipInterface(Interface):
         except OSError:
             raise InstCommunicationError('Failed connecting to ' + str(ip_address))
 
-    def set_timeout(self, seconds):
-        self._timeout = seconds
-        self.socket.settimeout(seconds)
-
-    def get_timeout(self):
-        return self._timeout
-
-    def connect(self, ip_address, userid, password, port=RGA_PORT):
+    def connect_with_login(self, ip_address, userid, password, port=RGA_PORT):
         """
         Connect and login to an instrument
 
@@ -220,6 +221,15 @@ class TcpipInterface(Interface):
             else:
                 self.disconnect()
                 raise InstLoginFailureError('Check if user id and password are correct.')
+
+    def connect(self, *args):
+        num = len(args)
+        if num == 4 or num == 3:
+            self.connect_with_login(*args)
+        elif num == 2 or num == 1:
+            self.connect_without_login(*args)
+        else:
+            raise TypeError("Invalid Parameters for TcpipInterface")
 
     def disconnect(self):
         self._is_connected = False

@@ -9,13 +9,12 @@ from .exceptions import InstIdError
 class Instrument(Component):
     """ This is base instrument class
     """
-    SERIAL = Interface.SERIAL
-    TCPIP = Interface.TCPIP
 
     # String should be in in the *idn string of the instrument
     _IdString = "Not Available"
+    available_interfaces = [SerialInterface, TcpipInterface]
 
-    def __init__(self, interface_type=Interface.SERIAL, *args):
+    def __init__(self, interface_type=None, *args):
         """
         Initialize an instance of Instrument class
 
@@ -80,26 +79,15 @@ class Instrument(Component):
         if self.comm.is_connected():
             self.comm.disconnect()
             time.sleep(0.1)
-
-        num = len(args)
-        if interface_type == Instrument.TCPIP:
-            self.comm = TcpipInterface()
-
-            if num == 4 or num == 3:
+        if not interface_type:
+            return
+        for interface in self.available_interfaces:
+            if interface_type == interface.NAME:
+                self.comm = interface()
                 self.comm.connect(*args)
-            elif num == 2 or num == 1:
-                self.comm.connect_without_login(*args)
-            else:
-                raise TypeError("Invalid Parameters for TcpipInterface")
-        elif interface_type == Instrument.SERIAL:
-            if not isinstance(self.comm, SerialInterface):
-                self.comm = SerialInterface()
-            if 0 < num < 4:
-                self.comm.connect(*args)
-        else:
-            raise TypeError("Unknown Interface type: {}".format(interface_type))
-        self.set_term_char(term_char)
-        self.update_components()
+                self.set_term_char(term_char)
+                self.update_components()
+                break
 
     def disconnect(self):
         """
@@ -204,6 +192,17 @@ class Instrument(Component):
         self._serial_number = serial_number
         self._firmware_version = firmware_version
         return self._model_name, self._serial_number, self._firmware_version
+
+    def get_available_interfaces(self):
+        """
+        Get available communication interfaces for the instrument
+
+        :rtype: dict
+        """
+        d = {}
+        for interface in self.available_interfaces:
+            d[interface.NAME] = interface
+        return d
 
     def get_info(self):
         """

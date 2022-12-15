@@ -37,6 +37,19 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
             self.dut = dut
             if hasattr(self.dut, 'comm'):
                 self.comm = dut.comm
+
+                for i in range(self.commTabWidget.count()):
+                    self.commTabWidget.setTabEnabled(i, False)
+
+                interface_dict = self.dut.get_available_interfaces()
+
+                for name in interface_dict:
+                    if name == 'serial':
+                        self.commTabWidget.setTabEnabled(0, True)
+
+                    elif name == 'tcpip':
+                        self.commTabWidget.setTabEnabled(1, True)
+
                 info = self.comm.get_info()
                 if type(self.dut.comm) is TcpipInterface:
                     self.commTabWidget.setCurrentIndex(1)
@@ -57,11 +70,11 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
         if self.loginCB.isChecked():
             self.userNameLineEdit.setEnabled(True)
             self.passwordLineEdit.setEnabled(True)
-            self.portNumberSB.setValue(self.dut.comm.RGA_PORT)
+            self.portNumberSB.setValue(818)
         else:
             self.userNameLineEdit.setEnabled(False)
             self.passwordLineEdit.setEnabled(False)
-            self.portNumberSB.setValue(self.dut.comm.TELNET_PORT)
+            self.portNumberSB.setValue(23)
     
     def accept(self):
         if self.dut.comm.is_connected():
@@ -70,15 +83,15 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
             try:
                 if self.loginCB.isChecked():
                     # print(self.ipAddressLineEdit.text())
-                    self.dut.connect(Interface.TCPIP,
+                    self.dut.connect('tcpip',
                                      self.ipAddressLineEdit.text(),
                                      self.userNameLineEdit.text(),
                                      self.passwordLineEdit.text(),
                                      self.portNumberSB.value())
                 else:
-                    self.dut.connect(Interface.TCPIP,
-                                  self.ipAddressLineEdit.text(),
-                                  self.portNumberSB.value())            
+                    self.dut.connect('tcpip',
+                                     self.ipAddressLineEdit.text(),
+                                     self.portNumberSB.value())
 
             except Exception as e:
                 err_string = 'Error connecting to {0}\n {1}'\
@@ -94,7 +107,7 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
             try:            
                 # self.dut.comm = SerialInterface()
                 self.dut.connect(
-                              Interface.SERIAL,
+                              'serial',
                               self.serialPortComboBox.currentText(),
                               int(self.baudRateComboBox.currentText()))
                 self.dut.comm.port = self.serialPortComboBox.currentText()
@@ -134,10 +147,11 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
             last_ip = self.settings.value("ConnectDlg/IP", "", type=str)
             last_id = self.settings.value("ConnectDlg/ID", "", type=str)
             last_pwd = self.settings.value("ConnectDlg/PWD", "", type=str)
-
+            last_login = self.settings.value("ConnectDlg/login", "", type=bool)
             self.ipAddressLineEdit.setText(last_ip)
             self.userNameLineEdit.setText(last_id)
             self.passwordLineEdit.setText(last_pwd)
+            self.loginCB.setChecked(last_login)
 
             port = self.settings.value("ConnectDlg/ComPort", "", type=str)
             baud = str(self.settings.value("ConnectDlg/BaudRate", 115200, type=int))
@@ -161,6 +175,7 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
                     self.settings.setValue("ConnectDlg/IP", self.dut.comm._ip_address)
                     self.settings.setValue("ConnectDlg/ID", self.dut.comm._userid)
                     self.settings.setValue("ConnectDlg/PWD", self.dut.comm._password)
+                    self.settings.setValue("ConnectDlg/login", self.loginCB.isChecked())
         except Exception as e:
             logger.error("Error in save_settings: {}".format(e))
 
