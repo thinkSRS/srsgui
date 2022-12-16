@@ -18,8 +18,10 @@ srsgui.ui.commConnectDlg module
 .. automodule:: srsgui.ui.commConnectDlg
    :members:
    :undoc-members:
+   :inherited-members:
    :show-inheritance:
 
+   
 srsgui.ui.commandTerminal module
 --------------------------------
 
@@ -27,7 +29,7 @@ srsgui.ui.commandTerminal module
    :members:
    :undoc-members:
    :show-inheritance:
-
+   
 srsgui.ui.deviceinfohandler module
 ----------------------------------
 
@@ -60,14 +62,6 @@ srsgui.ui.qtloghandler module
    :undoc-members:
    :show-inheritance:
 
-srsgui.ui.resource\_rc module
------------------------------
-
-.. automodule:: srsgui.ui.resource_rc
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 srsgui.ui.signalhandler module
 ------------------------------
 
@@ -88,30 +82,6 @@ srsgui.ui.taskmain module
 -------------------------
 
 .. automodule:: srsgui.ui.taskmain
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-srsgui.ui.ui\_commConnectDlg module
------------------------------------
-
-.. automodule:: srsgui.ui.ui_commConnectDlg
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-srsgui.ui.ui\_commandTerminal module
-------------------------------------
-
-.. automodule:: srsgui.ui.ui_commandTerminal
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-srsgui.ui.ui\_taskmain module
------------------------------
-
-.. automodule:: srsgui.ui.ui_taskmain
    :members:
    :undoc-members:
    :show-inheritance:

@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 class Config(object):
     ResultDirectory = 'task-results'
     DataRootDirectory = str(Path.home() / ResultDirectory)
-    LocalModulePath = ['tasks', 'instruments']
+    LocalModulePath = ['tasks', 'instruments', 'plots']
 
     def __init__(self):
         self.inst_dict = {}

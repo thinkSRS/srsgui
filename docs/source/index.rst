@@ -10,7 +10,7 @@ Welcome to srsgui's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   modules.rst
+   srsgui.rst
 
 Indices and tables
 ==================

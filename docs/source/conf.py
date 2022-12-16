@@ -38,7 +38,7 @@ autodoc_default_options = {
     # example_package/autodoctest/doc/source/_templates/autosummary/class.rst
     # and other defaults in sphinx-autodoc.
     'show-inheritance': True,
-    'inherited-members': True,
+    'inherited-members': False,
     'no-special-members': True,
 }
 
