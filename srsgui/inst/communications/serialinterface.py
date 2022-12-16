@@ -19,7 +19,14 @@ TERM_CHAR = b'\r'   # Termination character for RGA
 
 class SerialInterface(Interface):
     """Interface to use RS232 serial communication"""
+
     NAME = 'serial'
+
+    connection_parameters = {
+        'port': 'COM3',
+        'baud rate': 9600,
+        'hardware flow control': False
+    }
 
     def __init__(self):
         super(SerialInterface, self).__init__()
@@ -86,6 +93,25 @@ class SerialInterface(Interface):
     def reconnect(self):
         self.disconnect()
         self.connect(self._port, self._baud)
+
+    @staticmethod
+    def parse_parameter_string(param_string):
+        connect_parameters = []
+        params = param_string.split(':')
+        num = len(params)
+        interface_type = params[0].strip().lower()
+        if interface_type != SerialInterface.NAME:
+            return None
+        if num > 4:
+            raise ValueError('Too many parameters in "{}"'.format(param_string))
+        if num > 1:
+            connect_parameters.append(interface_type)  # 'serial'
+            connect_parameters.append(params[1])  # port name
+        if num > 2:
+            connect_parameters.append(int(params[2]))  # baud rate
+        if num > 3:
+            connect_parameters.append(params[3].upper == 'TRUE')  # hardware flow control
+        return connect_parameters
 
     def send_break(self, duration=0.1):
         """

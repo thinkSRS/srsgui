@@ -246,6 +246,34 @@ class TcpipInterface(Interface):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.connect(self._ip_address, self._userid, self._password)
 
+    @staticmethod
+    def parse_parameter_string(param_string):
+        connect_parameters = []
+        params = param_string.split(':')
+        num = len(params)
+        interface_type = params[0].strip().lower()
+        if interface_type != TcpipInterface.NAME:
+            return None
+        if num > 5:
+            raise ValueError('Too many parameters in "{}"'.format(param_string))
+
+        connect_parameters.append(interface_type)  # 'tcpip'
+        if num == 2:
+            connect_parameters.append(params[1])  # ip address
+        elif num == 3:
+            connect_parameters.append(params[1])  # ip address
+            connect_parameters.append(int(params[2]))  # port number
+        elif num == 4:
+            connect_parameters.append(params[1])  # ip address
+            connect_parameters.append(params[2])  # user name
+            connect_parameters.append(params[3])  # password
+        elif num == 5:
+            connect_parameters.append(params[1])  # ip address
+            connect_parameters.append(params[2])  # user name
+            connect_parameters.append(params[3])  # password
+            connect_parameters.append(int(params[4]))  # port number
+        return connect_parameters
+
     def clear_buffer(self):
         """
         It does not do anything for TCPIP interface
