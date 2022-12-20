@@ -1,6 +1,14 @@
 srsgui.inst package
 ===================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   srsgui.inst.communications
+
 Submodules
 ----------
 
@@ -11,15 +19,8 @@ srsgui.inst.commands module
    :members:
    :undoc-members:
    :show-inheritance:
-
-srsgui.inst.communications module
----------------------------------
-
-.. automodule:: srsgui.inst.communications
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
+   :inherited-members:
+   
 srsgui.inst.component module
 ----------------------------
 
@@ -48,14 +49,6 @@ srsgui.inst.instrument module
 -----------------------------
 
 .. automodule:: srsgui.inst.instrument
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-srsgui.inst.serial\_ports module
---------------------------------
-
-.. automodule:: srsgui.inst.serial_ports
    :members:
    :undoc-members:
    :show-inheritance:
