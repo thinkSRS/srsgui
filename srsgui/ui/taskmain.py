@@ -14,7 +14,10 @@ from .qt.QtWidgets import QMainWindow, QApplication, QTextBrowser,\
                                 QAction
 
 from .ui_taskmain import Ui_TaskMain
+
 from .commConnectDlg import CommConnectDlg
+from .connectdlg import ConnectDlg
+
 from .inputpanel import InputPanel
 from .signalhandler import SignalHandler
 
@@ -423,7 +426,8 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         logger.info('Connecting to {}...'.format(inst_name))
         try:
             inst = self.get_inst(inst_name)
-            form = CommConnectDlg(inst)
+            form = ConnectDlg(inst)
+            # form = CommConnectDlg(inst)
             form.exec_()
 
             if inst.is_connected():

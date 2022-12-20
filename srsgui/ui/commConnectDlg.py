@@ -3,7 +3,7 @@ import sys
 import logging
 
 from .qt.QtCore import QSettings
-from .qt.QtWidgets import QDialog, QMessageBox, QApplication
+from .qt.QtWidgets import QDialog, QMessageBox
 
 from srsgui.inst.communications import Interface, SerialInterface, TcpipInterface
 from .ui_commConnectDlg import Ui_CommConnectDlg
@@ -180,7 +180,9 @@ class CommConnectDlg(QDialog, Ui_CommConnectDlg):
             logger.error("Error in save_settings: {}".format(e))
 
 
-if __name__ == "__main__":    
+if __name__ == "__main__":
+    from .qt.QtWidgets import QApplication
+
     app = QApplication(sys.argv)
     form = CommConnectDlg()    
     form.show()

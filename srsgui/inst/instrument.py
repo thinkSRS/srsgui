@@ -5,14 +5,33 @@ from .communications import Interface, SerialInterface, TcpipInterface
 from .component import Component
 from .exceptions import InstIdError
 
+from srsgui.task.inputs import ComPortListInput, IntegerListInput, BoolInput, \
+                               Ip4Input, IntegerInput
+
 
 class Instrument(Component):
-    """ This is base instrument class
+    """ This is the base instrument class
     """
 
     # String should be in in the *idn string of the instrument
     _IdString = "Not Available"
-    available_interfaces = [SerialInterface, TcpipInterface]
+    available_interfaces = [
+        [
+            SerialInterface,
+            {
+                'port': ComPortListInput(),
+                'baud_rate': IntegerListInput([9600, 115200]),
+                'hardware_flow_control': BoolInput(['Off', 'On'])
+            }
+        ],
+        [
+            TcpipInterface,
+            {
+                'ip_address': Ip4Input('192.168.1.10'),
+                'port': IntegerInput(23)
+            }
+        ]
+    ]
 
     def __init__(self, interface_type=None, *args):
         """
@@ -83,8 +102,8 @@ class Instrument(Component):
         if not interface_type:
             return
         for interface in self.available_interfaces:
-            if interface_type == interface.NAME:
-                self.comm = interface()
+            if interface_type == interface[0].NAME:
+                self.comm = interface[0]()
                 self.comm.connect(*args)
                 self.set_term_char(term_char)
                 self.update_components()
@@ -202,7 +221,7 @@ class Instrument(Component):
         """
         d = {}
         for interface in self.available_interfaces:
-            d[interface.NAME] = interface
+            d[interface[0].NAME] = interface
         return d
 
     def get_info(self):

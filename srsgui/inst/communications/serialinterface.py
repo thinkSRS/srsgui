@@ -45,7 +45,7 @@ class SerialInterface(Interface):
         else:
             self.port_not_open_error = InstCommunicationError
 
-    def connect(self, port, baud=115200, hardware_flow_control=False):
+    def connect(self, port, baud_rate=115200, hardware_flow_control=False):
         """
         Connect to an instrument using the serial interface
 
@@ -54,7 +54,7 @@ class SerialInterface(Interface):
             port : str
                 serial port to use for serial communication,
                 e.g., 'COM3 for Windows, '/dev/ttyUSB0' for Linux
-            baud: integer, optional
+            baud_rate: integer, optional
                 the default is 115200, You have to use the same baud rate
                 with the connecting instrument.
 
@@ -68,20 +68,20 @@ class SerialInterface(Interface):
             self._is_connected = False
             return
         try:
-            self._serial = serial.Serial(port, baud, timeout=self._timeout, rtscts=hardware_flow_control)
+            self._serial = serial.Serial(port, baud_rate, timeout=self._timeout, rtscts=hardware_flow_control)
             self.clear_buffer()
         except serial.SerialException:
             self._is_connected = False
             raise InstCommunicationError('Failed to connect the serial port: ' + port)
         else:
             self._port = port
-            self._baud = baud
+            self._baud_rate = baud_rate
             self._hw_flow_control = hardware_flow_control
             self._is_connected = True
 
             if self._connect_callback:
                 self._connect_callback('Connected serial port: {} Baud rate: {}'
-                                       .format(self._port, self._baud))
+                                       .format(self._port, self._baud_rate))
 
     def disconnect(self):
         if self._is_connected:
@@ -92,7 +92,7 @@ class SerialInterface(Interface):
 
     def reconnect(self):
         self.disconnect()
-        self.connect(self._port, self._baud)
+        self.connect(self._port, self._baud_rate)
 
     @staticmethod
     def parse_parameter_string(param_string):
@@ -222,7 +222,7 @@ class SerialInterface(Interface):
         """
         return {'type': self.type,
                 'port': self._port,
-                'baud': self._baud,
+                'baud_rate': self._baud_rate,
                 'hardware_flow_control': self._hw_flow_control}
 
     @classmethod
