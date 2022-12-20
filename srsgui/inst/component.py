@@ -45,7 +45,7 @@ class Component(object):
     dir = DirCommand('dir')
     """ class instance of DirCommand"""
 
-    def __init__(self, parent, name=None):
+    def __init__(self, parent, name='unnamed'):
         self._name = name
         self._children = []
         if parent is None:

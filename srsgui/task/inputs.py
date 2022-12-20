@@ -18,6 +18,10 @@ class StringInput(BaseInput):
     pass
 
 
+class PasswordInput(BaseInput):
+    pass
+
+
 class IntegerInput(BaseInput):
     def __init__(self, default_value, suffix='', minimum=0, maximum=65535, single_step=1):
         super().__init__(default_value)

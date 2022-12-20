@@ -8,14 +8,11 @@ from srsgui.inst.exceptions import InstCommunicationError, InstLoginFailureError
 from .interface import Interface
 
 EMPTY_BYTES = b''   # When socekt.recv() returns b'', the socket is closed.
-TERM_CHAR = b'\r'   # Termination character for RGA
 
 
 class TcpipInterface(Interface):
     """Interface to use Ethernet TCP/IP communication"""
 
-    RGA_PORT = 818
-    TELNET_PORT = 23
     NAME = 'tcpip'
 
     def __init__(self):
@@ -33,7 +30,7 @@ class TcpipInterface(Interface):
         self._ip_address = ''
         self._userid = ''
         self._password = ''
-        self._tcp_port = TcpipInterface.RGA_PORT
+        self._tcp_port = 23  # TELNET port
         self._timeout = 20
 
     def _send(self, cmd):
@@ -139,7 +136,7 @@ class TcpipInterface(Interface):
     def get_timeout(self):
         return self._timeout
 
-    def connect_without_login(self, ip_address, port=TELNET_PORT):
+    def connect_without_login(self, ip_address, port=23):
         """
         Connect to a instrument that does not require login
         """
@@ -160,7 +157,7 @@ class TcpipInterface(Interface):
         except OSError:
             raise InstCommunicationError('Failed connecting to ' + str(ip_address))
 
-    def connect_with_login(self, ip_address, userid, password, port=RGA_PORT):
+    def connect_with_login(self, ip_address, userid, password, port=818):
         """
         Connect and login to an instrument
 

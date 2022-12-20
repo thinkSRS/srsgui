@@ -1,6 +1,6 @@
 
 import logging
-from .qt.QtCore import Qt
+from .qt.QtCore import Qt, QSettings
 from .qt.QtWidgets import QDialog, QDialogButtonBox, \
                           QVBoxLayout, QGridLayout,\
                           QSpacerItem, QSizePolicy, \
@@ -12,7 +12,7 @@ from srsgui.inst.communications import Interface, SerialInterface, TcpipInterfac
 from srsgui import Instrument
 from srsgui.task.inputs import BaseInput, IntegerInput, IntegerListInput, \
                                Ip4Input, BoolInput, StringInput, \
-                               ComPortListInput
+                               ComPortListInput, PasswordInput
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +24,7 @@ class ConnectDlg(QDialog):
         self.inst = inst
         self.parent = parent
         self.tabs = []
+        self.settings = QSettings()
 
         self.resize(350, 100)
         self.verticalLayout = QVBoxLayout(self)
@@ -35,9 +36,9 @@ class ConnectDlg(QDialog):
 
         for interface, args in self.inst.available_interfaces:
             tab = self.create_tab(args)
-            self.tabs.append(tab)
             self.tabWidget.addTab(tab, interface.NAME.upper())
-
+            self.tabs.append(tab)
+        self.load_setting()
         self.buttonBox = QDialogButtonBox(self)
         self.buttonBox.setOrientation(Qt.Horizontal)
         self.buttonBox.setStandardButtons(
@@ -54,12 +55,16 @@ class ConnectDlg(QDialog):
         grid = QGridLayout(tab)
         for row, key in enumerate(parameters):
             label = QLabel(key.capitalize().replace('_', ' '))
-            widget = self.create_input_widget(parameters[key])
+            if issubclass(type(parameters[key]), BaseInput):
+                widget = self.create_input_widget(parameters[key])
+            else:
+                widget = QLabel(str(parameters[key]))
+
             grid.addWidget(label, row, 0, 1, 1)
             grid.addWidget(widget, row, 1, 1, 1)
             tab.widget_dict[key] = widget
         spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-        grid.addItem(spacer, row+1, 1, 1, 1)
+        grid.addItem(spacer, row + 1, 1, 1, 1)
         return tab
 
     def create_input_widget(self, input_item):
@@ -111,8 +116,15 @@ class ConnectDlg(QDialog):
             widget.setText(input_item.value)
             widget.selectAll()
             return widget
+
+        elif type(input_item) == PasswordInput:
+            widget = QLineEdit()
+            widget.setEchoMode(QLineEdit.Password)
+            widget.setText(input_item.value)
+            return widget
+
         else:
-            return QLabel('Unkwon input type: {}'.format(input_item.__class__.__name__))
+            return QLabel('Unknown input type: {}'.format(input_item.__class__.__name__))
 
     def accept(self):
         try:
@@ -128,7 +140,7 @@ class ConnectDlg(QDialog):
                 elif type(widget) == QComboBox:
                     params[key].value = widget.currentIndex()
                     params[key].text = widget.currentText()
-                else:
+                elif type(widget) != QLabel:
                     params[key].value = widget.value()
             args = []
             for v in params.values():
@@ -136,7 +148,7 @@ class ConnectDlg(QDialog):
                     args.append(v.get_value())
                 else:
                     args.append(v)
-            print('args: {}'.format(args))
+            # print('args: {}'.format(args))
             self.inst.connect(interface.NAME, *args)
         except Exception as e:
             msg = '{}: {}'.format(e.__class__.__name__, e)
@@ -164,8 +176,48 @@ class ConnectDlg(QDialog):
                 except:
                     pass
             else:
-                # self.save_settings()
-                pass
-        QDialog.accept(self)  # This ends the dialog box.
+                self.save_settings()
 
+        QDialog.accept(self)  # This closes the dialog box.
 
+    def save_settings(self):
+        if not self.inst.is_connected():
+            return
+        try:
+            base = 'ConnectDlg/{}/{}'.format(self.inst.get_name(), self.inst.comm.NAME)
+            for interface, params in self.inst.available_interfaces:
+                if interface.NAME == self.inst.comm.NAME:
+                    for k, v in params.items():
+                        if issubclass(type(v), BaseInput):
+                            key = '{}/{}'.format(base, k)
+                            self.settings.setValue(key, v.get_value())
+                    break
+        except Exception as e:
+            logger.error('Error during save_settings: {}'.format(e))
+
+    def load_setting(self):
+        try:
+            for index, (interface, params) in enumerate(self.inst.available_interfaces):
+                tab = self.tabs[index]
+                base = 'ConnectDlg/{}/{}'.format(self.inst.get_name(), interface.NAME)
+                for k, v in params.items():
+                    if issubclass(type(v), BaseInput):
+                        key = '{}/{}'.format(base, k)
+                        if k not in tab.widget_dict:
+                            logger.error('{} not in {}'.format(key, tab.widget_dict))
+                        widget = tab.widget_dict[k]
+                        if type(widget) == QLineEdit:
+                            val = self.settings.value(key, "")
+                            if val:
+                                widget.setText(val)
+                        elif type(widget) == QSpinBox:
+                            val = self.settings.value(key, -9999)
+                            if val != -9999:
+                                widget.setValue(val)
+                        elif type(widget) == QComboBox:
+                            val = self.settings.value(key, "")
+                            if val:
+                                index = widget.findText(val)
+                                widget.setCurrentIndex(index)
+        except Exception as e:
+            logger.error('Error during load_settings: {}: {}'.format(e.__class__.__name__, e))

@@ -14,19 +14,11 @@ except (ImportError, ModuleNotFoundError):
           "\n"
     raise ModuleNotFoundError(msg)
 
-TERM_CHAR = b'\r'   # Termination character for RGA
-
 
 class SerialInterface(Interface):
     """Interface to use RS232 serial communication"""
 
     NAME = 'serial'
-
-    connection_parameters = {
-        'port': 'COM3',
-        'baud rate': 9600,
-        'hardware flow control': False
-    }
 
     def __init__(self):
         super(SerialInterface, self).__init__()

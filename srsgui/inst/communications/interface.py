@@ -9,9 +9,7 @@ class Interface(object):
     Base class for communication interfaces to be used in Instrument class.
     A subclass should implement all the methods in the class
     """
-
-    connection_parameters = {}
-    """Define parameters to be used in GUI setting """
+    NAME = 'interface'
 
     def __init__(self):
         self.type = None
