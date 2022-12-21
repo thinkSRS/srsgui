@@ -55,7 +55,7 @@ class BoolInput(ListInput):
         super().__init__(item_list, default_index)
 
     def get_value(self):
-        return False if self.value == 0 else True
+        return 0 if self.value == 0 else 1
 
 
 class IntegerListInput(ListInput):

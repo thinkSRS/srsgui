@@ -15,7 +15,6 @@ from .qt.QtWidgets import QMainWindow, QApplication, QTextBrowser,\
 
 from .ui_taskmain import Ui_TaskMain
 
-from .commConnectDlg import CommConnectDlg
 from .connectdlg import ConnectDlg
 
 from .inputpanel import InputPanel
@@ -541,8 +540,11 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.splitter.setSizes([int(i) for i in sizes])
             sizes = self.settings.value("MainWindow/Splitter2", [150, 500])
             self.splitter_2.setSizes([int(i) for i in sizes])
-            self.restoreGeometry(self.settings.value("MainWindow/Geometry"))
-            self.restoreState(self.settings.value("MainWindow/State"))
+            geo = self.settings.value("MainWindow/Geometry")
+            state = self.settings.value("MainWindow/State")
+            if geo and state:
+                self.restoreGeometry(geo)
+                self.restoreState(state)
         except Exception as e:
             logger.error('During load_setting, {}'.format(e))
 

@@ -1,12 +1,12 @@
 
 from .qt.QtGui import QKeySequence
-from .qt.QtWidgets import QFrame, QMessageBox, QShortcut
-from .ui_commandTerminal import Ui_CommandTerminal
+from .qt.QtWidgets import QFrame, QMessageBox, QShortcut, \
+                          QVBoxLayout, QHBoxLayout, QTextBrowser, QPushButton, QLineEdit
 
 from srsgui.inst.instrument import Instrument
 
 
-class CommandTerminal(QFrame, Ui_CommandTerminal):
+class CommandTerminal(QFrame):
     """
     Terminal to control instruments defined in the .taskconfig file
 
@@ -56,11 +56,32 @@ class CommandTerminal(QFrame, Ui_CommandTerminal):
 
     def __init__(self, parent):
         super().__init__(parent)
-        self.setupUi(self)
-
         self.parent = parent
         if not hasattr(parent, 'inst_dict'):
             raise AttributeError('Parent has no inst_dict')
+
+        self.setup_widget()
+        self.history_buffer = []
+        self.buffer_index = 0
+        self.buffer_size = 40
+
+    def setup_widget(self):
+        self.tbCommand = QTextBrowser(self)
+        self.pbClear = QPushButton(self)
+        self.pbClear.setText('Clear')
+        self.leCommand = QLineEdit(self)
+        self.pbSend = QPushButton(self)
+        self.pbSend.setText('Send')
+
+        h_layout = QHBoxLayout()
+        h_layout.addWidget(self.pbClear)
+        h_layout.addWidget(self.leCommand)
+        h_layout.addWidget(self.pbSend)
+
+        v_layout = QVBoxLayout(self)
+        v_layout.addWidget(self.tbCommand)
+        v_layout.addLayout(h_layout)
+
         self.pbClear.clicked.connect(self.on_clear)
         self.pbSend.clicked.connect(self.on_send)
         self.leCommand.returnPressed.connect(self.on_send)
@@ -68,10 +89,6 @@ class CommandTerminal(QFrame, Ui_CommandTerminal):
         self.leCommand.selectAll()
         self.down_key = QShortcut(QKeySequence('DOWN'), self, self.on_down_pressed)
         self.up_key = QShortcut(QKeySequence('UP'), self, self.on_up_pressed)
-
-        self.history_buffer = []
-        self.buffer_index = 0
-        self.buffer_size = 40
 
     def on_clear(self):
         self.tbCommand.clear()

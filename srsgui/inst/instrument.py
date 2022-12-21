@@ -101,9 +101,9 @@ class Instrument(Component):
             time.sleep(0.1)
         if not interface_type:
             return
-        for interface in self.available_interfaces:
-            if interface_type == interface[0].NAME:
-                self.comm = interface[0]()
+        for interface, _ in self.available_interfaces:
+            if interface_type == interface.NAME:
+                self.comm = interface()
                 self.comm.connect(*args)
                 self.set_term_char(term_char)
                 self.update_components()
@@ -276,7 +276,6 @@ class Instrument(Component):
         raise NotImplementedError()
 
     def connect_with_parameter_string(self, parameter_string):
-        self.default_connect_parameters = []
         params = parameter_string.split(':', 1)
         if len(params) < 2:
             raise ValueError('Not enough parameters in "{}"'.format(parameter_string))
@@ -290,5 +289,3 @@ class Instrument(Component):
                            .format(interface_type, self.get_name()))
         return True
 
-    def connect_with_default_parameters(self):
-        self.connect(*self.default_connect_parameters)

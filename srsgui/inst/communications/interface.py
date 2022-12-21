@@ -99,12 +99,6 @@ class Interface(object):
         """
         raise NotImplementedError
 
-    def get_parameter_string_from_connection_parameters(self):
-        """
-        convert connection_parameter dictionary to parameter sting
-        """
-        raise NotImplementedError
-
     def set_term_char(self, ch):
         """
         Set termination character for text-based communication
