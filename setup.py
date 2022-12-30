@@ -24,7 +24,7 @@ def get_file_names(directory):
     return paths
 
 
-description = open('readme.md').read()
+description = open('README.md').read()
 version_string = find_version('srsgui', '__init__.py')
 
 # files = get_file_names('srsgui/ui/images')

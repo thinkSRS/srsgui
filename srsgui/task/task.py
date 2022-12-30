@@ -322,7 +322,7 @@ class Task(thread_class):
         for fig in self.figure_dict.values():
             if hasattr(fig, 'canvas'):
                 fig.clear()
-                fig.canvas.draw_idle()
+                self.request_figure_update()
 
     def is_running(self):
         """
@@ -483,7 +483,7 @@ class Task(thread_class):
     def update_figure(self, figure: Figure):
         if type(figure) is not Figure:
             raise TypeError('{} is not  a Figure'.format(type(figure)))
-        figure.canvas.draw_idle()
+        self.request_figure_update(figure)
 
     # It needs a matching update() as a slot to run from UI
     def notify_data_available(self, data_dict={}):
