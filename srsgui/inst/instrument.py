@@ -10,11 +10,12 @@ from srsgui.task.inputs import ComPortListInput, IntegerListInput, BoolInput, \
 
 
 class Instrument(Component):
-    """ This is the base instrument class
+    """ Base class for derived instrument classes
     """
 
-    # String should be in in the *idn string of the instrument
+    # String should be in in the ID string of the instrument
     _IdString = "Not Available"
+
     available_interfaces = [
         [
             SerialInterface,
@@ -156,7 +157,7 @@ class Instrument(Component):
 
     def query_text(self, cmd):
         """
-        Send a remote command with a string reply, and receive the reply
+        Send a remote command with a string reply, and return the reply as a string.
 
         :param str cmd: remote command
         :return: reply of the remote command
@@ -166,7 +167,7 @@ class Instrument(Component):
 
     def query_int(self, cmd):
         """
-        Send a remote command with a integer reply, and receive the reply
+        Send a remote command with a integer reply, and return the reply as a integer.
 
         :param str cmd: remote command
         :return: reply of the remote command
@@ -176,7 +177,7 @@ class Instrument(Component):
 
     def query_float(self, cmd):
         """
-        Send a remote command with a float reply, and receive the reply
+        Send a remote command with a float reply, and return the reply as a float.
 
         :param str cmd: remote command
         :return: reply of the remote command
@@ -187,6 +188,7 @@ class Instrument(Component):
     def check_id(self):
         """
         Check if the ID string of the instrument contains _IdString of the Insteument class
+        A derived instrument class should make sure that check_id method is properly implemented.
 
         :return: tuple of (model name, serial number, firmware version)
         """
@@ -255,8 +257,9 @@ class Instrument(Component):
 
     def handle_command(self, cmd):
         """
-        It send a remote command and returns the reply. if the remote command has no replay,
-        it return a empty string. A termianl program will always get a reply for any remote command,
+        It sends a remote command and returns the reply, if the remote command returns a reply.
+        if the remote command has no replay, it return a empty string.
+        A terminal program will always get a reply for any remote command,
         unless unexpected timeout error  occurs
 
         :param str cmd: remote command
@@ -276,6 +279,10 @@ class Instrument(Component):
         raise NotImplementedError()
 
     def connect_with_parameter_string(self, parameter_string):
+        """
+        Connect the instrument using colon-separated parameter string from a config file
+        """
+
         params = parameter_string.split(':', 1)
         if len(params) < 2:
             raise ValueError('Not enough parameters in "{}"'.format(parameter_string))

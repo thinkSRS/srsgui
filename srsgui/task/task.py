@@ -4,7 +4,14 @@ import traceback
 import logging
 import time
 
-from matplotlib.figure import Figure
+try:
+    from matplotlib.figure import Figure
+except (ImportError, ModuleNotFoundError):
+    msg = "\n\nPython package 'Matplotlib' is required to use Task class." \
+          "\nTry again after installing 'Matplotlib' with" \
+          "\n\npip install matplotlib" \
+          "\n\nOr your system may have a different way to install it."
+    raise ModuleNotFoundError(msg)
 
 from .inputs import FloatInput, InstrumentInput
 from .taskresult import TaskResult, ResultLogHandler
@@ -12,19 +19,19 @@ from .callbacks import Callbacks
 
 from srsgui.inst.instrument import Instrument
 
-# HTML formatter for QTextBrowser
-Bold = '<font color="black"><b>{}</b></font>'
-GreenBold = '<font color="green"><b>{}</b></font>'
-GreenNormal = '<font color="green">{}</font>'
-RedBold = '<font color="red"><b>{}</b></font>'
-RedNormal = '<font color="red">{}</font>'
-
 try:
     from srsgui.ui.qt.QtCore import QThread
     thread_class = QThread
 except (ImportError, ModuleNotFoundError):
     from threading import Thread
     thread_class = Thread
+
+# HTML formatter for QTextBrowser
+Bold = '<font color="black"><b>{}</b></font>'
+GreenBold = '<font color="green"><b>{}</b></font>'
+GreenNormal = '<font color="green">{}</font>'
+RedBold = '<font color="red"><b>{}</b></font>'
+RedNormal = '<font color="red">{}</font>'
 
 
 class Task(thread_class):
@@ -34,7 +41,6 @@ class Task(thread_class):
     class TaskException(Exception): pass
     class TaskSetupFailed(TaskException): pass
     class TaskRunFailed(TaskException): pass
-
 
     EscapeForResult = '@RESULT@'
     EscapeForDevice = '@DEVICE@'
@@ -206,7 +212,6 @@ class Task(thread_class):
         except Exception as e:
             self.logger.error('Error during basic_cleanup: {}'.format(e))
         finally:
-            # self.logger.removeHandler(self.file_log_handler)
             self.logger.removeHandler(self.result_log_handler)
 
     def run(self):
@@ -241,13 +246,10 @@ class Task(thread_class):
         Overrides Thread start() method.
         """
 
-        # if Task._is_running: # Disable for multiple tasks running
-        #     raise RuntimeError('Another task is running')
-
         self._keep_running = True
         self._aborted = False
         super().start()
-        # self.logger.debug("{} start completed".format(self.name))
+
 
     def stop(self):
         """
@@ -497,12 +499,12 @@ class Task(thread_class):
 
     def update(self, data: dict):
         """
-        when data_available signal emits, this method handles new data.
-        By default, it only updates the matplotlib figure.
+        when data_available signal emits, this method handles display update.
+        By default, it does no data handling, but figure update request.
+        GUI related data processing needs to be done here to be handled
+        in proper order by the GUI event loop handler.
         """
         self.request_figure_update()
-        # self.logger.error("Derive update() to use data_available signal")
-        # raise NotImplementedError("Derive update() to use data_available signal")
 
     def get_instrument(self, name):
         """Get an instrument from parent's inst_dict and check its validity"""
@@ -560,10 +562,13 @@ class Task(thread_class):
         time.sleep(0.1)
 
     def set_log_error_detail(self, state=False):
+        """Set True To log exception traceback for debugging
+        """
         self._log_error_detail = state
 
     def log_exception(self, err):
-        # Capture the error
+        """With set_log_error_detail(True), an error is looged with traceback information
+        """
         self.logger.error(err)
 
         if self._log_error_detail:
