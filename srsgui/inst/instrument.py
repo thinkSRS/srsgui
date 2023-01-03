@@ -251,7 +251,7 @@ class Instrument(Component):
 
         :rtype: str
         """
-        return 'Not implemented: it should return a status string'
+        return 'Not implemented: Override it to returns a status string'
 
     def handle_command(self, cmd):
         """

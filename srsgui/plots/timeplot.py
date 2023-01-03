@@ -38,14 +38,17 @@ class TimePlot:
             self.data[key] = numpy.array([])
             self.lines[key], = self.ax.plot(self.time, self.data[key], label=key.split()[0])
 
+        # significant digits in a number in text
         self.round_float_resolution = 4
         self.header_saved = False
-        self.initial_time = time.time()
 
         self.ax.set_title(self.name)
         self.ax.set_xlabel('Time (s)')
         self.ax.set_xlim(0, 300)
         self.ax.legend()
+
+        # Mark the time 0
+        self.initial_time = time.time()
 
     def set_conversion_factor(self, factor=0.1, unit='fA'):
         old_factor = self.conversion_factor

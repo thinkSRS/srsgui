@@ -27,6 +27,7 @@ class ConnectDlg(QDialog):
         self.settings = QSettings()
 
         self.resize(350, 100)
+        self.setWindowTitle('Connect to "{}"'.format(self.inst.get_name()))
         self.verticalLayout = QVBoxLayout(self)
         self.tabWidget = QTabWidget(self)
         if not issubclass(type(self.inst), Instrument):
