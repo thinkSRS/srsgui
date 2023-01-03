@@ -77,7 +77,7 @@ class DockHandler(object):
 
         # self.parent.menu_Plot.triggered.connect(self.onMenuPlotSelected)
         self.action_tight_layout = QAction(self.parent)
-        self.action_tight_layout.setText('Tight Layout')
+        self.action_tight_layout.setText('Adjust Layout')
         self.action_tight_layout.triggered.connect(self.onTightLayout)
         self.parent.menu_Plot.addAction(self.action_tight_layout)
 
@@ -168,8 +168,8 @@ class DockHandler(object):
             figure.clear()
             img = mpimg.imread(image_file)
             ax = figure.subplots()
-            ax.imshow(img)
             ax.axis('off')
+            ax.imshow(img)
             figure.canvas.draw_idle()
         except Exception as e:
             logger.error(f"Error in display_image: {e}")

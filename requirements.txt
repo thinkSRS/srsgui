@@ -1,4 +1,4 @@
 pyserial
 matplotlib
-pyside2
+
 

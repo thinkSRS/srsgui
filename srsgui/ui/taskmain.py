@@ -7,6 +7,8 @@ import logging.handlers
 
 from pathlib import Path
 
+from matplotlib.figure import Figure
+
 from .qt.QtCore import QTimer, QSettings
 from .qt.QtWidgets import QMainWindow, QApplication, QTextBrowser,\
                                 QVBoxLayout, QMessageBox, \
@@ -329,6 +331,11 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             return self.inst_dict[inst]
         else:
             return None
+
+    def update_figure(self, figure: Figure):
+        if type(figure) is not Figure:
+            raise TypeError('{} is not  a Figure'.format(type(figure)))
+        figure.canvas.draw_idle()
 
     def onTaskSelect(self, action):
         try:

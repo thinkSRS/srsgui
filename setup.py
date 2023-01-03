@@ -31,7 +31,7 @@ version_string = find_version('srsgui', '__init__.py')
 setup(
     name='srsgui',
     version=version_string,
-    description='GUI Interface for RGA Instruments and Tasks',
+    description='Framework to provide GUI to Python scripts controlling instruments using remote commands',
     packages=['srsgui', 'srsgui.ui', 'srsgui.ui.qt', 'srsgui.task',
               'srsgui.plots', 'srsgui.inst', 'srsgui.inst.communications'],
     package_data={
@@ -43,9 +43,10 @@ setup(
     python_requires='>=3.7',
     install_requires=[
         "pyserial>=3",
-        "matplotlib"
     ],
-
+    extras_require={
+        'gui': ['matplotlib', 'pyside2']
+    },
     entry_points={
         'console_scripts': [
             'srsgui = srsgui.__main__:main'
