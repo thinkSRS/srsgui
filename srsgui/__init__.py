@@ -6,4 +6,4 @@ from srsgui.plots.timeplot import TimePlot
 from srsgui.inst.instrument import Instrument
 from srsgui.inst.component import Component
 
-__version__ = "0.1.6"  # Global version number
+__version__ = "0.1.7"  # Global version number

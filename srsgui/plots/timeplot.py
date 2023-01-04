@@ -1,7 +1,7 @@
 
 import time
 import logging
-import numpy
+import numpy as np
 from matplotlib.axes import Axes
 from srsgui.task import Task
 
@@ -31,12 +31,18 @@ class TimePlot:
 
         self.data_keys = data_names
 
-        self.time = numpy.array([])
+
         self.data = {}
         self.lines = {}
+
+        self.max_points_in_plot = 10000
+        self._data_buffer_size = 1000000
+        self.data_points = 0
+
+        self.time = np.zeros(self._data_buffer_size)
         for key in self.data_keys:
-            self.data[key] = numpy.array([])
-            self.lines[key], = self.ax.plot(self.time, self.data[key], label=key.split()[0])
+            self.data[key] = np.zeros(self._data_buffer_size)
+            self.lines[key], = self.ax.plot(self.time[:2], self.data[key][:2], label=key.split()[0])
 
         # significant digits in a number in text
         self.round_float_resolution = 4
@@ -49,6 +55,16 @@ class TimePlot:
 
         # Mark the time 0
         self.initial_time = time.time()
+
+    def get_buffer_size(self):
+        return self._data_buffer_size
+
+    def set_buffer_size(self, size=10000000):
+        self._data_buffer_size = size
+        self.data_points = 0
+        self.time = np.zeros(size)
+        for key in self.data_keys:
+            self.data[key] = np.zeros(size)
 
     def set_conversion_factor(self, factor=0.1, unit='fA'):
         old_factor = self.conversion_factor
@@ -64,13 +80,22 @@ class TimePlot:
         self.ax.set_ylabel('Intensity ({})'.format(self.unit))
 
     def add_data(self, data_list=(0,), update_figure=False):
-        self.time = numpy.append(self.time, time.time() - self.initial_time)
-        
+        self.time[self.data_points] = time.time() - self.initial_time
         for key, point in zip(self.data_keys, data_list):
-            self.data[key] = numpy.append(self.data[key], point * self.conversion_factor)
+            self.data[key][self.data_points] = point * self.conversion_factor
+        self.data_points += 1
+
+        x_min, x_max = self.ax.get_xlim()
+        index_min = np.searchsorted(self.time[:self.data_points], x_min)
+        index_max = np.searchsorted(self.time[:self.data_points], x_max)
+        index_step = (index_max - index_min) // self.max_points_in_plot
+        if index_step < 1:
+            index_step = 1
+
+        s = slice(index_min, index_max, index_step)
         for key in self.data_keys:
-            self.lines[key].set_xdata(self.time)
-            self.lines[key].set_ydata(self.data[key])
+            self.lines[key].set_xdata(self.time[s])
+            self.lines[key].set_ydata(self.data[key][s])
            
         if len(self.time) == 1:
             min_value = min(data_list)

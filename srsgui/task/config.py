@@ -123,7 +123,7 @@ class Config(object):
 
         if hasattr(mod, inst_class_name):
             inst_class = getattr(mod, inst_class_name)
-            logger.debug('Instrument class {} for "{}" loaded'.format(inst_class_name, inst_key))
+            logger.debug('Instrument class {} from "{}" loaded'.format(inst_class_name, inst_key))
         else:
             logger.error('No inst class "{}" in module "{}"'.format(inst_class_name, inst_module_name))
             return
@@ -134,7 +134,6 @@ class Config(object):
 
         self.inst_dict[inst_key] = inst_class()
         self.inst_dict[inst_key].set_name(inst_key)
-
         num = len(items)
         if num == 4:
             try:
