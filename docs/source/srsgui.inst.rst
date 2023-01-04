@@ -1,16 +1,26 @@
 srsgui.inst package
 ===================
 
-Subpackages
------------
-
 .. toctree::
    :maxdepth: 4
 
    srsgui.inst.communications
 
-Submodules
-----------
+srsgui.inst.instrument module
+-----------------------------
+
+.. automodule:: srsgui.inst.instrument
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+srsgui.inst.component module
+----------------------------
+
+.. automodule:: srsgui.inst.component
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 srsgui.inst.commands module
 ---------------------------
@@ -21,22 +31,6 @@ srsgui.inst.commands module
    :show-inheritance:
    :inherited-members:
    
-srsgui.inst.component module
-----------------------------
-
-.. automodule:: srsgui.inst.component
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-srsgui.inst.exceptions module
------------------------------
-
-.. automodule:: srsgui.inst.exceptions
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 srsgui.inst.indexcommands module
 --------------------------------
 
@@ -45,18 +39,10 @@ srsgui.inst.indexcommands module
    :undoc-members:
    :show-inheritance:
 
-srsgui.inst.instrument module
+srsgui.inst.exceptions module
 -----------------------------
 
-.. automodule:: srsgui.inst.instrument
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: srsgui.inst
+.. automodule:: srsgui.inst.exceptions
    :members:
    :undoc-members:
    :show-inheritance:

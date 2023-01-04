@@ -10,48 +10,49 @@ class CommandTerminal(QFrame):
     """
     Terminal to control instruments defined in the .taskconfig file
 
-           Type a command in one of the following ways
+        Type a command in one of the following ways
 
     inst_name:remote_command
 
-           'inst_name' is the first item after the prefix  "inst:" in a line in
-           the .taskconfig file. 'Remote_command' after the colon is a raw remote
-           command of the instrument. Terminals send the 'remote_command' directly
-           to the instrument 'inst_name', and display a reply if the instrument
-           sends one back.
+        'inst_name' is the first item after the prefix  "inst:" in a line in
+        the .taskconfig file. 'Remote_command' after the colon is a raw remote
+        command of the instrument. Terminals send the 'remote_command' directly
+        to the instrument 'inst_name', and display a reply if the instrument
+        sends one back.
 
-           dut:*idn?
-           dut:mi10  - This is a RGA100 command to set scan intial mass to 10
+        dut:*idn?
+        dut:mi10  - This is a RGA100 command to set scan intial mass to 10
 
     inst_name.instrument_command
 
-           When you use .before a command, the command is interpreted as a Python
-           instrument command or a method defined in the Instrument subclass,
-           which is the third item in the line starting with 'inst:' used
-           in .taskconfig file.
+        When you use .before a command, the command is interpreted as a Python
+        instrument command or a method defined in the Instrument subclass,
+        which is the third item in the line starting with 'inst:' used
+        in .taskconfig file.
 
-           inst_name.(components.)dir  - it shows all available components, commands,
-                   and methods in the instrument or its component as a Python dictionary.
+        inst_name.(components.)dir  - it shows all available components, commands,
+            and methods in the instrument or its component as a Python dictionary.
 
-                        rga.dir
-                        rga.status.dir
+                rga.dir
+                rga.status.dir
 
-           rga.status.id_string  - this returns the id string. It is a Python instrument
-                   command defined in the rga.status component.
-           rga.scan.initial_mass = 10  - this changes the scan initial mass to 10.
-           rga.scan.get_analog_scan()  - this is a method defined in the rga.scan component.
+        rga.status.id_string  - this returns the id string. It is a Python instrument
+                command defined in the rga.status component.
+        rga.scan.initial_mass = 10  - this changes the scan initial mass to 10.
+        rga.scan.get_analog_scan()  - this is a method defined in the rga.scan component.
 
-           With the prefix of 'inst_name:' or 'inst_name.', you can specify which
-           instrument receive the following command, as either a raw remote command or
-           a instrument command defined in a Instrument subclass.
+        With the prefix of 'inst_name:' or 'inst_name.', you can specify which
+        instrument receive the following command, as either a raw remote command or
+        a instrument command defined in a Instrument subclass.
 
     command
 
-           if you type a command without 'inst_name.' or 'inst_name:', the command goes
-           to the first instrument in the .taskconfig file. A command with dot(s) is
-           interpreted as a Python instrument command or a method. A command without
-           any dot will be sent directly to the first instrument in the .taskconfig file
-           as a raw remote command.
+        if you type a command without 'inst_name.' or 'inst_name:', the command goes
+        to the first instrument in the .taskconfig file. A command with dot(s) is
+        interpreted as a Python instrument command or a method. A command without
+        any dot will be sent directly to the first instrument in the .taskconfig file
+        as a raw remote command.
+
     """
 
     def __init__(self, parent):

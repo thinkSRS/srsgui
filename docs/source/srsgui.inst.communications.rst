@@ -1,21 +1,10 @@
 srsgui.inst.communications package
 ==================================
 
-Submodules
-----------
-
 srsgui.inst.communications.interface module
 -------------------------------------------
 
 .. automodule:: srsgui.inst.communications.interface
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-srsgui.inst.communications.serial\_ports module
------------------------------------------------
-
-.. automodule:: srsgui.inst.communications.serial_ports
    :members:
    :undoc-members:
    :show-inheritance:
@@ -28,18 +17,18 @@ srsgui.inst.communications.serialinterface module
    :undoc-members:
    :show-inheritance:
 
-srsgui.inst.communications.tcpipinterface module
-------------------------------------------------
+srsgui.inst.communications.serial\_ports module
+-----------------------------------------------
 
-.. automodule:: srsgui.inst.communications.tcpipinterface
+.. automodule:: srsgui.inst.communications.serial_ports
    :members:
    :undoc-members:
    :show-inheritance:
 
-Module contents
----------------
+srsgui.inst.communications.tcpipinterface module
+------------------------------------------------
 
-.. automodule:: srsgui.inst.communications
+.. automodule:: srsgui.inst.communications.tcpipinterface
    :members:
    :undoc-members:
    :show-inheritance:

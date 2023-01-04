@@ -12,7 +12,7 @@ import matplotlib.image as mpimg
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 
-from .commandTerminal import CommandTerminal
+from .commandterminal import CommandTerminal
 
 logger = logging.getLogger(__name__)
 

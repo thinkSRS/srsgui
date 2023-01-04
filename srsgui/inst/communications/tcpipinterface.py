@@ -235,14 +235,6 @@ class TcpipInterface(Interface):
             self._disconnect_callback('Disconnected TCPIP IP: {} port: {}'
                                       .format(self._ip_address, self._tcp_port))
 
-    def reconnect(self):
-        """ Close the existing socket and open a new one in case of the socket broken
-        """
-
-        self.disconnect()
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.connect(self._ip_address, self._userid, self._password)
-
     @staticmethod
     def parse_parameter_string(param_string):
         connect_parameters = []

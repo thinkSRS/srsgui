@@ -1,31 +1,28 @@
 srsgui.ui package
 =================
 
-Subpackages
------------
+srsgui.ui.taskmain module
+-------------------------
 
-.. toctree::
-   :maxdepth: 4
+.. automodule:: srsgui.ui.taskmain
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-   srsgui.ui.qt
-
-Submodules
-----------
-
-srsgui.ui.commConnectDlg module
+srsgui.ui.connectdlg module
 -------------------------------
 
-.. automodule:: srsgui.ui.commConnectDlg
+.. automodule:: srsgui.ui.connectdlg
    :members:
    :undoc-members:
    :inherited-members:
    :show-inheritance:
 
    
-srsgui.ui.commandTerminal module
+srsgui.ui.commandterminal module
 --------------------------------
 
-.. automodule:: srsgui.ui.commandTerminal
+.. automodule:: srsgui.ui.commandterminal
    :members:
    :undoc-members:
    :show-inheritance:
@@ -78,18 +75,8 @@ srsgui.ui.stdout module
    :undoc-members:
    :show-inheritance:
 
-srsgui.ui.taskmain module
--------------------------
 
-.. automodule:: srsgui.ui.taskmain
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. toctree::
+   :maxdepth: 4
 
-Module contents
----------------
-
-.. automodule:: srsgui.ui
-   :members:
-   :undoc-members:
-   :show-inheritance:
+   srsgui.ui.qt

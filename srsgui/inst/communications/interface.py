@@ -11,9 +11,6 @@ class Interface(object):
     """
 
     NAME = 'interface'
-    """
-    Interface name unique in an Instrument class.  
-    """
 
     def __init__(self):
         self.type = None
@@ -28,7 +25,7 @@ class Interface(object):
     def set_callbacks(self, queried=None, sent=None, recvd=None, connected=None, disconnected=None):
         """
         Set callback functions for query_text, send, recv, connect, disconnect operation of the interface.
-
+        Typically, callback functions are used to log the communication activity.
         ``print`` and ``logging.debug`` is simple callback functions to use.
 
         :param function(msg:str) queried: function called after query_text()
@@ -79,12 +76,6 @@ class Interface(object):
     def disconnect(self):
         """
         Disconnect from the communication interface
-        """
-        raise NotImplementedError
-
-    def reconnect(self):
-        """
-        Disconnect and connect again when communication interface is not responding
         """
         raise NotImplementedError
 

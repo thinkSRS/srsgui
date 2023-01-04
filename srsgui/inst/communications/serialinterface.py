@@ -46,13 +46,14 @@ class SerialInterface(Interface):
             port : str
                 serial port to use for serial communication,
                 e.g., 'COM3 for Windows, '/dev/ttyUSB0' for Linux
+
             baud_rate: integer, optional
                 the default is 115200, You have to use the same baud rate
                 with the connecting instrument.
 
             hardware_flow_control: bool, optional
-                the default is False, some instrument requires
-                hardware flow control to work properly
+                the default is False, some instruments require
+                RTS/CTS hardware flow control to work properly
 
         """
         if port is None:
@@ -81,10 +82,6 @@ class SerialInterface(Interface):
             self._serial.close()
             if self._disconnect_callback:
                 self._disconnect_callback('Disconnected serial port: {}'.format(self._port))
-
-    def reconnect(self):
-        self.disconnect()
-        self.connect(self._port, self._baud_rate)
 
     @staticmethod
     def parse_parameter_string(param_string):

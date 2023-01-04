@@ -1,9 +1,6 @@
 srsgui.ui.qt package
 ====================
 
-Submodules
-----------
-
 srsgui.ui.qt.QtCore module
 --------------------------
 
@@ -24,14 +21,6 @@ srsgui.ui.qt.QtWidgets module
 -----------------------------
 
 .. automodule:: srsgui.ui.qt.QtWidgets
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: srsgui.ui.qt
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,21 +1,18 @@
 srsgui.task package
 ===================
 
-Submodules
-----------
+srsgui.task.task module
+-----------------------
+
+.. automodule:: srsgui.task.task
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 srsgui.task.callbacks module
 ----------------------------
 
 .. automodule:: srsgui.task.callbacks
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-srsgui.task.config module
--------------------------
-
-.. automodule:: srsgui.task.config
    :members:
    :undoc-members:
    :show-inheritance:
@@ -28,18 +25,18 @@ srsgui.task.inputs module
    :undoc-members:
    :show-inheritance:
 
-srsgui.task.sessionhandler module
----------------------------------
+srsgui.task.config module
+-------------------------
 
-.. automodule:: srsgui.task.sessionhandler
+.. automodule:: srsgui.task.config
    :members:
    :undoc-members:
    :show-inheritance:
 
-srsgui.task.task module
------------------------
+srsgui.task.sessionhandler module
+---------------------------------
 
-.. automodule:: srsgui.task.task
+.. automodule:: srsgui.task.sessionhandler
    :members:
    :undoc-members:
    :show-inheritance:
@@ -52,10 +49,3 @@ srsgui.task.taskresult module
    :undoc-members:
    :show-inheritance:
 
-Module contents
----------------
-
-.. automodule:: srsgui.task
-   :members:
-   :undoc-members:
-   :show-inheritance:
