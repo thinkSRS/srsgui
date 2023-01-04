@@ -1,4 +1,3 @@
-# Base instrument class module
 
 import time
 from .communications import Interface, SerialInterface, TcpipInterface
@@ -10,7 +9,7 @@ from srsgui.task.inputs import ComPortListInput, IntegerListInput, BoolInput, \
 
 
 class Instrument(Component):
-    """ Base class for derived instrument classes
+    """ Base class for derived instrument classes.
     """
 
     # String should be in in the ID string of the instrument
@@ -33,7 +32,11 @@ class Instrument(Component):
             }
         ]
     ]
-
+    """
+    Dictionary Specifies the communication interface available with an instrument.
+    As default, SerialInterface and TcpipInterface is provided with the base class.
+    VXI11 interface is available in srsinst.sr860 package.  
+    """
     def __init__(self, interface_type=None, *args):
         """
         Initialize an instance of Instrument class

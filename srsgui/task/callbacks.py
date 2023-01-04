@@ -6,6 +6,7 @@ logger = logging.getLogger(__file__)
 
 
 class Callbacks:
+
     def started(self):
         logger.info('Task started')
 

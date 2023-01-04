@@ -71,9 +71,16 @@ class Component(object):
         return self.comm.is_connected()
 
     def set_name(self, name):
+        """
+        Set the name of the component
+        """
         self._name = name
 
     def get_name(self):
+        """
+        Get the name of the component
+        """
+
         return self._name
 
     def update_components(self):

@@ -35,7 +35,14 @@ RedNormal = '<font color="red">{}</font>'
 
 
 class Task(thread_class):
-    """ Base class for all task classes
+    """
+    Base class for derived Task subclasses. The parent process starts a task instance
+    as a separate thread. Before starting the task thread, the parent process injects resources
+    the task thread dependent on (instruements, figures, session handler), and connects
+    callback functions to handle the requests from the task. The task uses
+    the resources and send requests without knowing much about how they are handled by the parent
+    process. It makes easy to write a derived task as a simple Python script starting from
+    the base class.
     """
 
     class TaskException(Exception): pass
@@ -47,7 +54,9 @@ class Task(thread_class):
     EscapeForStatus = '@STATUS@'
     EscapeForStart = '@START@'
     EscapeForStop = '@STOP@'
-    """Escape string use in stdout redirection to GUI"""
+    """
+    Escape string used in stdout redirection to GUI
+    """
 
     input_parameters = {
         # Example float parameter
@@ -75,8 +84,6 @@ class Task(thread_class):
     """
 
     def __init__(self, parent=None):
-        """ parent should have instrument dict,
-        """
         super().__init__()
         self.parent = parent
 
