@@ -36,7 +36,9 @@ RedNormal = '<font color="red">{}</font>'
 
 class Task(thread_class):
     """
-    Base class for derived Task subclasses. The parent process starts a task instance
+    Base class for derived Task subclasses.
+
+    The parent process starts a task instance
     as a separate thread. Before starting the task thread, the parent process injects resources
     the task thread dependent on (instruements, figures, session handler), and connects
     callback functions to handle the requests from the task. The task uses
@@ -48,6 +50,9 @@ class Task(thread_class):
     class TaskException(Exception): pass
     class TaskSetupFailed(TaskException): pass
     class TaskRunFailed(TaskException): pass
+    """
+    Exceptions for Task
+    """
 
     EscapeForResult = '@RESULT@'
     EscapeForDevice = '@DEVICE@'
@@ -72,8 +77,8 @@ class Task(thread_class):
 
     additional_figure_names = []  # e.g., ['Scan Plots','Temperature Plots']
     """
-    Names for extra Matplotlib figures added to use in this task
-    If empty, you will have one figure named 'plot' as a default
+    Names for extra Matplotlib figures added to use in the task
+    If empty, only one figure named 'plot' is available as a default.
     """
 
     _is_running = False  # class wide flag to tell if any instance is running
@@ -185,7 +190,7 @@ class Task(thread_class):
         self.logger.info(GreenBold.format(msg))
 
         self._notify_start()
-        self.clear()
+        self.clear_figures()
 
     def basic_cleanup(self):
         """
@@ -298,6 +303,13 @@ class Task(thread_class):
             raise AttributeError('invalid inst_dict for Task class')
         self.inst_dict = inst_dict
 
+    def set_data_dict(self, data_dict):
+        """
+        A dictionary injected when the task run. It is a way to share data among different tasks
+        Do not reset the whole dictionary unless you know what you are doing.
+        """
+        self.data_dict = data_dict
+
     def set_figure_dict(self, figure_dict):
         """
         Parent should set figure_dict for Task to use Matplotlib figures available from the parent.
@@ -324,7 +336,7 @@ class Task(thread_class):
             return self.figure_dict[name]
         raise KeyError('Invalid figure name: {}'.format(name))
 
-    def clear(self):
+    def clear_figures(self):
         """
         Clear all the figures in figure_dict
         """
@@ -495,14 +507,14 @@ class Task(thread_class):
         self.request_figure_update(figure)
 
     # It needs a matching update() as a slot to run from UI
-    def notify_data_available(self, data_dict={}):
-        self.callbacks.data_available(data_dict)
+    def notify_data_available(self, data={}):
+        self.callbacks.data_available(data)
 
     # These callbacks are used to update display for streaming data from another class or thread
     # Signals are wrapped as a callback functions 
 
-    def data_available_callback(self, data_dict={}, *args):
-        self.callbacks.data_available(data_dict)
+    def data_available_callback(self, data={}, *args):
+        self.callbacks.data_available(data)
 
     def update(self, data: dict):
         """

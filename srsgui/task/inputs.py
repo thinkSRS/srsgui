@@ -86,7 +86,12 @@ class InstrumentInput(ListInput):
 
 
 class ComPortListInput(ListInput):
-    def __init__(self, default_index = 0):
+    def __init__(self, default_index=0):
+        super().__init__([], default_index)
+
+
+class VisaListInput(ListInput):
+    def __init__(self, default_index=0):
         super().__init__([], default_index)
 
 

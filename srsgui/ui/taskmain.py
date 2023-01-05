@@ -61,6 +61,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         self.question_result = None
         self.question_result_value = None
 
+        # data_dict hold data shared among task. It will inject to a task when run
+        self.data_dict = {}
+
         # self.inst_dict holds instances of subclass of Instrument
         self.inst_dict = {}
         self.inst_info_handler = DeviceInfoHandler(self)
@@ -401,6 +404,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.task.name = self.current_task_action.text()
             self.task.set_figure_dict(self.dock_handler.get_figure_dict())
             self.task.set_inst_dict(self.inst_dict)
+            self.task.set_data_dict(self.data_dict)
             self.task.set_session_handler(self.session_handler)
 
             signal_handler = SignalHandler(self)

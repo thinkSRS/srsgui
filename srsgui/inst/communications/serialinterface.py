@@ -1,7 +1,7 @@
 
 import time
 
-from srsgui.inst.exceptions import InstCommunicationError, InstLoginFailureError
+from srsgui.inst.exceptions import InstCommunicationError
 from .interface import Interface
 from .serial_ports import serial_ports
 

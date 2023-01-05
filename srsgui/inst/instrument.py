@@ -211,7 +211,7 @@ class Instrument(Component):
 
         if self._IdString not in reply:
             raise InstIdError("Invalid instrument: {} not in {}"
-                                        .format(self._IdString, reply))
+                              .format(self._IdString, reply))
         self._id_string = reply
         self._model_name = model_name
         self._serial_number = serial_number

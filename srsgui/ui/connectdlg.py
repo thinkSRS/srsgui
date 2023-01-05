@@ -8,11 +8,11 @@ from .qt.QtWidgets import QDialog, QDialogButtonBox, \
                           QLineEdit, QSpinBox, QComboBox, \
                           QMessageBox
 
-from srsgui.inst.communications import Interface, SerialInterface, TcpipInterface
+from srsgui.inst.communications import SerialInterface, VisaInterface
 from srsgui import Instrument
 from srsgui.task.inputs import BaseInput, IntegerInput, IntegerListInput, \
                                Ip4Input, BoolInput, StringInput, \
-                               ComPortListInput, PasswordInput
+                               ComPortListInput, VisaListInput, PasswordInput
 
 logger = logging.getLogger(__name__)
 
@@ -107,6 +107,13 @@ class ConnectDlg(QDialog):
         elif type(input_item) == ComPortListInput:
             widget = QComboBox()
             widget.addItems(SerialInterface.find())
+            widget.setCurrentIndex(p.value)
+            p.text = widget.currentText()
+            return widget
+
+        elif type(input_item) == VisaListInput:
+            widget = QComboBox()
+            widget.addItems(VisaInterface.find())
             widget.setCurrentIndex(p.value)
             p.text = widget.currentText()
             return widget
