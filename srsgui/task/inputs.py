@@ -85,12 +85,11 @@ class InstrumentInput(ListInput):
         super().__init__([], default_index)
 
 
-class ComPortListInput(ListInput):
-    def __init__(self, default_index=0):
-        super().__init__([], default_index)
-
-
-class VisaListInput(ListInput):
+class FindListInput(ListInput):
+    """
+    Hold a list of available resources from a communication
+    interface find() method
+    """
     def __init__(self, default_index=0):
         super().__init__([], default_index)
 

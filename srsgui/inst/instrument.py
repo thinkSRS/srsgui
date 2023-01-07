@@ -4,7 +4,7 @@ from .communications import Interface, SerialInterface, TcpipInterface
 from .component import Component
 from .exceptions import InstIdError
 
-from srsgui.task.inputs import ComPortListInput, IntegerListInput, BoolInput, \
+from srsgui.task.inputs import FindListInput, IntegerListInput, BoolInput, \
                                Ip4Input, IntegerInput
 
 
@@ -19,7 +19,7 @@ class Instrument(Component):
         [
             SerialInterface,
             {
-                'port': ComPortListInput(),
+                'port': FindListInput(),
                 'baud_rate': IntegerListInput([9600, 115200]),
                 'hardware_flow_control': BoolInput(['Off', 'On'])
             }
@@ -256,7 +256,7 @@ class Instrument(Component):
 
         :rtype: str
         """
-        return 'Not implemented: Override it to returns a status string'
+        return 'Not implemented: Override Instrument.get_status() to returns a status string'
 
     def handle_command(self, cmd):
         """

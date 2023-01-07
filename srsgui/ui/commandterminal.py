@@ -178,6 +178,7 @@ class CommandTerminal(QFrame):
 
     def eval(self, cmd):
         if '=' in cmd:
+            # TODO: check if assigned to a command
             exec(cmd, {}, self.parent.inst_dict)
             return ''
         else:

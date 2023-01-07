@@ -1,7 +1,7 @@
 
 import threading
 
-TERM_CHAR = b'\r'   # Termination character for RGA
+TERM_CHAR = b'\n'   # Termination character for communication
 
 
 class Interface(object):

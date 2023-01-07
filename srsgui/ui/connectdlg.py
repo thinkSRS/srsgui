@@ -8,11 +8,10 @@ from .qt.QtWidgets import QDialog, QDialogButtonBox, \
                           QLineEdit, QSpinBox, QComboBox, \
                           QMessageBox
 
-from srsgui.inst.communications import SerialInterface, VisaInterface
 from srsgui import Instrument
 from srsgui.task.inputs import BaseInput, IntegerInput, IntegerListInput, \
                                Ip4Input, BoolInput, StringInput, \
-                               ComPortListInput, VisaListInput, PasswordInput
+                               FindListInput, PasswordInput
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +35,10 @@ class ConnectDlg(QDialog):
             raise AttributeError('No available_interfaces')
 
         for interface, args in self.inst.available_interfaces:
+            if hasattr(interface, 'find'):
+                self.find_items = interface.find()
+            else:
+                self.find_items = []
             tab = self.create_tab(args)
             self.tabWidget.addTab(tab, interface.NAME.upper())
             self.tabs.append(tab)
@@ -104,16 +107,9 @@ class ConnectDlg(QDialog):
             p.text = widget.currentText()
             return widget
 
-        elif type(input_item) == ComPortListInput:
+        elif type(input_item) == FindListInput:
             widget = QComboBox()
-            widget.addItems(SerialInterface.find())
-            widget.setCurrentIndex(p.value)
-            p.text = widget.currentText()
-            return widget
-
-        elif type(input_item) == VisaListInput:
-            widget = QComboBox()
-            widget.addItems(VisaInterface.find())
+            widget.addItems(self.find_items)
             widget.setCurrentIndex(p.value)
             p.text = widget.currentText()
             return widget
