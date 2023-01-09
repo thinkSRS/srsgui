@@ -1,0 +1,35 @@
+# Lines that start with '#' is comment lines
+# Example project for SRSGUI package using an oscilloscope and a function generator
+
+
+# The name is used for the main window title and for the directory name for result data saving
+
+name: SRSGUI example project using an oscilloscope and a clock generator
+
+
+# Specify Instruments used in the project
+# A line that starts with 'inst' adds an instrument to be used in the project.
+# An instrument is a subclass derived from Instrument class in SRSGUI package
+# The first volumn after 'inst:' is the instrument name used in tasks and main terminal.
+# The second column is the Python module or package that contains the instrument class.
+# The third column is a instrument class in the module
+# The fourth column is connection parameters.
+# if given, the instrument will be connected using the parameters when the config file is loaded.
+
+inst: cg,  instruments.cg635,   CG635
+inst: osc, instruments.sds1202, SDS1202
+
+# inst: osc2, instrument.sds1202, SDS1201, tcpip:192.168.1.120:5025
+
+
+# A line that starts with 'task: ' adds a task to the project.
+# The first column is the task name that will be used across the application as a dictionary key
+# of the task, displayed in GUI Task menu for selection, and used in task result data file.
+# The Second column is the Python module that contains the task class with relative path from the Task config file.
+# The third column is a task class  that is a Task subclass in the module.
+
+task: *IDN test,                 tasks.first,  FirstTask
+task: Plot test,                 tasks.second, SecondTask
+task: Display Osc. waveform,     tasks.third,  ThirdTask
+task: Display FFT waveform,      tasks.fourth, FourthTask
+task: Simulated FFT waveform,    tasks.fifth,  FifthTask

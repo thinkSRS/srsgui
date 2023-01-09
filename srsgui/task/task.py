@@ -13,7 +13,7 @@ except (ImportError, ModuleNotFoundError):
           "\n\nOr your system may have a different way to install it."
     raise ModuleNotFoundError(msg)
 
-from .inputs import FloatInput, InstrumentInput
+from .inputs import FloatInput, InstrumentInput, StringInput
 from .taskresult import TaskResult, ResultLogHandler
 from .callbacks import Callbacks
 
@@ -65,14 +65,14 @@ class Task(thread_class):
 
     input_parameters = {
         # Example float parameter
-        "Define variables before use!!": FloatInput(10.0, " Hz", 1.0, 1000.0, 1.0),
-        "Constant value": FloatInput(1.0)
+            "define parameters": FloatInput(10.0, " Hz", 1.0, 1000.0, 1.0),
+            "before use!! ": StringInput(" or empty input_parameters.")
     }
     """
     Class variable to define parameters used in the task.
     values in input_parameters can be changed interactively from GUI before the task runs    
     IntegerInput, FloatInput, StringInput, ListInput and InstrumentInput can be used 
-    as values.     
+    as dictionary values.     
     """
 
     additional_figure_names = []  # e.g., ['Scan Plots','Temperature Plots']

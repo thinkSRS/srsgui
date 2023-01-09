@@ -7,24 +7,26 @@ from srsgui import IntegerInput
 
 class ThirdTask(Task):
     """
-    This is the second task using srsgui 
+This is to capture waveforms from an oscilloscope,
+and plot the waveforms.
     """
     
-    # Interactive input parameters to set before running 
-    Count = 'number of updates'
+    # Use input_parameters to set parameters before running 
+    Count = 'number of captures'
     input_parameters = {
         Count: IntegerInput(100) 
     }
     
     def setup(self):
         self.repeat_count = self.get_input_parameter(self.Count)
-        self.logger = self.get_logger(__file__)
-        
+        self.logger = self.get_logger(__file__)        
 
         self.osc = self.get_instrument('osc') # use the inst name in taskconfig file
         
-        # Once you get the figure, the following are about Matplotlib things to plot
+        # Get the Matplotlib figure to plot in
         self.figure = self.get_figure()
+                
+        # Once you get the figure, the following are about Matplotlib things to plot
         self.ax = self.figure.add_subplot(111)
         self.ax.set_xlim(-1e-3, 1e-3)
         self.ax.set_ylim(-1, 1)
@@ -40,16 +42,15 @@ class ThirdTask(Task):
                 break
             
             # Add data to the Matplotlib line and update the figure
-            t, v = self.osc.get_waveform('c1') # Get Ch. 1 waveform
+            t, v = self.osc.get_waveform('C1') # Get a waveform of the Channel 1 from the oscilloscope
             self.line.set_data(t, v)
             self.request_figure_update()
             
+            # Calculate the time for each capture
             current_time = time.time()
             diff = current_time - prev_time
-            self.logger.info(f'No. {i}, capture time: {diff:.3f} s')
+            self.logger.info(f'Capture time of waveform {i}: {diff:.3f} s')
             prev_time = current_time
             
     def cleanup(self):
         pass
-        
-        

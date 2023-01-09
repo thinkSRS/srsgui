@@ -1,9 +1,21 @@
 from srsgui import Instrument, TcpipInterface, Ip4Input, FindListInput, StringInput
-from srsinst.sr860 import VisaInterface, Vxi11Interface
+
+# Uncomment the follwoing import to use VisaInterface and Vxi11Interface
+# from srsinst.sr860 import VisaInterface, Vxi11Interface
 
 class SDS1202(Instrument):
     _IdString = 'SDS1202'
 
+    # Uncomment the following dictionary to use a cusomized 
+    # Communication interface definition.
+    # Vxi11Interface and ViaInterface are availabe from 
+    # srsinst.sr860 package using pip.
+    #
+    #    pip install srsinst.sr860
+    #
+    # VisaInterface requires PyVisa package to be installed manually.
+    # Note that PyVisa requires a separate backend driver installation, too.
+    """
     available_interfaces = [
         [   Vxi11Interface,
             {
@@ -24,14 +36,16 @@ class SDS1202(Instrument):
             }
         ],
     ]
-    
-    
+    """
+
     def get_waveform(self, channel):
         """
-        Get waveform form channle of the oscilloscope
+        Get a waveform from a channel of the oscilloscope
+        
         The code is from the page 267 of Siglent digital oscilloscope
         programming guide, PG01-E02D
         """
+        
         CODE_DIV = 25
         HOR_GRID = 14
     
@@ -39,16 +53,9 @@ class SDS1202(Instrument):
         vdiv = self.query_float(f'{channel}:vdiv?')
         offset = self.query_float(f'{channel}:ofst?')
         tdiv = self.query_float('tdiv?')
-        sara = self.query_text('sara?')
-        sara_units = {'G':1e9, 'M': 1e6, 'k': 1e3}
-        for unit in sara_units:
-            if sara.find(unit) >= 0:
-                sara = sara.split(unit)
-                sara = float(sara[0]) * sara_units(unit)
-                break
-        sara = float(sara)
+        sara - self.get_sampling_rate()
         
-        with self.comm.get_lock(): # to be thread-safe
+        with self.comm.get_lock(): # Use the lock to be thread-safe during query
             self.comm._send(f'{channel}:wf? dat2')
             
             recv = self.comm._read_binary(16) 
@@ -77,9 +84,15 @@ class SDS1202(Instrument):
             time_values.append(t)
         return time_values, volt_values
             
-        
-            
-        
-        
+    def get_sampling_rate(self):
+        sara = self.query_text('sara?')
+        sara_units = {'G':1e9, 'M': 1e6, 'k': 1e3}
+        for unit in sara_units:
+            if sara.find(unit) >= 0:
+                sara = sara.split(unit)
+                sara = float(sara[0]) * sara_units(unit)
+                break
+        return float(sara)
+ 
         
         
