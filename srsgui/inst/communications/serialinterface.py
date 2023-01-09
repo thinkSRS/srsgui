@@ -25,7 +25,7 @@ class SerialInterface(Interface):
         self.type = SerialInterface.NAME
         self._serial = None
         self._port = None
-        self._baud = None
+        self._baud_rate = None
         self._hw_flow_control = False
         self._is_connected = False
         self._timeout = 3.0

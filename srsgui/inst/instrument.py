@@ -14,6 +14,7 @@ class Instrument(Component):
 
     # String should be in in the ID string of the instrument
     _IdString = "Not Available"
+    _term_char = b'\n'
 
     available_interfaces = [
         [
@@ -49,6 +50,7 @@ class Instrument(Component):
         """
         super().__init__(None)
         self.comm = SerialInterface()
+        self.set_term_char(self._term_char)
         self._id_string = None
         self._model_name = None
         self._serial_number = None
@@ -108,8 +110,8 @@ class Instrument(Component):
         for interface, _ in self.available_interfaces:
             if interface_type == interface.NAME:
                 self.comm = interface()
-                self.comm.connect(*args)
                 self.set_term_char(term_char)
+                self.comm.connect(*args)
                 self.update_components()
                 break
 
@@ -138,7 +140,7 @@ class Instrument(Component):
 
         :param bytes ch: termination character
         """
-
+        self._term_char = ch
         self.comm.set_term_char(ch)
 
     def get_term_char(self):
@@ -148,7 +150,8 @@ class Instrument(Component):
         :return: termination character for the communication interface
         :rtype: bytes
         """
-        return self.comm.get_term_char()
+        ch = self.comm.get_term_char()
+        return ch
 
     def send(self, cmd):
         """
