@@ -28,7 +28,7 @@ and plot the waveforms.
                 
         # Once you get the figure, the following are about Matplotlib things to plot
         self.ax = self.figure.add_subplot(111)
-        self.ax.set_xlim(-1e-3, 1e-3)
+        self.ax.set_xlim(-1e-5, 1e-5)
         self.ax.set_ylim(-1, 1)
         self.ax.set_title('Scope waveform Capture')
         self.x_data = [0]

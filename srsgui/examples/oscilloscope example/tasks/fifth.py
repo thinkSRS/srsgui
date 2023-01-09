@@ -19,13 +19,13 @@ it is easy to reuse an existing task.
  
     def setup(self):
         self.repeat_count = self.get_input_parameter(self.Count)
-        self.freq = self.get_input_parameter(self.Frequency)
+        self.set_freq = self.get_input_parameter(self.Frequency)
         
         self.logger = self.get_logger(__file__)      
         self.init_plots()
         
     def get_waveform(self, mode='square'):
-        freq = self.get_input_parameter(self.Frequency)
+        self.set_freq = self.get_input_parameter(self.Frequency)
         
         amplitude = 1.0 # Volt
         noise = 0.1     # Volt
@@ -39,7 +39,7 @@ it is easy to reuse an existing task.
         if mode == 'sine':
             v = amplitude * np.sin(2.0 * np.pi * t * freq) + noise * np.random.rand(no_of_points)
         else:
-            a = t * freq
+            a = t * self.set_freq
             b = a - np.int_(a)
             c = np.where(b <= 0.0, b + 1, b)
             if mode == 'sawtooth':

@@ -1,8 +1,0 @@
-
-# name:Barebone example project
-
-inst: cg,  instruments.cg635,   CG635
-inst: osc, instruments.sds1202, SDS1202
-
-task: *IDN test,                 tasks.first,  FirstTask
-task: Plot test,                 tasks.second, SecondTask

@@ -35,7 +35,11 @@ setup(
     packages=['srsgui', 'srsgui.ui', 'srsgui.ui.qt', 'srsgui.task',
               'srsgui.plots', 'srsgui.inst', 'srsgui.inst.communications'],
     package_data={
-        'srsgui': ['../srsgui/ui/srslogo.jpg'],
+        'srsgui': ['../srsgui/ui/srslogo.jpg',
+                   '../srsgui/examples/oscilloscope example/*.*',
+                   '../srsgui/examples/oscilloscope example/instruments/*.*',
+                   '../srsgui/examples/oscilloscope example/tasks/*.*',
+                   ]
     },
 
     long_description=description,

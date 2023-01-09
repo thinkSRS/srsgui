@@ -1,8 +1,9 @@
 
-from srsgui import Instrument, SerialInterface, FindListInput
+from srsgui import Instrument
 from srsgui.inst import FloatCommand
 
 # Uncomment the following import to use VisaInterface
+# from srsgui import SerialInterface, FindListInput
 # from srsinst.sr860 import VisaInterface
 
 

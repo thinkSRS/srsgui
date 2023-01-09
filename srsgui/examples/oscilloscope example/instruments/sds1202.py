@@ -1,6 +1,8 @@
-from srsgui import Instrument, TcpipInterface, Ip4Input, FindListInput, StringInput
+import numpy as np
+from srsgui import Instrument
 
-# Uncomment the follwoing import to use VisaInterface and Vxi11Interface
+# Uncomment the following import to use the customized interface definition
+# from srsgui import TcpipInterface, Ip4Input, FindListInput, StringInput
 # from srsinst.sr860 import VisaInterface, Vxi11Interface
 
 class SDS1202(Instrument):
@@ -53,7 +55,7 @@ class SDS1202(Instrument):
         vdiv = self.query_float(f'{channel}:vdiv?')
         offset = self.query_float(f'{channel}:ofst?')
         tdiv = self.query_float('tdiv?')
-        sara - self.get_sampling_rate()
+        sara = self.get_sampling_rate()
         
         with self.comm.get_lock(): # Use the lock to be thread-safe during query
             self.comm._send(f'{channel}:wf? dat2')
@@ -67,32 +69,26 @@ class SDS1202(Instrument):
             num_to_read = num + 2 - (len(recv) - 16)
             if num_to_read > 0:
                 recv += self.comm._read_binary(num_to_read)
-                
+
         ending = recv[-2:]
         if ending != b'\n\n':
             print('Invalid ending detected: {}'.format(ending))
             return [], []
-            
-        volt_values = []
-        time_values = []
-        for index, point in enumerate(recv[16:-2]):
-            if point > 127:
-                point -= 256
-            v = point / CODE_DIV * vdiv - offset
-            t = -tdiv * HOR_GRID / 2 + index / sara
-            volt_values.append(v)
-            time_values.append(t)
+
+        data = np.frombuffer(recv[16:-2], dtype=np.int8)
+        volt_values = data / CODE_DIV * vdiv - offset
+        time_values = -tdiv * HOR_GRID / 2 + np.arange(len(data)) / sara
         return time_values, volt_values
             
     def get_sampling_rate(self):
-        sara = self.query_text('sara?')
+        reply = self.query_text('sara?')
         sara_units = {'G':1e9, 'M': 1e6, 'k': 1e3}
         for unit in sara_units:
-            if sara.find(unit) >= 0:
-                sara = sara.split(unit)
-                sara = float(sara[0]) * sara_units(unit)
-                break
-        return float(sara)
+            if reply.find(unit) >= 0:
+                elems = reply.split(unit)
+                sara = float(elems[0]) * sara_units[unit]
+                return sara
+        return float(reply)
  
         
         

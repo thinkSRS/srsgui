@@ -26,16 +26,17 @@ Plot the waveforms and repeat.
     # Add another figure for more plots
     FFTPlot = 'FFT plot'
     additional_figure_names = [FFTPlot]
-    
+
     def setup(self):
         self.repeat_count = self.get_input_parameter(self.Count)
-        
+        self.set_freq = self.input_parameters[self.Frequency]
+
         self.logger = self.get_logger(__file__)
         
         self.osc = self.get_instrument('osc') # use the inst name in taskconfig file
         
         self.cg = self.get_instrument('cg')
-        self.freq = self.cg.frequency  # Query frequency from cg
+        self.cg.frequency = self.set_freq  # Set cg frequency
         
         self.init_plots()
         
@@ -46,16 +47,15 @@ Plot the waveforms and repeat.
                 break
                 
             # Check if the user changed the set_frequency 
-            set_freq = self.input_parameters[self.Frequency]
-            if set_freq != self.freq:
-                self.set_frequency(set_freq)
-                self. freq = set_freq
-                self.logger.info(f'Frequency changed to {self.freq}')
+            freq = self.get_input_parameter(self.Frequency)
+            if self.set_freq != freq:
+                self.set_frequency(freq)
+                self.logger.info(f'Frequency changed to {freq}')
+                self.set_freq = freq
                 time.sleep(0.01)
                 
             # Add data to the Matplotlib line and update the figure
             t, v, sara = self.get_waveform()
-            
             self.line.set_data(t, v)
             self.request_figure_update()
 
@@ -83,7 +83,7 @@ Plot the waveforms and repeat.
         self.ax.set_ylim(-1.1, 1.1)
         self.ax.set_title('Clock waveform')
         self.ax.set_xlabel('time (s)')
-        self.ax.set_ylabel('Voltage (V)')
+        self.ax.set_ylabel('Amplitude (V)')
         self.x_data = [0]
         self.y_data = [0]
         self.line, = self.ax.plot(self.x_data,self.y_data)
@@ -93,10 +93,10 @@ Plot the waveforms and repeat.
         
         self.fft_ax = self.fft_fig.add_subplot(111)
         self.fft_ax.set_xlim(0, 2e8)
-        self.fft_ax.set_ylim(1e-1, 1e9)
+        self.fft_ax.set_ylim(1e-3, 1e3)
         self.fft_ax.set_title('FFT spectum')
-        self.fft_ax.set_xlabel('time (s)')
-        self.fft_ax.set_ylabel('Voltage (V)')        
+        self.fft_ax.set_xlabel('Frequency (Hz)')
+        self.fft_ax.set_ylabel('Amplitude (V)')
         self.fft_x_data = [0]
         self.fft_y_data = [1]     
         self.fft_line, = self.fft_ax.semilogy(self.fft_x_data,self.fft_y_data)        
