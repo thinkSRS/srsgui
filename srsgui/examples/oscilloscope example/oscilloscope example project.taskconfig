@@ -29,7 +29,7 @@ inst: osc, instruments.sds1202, SDS1202
 # The third column is a task class  that is a Task subclass in the module.
 
 task: *IDN test,                 tasks.first,  FirstTask
-task: Plot test,                 tasks.second, SecondTask
-task: Display Osc. waveform,     tasks.third,  ThirdTask
-task: Display FFT waveform,      tasks.fourth, FourthTask
-task: Simulated FFT waveform,    tasks.fifth,  FifthTask
+task: Plot example,              tasks.second, SecondTask
+task: Capture Osc. waveform,     tasks.third,  ThirdTask
+task: FFT of captured waveform,  tasks.fourth, FourthTask
+task: FFT of simulated waveform, tasks.fifth,  FifthTask

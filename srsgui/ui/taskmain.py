@@ -36,7 +36,9 @@ logger = logging.getLogger(__name__)
 
 
 class TaskMain(QMainWindow, Ui_TaskMain):
-    DefaultConfigFile = "rga.taskconfig"
+    DefaultConfigFile = str(Path(__file__).parent.parent /
+        "examples/oscilloscope example/oscilloscope example project.taskconfig")
+
     OrganizationName = 'srsinst'
     ApplicationName = 'srsgui'
 

@@ -4,8 +4,8 @@ from srsgui import Task
 
 class FirstTask(Task):
     """
-    Query *IDN? to 'cg' and 'osc' instsuments
-    defined in the configuration file'
+Query *IDN? to instruments, 'cg' and 'osc' \
+defined in the configuration file.
     """
     
     # No interactive input parameters to set before running 

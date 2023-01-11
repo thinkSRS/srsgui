@@ -8,13 +8,18 @@ from srsgui import IntegerInput
 
 from tasks.fourth import FourthTask
 
+
 class FifthTask(FourthTask):
     """
-No hardware required to use simulated waveforms.
 It subclasses FourthTask (Display FFT waveform) to use simulated \
-waveforms instead of ones from a real oscilloscope.
-By isolating hardware related parts in separate methods, \
-it is easy to reuse an existing task.    
+waveforms instead of ones from a real oscilloscope. \
+By isolating and overriding hardware related codes in separate methods, \
+An existing task can be reused.
+
+Note that simple calculation of waveform adds side bands in FFT spectrum \
+caused by time qunatization error.
+
+No hardware connection is required to use simulated waveforms. \
     """  
  
     def setup(self):
@@ -23,21 +28,20 @@ it is easy to reuse an existing task.
         
         self.logger = self.get_logger(__file__)      
         self.init_plots()
-        
+
     def get_waveform(self, mode='square'):
         self.set_freq = self.get_input_parameter(self.Frequency)
         
         amplitude = 1.0 # Volt
-        noise = 0.1     # Volt
-        ma_points = 10  # points for moving average 
-        sara = 1e9  # Sampling rate : 1 GHz
-        no_of_points = 2 ** 15
+        noise = 0.01     # Volt
+        sara = 1e9  # Sampling rate : 1 GSa/s
+        no_of_points = 2 ** 16
 
         # Calculate time vector
         t = np.linspace(-no_of_points / 2 / sara, no_of_points / 2 / sara, no_of_points)
         
         if mode == 'sine':
-            v = amplitude * np.sin(2.0 * np.pi * t * freq) + noise * np.random.rand(no_of_points)
+            d = amplitude * np.sin(2.0 * np.pi * t * self.set_freq) + noise * np.random.rand(no_of_points)
         else:
             a = t * self.set_freq
             b = a - np.int_(a)
@@ -47,9 +51,8 @@ it is easy to reuse an existing task.
             else:  # default is square wave 
                 d = np.where(c > 0.5, 1.0, -1.0)
         
-        #Add linear convolution and random noise
-        e = np.convolve(d, np.ones(ma_points)/ ma_points, 'same')
-        v = amplitude * e + noise * np.random.rand(no_of_points)
+        #Add random noise        
+        v = amplitude * d + noise * np.random.rand(no_of_points)
 
         #Take time as if it is a real data acquisition 
         time.sleep(0.1)

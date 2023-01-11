@@ -12,8 +12,10 @@ class Instrument(Component):
     """ Base class for derived instrument classes.
     """
 
-    # String should be in in the ID string of the instrument
+    # String should be in the ID string of the instrument
     _IdString = "Not Available"
+
+    # Termination character used in text communication
     _term_char = b'\n'
 
     available_interfaces = [

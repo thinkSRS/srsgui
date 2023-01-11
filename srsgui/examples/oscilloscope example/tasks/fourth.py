@@ -9,17 +9,17 @@ from srsgui import IntegerInput
 
 class FourthTask(Task):
     """
-Set the frequency of clock generator output.
-Get waveformss from the oscilloscope.
-Calculate FFT of the waveform.
-Plot the waveforms and repeat.  
+Change the frequency of the clock generator output interactively, \
+capture waveforms from the oscilloscope, \
+calculate FFT of the waveforms, \
+plot the waveforms and repeat until the stop button pressed.  
     """
     
     # Interactive input parameters to set before running 
     Frequency = 'Frequency to set'
     Count = 'number of updates'
     input_parameters = {
-        Frequency: IntegerInput(10000000, ' Hz', 100000, 100000000, 1000),
+        Frequency: IntegerInput(10000000, ' Hz', 100000, 200000000, 1000),
         Count: IntegerInput(10000)
     }
     
@@ -50,26 +50,26 @@ Plot the waveforms and repeat.
             freq = self.get_input_parameter(self.Frequency)
             if self.set_freq != freq:
                 self.set_frequency(freq)
-                self.logger.info(f'Frequency changed to {freq}')
+                self.logger.info(f'Frequency changed to {freq} Hz')
                 self.set_freq = freq
-                time.sleep(0.01)
                 
-            # Add data to the Matplotlib line and update the figure
+            # Get a waveform from the oscillscope and update the plot 
             t, v, sara = self.get_waveform()
             self.line.set_data(t, v)
             self.request_figure_update()
 
-            # Calculate FFT with the waveform
+            # Calculate FFT with the waveform and update the plot
             size = 2 ** int(np.log2(len(v)))  # largest power of 2 <= waveform length
-            y = np.fft.rfft(v, size)
-            x = np.linspace(0, sara /2, len(y))            
+            window = np.hanning(size)  # get a FFT window
+            y = np.fft.rfft(v[:size] * window)
+            x = np.linspace(0, sara /2, len(y))
             self.fft_line.set_data(x, abs(y) / len(y))
             self.request_figure_update(self.fft_fig) 
             
             # Calculate time for each capture
             current_time = time.time()
             diff = current_time - prev_time
-            self.logger.info(f'Time taken for waveform No. {i}: {diff:.3f} s')
+            print(f'Waveform no. {i}, {len(v)} points, time taken: {diff:.3f} s')
             prev_time = current_time
             
     def cleanup(self):
@@ -80,7 +80,7 @@ Plot the waveforms and repeat.
         self.figure = self.get_figure()
         self.ax = self.figure.add_subplot(111)
         self.ax.set_xlim(-1e-6, 1e-6)
-        self.ax.set_ylim(-1.1, 1.1)
+        self.ax.set_ylim(-1.5, 1.5)
         self.ax.set_title('Clock waveform')
         self.ax.set_xlabel('time (s)')
         self.ax.set_ylabel('Amplitude (V)')
@@ -92,8 +92,8 @@ Plot the waveforms and repeat.
         self.fft_fig = self.get_figure(self.FFTPlot)
         
         self.fft_ax = self.fft_fig.add_subplot(111)
-        self.fft_ax.set_xlim(0, 2e8)
-        self.fft_ax.set_ylim(1e-3, 1e3)
+        self.fft_ax.set_xlim(0, 1e8)
+        self.fft_ax.set_ylim(1e-5, 1e1)
         self.fft_ax.set_title('FFT spectum')
         self.fft_ax.set_xlabel('Frequency (Hz)')
         self.fft_ax.set_ylabel('Amplitude (V)')

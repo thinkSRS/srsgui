@@ -7,8 +7,8 @@ from srsgui import IntegerInput
 
 class SecondTask(Task):
     """
-No hardware required to plot a suine curve.
-This is to show how to use a Matplotlib plot in a task.
+It shows how to use a Matplotlib plot in a task. \
+No hardware connection is required to plot a sine curve.
     """
     
     # Interactive input parameters to set before running 

@@ -7,8 +7,8 @@ from srsgui import IntegerInput
 
 class ThirdTask(Task):
     """
-This is to capture waveforms from an oscilloscope,
-and plot the waveforms.
+It captures waveforms from an oscilloscope, \
+and plot the waveforms real time.
     """
     
     # Use input_parameters to set parameters before running 
@@ -29,7 +29,7 @@ and plot the waveforms.
         # Once you get the figure, the following are about Matplotlib things to plot
         self.ax = self.figure.add_subplot(111)
         self.ax.set_xlim(-1e-5, 1e-5)
-        self.ax.set_ylim(-1, 1)
+        self.ax.set_ylim(-1.5, 1.5)
         self.ax.set_title('Scope waveform Capture')
         self.x_data = [0]
         self.y_data = [0]
@@ -49,7 +49,7 @@ and plot the waveforms.
             # Calculate the time for each capture
             current_time = time.time()
             diff = current_time - prev_time
-            self.logger.info(f'Capture time of waveform {i}: {diff:.3f} s')
+            self.logger.info(f'Capture time for {len(v)} points of waveform {i}: {diff:.3f} s')
             prev_time = current_time
             
     def cleanup(self):

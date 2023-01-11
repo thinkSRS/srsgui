@@ -47,10 +47,10 @@ class SDS1202(Instrument):
         The code is from the page 267 of Siglent digital oscilloscope
         programming guide, PG01-E02D
         """
-        
+
         CODE_DIV = 25
         HOR_GRID = 14
-    
+
         self.send('chdr off')
         vdiv = self.query_float(f'{channel}:vdiv?')
         offset = self.query_float(f'{channel}:ofst?')
@@ -79,7 +79,7 @@ class SDS1202(Instrument):
         volt_values = data / CODE_DIV * vdiv - offset
         time_values = -tdiv * HOR_GRID / 2 + np.arange(len(data)) / sara
         return time_values, volt_values
-            
+
     def get_sampling_rate(self):
         reply = self.query_text('sara?')
         sara_units = {'G':1e9, 'M': 1e6, 'k': 1e3}
@@ -89,6 +89,4 @@ class SDS1202(Instrument):
                 sara = float(elems[0]) * sara_units[unit]
                 return sara
         return float(reply)
- 
-        
-        
+
