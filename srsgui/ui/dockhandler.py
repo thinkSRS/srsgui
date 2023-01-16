@@ -21,6 +21,11 @@ logging.getLogger('matplotlib').setLevel(logging.WARNING)
 
 
 class DockHandler(object):
+    """
+    To handle all the QDockWidget instances used for the console, terminal, matplotlib figure windows,
+    along with the Docks menu in the main application.
+    """
+
     DefaultConsoleName = 'Console'
     DefaultTerminalName = 'Terminal'
     DefaultFigureName = 'plot'

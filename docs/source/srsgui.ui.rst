@@ -75,8 +75,11 @@ srsgui.ui.stdout module
    :undoc-members:
    :show-inheritance:
 
+srsgui.ui.qt package
+----------------------
 
 .. toctree::
    :maxdepth: 4
 
-   srsgui.ui.qt
+   srsgui.ui.qt.rst
+

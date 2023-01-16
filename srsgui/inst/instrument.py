@@ -36,9 +36,9 @@ class Instrument(Component):
         ]
     ]
     """
-    Dictionary Specifies the communication interface available with an instrument.
+    Available_interface specifies the communication interface available with an instrument.
     As default, SerialInterface and TcpipInterface is provided with the base class.
-    VXI11 interface is available in srsinst.sr860 package.  
+    VXI11 interface and VISA interface is available srsinst.sr860 package.  
     """
     def __init__(self, interface_type=None, *args):
         """
@@ -62,7 +62,8 @@ class Instrument(Component):
 
     def connect(self, interface_type, *args):
         """
-        Connect to an instrument over the specified communication interface
+        Connect to an instrument over one of the specified communication interfaces
+        in available_interface
 
         If interface_type is 'serial',
 
@@ -77,31 +78,16 @@ class Instrument(Component):
             hardware_flow_control: bool, optional
                 RTS/CTS setting. The default is False, SRS RGA requires **True**.
 
-        If interface_type is 'tcpip' without login,
+        If interface_type is 'tcpip',
 
         Parameters
         -----------
             interface_type: str
-                Use  **'tcpip'**  for Ethernet communication
+                Use  **'tcpip'**  for TCPIP communication
             ip_address : str
                 IP address of a instrument, such as '192.168.1.100'
             port: int, optional
-                TCP port number, default is 23 which is the TELNET port.
-
-        If interface_type is 'tcpip' and login is required,
-
-        Parameters
-        -----------
-            interface_type: str
-                Use **'tcpip'** for Ethernet communication
-            ip_address: str
-                IP address of a instrument
-            user_id: str
-                user name for login.
-            password : str
-                password for login.
-            port : int, optional
-                TCP port number. The default is 818, which SRS RGA uses
+                TCP port number, default is 23 which is the TELNET default port.
         """
         term_char = self.get_term_char()  # To retain the term char when reopening
         if self.comm.is_connected():

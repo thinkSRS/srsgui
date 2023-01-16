@@ -8,6 +8,10 @@ from srsgui.task.callbacks import Callbacks
 
 
 class SignalHandler(QObject, Callbacks):
+    """
+    Subclass to override :class:`srsgui.task.callbacks.Callbacks` class.
+    It implements Callbacks base methods to utilize I/O methods provided in :mod:`srsgui.ui.taskmain`.
+    """
 
     # Signal when task started
     sig_started = Signal()
