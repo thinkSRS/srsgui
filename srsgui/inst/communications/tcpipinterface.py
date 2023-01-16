@@ -20,6 +20,7 @@ class TcpipInterface(Interface):
         self.type = TcpipInterface.NAME
         try:
             # Create an AF_INET, STREAM socket (TCPIP)
+            self.socket = None
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         except OSError as msg:
             raise InstCommunicationError(
@@ -131,7 +132,8 @@ class TcpipInterface(Interface):
 
     def set_timeout(self, seconds):
         self._timeout = seconds
-        self.socket.settimeout(seconds)
+        if self.socket:
+            self.socket.settimeout(seconds)
 
     def get_timeout(self):
         return self._timeout

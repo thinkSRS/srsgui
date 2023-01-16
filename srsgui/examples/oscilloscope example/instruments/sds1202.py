@@ -5,6 +5,7 @@ from srsgui import Instrument
 # from srsgui import TcpipInterface, Ip4Input, FindListInput, StringInput
 # from srsinst.sr860 import VisaInterface, Vxi11Interface
 
+
 class SDS1202(Instrument):
     _IdString = 'SDS1202'
 
@@ -57,7 +58,7 @@ class SDS1202(Instrument):
         tdiv = self.query_float('tdiv?')
         sara = self.get_sampling_rate()
         
-        with self.comm.get_lock(): # Use the lock to be thread-safe during query
+        with self.comm.get_lock(): # Use the lock to be thread-safe during a query
             self.comm._send(f'{channel}:wf? dat2')
             
             recv = self.comm._read_binary(16) 

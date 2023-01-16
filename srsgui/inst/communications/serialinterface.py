@@ -114,7 +114,8 @@ class SerialInterface(Interface):
 
     def set_timeout(self, seconds):
         self._timeout = seconds
-        self._serial.timeout = seconds
+        if self._serial:
+            self._serial.timeout = seconds
 
     def get_timeout(self):
         return self._timeout
