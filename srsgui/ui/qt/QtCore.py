@@ -1,3 +1,6 @@
+"""
+Adapter module for QtCore package for both PyQt5 and PySide2.
+"""
 
 # For full extension, use QtPy
 

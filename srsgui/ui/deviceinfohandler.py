@@ -7,6 +7,10 @@ logger = logging.getLogger(__name__)
 
 
 class DeviceInfoHandler(object):
+    """
+    To handle the instrument info tab widget
+    """
+
     def __init__(self, parent):
         if not (hasattr(parent, 'inst_dict') and
                 hasattr(parent, 'deviceInfo') and

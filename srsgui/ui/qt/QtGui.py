@@ -1,3 +1,6 @@
+"""
+Adapter module for QtGui package for both PyQt5 and PySide2.
+"""
 
 from . import QT_BINDER, PYQT5, PYSIDE2
 

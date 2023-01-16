@@ -7,6 +7,10 @@ logger = getLogger(__name__)
 
 
 class QtLogHandler(Handler):
+    """
+    Subclass logging.Handler to be used with QTextBrowser widget.
+    """
+
     class SignalObject(QObject):
         new_message = Signal(str)
 

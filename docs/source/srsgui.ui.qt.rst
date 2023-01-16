@@ -1,6 +1,11 @@
 srsgui.ui.qt package
 ====================
 
+.. automodule:: srsgui.ui.qt
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 srsgui.ui.qt.QtCore module
 --------------------------
 

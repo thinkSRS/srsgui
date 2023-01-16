@@ -1,3 +1,41 @@
+"""
+Module to wrap remote commands with an index argument in dunder methods, __setitem__ and __get_item__.
+
+If an instrument has a remote command using an index, 'PARAM', for  setting and querying a value,
+you will use the command from a terminal,
+
+.. code-block::
+
+    > PARAM? 1
+    1000.0
+    ? PARAM 1, 500
+    > PARAM? 1
+    500.0
+
+The instrument is defined as an instance of an Instrument subclass, fg,
+you can use it from a Python interpreter prompt.
+
+    >>> fg.query_float('PARAM? 1')
+    1000.0
+    >>> fg.send('PARAM 1, 500')
+    >>> fg.query_float('PARAM? 1')
+    500.0
+
+You can define a FloatIndexCommand for the remote command in an Instrument subclass.
+
+    fit_parameter = FloatIndexCommand('PARAM', index_max=10)
+
+Now, you can use the command like an class attribute as following:
+
+    >>> fg.fit_parameter[1]
+    1000.0
+    >>> fg.fit_parameter[1] = 500
+    >>> fg.fit_parameter[1]
+    500.0
+
+Using IndexCommand class simplifies tedious usage of a many set and query remote commands
+with an index argument
+"""
 
 from .exceptions import InstCommunicationError, InstSetError, InstQueryError, InstIndexError
 from .communications import Interface

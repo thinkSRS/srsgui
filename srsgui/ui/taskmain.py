@@ -36,6 +36,10 @@ logger = logging.getLogger(__name__)
 
 
 class TaskMain(QMainWindow, Ui_TaskMain):
+    """
+    The main window of the SRSGUI application
+    """
+
     DefaultConfigFile = str(Path(__file__).parent.parent /
         "examples/oscilloscope example/oscilloscope example project.taskconfig")
 
@@ -237,6 +241,10 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             logger.error(e)
 
     def print_redirect(self, text):
+        """
+        Handles text output for stdout, stderr and various text output
+        from :class:`srsgui.task.task.Task`
+        """
         try:
             if len(text) < 2:
                 return

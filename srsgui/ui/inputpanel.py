@@ -9,11 +9,13 @@ from srsgui.task.inputs import IntegerInput, FloatInput, StringInput, \
 
 import logging
 logger = logging.getLogger(__name__)
-# logger.addHandler(logging.NullHandler())
 
 
-# build a input panels from input_parameters of Task subclasses
 class InputPanel(QWidget):
+    """
+    To build the input panel in an instance of :class:`srsgui.ui.taskmain.TaskMain` class
+    based on input_parameters of a subclass of :class:`srsgui.task.task.Task` class
+    """
     FirstColumn = 0
     SecondColumn = 1
 
