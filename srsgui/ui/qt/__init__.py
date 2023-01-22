@@ -1,24 +1,27 @@
 """
-``srsgui.ui.qt`` subpackage enables SRSGUI to use either PyQt5 or Pyside2 as Qt binder for Python.
-It checks if PyQt5 is installed first. If not found, it checks for PySide2 installation.
-If you use PyQt5, the whole SRSGUI package is subjected to be used under the GPL3 license, which PyQt5 requires.
-When you use PySide2, , which is provided under the LGPL license, you can use SRSGUI under its intended MIT license.
+``srsgui.ui.qt`` subpackage enables SRSGUI to use either PySide6, Pyside2 or PyQt5 as Qt binder for Python.
+It checks if either Qt binder is installed in the order listed above. If any found installed, it uses the one.
+If you use PyQt6 or PyQt5, the whole SRSGUI package is subjected to be used under the GPL3 license, which PyQt requires.
+When you use PySide6 or PySide2, , which is provided under the LGPL license, you can use SRSGUI under its intended MIT license.
 """
 
-PYQT5 = 'PyQt5'
+from importlib import import_module
+
+PYSIDE6 = 'PySide6'
 PYSIDE2 = 'PySide2'
-QT_BINDER = PYQT5
+PYQT6 = 'PyQt6'
+PYQT5 = 'PyQt5'
 
-try:
-    from PyQt5 import QtCore
-except (ImportError, ModuleNotFoundError):
-    QT_BINDER = PYSIDE2
+BINDER_LIST = [PYSIDE6, PYSIDE2, PYQT5]
+QT_BINDER = None
 
-if QT_BINDER == PYSIDE2:
-    try:
-        from PySide2 import QtCore
+for binder in BINDER_LIST:
+    try:    
+        core = import_module('.QtCore', binder)
+        QT_BINDER = binder        
+        break
     except (ImportError, ModuleNotFoundError):
-        QT_BINDER = None
+        pass
 
 if not QT_BINDER:
     msg = "\n\nPython package 'PySide2' is required to run in Graphic User Interface." \
