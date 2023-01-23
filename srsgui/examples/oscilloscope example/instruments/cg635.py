@@ -9,6 +9,9 @@ from srsgui.inst import FloatCommand
 
 class CG635(Instrument):
     _IdString = 'CG635'
+    # _term_char = b'\r'  # if your instrument uses carriage return
+                          # instead of lienfeed ( b'\n' ),
+                          # as the termination character, uncomment this line.
 
     # Uncomment the following dictionary to use a cusomized 
     # Communication interface definition.

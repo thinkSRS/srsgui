@@ -33,7 +33,7 @@ setup(
     version=version_string,
     description='Framework to provide GUI to Python scripts controlling instruments using remote commands',
     packages=['srsgui', 'srsgui.ui', 'srsgui.ui.qt', 'srsgui.task',
-              'srsgui.plots', 'srsgui.inst', 'srsgui.inst.communications'],
+              'srsgui.inst', 'srsgui.inst.communications'],
     package_data={
         'srsgui': ['../srsgui/ui/srslogo.jpg',
                    '../srsgui/examples/oscilloscope example/*.*',

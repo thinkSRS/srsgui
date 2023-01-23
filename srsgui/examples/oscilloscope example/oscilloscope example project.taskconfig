@@ -4,7 +4,7 @@
 
 # The name is used for the main window title and for the directory name for result data saving
 
-name: SRSGUI example project using an oscilloscope and a clock generator
+name: Srsgui example project using an oscilloscope and a clock generator
 
 
 # Specify Instruments used in the project
@@ -19,6 +19,9 @@ name: SRSGUI example project using an oscilloscope and a clock generator
 inst: cg,  instruments.cg635,   CG635
 inst: osc, instruments.sds1202, SDS1202
 
+# if you want to connect an instrument when opening the confi file, 
+# add the connection parameters as the fourth column 
+# inst: cg2,  instruments.cg635,   CG635,  serial:com3:9600
 # inst: osc2, instrument.sds1202, SDS1201, tcpip:192.168.1.120:5025
 
 

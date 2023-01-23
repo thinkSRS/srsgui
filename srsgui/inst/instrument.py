@@ -282,7 +282,7 @@ class Instrument(Component):
             raise ValueError('Not enough parameters in "{}"'.format(parameter_string))
         interface_type = params[0].strip().lower()
         if interface_type in self.interface_dict:
-            parameters = self.interface_dict[interface_type].parse_parameter_string(parameter_string)
+            parameters = self.interface_dict[interface_type][0].parse_parameter_string(parameter_string)
 
             self.connect(*parameters)
         else:
