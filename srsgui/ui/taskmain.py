@@ -9,6 +9,7 @@ from pathlib import Path
 
 from matplotlib.figure import Figure
 
+from .qt import QT_BINDER, PYSIDE6, QT_BINDER_VERSION
 from .qt.QtCore import QTimer, QSettings
 from .qt.QtWidgets import QMainWindow, QApplication, QTextBrowser,\
                                 QVBoxLayout, QMessageBox, \
@@ -375,10 +376,14 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                 raise TypeError(msg)
 
             self.task_method = taskClassChosen
-
             self.statusbar.showMessage('Press Run button to start the task selected')
-
-            self.taskResult.setText(self.task_method.__doc__)
+            if QT_BINDER == PYSIDE6:  # To bypass PySide6 docstring bug
+                task = self.task_method()
+                doc = task.__doc__
+                del task
+            else:
+                doc = self.task_method.__doc__
+            self.taskResult.setText(doc)
             self.taskParameterFrame.layout().removeWidget(self.taskParameter)
             self.taskParameter.deleteLater()
             self.taskParameter = InputPanel(self.task_method, self)

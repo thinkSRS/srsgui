@@ -1,6 +1,4 @@
 import time
-import math
-import logging
 import numpy as np
 from srsgui import Task
 from srsgui import IntegerInput
@@ -87,7 +85,7 @@ plot the waveforms and repeat until the stop button pressed.
         self.ax.set_ylabel('Amplitude (V)')
         self.x_data = [0]
         self.y_data = [0]
-        self.line, = self.ax.plot(self.x_data,self.y_data)
+        self.line, = self.ax.plot(self.x_data, self.y_data)
 
         # Get the second figure for FFT plot.
         self.fft_fig = self.get_figure(self.FFTPlot)

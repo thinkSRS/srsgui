@@ -228,7 +228,7 @@ class ConnectDlg(QDialog):
                         elif type(widget) == QComboBox:
                             val = self.settings.value(key, "")
                             if val:
-                                index = widget.findText(val)
+                                index = widget.findText(str(val))
                                 widget.setCurrentIndex(index)
         except Exception as e:
             logger.error('Error during load_settings: {}: {}'.format(e.__class__.__name__, e))

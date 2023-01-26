@@ -14,11 +14,18 @@ PYQT5 = 'PyQt5'
 
 BINDER_LIST = [PYSIDE6, PYSIDE2, PYQT5]
 QT_BINDER = None
+QT_BINDER_VERSION = None
 
 for binder in BINDER_LIST:
-    try:    
+    try:
+        qt_lib = import_module(binder)
         core = import_module('.QtCore', binder)
-        QT_BINDER = binder        
+
+        QT_BINDER = binder
+        if binder in [PYSIDE6, PYSIDE2]:
+            QT_BINDER_VERSION = getattr(qt_lib, '__version__')
+        elif binder in [PYQT6, PYQT5]:
+            QT_BINDER_VERSION = getattr(core, 'PYQT_VERSION_STR')
         break
     except (ImportError, ModuleNotFoundError):
         pass

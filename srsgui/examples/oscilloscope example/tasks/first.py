@@ -27,9 +27,10 @@ defined in the configuration file.
         self.logger.info(f"OSC *IDN : {osc_id_string}")
 
         # Set clock frequency tp 10 MHz
-        self.cg.send('FREQ 10000000')
+        self.cg.frequency = 10000000
+
+        # If frequency is not defined, use send()
+        # self.cg.send('FREQ 10000000')
 
     def cleanup(self):
         pass
-        
-        

@@ -31,7 +31,7 @@ version_string = find_version('srsgui', '__init__.py')
 setup(
     name='srsgui',
     version=version_string,
-    description='Framework to provide GUI to Python scripts controlling instruments using remote commands',
+    description='Framework to provide GUI to instrument-controlling Python scripts',
     packages=['srsgui', 'srsgui.ui', 'srsgui.ui.qt', 'srsgui.task',
               'srsgui.inst', 'srsgui.inst.communications'],
     package_data={
@@ -49,7 +49,7 @@ setup(
         "pyserial>=3",
     ],
     extras_require={
-        'gui': ['matplotlib', 'pyside2']
+        'full': ['matplotlib>=3.6.2', 'pyside6']
     },
     entry_points={
         'console_scripts': [

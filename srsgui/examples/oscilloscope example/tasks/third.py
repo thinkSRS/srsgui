@@ -1,6 +1,4 @@
 import time
-import math
-import logging
 from srsgui import Task
 from srsgui import IntegerInput
 
@@ -42,7 +40,7 @@ and plot the waveforms real time.
                 break
             
             # Add data to the Matplotlib line and update the figure
-            t, v = self.osc.get_waveform('C1') # Get a waveform of the Channel 1 from the oscilloscope
+            t, v = self.osc.get_waveform('C1')  # Get a waveform of the Channel 1 from the oscilloscope
             self.line.set_data(t, v)
             self.request_figure_update()
             
