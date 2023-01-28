@@ -60,7 +60,7 @@ class Task(thread_class):
     EscapeForStart = '@START@'
     EscapeForStop = '@STOP@'
     """
-    Escape string used in stdout redirection to GUI
+    Escape strings used in stdout redirection to GUI
     """
 
     input_parameters = {

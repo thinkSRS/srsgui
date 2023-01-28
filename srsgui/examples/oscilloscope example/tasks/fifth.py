@@ -9,7 +9,7 @@ from srsgui import IntegerInput
 from tasks.fourth import FourthTask
 
 try:
-    #Use SciPy signal library if available
+    # Use SciPy signal library if available
     from scipy import signal
 except:
     SCIPY_IMPORTED = False
@@ -35,7 +35,7 @@ No hardware connection is required to use simulated waveforms. \
 
         if SCIPY_IMPORTED:
             # Butterworth filter to simulate 200 MHz bandwith of the oscilloscope 
-            self.sos = signal.butter(2, 2e8, 'low', fs = 1e9, output='sos')
+            self.sos = signal.butter(2, 2e8, 'low', fs=1e9, output='sos')
 
         self.logger = self.get_logger(__file__)      
         self.init_plots()

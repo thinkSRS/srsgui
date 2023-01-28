@@ -31,7 +31,7 @@ version_string = find_version('srsgui', '__init__.py')
 setup(
     name='srsgui',
     version=version_string,
-    description='Framework to provide GUI to instrument-controlling Python scripts',
+    description='Framework to run instrument-controlling Python scripts in GUI',
     packages=['srsgui', 'srsgui.ui', 'srsgui.ui.qt', 'srsgui.task',
               'srsgui.inst', 'srsgui.inst.communications'],
     package_data={

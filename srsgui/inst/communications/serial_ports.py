@@ -1,6 +1,7 @@
 
 """
-Get all available serial ports
+Get all available serial ports.
+
 Snippet from http://stackoverflow.com/questions/12090503/listing-available-com-ports-with-python
 """
 
