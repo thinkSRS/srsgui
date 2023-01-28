@@ -1,5 +1,5 @@
-srsgui package
-===============
+srsgui APIs
+=====================
 
 .. toctree::
    :maxdepth: 4

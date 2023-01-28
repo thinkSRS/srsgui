@@ -31,8 +31,8 @@ for binder in BINDER_LIST:
         pass
 
 if not QT_BINDER:
-    msg = "\n\nPython package 'PySide2' is required to run in Graphic User Interface." \
-          "\nTry again after installing 'PySide2' with" \
-          "\n\npip install pyside2" \
+    msg = "\n\nPython package 'PySide6' is required to run in Graphic User Interface mode." \
+          "\nTry again after installing 'PySide6' with" \
+          "\n\npip install pyside6" \
           "\n\nOr your system may have a different way to install it."
     raise ModuleNotFoundError(msg)

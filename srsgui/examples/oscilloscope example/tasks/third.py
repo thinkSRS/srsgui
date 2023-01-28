@@ -23,7 +23,7 @@ and plot the waveforms real time.
         
         # Get the Matplotlib figure to plot in
         self.figure = self.get_figure()
-                
+
         # Once you get the figure, the following are about Matplotlib things to plot
         self.ax = self.figure.add_subplot(111)
         self.ax.set_xlim(-1e-5, 1e-5)
