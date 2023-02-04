@@ -12,7 +12,7 @@ you will use the command from a terminal,
     > PARAM? 1
     500.0
 
-The instrument is defined as an instance of an Instrument subclass, fg,
+The instrument is defined as an instance of an Instrument subclass, ``fg``,
 you can use it from a Python interpreter prompt.
 
     >>> fg.query_float('PARAM? 1')
@@ -23,7 +23,7 @@ you can use it from a Python interpreter prompt.
 
 You can define a FloatIndexCommand for the remote command in an Instrument subclass.
 
-    fit_parameter = FloatIndexCommand('PARAM', index_max=10)
+    >>> fit_parameter = FloatIndexCommand('PARAM', index_max=3)
 
 Now, you can use the command like an class attribute as following:
 
@@ -32,6 +32,17 @@ Now, you can use the command like an class attribute as following:
     >>> fg.fit_parameter[1] = 500
     >>> fg.fit_parameter[1]
     500.0
+
+Sometimes, it is hard to remember whtat a n index means for the command.
+You can assign  an index_dict to use the dictionary keys instead of the numberic index.
+
+    >>> IndexDict = {'front': 0, 'back': 1, 'left':2, 'right':3}
+    >>> fit_parameter = FloatIndexCommand('PARAM', index_max=3, index_min=0, index_dict=IndexDict)
+    >>> fg.fit_parameter['back']
+    500.0
+    >>> fg.fit_parameter['back'] = 1000
+    >>> fg.fit_parameter['back']
+    1000.0
 
 Using IndexCommand class simplifies tedious usage of a many set and query remote commands
 with an index argument
@@ -58,7 +69,7 @@ class IndexCommand(object):
                 Remote command name it uses
             index_max: int
                 the maximum index value allowed
-            index_mina: int, optional
+            index_min: int, optional
         :param str remote_command_name:
         """
         self.index_max = index_max
@@ -72,7 +83,7 @@ class IndexCommand(object):
 
     def __set__(self, instance, value):
         raise InstSetError('No set for IndexCommand for {}'
-                             .format(self.remote_command))
+                           .format(self.remote_command))
 
     def __getitem__(self, index):
         converted_index = self._convert_index(index)
@@ -121,10 +132,10 @@ class IndexCommand(object):
             if index in self.index_dict:
                 converted_index = self.index_dict[index]
             else:
-                raise InstIndexError('Key {} not in IndexDict for {}'
+                raise InstIndexError("Key '{}' not in index_dict of {}"
                                      .format(index, self.remote_command))
         else:
-            raise InstIndexError('Index {} should be an integer or key in index_dict for {}'
+            raise InstIndexError('Index {} should be an integer or key in index_dict of {}'
                                  .format(index, self.remote_command))
         if self.index_min > converted_index or converted_index > self.index_max:
             raise InstIndexError('Index {} is out of range from {} to {} for {}'
@@ -209,3 +220,31 @@ class FloatIndexGetCommand(FloatIndexCommand):
     def __setitem__(self, instance, value):
         raise InstIndexError('No set allowed for index command {}'
                              .format(self.remote_command))
+
+
+class DictIndexCommand(IndexCommand):
+    """
+    Descriptor for a remote command to
+    **set** and **query** using a conversion dictionary
+    """
+
+    def __init__(self, remote_command_name, conversion_dict, index_max, index_min=0, index_dict=None):
+        super().__init__(remote_command_name, index_max, index_min, index_dict)
+        self.conversion_dict = conversion_dict
+        self.key_type = type(list(conversion_dict.keys())[0])
+        self.value_type = type(list(conversion_dict.values())[0])
+
+        self._get_convert_function = self.value_to_key
+        self._set_convert_function = self.key_to_value
+
+    def key_to_value(self, key):
+        if self.key_type(key) in self.conversion_dict:
+            return self.conversion_dict[self.key_type(key)]
+        else:
+            raise KeyError('{} not exists in {}'
+                           .format(key, self.conversion_dict.keys()))
+
+    def value_to_key(self, value):
+        index = list(self.conversion_dict.values()).index(self.value_type(value))
+        key = list(self.conversion_dict.keys())[index]
+        return key

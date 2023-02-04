@@ -49,6 +49,9 @@ class ListInput(BaseInput):
     def get_value(self):
         return self.text
 
+    def get_index(self):
+        return self.value
+
 
 class BoolInput(ListInput):
     def __init__(self, item_list=('False', 'True'), default_index=0):
@@ -74,6 +77,11 @@ class IntegerListInput(ListInput):
 
     def get_value(self):
         return int(self.text)
+
+
+class FloatListInput(IntegerListInput):
+    def get_value(self):
+        return float(self.text)
 
 
 class InstrumentInput(ListInput):

@@ -1,12 +1,12 @@
 from .communications import Interface
-from .commands import Command, GetCommand
-from .indexcommands import IndexCommand
+from .commands import Command, GetCommand, DictCommand
+from .indexcommands import IndexCommand, DictIndexCommand
 
 
 class Component(object):
     """
     Class is used to build hierarchical structure in an instrument.
-    An instrument can have multiple components and a component
+    An instrument can have multiple components and each component
     can also have multiple subcomponents. All the components
     inside an instrument shares the communication interface
     of the instrument.
@@ -15,22 +15,30 @@ class Component(object):
     instrument changed, the instrument should call
     ``update_components()`` to update all its components.
 
-    Component contains Command and its subclasses along with
-    StrIndexCommand and its subclasses as class attributes.
-    A convenience method, ``get_command_list()`` will show what commands are available
-    from the component instance
+    Component has a convenience attribute, ``dir`` that returns available subcomponents,
+    commands and methods available from the component. ``dir`` combines the return values from
+    ``get_component_list(), ``get_command_list()`` and ``get_method_list()``, which are
+    not promoted to use directly.
 
     Component has a convenience method, ``get_component_list()`` to get child
     components of an instance. This method helps a user to navigate through
-    component tree, even without the documentation.
+    the component tree.
+
+    Component contains Command and its subclasses along with
+    IndexCommand and its subclasses as class attributes.
+    A convenience method, ``get_command_list()`` will show what commands are
+    available from the component instance. each command is listed with:
+    the name of the Command instance; the raw remote command associated with
+    the command; the conversion_dict if it is a DictCommand instance;
+    the index_dict for IndexCommand instance, if used.
 
     ``get_method_list()`` shows methods a component has, including ones
     inherited from the superclasses.
 
     The information available from the convenience methods are
     available interactively from context-sensitive editors, such as IDLE, Pycharm, VSCode.
-    When the information from the editors are not complete, consulting with those convenience methods
-    provides complete lists you can use.
+    When the information from the editors are not complete, consulting with
+    those convenience methods provides complete lists you can use.
 
     """
 
@@ -100,20 +108,20 @@ class Component(object):
         a list of  method available in the component and its superclass
         """
         return {
-            'components': self._get_component_list(),
-            'commands': self._get_command_list(),
-            'methods': self._get_method_list()
+            'components': self.get_component_list(),
+            'commands': self.get_command_list(),
+            'methods': self.get_method_list()
         }
 
     def _add_parent_to_index_commands(self):
         # Add parent to ListCommands
-        commands = self._get_command_list()
+        commands = self.get_command_list()
         for cmd in commands:
-            instance = self.__class__.__dict__[cmd[0]]
+            instance = self.__class__.__dict__[cmd]
             if hasattr(instance, "_add_parent"):
                 instance._add_parent(self)
 
-    def _get_component_list(self):
+    def get_component_list(self):
         """
         Get a list of the child component of the component
 
@@ -131,7 +139,7 @@ class Component(object):
                 component_list.append((k, 'instance of {}'.format(instance.__class__.__name__)))
         return component_list
 
-    def _get_command_list(self):
+    def get_command_list(self):
         """
         Get a list of commands available from the component.
 
@@ -142,15 +150,15 @@ class Component(object):
             list(str)
                 list of commands
         """
-        command_list = []
+        command_list = {}
         for k in self.__class__.__dict__:
             instance = self.__class__.__dict__[k]
-            if issubclass(instance.__class__, Command) or \
+            if issubclass(instance.__class__, DictCommand) or \
                issubclass(instance.__class__, IndexCommand):
-                command_list.append((k, instance.__class__.__name__, instance.remote_command))
+                command_list[k] = (instance.__class__.__name__, instance.remote_command)
         return command_list
 
-    def _get_method_list(self):
+    def get_method_list(self):
         """
         get a list of names of methods available from the component
         including methods inherited from the superclasses
@@ -183,3 +191,45 @@ class Component(object):
                 if callable(child):
                     method_list.append('{}()'.format(key))
         return method_list
+
+    def get_command_info(self, command_name):
+        if not hasattr(self.__class__, command_name):
+            raise AttributeError("No command named '{}' in {}".format(command_name, self.__class__.__name__))
+        cmd = self.__class__.__dict__[command_name]
+        if issubclass(cmd.__class__, DictCommand):
+            info = (cmd.__class__.__name__, cmd.remote_command,
+                    cmd.conversion_dict, None)
+        elif issubclass(cmd.__class__, DictIndexCommand):
+            info = (cmd.__class__.__name__, cmd.remote_command,
+                    cmd.conversion_dict, cmd.index_dict)
+        elif issubclass(cmd.__class__, IndexCommand):
+            info = (cmd.__class__.__name__, cmd.remote_command,
+                    None, cmd.index_dict)
+        elif issubclass(cmd.__class__, Command):
+            info = (cmd.__class__.__name__, cmd.remote_command,
+                    None, None)
+        else:
+            raise AttributeError("'{}' is not a command in {}".format(command_name, self.__class__.__name__))
+        return {'command class': info[0],
+                'raw remote command': info[1],
+                'conversion_dict': info[2],
+                'index_dict': info[3]
+                }
+
+    def assert_command_key(self, command, key):
+        """
+        It asserts if the component has the command as a DictCommand and DictIndexCommand, and
+        the command has the key in its conversion_dict.
+        """
+
+        if not hasattr(self.__class__, command):
+            raise AttributeError("No command named '{}' in {}".format(command, self.__class__.__name__))
+
+        cmd = self.__class__.__dict__[command]
+        if not issubclass(cmd.__class__, DictCommand) and not issubclass(cmd.__class__, DictIndexCommand):
+            raise TypeError("'{}' is not a DictCommand or DictIndexCommand in {}"
+                            .format(command, self.__class__.__name__))
+        if key not in cmd.conversion_dict:
+            raise KeyError(f" '{key}' is in {cmd.conversion_dict} of command '{command}'.")
+
+

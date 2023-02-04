@@ -457,10 +457,7 @@ class Task(thread_class):
     def get_input_parameter(self, name):
         if name in self.__class__.input_parameters:
             param = self.__class__.input_parameters[name]
-            if type(param) == InstrumentInput:
-                value = self.__class__.input_parameters[name].text
-            else:
-                value = self.__class__.input_parameters[name].value
+            value = param.get_value()
             if not hasattr(self.result, name):
                 self.add_details(str(value), name)
             return value

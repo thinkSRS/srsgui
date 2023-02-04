@@ -35,6 +35,7 @@ Now, you can use the command like an class attribute as following:
     >>> fg.frequency
     500.0
 
+
 Using Command class simplifies tedious usage of a many set and query remote commands
 
 """
@@ -220,3 +221,41 @@ class FloatSetCommand(FloatCommand):
         raise AttributeError('No query command for {}'
                              .format(self.remote_command))
 
+
+class DictCommand(Command):
+    """
+    Descriptor for a remote command to
+    **set** and **query** using a conversion dictionary
+    """
+
+    def __init__(self, remote_command_name, conversion_dict):
+        super().__init__(remote_command_name)
+        self.conversion_dict = conversion_dict
+        self.key_type = type(list(conversion_dict.keys())[0])
+        self.value_type = type(list(conversion_dict.values())[0])
+
+        self._get_convert_function = self.value_to_key
+        self._set_convert_function = self.key_to_value
+
+    def key_to_value(self, key):
+        if self.key_type(key) in self.conversion_dict:
+            return self.conversion_dict[self.key_type(key)]
+        else:
+            raise KeyError('{} not in {} for {}'
+                           .format(key, self.conversion_dict.keys(), self.remote_command))
+
+    def value_to_key(self, value):
+        index = list(self.conversion_dict.values()).index(self.value_type(value))
+        key = list(self.conversion_dict.keys())[index]
+        return key
+
+
+class DictGetCommand(DictCommand):
+    """
+    Descriptor for  a remote command only to **query** a **dict** value.
+    To **set** a value is not allowed.
+    """
+
+    def __set__(self, instance, value):
+        raise AttributeError('No set command for {}'
+                             .format(self.remote_command))

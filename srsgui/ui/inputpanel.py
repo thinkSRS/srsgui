@@ -5,7 +5,7 @@ from .qt.QtWidgets import QWidget, QDoubleSpinBox, QSpinBox, QComboBox, \
 
 from srsgui.task.task  import Task
 from srsgui.task.inputs import IntegerInput, FloatInput, StringInput, \
-                               ListInput, InstrumentInput
+                               ListInput, IntegerListInput, InstrumentInput
 
 import logging
 logger = logging.getLogger(__name__)
@@ -33,7 +33,8 @@ class InputPanel(QWidget):
             row = 0
             for i in params.keys():
                 p = params[i]
-                if type(p) == StringInput:
+                param_type = type(p)
+                if param_type == StringInput:
                     widget = QLineEdit()
                     widget.setText(p.value)
                     setattr(self, i, widget)
@@ -42,7 +43,7 @@ class InputPanel(QWidget):
                     layout.addWidget(widget, row, self.SecondColumn)
                     row += 1
                     continue
-                elif type(p) == ListInput:
+                elif param_type in (ListInput, IntegerListInput):
                     widget = QComboBox()
                     widget.addItems(p.item_list)
                     widget.setCurrentIndex(p.value)
@@ -54,7 +55,7 @@ class InputPanel(QWidget):
                     layout.addWidget(widget, row, self.SecondColumn)
                     row += 1
                     continue
-                elif type(p) == InstrumentInput:
+                elif param_type == InstrumentInput:
                     if not (self.parent and hasattr(self.parent, 'inst_dict')):
                         logger.error('No inst_dict available for InstrumentInput')
                         continue
@@ -69,17 +70,17 @@ class InputPanel(QWidget):
                     layout.addWidget(widget, row, self.SecondColumn)
                     row += 1
                     continue
-                elif type(p) == FloatInput:
+                elif param_type == FloatInput:
                     widget = QDoubleSpinBox()
                     setattr(self, i, widget)
                     widget.setDecimals(4)
                     widget.setAlignment(Qt.AlignRight)
-                elif type(p) == IntegerInput:
+                elif param_type == IntegerInput:
                     widget = QSpinBox()
                     setattr(self, i, widget)
                     widget.setAlignment(Qt.AlignRight)
                 else:
-                    raise TypeError('Unknown input type')
+                    raise TypeError('Unknown input type: {}'.format(param_type))
 
                 if p.value < p.minimum or p.value > p.maximum:
                     widget.setMinimum(p.value)

@@ -25,13 +25,13 @@ if it fails, you have to install
 a Python Qt binder ([PySide6](https://pypi.org/project/PySide6/),
 [PySide2](https://pypi.org/project/PySide2/) or 
 [PyQt5](https://pypi.org/project/PyQt5/)) manually.
-``srsgui`` package has those 3 depedencies only.
+``srsgui`` package has these 3 dependencies only.
  
 Some Linux distributions offer some of the Python packages from their 
 repositories only, not from ``pip``. Run web search for more information on 
 system specific installation.   
 
-When both matplotlib and either Qt binder
+When both matplotlib and one of the Qt binders
 are installed properly, install ``srsgui`` without [full] option:
 
     python -m pip install srsgui
@@ -43,7 +43,7 @@ Start the application by typing from the command line:
 
     srsgui
     
-If it fails,
+If the script directory is not in PATH,
 
     python -m srsgui
     
@@ -66,5 +66,5 @@ even without any instruments connected.
 
 `Srsgui` is a platform that helps you to write your own instrument-controlling 
 Python scripts running as a GUI application. Using its APIs, you can write 
-scripts running in GUI with the same amount of effort for console-based 
+scripts running in GUI with the same amount of code with writing console-based 
 scripts.
