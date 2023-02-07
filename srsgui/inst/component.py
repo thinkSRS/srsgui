@@ -17,16 +17,15 @@ class Component(object):
 
     Component has a convenience attribute, ``dir`` that returns available subcomponents,
     commands and methods available from the component. ``dir`` combines the return values from
-    ``get_component_list(), ``get_command_list()`` and ``get_method_list()``, which are
-    not promoted to use directly.
+    ``get_component_dict(), ``get_command_dict()`` and ``get_method_list()`.
 
-    Component has a convenience method, ``get_component_list()`` to get child
+    Component has a convenience method, ``get_component_dict()`` to get child
     components of an instance. This method helps a user to navigate through
     the component tree.
 
     Component contains Command and its subclasses along with
     IndexCommand and its subclasses as class attributes.
-    A convenience method, ``get_command_list()`` will show what commands are
+    A convenience method, ``get_command_dict()`` will show what commands are
     available from the component instance. each command is listed with:
     the name of the Command instance; the raw remote command associated with
     the command; the conversion_dict if it is a DictCommand instance;
@@ -108,40 +107,40 @@ class Component(object):
         a list of  method available in the component and its superclass
         """
         return {
-            'components': self.get_component_list(),
-            'commands': self.get_command_list(),
+            'components': self.get_component_dict(),
+            'commands': self.get_command_dict(),
             'methods': self.get_method_list()
         }
 
     def _add_parent_to_index_commands(self):
         # Add parent to ListCommands
-        commands = self.get_command_list()
+        commands = self.get_command_dict()
         for cmd in commands:
             instance = self.__class__.__dict__[cmd]
             if hasattr(instance, "_add_parent"):
                 instance._add_parent(self)
 
-    def get_component_list(self):
+    def get_component_dict(self):
         """
-        Get a list of the child component of the component
+        Get a dict of the child component of the component
 
         Returns
         --------
             list(str)
                 list contain name of child compoents and its class name
         """
-        component_list =[]
+        component_list = {}
         for k in self.__dict__:
             if k =='_parent':
                 continue
             instance = self.__dict__[k]
             if issubclass(instance.__class__,  Component):
-                component_list.append((k, 'instance of {}'.format(instance.__class__.__name__)))
+                component_list[k] = ('instance of {}'.format(instance.__class__.__name__))
         return component_list
 
-    def get_command_list(self):
+    def get_command_dict(self):
         """
-        Get a list of commands available from the component.
+        Get a dict of commands available from the component.
 
         list contains strings on command name, command type,  remote command it uses
 
@@ -189,7 +188,7 @@ class Component(object):
                     continue
                 current_attributes.append(key)
                 if callable(child):
-                    method_list.append('{}()'.format(key))
+                    method_list.append('{}'.format(key))
         return method_list
 
     def get_command_info(self, command_name):
