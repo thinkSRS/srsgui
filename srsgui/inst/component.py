@@ -1,6 +1,8 @@
 from .communications import Interface
-from .commands import Command, GetCommand, DictCommand
-from .indexcommands import IndexCommand, DictIndexCommand
+from .commands import Command, GetCommand, BoolCommand, IntCommand, \
+                      FloatCommand, DictCommand
+from .indexcommands import IndexCommand, BoolIndexCommand, IntIndexCommand, \
+                           FloatIndexCommand, DictIndexCommand
 
 
 class Component(object):
@@ -51,6 +53,9 @@ class Component(object):
 
     dir = DirCommand('dir')
     """ class instance of DirCommand"""
+
+    exclude_capture = []
+    """exclude commands from query in capture_commands"""
 
     def __init__(self, parent, name='unnamed'):
         self._name = name
@@ -152,7 +157,7 @@ class Component(object):
         command_list = {}
         for k in self.__class__.__dict__:
             instance = self.__class__.__dict__[k]
-            if issubclass(instance.__class__, DictCommand) or \
+            if issubclass(instance.__class__, Command) or \
                issubclass(instance.__class__, IndexCommand):
                 command_list[k] = (instance.__class__.__name__, instance.remote_command)
         return command_list
@@ -231,4 +236,44 @@ class Component(object):
         if key not in cmd.conversion_dict:
             raise KeyError(f" '{key}' is in {cmd.conversion_dict} of command '{command}'.")
 
+    def capture_commands(self):
+        """
+        Query all command with both set and get methods in the component
+        and its sub-components
+        """
+
+        commands = {}
+        for j in self.__dict__:
+            if j =='_parent':
+                continue
+            instance = self.__dict__[j]
+            if issubclass(instance.__class__,  Component):
+                commands[j] = instance.capture_commands()
+
+            for k in self.__class__.__dict__:
+                cmd_instance = self.__class__.__dict__[k]
+                if cmd_instance in self.exclude_capture:
+                    continue
+                if cmd_instance.__class__ == Command or \
+                   cmd_instance.__class__ == BoolCommand or \
+                   cmd_instance.__class__ == IntCommand or \
+                   cmd_instance.__class__ == FloatCommand or \
+                   cmd_instance.__class__ == DictCommand:
+                    commands[k] = cmd_instance.__get__(self, self.__class__)
+                elif cmd_instance.__class__ == IndexCommand or \
+                     cmd_instance.__class__ == BoolIndexCommand or \
+                     cmd_instance.__class__ == IntIndexCommand or \
+                     cmd_instance.__class__ == FloatIndexCommand or \
+                     cmd_instance.__class__ == DictIndexCommand:
+
+                    index = cmd_instance.index_min
+                    commands[k] = []
+                    while index <= cmd_instance.index_max:
+                        try:
+                            commands[k].append(cmd_instance.__getitem__(index))
+                            index += 1
+                        except Exception as e:
+                            print(f'{type(e)} {e} command:{k} index: {index}')
+                            break
+        return commands
 

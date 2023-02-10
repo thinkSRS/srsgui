@@ -7,4 +7,4 @@ from srsgui.inst import Interface, SerialInterface, TcpipInterface
 from srsgui.inst.instrument import Instrument
 from srsgui.inst.component import Component
 
-__version__ = "0.1.15"  # Global version number
+__version__ = "0.1.19"  # Global version number

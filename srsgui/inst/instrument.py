@@ -1,4 +1,4 @@
-
+import re
 import time
 from .communications import Interface, SerialInterface, TcpipInterface
 from .component import Component
@@ -200,7 +200,7 @@ class Instrument(Component):
         serial_number = strings[2].strip()
         firmware_version = strings[3].strip()
 
-        if self._IdString not in reply:
+        if not re.search(self._IdString, reply):
             raise InstIdError("Invalid instrument: {} not in {}"
                               .format(self._IdString, reply))
         self._id_string = reply
