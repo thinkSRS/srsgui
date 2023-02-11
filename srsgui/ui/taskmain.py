@@ -316,7 +316,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             # Setup toolbar buttons
             self.actionRun.setEnabled(True)
             self.actionStop.setEnabled(False)
-
+            self.setWindowTitle(self.config.task_dict_name)
             self._busy_flag = False
 
             # PySide2 needs to refresh matplotlib display before starting a new task
@@ -417,14 +417,13 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
             self.task = self.task_method(self)
             self.task.name = self.current_task_action.text()
+            self.setWindowTitle("{}  -  {}".format(self.config.task_dict_name, self.task.name))
             self.task.set_figure_dict(self.dock_handler.get_figure_dict())
             self.task.set_inst_dict(self.inst_dict)
             self.task.set_data_dict(self.data_dict)
             self.task.set_session_handler(self.session_handler)
-
             signal_handler = SignalHandler(self)
             self.task.set_callback_handler(signal_handler)
-
             self.onTaskStarted()
             self.task.start()
         except Exception as e:

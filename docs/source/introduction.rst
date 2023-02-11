@@ -291,8 +291,8 @@ Component, Commands and IndexCommands
 to organize the functionality of the instrument.
 
 If you have hundreds of remote commands to deal with an instrument,
-organized them in a manageable way is crucial. Well, look into srsinst.sr850
-documentation to see these convenience classes are used to organize a vast set of
+organized them in a manageable way is crucial. Well, look into srsinst.sr860
+documentation to see these convenience classes are used to organize a large set of
 remote commands.
 
 

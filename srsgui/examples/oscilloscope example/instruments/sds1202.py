@@ -25,13 +25,11 @@ class SDS1202(Instrument):
                 'ip_address': Ip4Input('192.168.1.10'),
             }
         ],
-        
         [   VisaInterface,
             {
                 'resource': FindListInput(),
             }
         ],
-        
         [   TcpipInterface,
             {
                 'ip_address': Ip4Input('192.168.1.10'),
