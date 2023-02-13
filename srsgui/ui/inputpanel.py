@@ -38,19 +38,19 @@ class InputPanel(QWidget):
                     widget = QLineEdit()
                     widget.setText(p.value)
                     setattr(self, i, widget)
-                    label = QLabel(i.capitalize())
+                    label = QLabel(i)
                     layout.addWidget(label, row, self.FirstColumn)
                     layout.addWidget(widget, row, self.SecondColumn)
                     row += 1
                     continue
-                elif param_type in (ListInput, IntegerListInput):
+                elif issubclass(param_type, ListInput):
                     widget = QComboBox()
                     widget.addItems(p.item_list)
                     widget.setCurrentIndex(p.value)
                     p.text = widget.currentText()
 
                     setattr(self, i, widget)
-                    label = QLabel(i.capitalize())
+                    label = QLabel(i)
                     layout.addWidget(label, row, self.FirstColumn)
                     layout.addWidget(widget, row, self.SecondColumn)
                     row += 1
@@ -65,7 +65,7 @@ class InputPanel(QWidget):
                     p.text = widget.currentText()
 
                     setattr(self, i, widget)
-                    label = QLabel(i.capitalize())
+                    label = QLabel(i)
                     layout.addWidget(label, row, self.FirstColumn)
                     layout.addWidget(widget, row, self.SecondColumn)
                     row += 1

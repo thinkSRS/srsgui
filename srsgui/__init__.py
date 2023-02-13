@@ -1,7 +1,9 @@
 
 from srsgui.task.task import Task
-from srsgui.task.inputs import IntegerInput, FloatInput, StringInput, ListInput, IntegerListInput, InstrumentInput
-from srsgui.task.inputs import Ip4Input, FindListInput
+from srsgui.task.inputs import BoolInput, IntegerInput, FloatInput,\
+                               StringInput, Ip4Input,\
+                               ListInput, IntegerListInput, FloatListInput, \
+                               InstrumentInput, FindListInput
 
 from srsgui.inst import Interface, SerialInterface, TcpipInterface
 from srsgui.inst.instrument import Instrument

@@ -13,7 +13,7 @@ except (ImportError, ModuleNotFoundError):
           "\n\nOr your system may have a different way to install it."
     raise ModuleNotFoundError(msg)
 
-from .inputs import FloatInput, InstrumentInput, StringInput
+from .inputs import FloatInput, StringInput
 from .taskresult import TaskResult, ResultLogHandler
 from .callbacks import Callbacks
 
@@ -65,8 +65,8 @@ class Task(thread_class):
 
     input_parameters = {
         # Example float parameter
-            "define parameters": FloatInput(10.0, " Hz", 1.0, 1000.0, 1.0),
-            "before use!! ": StringInput(" or empty input_parameters.")
+            "Define parameters": FloatInput(10.0, " Hz", 1.0, 1000.0, 1.0),
+            "before use!! ":     StringInput(" or empty input_parameters.")
     }
     """
     Class variable to define parameters used in the task.
@@ -261,7 +261,6 @@ class Task(thread_class):
         self._keep_running = True
         self._aborted = False
         super().start()
-
 
     def stop(self):
         """
@@ -474,18 +473,7 @@ class Task(thread_class):
     @classmethod
     def set_input_parameter(cls, name, value):
         if name in cls.input_parameters:
-            param = cls.input_parameters[name]
-            if type(param) == InstrumentInput:
-                if type(cls.input_parameters[name].text) == type(value):
-                    cls.input_parameters[name].text = value
-                else:
-                    raise TypeError('Type for input_parameter "{}" is {}'
-                                    .format(name, type(value)))
-            elif type(cls.input_parameters[name].value) == type(value):
-                cls.input_parameters[name].value = value
-            else:
-                raise TypeError('Type for input_parameter "{}" is {}'
-                                .format(name, type(value)))
+            cls.input_parameters[name].set_value(value)
         else:
             raise KeyError('{} not in input_parameters'.format(name))
 

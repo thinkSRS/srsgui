@@ -13,6 +13,8 @@ class BaseInput:
     def get_value(self):
         return self.value
 
+    def set_value(self, value):
+        self.value = value
 
 class StringInput(BaseInput):
     pass
@@ -49,8 +51,15 @@ class ListInput(BaseInput):
     def get_value(self):
         return self.text
 
+    def set_value(self, text):
+        self.value = self.item_list.index(text)
+        self.text = text
+
     def get_index(self):
         return self.value
+
+    def set_index(self, index):
+        self.value = index
 
 
 class BoolInput(ListInput):
@@ -58,7 +67,10 @@ class BoolInput(ListInput):
         super().__init__(item_list, default_index)
 
     def get_value(self):
-        return 0 if self.value == 0 else 1
+        return True if self.value else False
+
+    def set_value(self, value):
+        self.value = 1 if value else 0
 
 
 class IntegerListInput(ListInput):
@@ -78,10 +90,32 @@ class IntegerListInput(ListInput):
     def get_value(self):
         return int(self.text)
 
+    def set_value(self, int_value):
+        self.value = self.item_list.index(str(int_value))
+        self.text = self.item_list[self.value]
 
-class FloatListInput(IntegerListInput):
+
+class FloatListInput(ListInput):
+    def __init__(self, item_list, fmt='{:.2e}', default_index=0):
+        super().__init__(item_list, default_index)
+        self.fmt = fmt
+        li = []
+        for item in self.item_list:
+            if type(item) != float:
+                raise TypeError('Item "{}" in FloatListInput is not an float'.format(item))
+            li.append(self.fmt.format(item))
+        if not len(li):
+            raise ValueError('No item in the item_list')
+
+        self.item_list = li
+        self.text = self.item_list[self.value]
+
     def get_value(self):
         return float(self.text)
+
+    def set_value(self, float_number):
+        self.value = self.item_list.index(self.fmt.format(float_number))
+        self.text = self.item_list[self.value]
 
 
 class InstrumentInput(ListInput):
