@@ -202,28 +202,29 @@ class Component(object):
         cmd = self.__class__.__dict__[command_name]
         if issubclass(cmd.__class__, DictCommand):
             info = (cmd.__class__.__name__, cmd.remote_command,
-                    cmd.conversion_dict, None)
+                    cmd.set_dict, cmd.get_dict, None)
         elif issubclass(cmd.__class__, DictIndexCommand):
             info = (cmd.__class__.__name__, cmd.remote_command,
-                    cmd.conversion_dict, cmd.index_dict)
+                    cmd.set_dict, cmd.get_dict, cmd.index_dict)
         elif issubclass(cmd.__class__, IndexCommand):
             info = (cmd.__class__.__name__, cmd.remote_command,
-                    None, cmd.index_dict)
+                    None, None, cmd.index_dict)
         elif issubclass(cmd.__class__, Command):
             info = (cmd.__class__.__name__, cmd.remote_command,
-                    None, None)
+                    None, None, None)
         else:
             raise AttributeError("'{}' is not a command in {}".format(command_name, self.__class__.__name__))
         return {'command class': info[0],
                 'raw remote command': info[1],
-                'conversion_dict': info[2],
-                'index_dict': info[3]
+                'set_dict': info[2],
+                'get_dict': info[3],
+                'index_dict': info[4]
                 }
 
     def assert_command_key(self, command, key):
         """
         It asserts if the component has the command as a DictCommand and DictIndexCommand, and
-        the command has the key in its conversion_dict.
+        the command has the key in its set_dict.
         """
 
         if not hasattr(self.__class__, command):
@@ -233,13 +234,13 @@ class Component(object):
         if not issubclass(cmd.__class__, DictCommand) and not issubclass(cmd.__class__, DictIndexCommand):
             raise TypeError("'{}' is not a DictCommand or DictIndexCommand in {}"
                             .format(command, self.__class__.__name__))
-        if key not in cmd.conversion_dict:
-            raise KeyError(f" '{key}' is in {cmd.conversion_dict} of command '{command}'.")
+        if key not in cmd.set_dict:
+            raise KeyError(f" '{key}' is in {cmd.set_dict} of command '{command}'.")
 
     def capture_commands(self):
         """
         Query all command with both set and get methods in the component
-        and its sub-components
+        and its subcomponents
         """
 
         commands = {}

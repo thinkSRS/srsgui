@@ -228,25 +228,29 @@ class DictCommand(Command):
     **set** and **query** using a conversion dictionary
     """
 
-    def __init__(self, remote_command_name, conversion_dict):
+    def __init__(self, remote_command_name, set_dict, get_dict=None):
         super().__init__(remote_command_name)
-        self.conversion_dict = conversion_dict
-        self.key_type = type(list(conversion_dict.keys())[0])
-        self.value_type = type(list(conversion_dict.values())[0])
+        self.set_dict = set_dict
+        if get_dict is None:
+            self.get_dict = set_dict
+        else:
+            self.get_dict = get_dict
+        self.key_type = type(list(set_dict.keys())[0])
+        self.value_type = type(list(set_dict.values())[0])
 
-        self._get_convert_function = self.value_to_key
         self._set_convert_function = self.key_to_value
+        self._get_convert_function = self.value_to_key
 
     def key_to_value(self, key):
-        if self.key_type(key) in self.conversion_dict:
-            return self.conversion_dict[self.key_type(key)]
+        if self.key_type(key) in self.set_dict:
+            return self.set_dict[self.key_type(key)]
         else:
             raise KeyError('{} not in {} for {}'
-                           .format(key, self.conversion_dict.keys(), self.remote_command))
+                           .format(key, self.set_dict.keys(), self.remote_command))
 
     def value_to_key(self, value):
-        index = list(self.conversion_dict.values()).index(self.value_type(value))
-        key = list(self.conversion_dict.keys())[index]
+        index = list(self.get_dict.values()).index(self.value_type(value))
+        key = list(self.get_dict.keys())[index]
         return key
 
 

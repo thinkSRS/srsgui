@@ -43,9 +43,12 @@ class InputPanel(QWidget):
                     layout.addWidget(widget, row, self.SecondColumn)
                     row += 1
                     continue
-                elif issubclass(param_type, ListInput):
+                elif param_type == InstrumentInput:
+                    if not (self.parent and hasattr(self.parent, 'inst_dict')):
+                        logger.error('No inst_dict available for InstrumentInput')
+                        continue
                     widget = QComboBox()
-                    widget.addItems(p.item_list)
+                    widget.addItems(self.parent.inst_dict.keys())
                     widget.setCurrentIndex(p.value)
                     p.text = widget.currentText()
 
@@ -55,12 +58,9 @@ class InputPanel(QWidget):
                     layout.addWidget(widget, row, self.SecondColumn)
                     row += 1
                     continue
-                elif param_type == InstrumentInput:
-                    if not (self.parent and hasattr(self.parent, 'inst_dict')):
-                        logger.error('No inst_dict available for InstrumentInput')
-                        continue
+                elif issubclass(param_type, ListInput):
                     widget = QComboBox()
-                    widget.addItems(self.parent.inst_dict.keys())
+                    widget.addItems(p.item_list)
                     widget.setCurrentIndex(p.value)
                     p.text = widget.currentText()
 
