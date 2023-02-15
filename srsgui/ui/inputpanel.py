@@ -3,9 +3,11 @@ from .qt.QtCore import Qt
 from .qt.QtWidgets import QWidget, QDoubleSpinBox, QSpinBox, QComboBox, \
                           QLineEdit, QLabel, QGridLayout, QPushButton
 
-from srsgui.task.task  import Task
+from srsgui.inst import Command, IntCommand, FloatCommand, DictCommand
+
+from srsgui.task.task import Task
 from srsgui.task.inputs import IntegerInput, FloatInput, StringInput, \
-                               ListInput, IntegerListInput, InstrumentInput
+                               ListInput, InstrumentInput, CommandInput
 
 import logging
 logger = logging.getLogger(__name__)
@@ -27,6 +29,13 @@ class InputPanel(QWidget):
 
             self.parent = parent
             self.task_class = task_class
+
+            self.inst_name = None
+            self.inst_dict = self.parent.inst_dict
+            self.command_handler = self.parent.command_handler
+            self.command_dict = {}
+            self.command_handler.command_processed.connect(self.handle_reply)
+
             params = self.task_class.input_parameters
 
             layout = QGridLayout()
@@ -51,6 +60,7 @@ class InputPanel(QWidget):
                     widget.addItems(self.parent.inst_dict.keys())
                     widget.setCurrentIndex(p.value)
                     p.text = widget.currentText()
+                    self.inst_name = p.text
 
                     setattr(self, i, widget)
                     label = QLabel(i)
@@ -70,6 +80,48 @@ class InputPanel(QWidget):
                     layout.addWidget(widget, row, self.SecondColumn)
                     row += 1
                     continue
+
+                elif param_type == CommandInput:
+                    # widget = self.handle_command_input(p)
+                    if not self.inst_name:
+                        raise ValueError('CommandInput defined {} before any instrumentInput Error'
+                                         .format(p.cmd_name))
+
+                    if not self.inst_dict[self.inst_name].is_connected:
+                        raise ValueError('{} is not connected'.format(self.inst_name))
+
+                    p.set_inst_name(self.inst_name)
+                    if issubclass(p.cmd_instance.__class__, IntCommand):
+                        widget = QSpinBox()
+                        widget.setSuffix(p.cmd_instance.suffix)
+                        widget.setMaximum(p.cmd_instance.maximum)
+                        widget.setMinimum(p.cmd_instance.minimum)
+                        widget.setSingleStep(p.cmd_instance.single_step)
+
+                    elif issubclass(p.cmd_instance.__class__, FloatCommand):
+                        widget = QDoubleSpinBox()
+                        widget.setSuffix(p.cmd_instance.suffix)
+                        widget.setMaximum(p.cmd_instance.maximum)
+                        widget.setMinimum(p.cmd_instance.minimum)
+                        widget.setSingleStep(p.cmd_instance.single_step)
+
+                    elif issubclass(p.cmd_instance.__class__, DictCommand):
+                        widget = QComboBox()
+                    else:
+                        widget = QLineEdit()
+
+                    self.command_dict[p.cmd] = widget
+                    self.command_handler.process_command(p.cmd, '')
+
+                    widget.setAlignment(Qt.AlignRight)
+                    setattr(self, i, widget)
+
+                    label = QLabel(i.capitalize())
+                    layout.addWidget(label, row, self.FirstColumn)
+                    layout.addWidget(widget, row, self.SecondColumn)
+                    row += 1
+                    continue
+
                 elif param_type == FloatInput:
                     widget = QDoubleSpinBox()
                     setattr(self, i, widget)
@@ -151,6 +203,28 @@ class InputPanel(QWidget):
             elif type(widget) == QComboBox:
                 params[i].value = widget.currentIndex()
                 params[i].text = widget.currentText()
-            else:
+            elif type(widget) in (QSpinBox, QDoubleSpinBox):
                 params[i].value = widget.value()
+
+                if type(params[i]) == CommandInput:
+                    cmd = '{} = {}'.format(params[i].cmd, widget.value())
+                    self.command_handler.process_command(cmd, '')
+
         logger.debug("{} apply parameters from panel".format(self.__class__.__name__))
+
+    def handle_reply(self, cmd, reply):
+        try:
+            if cmd in self.command_dict:
+                if type(self.command_dict[cmd]) == QSpinBox:
+                    self.command_dict[cmd].setValue(int(reply))
+                elif type(self.command_dict[cmd]) == QDoubleSpinBox:
+                    self.command_dict[cmd].setValue(float(reply))
+                elif type(self.command_dict[cmd]) == QComboBox:
+                    index = self.command_dict[cmd].findText(reply)
+                    self.command_dict[cmd].setCurrentIndex(index)
+                elif type(self.command_dict[cmd]) == QLineEdit:
+                    self.command_dict[cmd].setValue(reply)
+                else:
+                    logger.error('Unhandled Command: {}'.format(cmd))
+        except Exception as e:
+            logger.error(e)

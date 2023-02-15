@@ -162,9 +162,14 @@ class IntCommand(Command):
     **set** and **query** an **integer** value
     """
 
-    def __init__(self, remote_command_name):
+    def __init__(self, remote_command_name, suffix='', min=0, max=65535, step=1):
         super().__init__(remote_command_name)
         self._get_convert_function = int
+
+        self.suffix = suffix
+        self.maximum = max
+        self.minimum = min
+        self.single_step = step
 
 
 class IntGetCommand(IntCommand):
@@ -195,9 +200,14 @@ class FloatCommand(Command):
     **set** and **query** a **float** value
     """
 
-    def __init__(self, remote_command_name):
+    def __init__(self, remote_command_name, suffix='', min=0, max=65535, step=1):
         super().__init__(remote_command_name)
         self._get_convert_function = float
+
+        self.suffix = suffix
+        self.maximum = max
+        self.minimum = min
+        self.single_step = step
 
 
 class FloatGetCommand(FloatCommand):

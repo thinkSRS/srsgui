@@ -151,6 +151,6 @@ class CommandTerminal(QFrame):
 
     def handle_command(self, cmd, reply):
         try:
-            self.tbCommand.append(f'{cmd}: {reply}')
+            self.tbCommand.append(f'{cmd}  :  {reply}')
         except Exception as e:
             self.tbCommand.append('Error from CommandTerminal: {}'.format(str(e)))
