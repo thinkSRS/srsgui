@@ -27,6 +27,7 @@ from .stdout import StdOut
 from .qtloghandler import QtLogHandler
 from .deviceinfohandler import DeviceInfoHandler
 from .dockhandler import DockHandler
+from .commandhandler import CommandHandler
 
 from srsgui.task.config import Config
 from srsgui.task.sessionhandler import SessionHandler
@@ -81,6 +82,12 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         self.figure = self.dock_handler.get_figure()
         self.figure_dict = self.dock_handler.get_figure_dict()
         self.plotDockWidget = self.dock_handler.get_dock()
+
+        # Make the terminal not blocking for log query
+        self.command_handler = CommandHandler(self)
+        self.terminal_widget.command_requested.connect(self.command_handler.process_command)
+        self.command_handler.command_processed.connect(self.terminal_widget.handle_command)
+        self.command_handler.start()
 
         self.geometry_dict = {}
         try:
@@ -535,6 +542,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         if self.okToContinue():
             # Save settings
             self.save_settings()
+
+            self.command_handler.stop()
+            self.command_handler.wait()
 
             # Close instruments
             inst_dict = self.inst_dict

@@ -11,9 +11,11 @@ from .exceptions import InstException, InstCommunicationError, \
 from .commands import Command, GetCommand, SetCommand, \
                       BoolCommand, BoolGetCommand, BoolSetCommand, \
                       IntCommand, IntGetCommand, IntSetCommand, \
-                      FloatCommand, FloatGetCommand, FloatSetCommand
+                      FloatCommand, FloatGetCommand, FloatSetCommand, \
+                      DictCommand, DictGetCommand
 
 from .indexcommands import IndexCommand, IndexGetCommand, \
                           BoolIndexCommand, BoolIndexGetCommand, \
                           IntIndexCommand, IntIndexGetCommand, \
-                          FloatIndexCommand, FloatIndexGetCommand
+                          FloatIndexCommand, FloatIndexGetCommand, \
+                          DictIndexCommand

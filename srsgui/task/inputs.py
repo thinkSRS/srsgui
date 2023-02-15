@@ -16,6 +16,7 @@ class BaseInput:
     def set_value(self, value):
         self.value = value
 
+
 class StringInput(BaseInput):
     pass
 

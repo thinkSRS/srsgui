@@ -1,9 +1,11 @@
 
+import logging
+from .qt.QtCore import Signal
+
 from .qt.QtGui import QKeySequence
 from .qt.QtWidgets import QFrame, QMessageBox, QShortcut, \
                           QVBoxLayout, QHBoxLayout, QTextBrowser, QPushButton, QLineEdit
-
-from srsgui.inst.instrument import Instrument
+logger = logging.getLogger(__name__)
 
 
 class CommandTerminal(QFrame):
@@ -54,6 +56,7 @@ class CommandTerminal(QFrame):
         as a raw remote command.
 
     """
+    command_requested = Signal(str, str)
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -121,19 +124,11 @@ class CommandTerminal(QFrame):
         except Exception as e:
             self.tbCommand.append('{}'.format(e))
 
-    def _check_connected(self, inst):
-        if not (isinstance(inst, Instrument) and inst.is_connected()):
-            msg_box = QMessageBox()
-            msg_box.setText('"{}" is NOT connected'.format(inst.get_name()))
-            msg_box.exec()
-            return False
-        return True
-
     def on_send(self):
         try:
             cmd = self.leCommand.text().strip()
             reply = ''
-            self.tbCommand.append(cmd)
+            # self.tbCommand.append(cmd)
             self.leCommand.clear()
 
             self.history_buffer.append(cmd)
@@ -149,40 +144,13 @@ class CommandTerminal(QFrame):
             if cmd_lower == 'help':
                 self.tbCommand.append(self.__doc__)
                 return
-
-            keys = list(self.parent.inst_dict.keys())
-            inst_name = cmd.split('.', 1)[0]
-            if inst_name in keys:
-                inst = self.parent.get_inst(inst_name)
-                if self._check_connected(inst):
-                    reply = self.eval(cmd)
-            elif inst_name in self.parent.figure_dict:
-                reply = self.eval(cmd)
-            else:
-                inst_name = cmd.split(':', 1)[0]
-                if inst_name in keys:
-                    inst = self.parent.get_inst(inst_name)
-                    if self._check_connected(inst):
-                        command = cmd.split(':', 1)[1]
-                        reply = inst.handle_command(command)
-                else:
-                    inst = self.parent.get_inst(keys[0])
-                    if self._check_connected(inst):
-                        reply = inst.handle_command(cmd)
-
-            if reply != '':
-                self.tbCommand.append(reply)
+            self.command_requested.emit(cmd, '')
 
         except Exception as e:
             self.tbCommand.append('Error: {}'.format(str(e)))
 
-    def eval(self, cmd):
-        if '=' in cmd:
-            # TODO: check if assigned to a command
-            exec(cmd, {}, self.parent.inst_dict)
-            return ''
-        else:
-            reply = eval(cmd, self.parent.figure_dict, self.parent.inst_dict)
-            if reply is not None:
-                return str(reply)
-            return ''
+    def handle_command(self, cmd, reply):
+        try:
+            self.tbCommand.append(f'{cmd}: {reply}')
+        except Exception as e:
+            self.tbCommand.append('Error from CommandTerminal: {}'.format(str(e)))
