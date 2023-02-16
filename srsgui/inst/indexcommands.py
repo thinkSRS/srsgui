@@ -184,9 +184,15 @@ class IntIndexCommand(IndexCommand):
     using **set** and **query** returning an **integer**
     """
 
-    def __init__(self, remote_command_name, index_max, index_min=0, index_dict=None):
+    def __init__(self, remote_command_name, index_max, index_min=0, index_dict=None,
+                 unit='', value_min=0, value_nax=65535, step=1):
         super().__init__(remote_command_name, index_max, index_min, index_dict)
         self._get_convert_function = int
+
+        self.unit = unit
+        self.maximum = value_nax
+        self.minimum = value_min
+        self.step = step
 
 
 class IntIndexGetCommand(IntIndexCommand):
@@ -206,9 +212,15 @@ class FloatIndexCommand(IndexCommand):
     using **set** and **query** returning an **float**
     """
 
-    def __init__(self, remote_command_name, index_max, index_min=0, index_dict=None):
+    def __init__(self, remote_command_name, index_max, index_min=0, index_dict=None,
+                 unit='', value_min=0, value_nax=65535, step=1 ):
         super().__init__(remote_command_name, index_max, index_min, index_dict)
         self._get_convert_function = float
+
+        self.unit = unit
+        self.maximum = value_nax
+        self.minimum = value_min
+        self.step = step
 
 
 class FloatIndexGetCommand(FloatIndexCommand):
@@ -228,7 +240,7 @@ class DictIndexCommand(IndexCommand):
     **set** and **query** using a conversion dictionary
     """
 
-    def __init__(self, remote_command_name, set_dict, index_max, index_min=0, index_dict=None, get_dict=None):
+    def __init__(self, remote_command_name, set_dict, index_max, index_min=0, index_dict=None, get_dict=None, unit=''):
         super().__init__(remote_command_name, index_max, index_min, index_dict)
         self.set_dict = set_dict
         if get_dict is None:
@@ -238,6 +250,8 @@ class DictIndexCommand(IndexCommand):
 
         self._set_convert_function = self.key_to_value
         self._get_convert_function = self.value_to_key
+
+        self.unit = unit
 
     def key_to_value(self, key):
         if self.key_type(key) in self.set_dict:

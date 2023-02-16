@@ -4,6 +4,7 @@ Interface for input variables between Task and InputPanel in GUI
 
 """
 
+
 class BaseInput:
     def __init__(self, default_value):
         self.default_value = default_value
@@ -167,3 +168,10 @@ class CommandInput(IntegerInput):
         self.inst_name = inst_name
         self.cmd = f'{self.inst_name}.{self.cmd_name}'
 
+    def get_value(self):
+        v = None
+        if hasattr(self.cmd_instance, 'get_dict'):
+            v = self.cmd_instance.key_type(self.text)
+        else:
+            v = self.value
+        return v

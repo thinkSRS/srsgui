@@ -73,7 +73,7 @@
        <widget class="QWidget" name="layoutWidget">
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
-          <widget class="QLabel" name="label_3">
+          <widget class="QLabel" name="label_task_params">
            <property name="text">
             <string>Task Parameters</string>
            </property>

@@ -51,7 +51,7 @@ class Command(object):
     _get_command_format = '{}?'
     _set_command_format = '{} {}'
 
-    def __init__(self, remote_command_name):
+    def __init__(self, remote_command_name, default_value=None):
         """
         Initialize a command with a remote command name
 
@@ -60,7 +60,12 @@ class Command(object):
         self.remote_command = remote_command_name
         self._get_convert_function = None
         self._set_convert_function = None
+
         self._value = ''
+        self.default_value = default_value
+        if default_value:
+            self._value = default_value
+        self.fmt = '{}'  # format for string conversion
 
     def __get__(self, instance, instance_type):
         if instance is None:
@@ -128,8 +133,8 @@ class BoolCommand(Command):
     **set** and **query** a **bool** value
     """
 
-    def __init__(self, remote_command_name):
-        super().__init__(remote_command_name)
+    def __init__(self, remote_command_name, default_value=None):
+        super().__init__(remote_command_name, default_value)
         self._get_convert_function = lambda a: int(a) != 0
         self._set_convert_function = lambda a: '1' if a else '0'
 
@@ -162,14 +167,14 @@ class IntCommand(Command):
     **set** and **query** an **integer** value
     """
 
-    def __init__(self, remote_command_name, suffix='', min=0, max=65535, step=1):
-        super().__init__(remote_command_name)
+    def __init__(self, remote_command_name, unit='', min=0, max=65535, step=1, default_value=None):
+        super().__init__(remote_command_name, default_value)
         self._get_convert_function = int
 
-        self.suffix = suffix
+        self.unit = unit
         self.maximum = max
         self.minimum = min
-        self.single_step = step
+        self.step = step
 
 
 class IntGetCommand(IntCommand):
@@ -200,15 +205,16 @@ class FloatCommand(Command):
     **set** and **query** a **float** value
     """
 
-    def __init__(self, remote_command_name, suffix='', min=0, max=65535, step=1):
-        super().__init__(remote_command_name)
+    def __init__(self, remote_command_name, unit='', min=-1000.0, max=1000.0, step=1.0, fmt='{}', default_value=None):
+        super().__init__(remote_command_name, default_value)
         self._get_convert_function = float
 
-        self.suffix = suffix
+        self.unit = unit
         self.maximum = max
         self.minimum = min
-        self.single_step = step
-
+        self.step = step
+        self.fmt = fmt
+        self.default_value = default_value
 
 class FloatGetCommand(FloatCommand):
     """
@@ -238,8 +244,8 @@ class DictCommand(Command):
     **set** and **query** using a conversion dictionary
     """
 
-    def __init__(self, remote_command_name, set_dict, get_dict=None):
-        super().__init__(remote_command_name)
+    def __init__(self, remote_command_name, set_dict, get_dict=None, unit='', fmt='{}', default_value=None):
+        super().__init__(remote_command_name, default_value)
         self.set_dict = set_dict
         if get_dict is None:
             self.get_dict = set_dict
@@ -250,6 +256,9 @@ class DictCommand(Command):
 
         self._set_convert_function = self.key_to_value
         self._get_convert_function = self.value_to_key
+
+        self.unit = unit
+        self.fmt = fmt
 
     def key_to_value(self, key):
         if self.key_type(key) in self.set_dict:
