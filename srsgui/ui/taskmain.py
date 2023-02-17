@@ -433,7 +433,8 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.taskParameter.deleteLater()
             self.taskParameter = InputPanel(self.task_method, self)
             self.taskParameterFrame.layout().addWidget(self.taskParameter)
-            self.label_task_params.setText('Task Parameters for \n{}'.format(current_action_name))
+            self.label_task_params.setText('Parameters in  {}'.format(current_action_name))
+            self.label_task_params.setWordWrap(True)
 
             self.dock_handler.update_figures(self.task_method.additional_figure_names)
             self.figure_dict = self.dock_handler.get_figure_dict()

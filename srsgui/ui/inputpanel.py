@@ -1,7 +1,7 @@
 
 from .qt.QtCore import Qt
 from .qt.QtWidgets import QWidget, QDoubleSpinBox, QSpinBox, QComboBox, \
-                          QLineEdit, QLabel, QGridLayout, QPushButton
+                          QLineEdit, QLabel, QGridLayout, QPushButton, QScrollArea
 
 from srsgui.inst import Command, IntCommand, FloatCommand, DictCommand, \
                                  IntIndexCommand, FloatIndexCommand, DictIndexCommand
@@ -14,7 +14,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class InputPanel(QWidget):
+class InputPanel(QScrollArea):
     """
     To build the input panel in an instance of :class:`srsgui.ui.taskmain.TaskMain` class
     based on input_parameters of a subclass of :class:`srsgui.task.task.Task` class
@@ -164,7 +164,11 @@ class InputPanel(QWidget):
             layout.addWidget(self.pb_default, row, 0)
             self.pb_apply = QPushButton("Apply")
             layout.addWidget(self.pb_apply, row, 1)
-            self.setLayout(layout)
+
+            wid = QWidget()
+            wid.setLayout(layout)
+            self.setWidget(wid)
+            self.setWidgetResizable(True)
 
             self.pb_default.clicked.connect(self.on_default)
             self.pb_apply.clicked.connect(self.on_apply)
