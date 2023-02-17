@@ -3,7 +3,9 @@ from .qt.QtCore import Qt
 from .qt.QtWidgets import QWidget, QDoubleSpinBox, QSpinBox, QComboBox, \
                           QLineEdit, QLabel, QGridLayout, QPushButton
 
-from srsgui.inst import Command, IntCommand, FloatCommand, DictCommand
+from srsgui.inst import Command, IntCommand, FloatCommand, DictCommand, \
+                                 IntIndexCommand, FloatIndexCommand, DictIndexCommand
+
 from srsgui.task.task import Task
 from srsgui.task.inputs import IntegerInput, FloatInput, StringInput, \
                                ListInput, InstrumentInput, CommandInput
@@ -89,14 +91,17 @@ class InputPanel(QWidget):
                         raise ValueError('{} is not connected'.format(self.inst_name))
 
                     p.set_inst_name(self.inst_name)
-                    if issubclass(p.cmd_instance.__class__, IntCommand):
+                    if issubclass(p.cmd_instance.__class__, IntCommand) or \
+                       issubclass(p.cmd_instance.__class__, IntIndexCommand):
                         widget = QSpinBox()
                         widget.setSuffix(p.cmd_instance.unit)
                         widget.setMaximum(p.cmd_instance.maximum)
                         widget.setMinimum(p.cmd_instance.minimum)
                         widget.setSingleStep(p.cmd_instance.step)
                         widget.setAlignment(Qt.AlignRight)
-                    elif issubclass(p.cmd_instance.__class__, FloatCommand):
+
+                    elif issubclass(p.cmd_instance.__class__, FloatCommand) or \
+                         issubclass(p.cmd_instance.__class__, FloatIndexCommand):
                         widget = QDoubleSpinBox()
                         widget.setSuffix(p.cmd_instance.unit)
                         widget.setMaximum(p.cmd_instance.maximum)
@@ -104,7 +109,8 @@ class InputPanel(QWidget):
                         widget.setSingleStep(p.cmd_instance.step)
                         widget.setAlignment(Qt.AlignRight)
 
-                    elif issubclass(p.cmd_instance.__class__, DictCommand):
+                    elif issubclass(p.cmd_instance.__class__, DictCommand) or \
+                         issubclass(p.cmd_instance.__class__, DictIndexCommand):
                         widget = QComboBox()
                         item_list = map(str, p.cmd_instance.set_dict.keys())
                         widget.addItems(item_list)

@@ -14,7 +14,7 @@ from .qt.QtCore import QTimer, QSettings
 from .qt.QtWidgets import QMainWindow, QApplication, QTextBrowser,\
                                 QVBoxLayout, QMessageBox, \
                                 QInputDialog, QFileDialog, \
-                                QAction
+                                QMenu, QAction
 
 from .ui_taskmain import Ui_TaskMain
 
@@ -62,6 +62,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
         # The dict holds subclass of Task
         self.task_dict = {}
+        self.task_menus = []
         self.current_task_action = None
         self.task = None
         self.task_method = None
@@ -140,6 +141,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         self.statusbar.showMessage('Waiting for task selection')
         self.stdout = StdOut(self.print_redirect)
 
+        self.menu_Tasks.triggered.connect(self.onTaskSelect)
+        self.menu_Instruments.triggered.connect(self.onInstrumentSelect)
+
     def load_tasks(self):
         try:
             # Clear console and result display
@@ -197,11 +201,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             logger.error('{}: {}'.format(e.__class__.__name__, e))
 
         try:
-            try:
-                # Disconnect with none connected causes an exception
-                self.menu_Instruments.triggered.disconnect()
-            except:
-                pass
             actions = self.menu_Instruments.actions()
             for action in actions:
                 self.menu_Instruments.removeAction(action)
@@ -214,22 +213,61 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                 # action_inst.setCheckable(True)
                 # if hasattr(self.inst_dict[item], 'is_connected') and self.inst_dict[item].is_connected():
                 #    action_inst.setChecked(True)
-            self.menu_Instruments.triggered.connect(self.onInstrumentSelect)
 
+
+            """
             try:
                 self.menu_Tasks.triggered.disconnect()
             except:
                 pass
-
-            actions = self.menu_Tasks.actions()
-            for action in actions:
-                self.menu_Tasks.removeAction(action)
 
             for item in self.task_dict:
                 action_task = QAction(self)
                 action_task.setText(item)
                 self.menu_Tasks.addAction(action_task)
             self.menu_Tasks.triggered.connect(self.onTaskSelect)
+            """
+            # Remove previous actions from Task menu
+            actions = self.menu_Tasks.actions()
+            for action in actions:
+                self.menu_Tasks.removeAction(action)
+
+            # Add new actions to Task menu
+            for name in self.task_dict:
+                m = self.menu_Tasks
+
+                # set up submenu structure
+                p = self.config.task_path_dict[name]
+                if p:
+                    tokens = p.split('/')
+                    exists = False
+                    for token in tokens:
+                        if type(m) != QMenu:
+                            ma = QMenu.menuInAction(m)
+                            if ma:
+                                m = ma
+                            else:
+                                continue
+                        for action in m.actions():
+                            if token == action.text():
+                                na = action
+                                exists = True
+                                break
+                        if not exists:
+                            na = m.addMenu(token)
+                        m = na
+                        exists = False
+
+                    if type(m) != QMenu:
+                        ma = QMenu.menuInAction(m)
+                        if ma:
+                            m = ma
+                        else:
+                            continue
+                action_task = QAction(self)
+                action_task.setText(name)
+                m.addAction(action_task)
+
         except Exception as e:
             print(e)
 

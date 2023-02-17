@@ -216,6 +216,7 @@ class FloatCommand(Command):
         self.fmt = fmt
         self.default_value = default_value
 
+
 class FloatGetCommand(FloatCommand):
     """
     Descriptor for  a remote command only to **query** a **float** value.

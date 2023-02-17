@@ -26,7 +26,7 @@ class CommandHandler(QThread):
                 cmd = self.cmd_queue.pop()
                 self.handle_command(cmd, '')
             else:
-                self.msleep(10)
+                self.msleep(20)
 
     def stop(self):
         self.keep_running = False

@@ -20,6 +20,7 @@ class Config(object):
     def __init__(self):
         self.inst_dict = {}
         self.task_dict = {}
+        self.task_path_dict = {}
         self.task_dict_name = 'No tasks loaded'
         self.local_db_name = None
         self.base_data_dir = self.DataRootDirectory
@@ -85,8 +86,15 @@ class Config(object):
             raise e.__class__
 
     def load_task_from_line(self, v):
-        task_key, task_module_name, task_class_name = v.split(',', 2)
-        task_key = task_key.strip()
+        task_name, task_module_name, task_class_name = v.split(',', 2)
+        task_tokens = task_name.strip().split('/')
+        if len(task_tokens) == 1:
+            task_key = task_tokens[-1]
+            task_path = ''
+        else:
+            task_key = task_tokens[-1]
+            task_path = '/'.join(task_tokens[:-1])
+
         task_module = task_module_name.strip()
 
         if task_module in sys.modules:
@@ -106,7 +114,11 @@ class Config(object):
         if not issubclass(task_class, Task):
             logger.error('{} is NOT a Task subclass'.format(task_class_name))
             return
+        if task_key in self.task_dict:
+            logger.error('"{}" already used in task_dict')
+            return
         self.task_dict[task_key] = task_class
+        self.task_path_dict[task_key] = task_path
 
     def load_inst_from_line(self, v):
         items = v.split(',')
