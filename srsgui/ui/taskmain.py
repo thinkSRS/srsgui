@@ -88,7 +88,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         self.command_handler = CommandHandler(self)
         self.terminal_widget.command_requested.connect(self.command_handler.process_command)
         self.command_handler.command_processed.connect(self.terminal_widget.handle_command)
-        self.command_handler.start()
 
         self.geometry_dict = {}
         try:
@@ -584,7 +583,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.save_settings()
 
             self.command_handler.stop()
-            self.command_handler.wait()
+
 
             # Close instruments
             inst_dict = self.inst_dict

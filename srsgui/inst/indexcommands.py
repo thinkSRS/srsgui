@@ -213,7 +213,7 @@ class FloatIndexCommand(IndexCommand):
     """
 
     def __init__(self, remote_command_name, index_max, index_min=0, index_dict=None,
-                 unit='', value_min=0, value_nax=65535, step=1 ):
+                 unit='', value_min=-1e6, value_nax=1e6, step=1):
         super().__init__(remote_command_name, index_max, index_min, index_dict)
         self._get_convert_function = float
 

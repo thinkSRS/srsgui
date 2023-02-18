@@ -1,7 +1,7 @@
 
 import time
 import logging
-from .qt.QtCore import QThread, Signal
+from .qt.QtCore import QObject, QThread, Signal, Slot
 from .qt.QtWidgets import QMessageBox
 
 from srsgui.inst.instrument import Instrument
@@ -9,27 +9,10 @@ from srsgui.inst.instrument import Instrument
 logger = logging.getLogger(__name__)
 
 
-class CommandHandler(QThread):
+class CommandWorker(QObject):
     command_processed = Signal(str, str)
-
-    def __init__(self, parent):
-        super().__init__()
-        self.parent = parent
-        self.inst_dict = self.parent.inst_dict
-        self.terminal = self.parent.terminal_widget
-        self.keep_running = True
-        self.cmd_queue = []
-
-    def run(self):
-        while self.keep_running:
-            if self.cmd_queue:
-                cmd = self.cmd_queue.pop()
-                self.handle_command(cmd, '')
-            else:
-                self.msleep(20)
-
-    def stop(self):
-        self.keep_running = False
+    inst_dict = {}
+    figure_dict = {}
 
     def _check_connected(self, inst):
         if isinstance(inst, Instrument) and inst.is_connected():
@@ -37,32 +20,30 @@ class CommandHandler(QThread):
         # raise ValueError('"{}" is NOT connected'.format(inst.get_name()))
         return False
 
-    def process_command(self, cmd, reply):
-        self.cmd_queue.append(cmd)
-
     def handle_command(self, cmd, reply):
         try:
             reply = 'Not connected'
-            keys = list(self.parent.inst_dict.keys())
+            keys = list(self.inst_dict.keys())
+
             inst_name = cmd.split('.', 1)[0]
             if inst_name in keys:
-                inst = self.parent.get_inst(inst_name)
+                inst = self.inst_dict[inst_name]
                 if self._check_connected(inst):
                     reply = self.eval(cmd)
-            elif inst_name in self.parent.figure_dict:
+            elif inst_name in self.figure_dict:
                 reply = self.eval(cmd)
             else:
                 inst_name = cmd.split(':', 1)[0]
                 if inst_name in keys:
-                    inst = self.parent.get_inst(inst_name)
+                    inst = self.inst_dict[inst_name]
                     if self._check_connected(inst):
                         command = cmd.split(':', 1)[1]
                         reply = inst.handle_command(command)
                 else:
-                    inst = self.parent.get_inst(keys[0])
-                    if self._check_connected(inst):
-                        reply = inst.handle_command(cmd)
-
+                    if keys:
+                        inst = self.inst_dict[keys[0]]
+                        if self._check_connected(inst):
+                            reply = inst.handle_command(cmd)
             self.command_processed.emit(cmd, reply)
         except Exception as e:
             logger.error('Error from CommandHandler: {}'.format(str(e)))
@@ -70,10 +51,56 @@ class CommandHandler(QThread):
     def eval(self, cmd):
         if '=' in cmd:
             # TODO: check if assigned to a command
-            exec(cmd, {}, self.parent.inst_dict)
+            exec(cmd, {}, self.inst_dict)
             return ''
         else:
-            reply = eval(cmd, self.parent.figure_dict, self.parent.inst_dict)
+            """
+            # rewrite the eval function
+            try:
+                tokens = cmd.split('.')
+                if tokens[0] in self.inst_dict:
+                    attr = self.inst_dict[tokens[0]]
+                    for token in tokens[1:]:
+                        attr = getattr(attr, token)
+                    return str(attr)
+                elif tokens[0] in self.figure_dict:
+                    attr = self.figure_dict[tokens[0]]
+                    for token in tokens[1:]:
+                        attr = getattr(attr, token)
+                    return str(attr)
+                else:
+                    KeyError('Unknown attribute: {}'.format(tokens[0]))
+            except Exception as e:
+                logger.error(e)
+                return ''
+            """
+            reply = eval(cmd, self.figure_dict, self.inst_dict)
             if reply is not None:
                 return str(reply)
             return ''
+
+
+class CommandHandler(QObject):
+    request_command = Signal(str, str)
+    command_processed = Signal(str, str)
+
+    def __init__(self, parent):
+        super().__init__()
+        self.parent = parent
+        self.worker_thread = QThread()
+
+        self.worker = CommandWorker()
+        self.worker.moveToThread(self.worker_thread)
+        self.request_command.connect(self.worker.handle_command)
+        self.worker.command_processed.connect(self.command_processed)
+        self.worker_thread.start()
+
+    def process_command(self, cmd, reply):
+        self.worker.inst_dict = self.parent.inst_dict
+        self.worker.figure_dict = self.parent.figure_dict
+        self.request_command.emit(cmd, reply)
+
+    def stop(self):
+        self.worker_thread.quit()
+        self.worker_thread.wait()
+
