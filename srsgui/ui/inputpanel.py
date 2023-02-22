@@ -160,18 +160,19 @@ class InputPanel(QScrollArea):
                 layout.addWidget(widget, row, self.SecondColumn)
                 row += 1
 
-            self.pb_default = QPushButton("Default")
-            layout.addWidget(self.pb_default, row, 0)
-            self.pb_apply = QPushButton("Apply")
-            layout.addWidget(self.pb_apply, row, 1)
+            if row > 0:
+                self.pb_default = QPushButton("Default")
+                layout.addWidget(self.pb_default, row, 0)
+                self.pb_apply = QPushButton("Apply")
+                layout.addWidget(self.pb_apply, row, 1)
+                self.pb_default.clicked.connect(self.on_default)
+                self.pb_apply.clicked.connect(self.on_apply)
 
             wid = QWidget()
             wid.setLayout(layout)
             self.setWidget(wid)
             self.setWidgetResizable(True)
 
-            self.pb_default.clicked.connect(self.on_default)
-            self.pb_apply.clicked.connect(self.on_apply)
         except Exception as e:
             logger.error(e)
         logger.debug("{} init done".format(self.__class__.__name__))

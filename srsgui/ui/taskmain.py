@@ -241,8 +241,8 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                     tokens = p.split('/')
                     exists = False
                     for token in tokens:
-                        if type(m) != QMenu:
-                            ma = QMenu.menuInAction(m)
+                        if type(m) == QAction:
+                            ma = m.menu()
                             if ma:
                                 m = ma
                             else:
@@ -257,8 +257,8 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                         m = na
                         exists = False
 
-                    if type(m) != QMenu:
-                        ma = QMenu.menuInAction(m)
+                    if type(m) == QAction:
+                        ma = m.menu()
                         if ma:
                             m = ma
                         else:
