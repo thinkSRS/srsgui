@@ -87,7 +87,8 @@ class Config(object):
 
     def load_task_from_line(self, v):
         task_name, task_module_name, task_class_name = v.split(',', 2)
-        task_tokens = task_name.strip().split('/')
+        tokens = task_name.strip().split('/')
+        task_tokens = [token.strip() for token in tokens]
         if len(task_tokens) == 1:
             task_key = task_tokens[-1]
             task_path = ''

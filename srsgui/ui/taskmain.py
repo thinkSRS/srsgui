@@ -209,23 +209,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                 action_inst.setText(item)
                 self.menu_Instruments.addAction(action_inst)
 
-                # action_inst.setCheckable(True)
-                # if hasattr(self.inst_dict[item], 'is_connected') and self.inst_dict[item].is_connected():
-                #    action_inst.setChecked(True)
-
-
-            """
-            try:
-                self.menu_Tasks.triggered.disconnect()
-            except:
-                pass
-
-            for item in self.task_dict:
-                action_task = QAction(self)
-                action_task.setText(item)
-                self.menu_Tasks.addAction(action_task)
-            self.menu_Tasks.triggered.connect(self.onTaskSelect)
-            """
             # Remove previous actions from Task menu
             actions = self.menu_Tasks.actions()
             for action in actions:
@@ -253,10 +236,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                                 exists = True
                                 break
                         if not exists:
-                            na = m.addMenu(token)
+                            na = m.addMenu(QMenu(token))
                         m = na
                         exists = False
-
                     if type(m) == QAction:
                         ma = m.menu()
                         if ma:
@@ -266,7 +248,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                 action_task = QAction(self)
                 action_task.setText(name)
                 m.addAction(action_task)
-
         except Exception as e:
             print(e)
 
