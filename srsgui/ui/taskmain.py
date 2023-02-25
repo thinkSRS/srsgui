@@ -259,7 +259,10 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             name = inst_action.text()
             self.inst_info_handler.select_browser(name)
             if self.inst_dict[name].is_connected():
-                self.inst_info_handler.update_info(name)
+                try:
+                    self.inst_info_handler.update_info(name)
+                except:
+                    pass
                 self.onDisconnect(name)
             else:
                 self.onConnect(name)

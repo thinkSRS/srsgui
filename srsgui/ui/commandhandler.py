@@ -55,7 +55,7 @@ class CommandWorker(QObject):
             return ''
         else:
             """
-            # rewrite the eval function
+            # alternative eval function: does not work with IndexCommand yet
             try:
                 tokens = cmd.split('.')
                 if tokens[0] in self.inst_dict:
