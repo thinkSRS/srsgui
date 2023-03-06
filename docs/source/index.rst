@@ -33,11 +33,8 @@
      :ref:`after <top-of-screen-capture-1>`)
    - dedicated output data file generated for each run of a task
 
-Let's take a look at the :ref:`example project <top-of-example-project>` included
-in the ``srsgui``.
-When the fourth example task is running (or the fifth one to run a simulated
-task without real instruments), you can rearrange dock windows
-like the screen capture below.
+Here is a screen shot of ``srsgui`` running with the :ref:`example project <top-of-example-project>`
+included in the ``srsgui`` package.
 
 .. _top-of-screen-capture-1:
 
@@ -47,7 +44,7 @@ like the screen capture below.
 
 From the :ref:`Example project <top-of-example-project>` directory, you can see how many lines of code
 you need write to get ``srsgui`` working for control and data acquisition
-from a couple of arbitrary instruments and data visualization.
+from a couple of arbitrary instruments and data visualization for a small task.
 
    - 5 lines of code for CG635 to control its
      output frequency (if not count comment lines);
@@ -59,9 +56,12 @@ from a couple of arbitrary instruments and data visualization.
      and plot them every 0.2 second;
    - 8 line in the configuration file to put all together.
 
-With writing total of less than 200 lines of code and the results looking
-like above, it is not so bad. Well, it is mostly thanks to conciseness of Python code
-and its rich libraries, though.
+If you want to implement a well-defined single operation, it will be as simple as this.
+Well, it is mostly thanks to conciseness of Python code and its rich libraries, though.
+
+When you implement many tasks handling multiple operations along with larger sets of
+remote commands for multiple instruments, ``srsgui`` also provides more ways to
+organize your code.
 
 Here are more information on how to use ``srsgui``.
 
@@ -70,7 +70,9 @@ Here are more information on how to use ``srsgui``.
    :maxdepth: 2
 
    installation.rst
-   introduction.rst
+   create-project.rst
+   define-instrument.rst
+   create-task.rst
    example.rst
    srsgui.rst
 

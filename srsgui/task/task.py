@@ -399,6 +399,14 @@ class Task(thread_class):
             raise AttributeError("No session handler available")
         self.session_handler.add_to_table_in_file(*args, format_list=format_list)
 
+    def add_dict_to_file(self, name, data_dict):
+        """
+        Add a dictionary to the file.
+        """
+        if self.session_handler is None:
+            raise AttributeError("No session handler available")
+        self.session_handler.add_dict_to_file(name, data_dict)
+
     def save_result(self, msg):
         self.logger.error('Do not use save_result. Use add_to_table_in_file, or result.add_details, instead.')
         # raise NotImplementedError()
@@ -410,6 +418,7 @@ class Task(thread_class):
 
     # Following methods will be used with stdout redirection
     def update_status(self, message):
+        """ Output to the status bar at the bottom of srsgui application"""
         self.write_text(self.EscapeForStatus + message)
 
     def display_device_info(self, message='', device_name=None, update=False,  clear=False):
@@ -489,7 +498,7 @@ class Task(thread_class):
     def update_figure(self, figure: Figure):
         if type(figure) is not Figure:
             raise TypeError('{} is not  a Figure'.format(type(figure)))
-        self.request_figure_update(figure)
+        self.callbacks.figure_update_requested(figure)
 
     # It needs a matching update() as a slot to run from UI
     def notify_data_available(self, data={}):
@@ -563,6 +572,8 @@ class Task(thread_class):
         raise Task.TaskRunFailed("Timeout at '{}'".format(self.current_question))
 
     def question_background_update(self):
+        """Repeat this method, while a dialog box is open with ask_question method.
+        A Task subclass can re-implement this method as it needs"""
         time.sleep(0.1)
 
     def set_log_error_detail(self, state=False):

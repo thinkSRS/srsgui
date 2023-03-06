@@ -7,8 +7,6 @@ import logging.handlers
 
 from pathlib import Path
 
-from matplotlib.figure import Figure
-
 from .qt import QT_BINDER, PYSIDE6, QT_BINDER_VERSION
 from .qt.QtCore import QTimer, QSettings
 from .qt.QtWidgets import QMainWindow, QApplication, QTextBrowser,\
@@ -80,8 +78,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         self.dock_handler = DockHandler(self)
         self.console = self.dock_handler.console
         self.terminal_widget = self.dock_handler.terminal_widget
-        self.figure = self.dock_handler.get_figure()
-        self.figure_dict = self.dock_handler.get_figure_dict()
         self.plotDockWidget = self.dock_handler.get_dock()
 
         # Make the terminal not blocking for log query
@@ -374,10 +370,8 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         else:
             return None
 
-    def update_figure(self, figure: Figure):
-        if type(figure) is not Figure:
-            raise TypeError('{} is not  a Figure'.format(type(figure)))
-        figure.canvas.draw_idle()
+    def update_figure(self, figure):
+        self.dock_handler.update_figure(figure)
 
     def onTaskSelect(self, action):
         try:
@@ -419,8 +413,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.label_task_params.setText('Parameters in  {}'.format(current_action_name))
             self.label_task_params.setWordWrap(True)
 
-            self.dock_handler.update_figures(self.task_method.additional_figure_names)
-            self.figure_dict = self.dock_handler.get_figure_dict()
+            self.dock_handler.reset_figures(self.task_method.additional_figure_names)
 
             self.dock_handler.show_toolbar(False)
             self.handle_initial_image(self.task_method)

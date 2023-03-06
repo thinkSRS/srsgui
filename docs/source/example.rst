@@ -357,19 +357,18 @@ the method get_waveform() in the fourth example is reimplemented to generate
 simulated waveform that runs without any real oscilloscope.
 
 Note that the square wave edge calculation is crude, and causing modulation in pulse width
-that shows side bands in FFT spectrum, if the set frequency is not comensurated with
+that shows side bands in FFT spectrum, if the set frequency is not commensurated with
 the sampling rate. To generate clean square wave, the rising and falling edges should
-have at least two points to represent exact phase. direct transition from low to high
+have at least two points to represent exact phase. Direct transition from low to high
 without any intermediate points suffers from subtle modulation in time domain,
-but side bands from modulation appear in FFT. I just keep it as is, becase the
-pattern looks pretty.
+which manifests as side bands in FFT. This is a common problem in digital signal
+processing. It is not a problem in the real world, because the signal is analog,
+and the sampling rate is limited by the bandwidth of the signal.
+
 
 .. literalinclude:: ../../srsgui/examples/oscilloscope example/tasks/fourth.py
     :language: Python
     :linenos:
-
-That's all Folks!
-
 
 
 

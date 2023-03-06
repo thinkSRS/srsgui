@@ -19,7 +19,7 @@ class Component(object):
 
     Component has a convenience attribute, ``dir`` that returns available subcomponents,
     commands and methods available from the component. ``dir`` combines the return values from
-    ``get_component_dict(), ``get_command_dict()`` and ``get_method_list()`.
+    ``get_component_dict()``, ``get_command_dict()`` and ``get_method_list()``.
 
     Component has a convenience method, ``get_component_dict()`` to get child
     components of an instance. This method helps a user to navigate through

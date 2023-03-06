@@ -1,4 +1,4 @@
-
+import time
 import logging
 
 from .qt.QtCore import Qt
@@ -41,6 +41,7 @@ class DockHandler(object):
             raise AttributeError('Parent does not have all Attributes required')
         self.parent = parent
         self.dock_dict = {}
+
         self.removed_figure_docks = []
         self.fig_dock_area = Qt.RightDockWidgetArea
         try:
@@ -50,8 +51,6 @@ class DockHandler(object):
         actions = parent.menu_Docks.actions()
         for action in actions:
             parent.menu_Docks.removeAction(action)
-
-        self.dock_dict = {}
 
         self.init_figure_dock(self.DefaultFigureName)
         self.init_terminal()
@@ -70,6 +69,9 @@ class DockHandler(object):
             action_dock.setText(key)
             parent.menu_Docks.addAction(action_dock)
         self.init_plot_menu()
+
+        self._figure_update_period = 0.1
+        self.figure_update_time_dict = {}  # last update time of figures
 
     def init_plot_menu(self):
         try:
@@ -190,6 +192,23 @@ class DockHandler(object):
             raise KeyError('No figure named {}'.format(name))
         return self.dock_dict[name].figure
 
+    def set_figure_update_period(self, period):
+        self._figure_update_period = period
+
+    def get_figure_update_period(self):
+        return self._figure_update_period
+
+    def update_figure(self, figure: Figure):
+        if type(figure) is not Figure:
+            raise TypeError('{} is not  a Figure'.format(type(figure)))
+
+        current_time = time.time()
+        if figure in self.figure_update_time_dict:
+            if current_time - self.figure_update_time_dict[figure] < self._figure_update_period:
+                return
+        figure.canvas.draw_idle()
+        self.figure_update_time_dict[figure] = current_time
+
     def get_dock(self, name=None) -> QDockWidget:
         if name is None:
             return self.default_dock
@@ -207,8 +226,9 @@ class DockHandler(object):
         except Exception as e:
             logger.error(e)
 
-    def update_figures(self, name_list):
+    def reset_figures(self, name_list):
         try:
+            self.figure_update_time_dict = {}
             while len(self.dock_dict) > 3:
                 name, fig = self.dock_dict.popitem()
                 fig.setVisible(False)

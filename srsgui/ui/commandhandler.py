@@ -97,7 +97,7 @@ class CommandHandler(QObject):
 
     def process_command(self, cmd, reply):
         self.worker.inst_dict = self.parent.inst_dict
-        self.worker.figure_dict = self.parent.figure_dict
+        self.worker.figure_dict = self.parent.dock_handler.get_figure_dict()
         self.request_command.emit(cmd, reply)
 
     def stop(self):

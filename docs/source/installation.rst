@@ -4,24 +4,24 @@ Installation
 Preparation
 ------------
 
-To install ``srsgui``,  make sure you have Python version 3.7 or later
-is available from the command line. you can check your Python version
-by running:
+To install ``srsgui``,  make sure you have Python version 3.7 or later.
+you can check your Python version by running from the command line:
 
 .. code-block::
 
     python --version
 
 .. note::
-    Commands running from the command prompt shown here are assumed using a Windows computer system.
-    If you use other systems, commands may be different. Refer to
-    `this page. <install-packages_>`_
+
+    Commands running from the command prompt shown here are assumed using
+    a Windows computer system. If you use other systems, commands may be
+    different. Refer to `this page. <install-packages_>`_
 
 If you have a Python older than the required version,
 `install a newer Python. <install-python_>`_
 
-Using `virtual environment <virtual-environment_>`_ avoids possible dependency conflict among Python packages.
-If you want to use a virtual environment, create one with
+Using `virtual environment <virtual-environment_>`_ avoids possible dependency
+conflict among Python packages. If you want to use a virtual environment, create one with
 your favorite virtual environment package. If you do not have a preference,
 use Python default ``venv``.
 
@@ -44,7 +44,7 @@ To run ``srsgui`` as a GUI application, install it with [full] option using pip_
     python -m pip install srsgui[full]
 
 It will install ``srsgui`` package along with
-the 3 main packages (pyserial_, matplotlib_, pyside6_) and their dependencies.
+the 3 main packages (pyserial_, matplotlib_ and pyside6_) and their dependencies.
 
 If
 
@@ -52,7 +52,7 @@ If
     - your system install matplotlib_ or pyside6_ from sources other than pip
       (Some linux systems do so),
     - you want to use pyqt5_ or pyside2_ instead of pyside6_ as GUI backend,
-    - you have trouble with full installation and you want to install dependency manually,
+    - you have trouble with the full installation and you want to install dependency manually,
 
 you can install without the extra [full] option:
 
@@ -63,13 +63,18 @@ you can install without the extra [full] option:
 It will install ``srsgui`` with pyserial_ only.
 
 .. note::
-    ``srsgui`` runs with either pyside6_, pyside2_, or pyqt5_ installed as GUI backend.
-    If your system already have pyside2_, pyqt5_ installed, you do not have to install pyside6_
+    ``srsgui`` runs with either pyside6_, pyside2_ or pyqt5_ installed as GUI backend.
+    If your system already have pyside2_ or pyqt5_ installed, you do not have to install pyside6_.
 
         python -m pip show pyside2
+
         python -m pip show pyqt5
 
-    will show if pyside2_, or pyqt5_ is installed.
+    will show if pyside2_ or pyqt5_ is installed.
+
+.. note::
+    In order to maintain the MIT_ license for your projects or modified ``srsgui``, you have to use
+    pyside6_ or pyside2_. Note that GPLv3_ is the license requirement of pyqt5_.
 
 Running srsgui application
 ----------------------------
@@ -114,3 +119,5 @@ If you see the application is open and running, the installation is successful!
 .. _pyside2: https://pypi.org/project/PySide2/
 .. _pyqt5: https://pypi.org/project/PyQt5/
 .. _numpy: https://numpy.org/install/
+.. _Mit: https://choosealicense.com/licenses/mit/
+.. _GPLv3: https://choosealicense.com/licenses/gpl-3.0/
