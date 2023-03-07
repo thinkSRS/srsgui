@@ -30,7 +30,8 @@ from .commandhandler import CommandHandler
 from srsgui.task.config import Config
 from srsgui.task.sessionhandler import SessionHandler
 from srsgui.task import Task, Bold
-from srsgui.inst.instrument import Instrument
+
+from srsgui import __version__
 
 logger = logging.getLogger(__name__)
 
@@ -136,6 +137,11 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         self.statusbar.showMessage('Waiting for task selection')
         self.stdout = StdOut(self.print_redirect)
 
+        self.about = QAction(self)
+        self.about.setText('About')
+        self.menu_Help.addAction(self.about)
+        self.about.triggered.connect(self.onAbout)
+
         self.menu_Tasks.triggered.connect(self.onTaskSelect)
         self.menu_Instruments.triggered.connect(self.onInstrumentSelect)
 
@@ -180,7 +186,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
             self.inst_info_handler.update_tabs()
             for inst_name in self.inst_dict:
-                inst = self.get_inst(inst_name)
                 self.inst_info_handler.update_info(inst_name)
 
             self.task_dict = self.config.task_dict
@@ -250,21 +255,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
     def get_logo_file(self):
         return self.LogoFile
 
-    def onInstrumentSelect(self, inst_action):
-        try:
-            name = inst_action.text()
-            self.inst_info_handler.select_browser(name)
-            if self.inst_dict[name].is_connected():
-                try:
-                    self.inst_info_handler.update_info(name)
-                except:
-                    pass
-                self.onDisconnect(name)
-            else:
-                self.onConnect(name)
-        except Exception as e:
-            logger.error(e)
-
     def print_redirect(self, text):
         """
         Handles text output for stdout, stderr and various text output
@@ -328,10 +318,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         self.actionStop.setEnabled(True)
 
         self.taskResult.clear()
-        self.dock_handler.show_toolbar(True)
 
         self._busy_flag = True
-
+        self.dock_handler.show_toolbar(True)
         self.session_handler.create_file(self.task.__class__.__name__)
 
     def onTaskFinished(self):
@@ -346,9 +335,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             # PySide2 needs to refresh matplotlib display before starting a new task
             # for live update. Hide and show toolbar does the trick.
             self.dock_handler.show_toolbar(False)
-
-            self.create_task_result_in_session(self.task)
-
+            self.session_handler.close_file()
             # try:
             #     self.task.deleteLater()
             # except Exception as e:
@@ -363,12 +350,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
     def is_task_running(self):
         return self._busy_flag
-
-    def get_inst(self, inst):
-        if inst in self.inst_dict:
-            return self.inst_dict[inst]
-        else:
-            return None
 
     def update_figure(self, figure):
         self.dock_handler.update_figure(figure)
@@ -469,10 +450,28 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         except Exception as e:
             logger.error(e)
 
+    def onInstrumentSelect(self, inst_action):
+        try:
+            name = inst_action.text()
+            self.inst_info_handler.select_browser(name)
+            if self.inst_dict[name].is_connected():
+                try:
+                    self.inst_info_handler.update_info(name)
+                except:
+                    pass
+                self.onDisconnect(name)
+            else:
+                self.onConnect(name)
+        except Exception as e:
+            logger.error(e)
+
     def onConnect(self, inst_name):
+        if inst_name not in self.inst_dict:
+            raise KeyError('Invalid instrument name: {}'.format(inst_name))
+
         logger.info('Connecting to {}...'.format(inst_name))
         try:
-            inst = self.get_inst(inst_name)
+            inst = self.inst_dict[inst_name]
             form = ConnectDlg(inst)
             # form = CommConnectDlg(inst)
             form.exec_()
@@ -486,13 +485,21 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             logger.error(e)
 
     def onDisconnect(self, inst_name):
-        inst = self.get_inst(inst_name)
-        if inst.is_connected():
+        try:
+            if not (inst_name in self.inst_dict and hasattr(self.inst_dict[inst_name], "is_connected")):
+                raise KeyError('Invalid instrument: {}'.format(inst_name))
+
+            inst = self.inst_dict[inst_name]
+            if not self.inst_dict[inst_name].is_connected():
+                logger.error('{} is not connected'.format(inst_name))
+                return
             self.display_question("Do you want to disconnect '{}'?".format(inst_name))
             if self.question_result_value:
                 inst.disconnect()
                 self.inst_info_handler.update_info(inst_name)
                 logger.info('{} is disconnected'.format(inst_name))
+        except Exception as e:
+            logger.error(e)
 
     def okToContinue(self):
         if self.task and self.task.is_running():
@@ -500,14 +507,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             if not self.question_result_value:
                 return False
         return True
-
-    def create_task_result_in_session(self, task):
-        if not self.session_handler.is_open():
-            logger.error('No session is open when the task is finished')
-            return
-        self.session_handler.create_new_task_result(task.result)
-        self.session_handler.close_file()
-        logger.debug('A task result for DUT is created')
 
     def display_question(self, question, return_type=bool):
         try:
@@ -561,11 +560,10 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
             self.command_handler.stop()
 
-
             # Close instruments
             inst_dict = self.inst_dict
             for key in inst_dict:
-                if issubclass(type(inst_dict[key]), Instrument):
+                if hasattr(inst_dict[key], "disconnect"):
                     inst_dict[key].disconnect()
         else:
             event.ignore()
@@ -583,6 +581,15 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             return
         except Exception as e:
             logger.error(f"Error in handle_initial_image: {e}")
+
+    def onAbout(self,checked):
+        msg = ''
+        for name in self.inst_dict:
+            inst = self.inst_dict[name]
+            msg += '{} version: {}\n'.format(inst.__class__.__name__, inst.__version__)
+        msg += '\nSrsgui version: {}\n'.format(__version__)
+        # msg += '\n{} version: {}\n'.format(QT_BINDER, QT_BINDER_VERSION)
+        self.display_question(msg, None)
 
     def load_settings(self):
         try:

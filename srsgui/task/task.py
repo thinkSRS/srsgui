@@ -40,7 +40,7 @@ class Task(thread_class):
 
     The parent process starts a task instance
     as a separate thread. Before starting the task thread, the parent process injects resources
-    the task thread dependent on (instruements, figures, session handler), and connects
+    the task thread dependent on (instruments, figures, session handler), and connects
     callback functions to handle the requests from the task. The task uses
     the resources and send requests without knowing much about how they are handled by the parent
     process. It makes easy to write a derived task as a simple Python script starting from
@@ -221,6 +221,10 @@ class Task(thread_class):
                 self.update_status(msg)
                 self.logger.info(RedBold.format(msg))
                 self.result.set_passed(False)
+
+            if self.session_handler:
+                self.session_handler.create_new_task_result(self.result)
+                self.logger.debug('A task result for DUT is created')
         except Exception as e:
             self.logger.error('Error during basic_cleanup: {}'.format(e))
         finally:

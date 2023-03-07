@@ -136,6 +136,9 @@ class Config(object):
 
         if hasattr(mod, inst_class_name):
             inst_class = getattr(mod, inst_class_name)
+            inst_class.__version = None
+            if hasattr(mod, '__version__'):
+                inst_class.__version__ = getattr(mod, "__version__")
             logger.debug('Instrument class {} from "{}" loaded'.format(inst_class_name, inst_key))
         else:
             logger.error('No inst class "{}" in module "{}"'.format(inst_class_name, inst_module_name))
