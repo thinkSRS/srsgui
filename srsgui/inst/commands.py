@@ -51,6 +51,9 @@ class Command(object):
     _get_command_format = '{}?'
     _set_command_format = '{} {}'
 
+    _set_enable = True
+    _get_enable = True
+
     def __init__(self, remote_command_name, default_value=None):
         """
         Initialize a command with a remote command name
@@ -112,6 +115,7 @@ class GetCommand(Command):
     Descriptor for  a remote command only to **query** a **string** value.
     To **set** a value is not allowed.
     """
+    _set_enable = False
     def __set__(self, instance, value):
         raise AttributeError('No set command for {}'
                              .format(self.remote_command))
@@ -122,6 +126,7 @@ class SetCommand(Command):
     Descriptor for  a remote command only to **set** a **string** value.
     To **query** a value is not allowed.
     """
+    _get_enable = False
     def __get__(self, instance, instance_type):
         raise AttributeError('No query command for {}'
                              .format(self.remote_command))
@@ -144,7 +149,7 @@ class BoolGetCommand(BoolCommand):
     Descriptor for  a remote command only to **query** a **bool** value.
     To **set** a value is not allowed.
     """
-
+    _set_enable = False
     def __set__(self, instance, value):
         raise AttributeError('No set command for {}'
                              .format(self.remote_command))
@@ -155,7 +160,7 @@ class BoolSetCommand(BoolCommand):
     Descriptor for  a remote command only to **set** a **bool** value.
     To **query** a value is not allowed.
     """
-
+    _get_enable = False
     def __get__(self, instance, instance_type):
         raise AttributeError('No query command for {}'
                              .format(self.remote_command))
@@ -182,7 +187,7 @@ class IntGetCommand(IntCommand):
     Descriptor for  a remote command only to **query** an **integer** value.
     To **set** a value is not allowed.
     """
-
+    _set_enable = False
     def __set__(self, instance, value):
         raise AttributeError('No set command for {}'
                              .format(self.remote_command))
@@ -193,7 +198,7 @@ class IntSetCommand(IntCommand):
     Descriptor for  a remote command only to **set** an **integer** value.
     To **query** a value is not allowed.
     """
-
+    _get_enable = False
     def __get__(self, instance, instance_type):
         raise AttributeError('No query command for {}'
                              .format(self.remote_command))
@@ -222,7 +227,7 @@ class FloatGetCommand(FloatCommand):
     Descriptor for  a remote command only to **query** a **float** value.
     To **set** a value is not allowed.
     """
-
+    _set_enable = False
     def __set__(self, instance, value):
         raise AttributeError('No set command for {}'
                              .format(self.remote_command))
@@ -233,7 +238,7 @@ class FloatSetCommand(FloatCommand):
     Descriptor for  a remote command only to **set** a **float** value.
     To **query** a value is not allowed.
     """
-
+    _get_enable = False
     def __get__(self, instance, instance_type):
         raise AttributeError('No query command for {}'
                              .format(self.remote_command))
@@ -279,7 +284,7 @@ class DictGetCommand(DictCommand):
     Descriptor for  a remote command only to **query** a **dict** value.
     To **set** a value is not allowed.
     """
-
+    _set_enable = False
     def __set__(self, instance, value):
         raise AttributeError('No set command for {}'
                              .format(self.remote_command))

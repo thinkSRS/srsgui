@@ -57,6 +57,8 @@ class IndexCommand(object):
     Command class for a remote command with index
     using **set** and **query** returning an **string**
     """
+    _get_enable = True
+    _set_enable = True
 
     def __init__(self, remote_command_name, index_max, index_min=0, index_dict=None):
         """
@@ -149,7 +151,7 @@ class IndexGetCommand(IndexCommand):
     Command class for a remote command with index
     using only **query** returning an **string**, without **set**.
     """
-
+    _set_enable = False
     def __setitem__(self, instance, value):
         raise InstIndexError('No set allowed for index command {}'
                              .format(self.remote_command))
@@ -172,7 +174,7 @@ class BoolIndexGetCommand(BoolIndexCommand):
     Command class for a remote command with index
     using only **query** returning a **bool**, without **set**.
     """
-
+    _set_enable = False
     def __setitem__(self, instance, value):
         raise InstIndexError('No set allowed for index command {}'
                              .format(self.remote_command))
@@ -200,7 +202,7 @@ class IntIndexGetCommand(IntIndexCommand):
     Command class for a remote command with index
     using only **query** returning an **integer**, without **set**.
     """
-
+    _set_enable = False
     def __setitem__(self, instance, value):
         raise InstIndexError('No set allowed for index command {}'
                              .format(self.remote_command))
@@ -228,7 +230,7 @@ class FloatIndexGetCommand(FloatIndexCommand):
     Command class for a remote command with index
     using only **query** returning an **float**, without **set**.
     """
-
+    _set_enable = False
     def __setitem__(self, instance, value):
         raise InstIndexError('No set allowed for index command {}'
                              .format(self.remote_command))

@@ -255,17 +255,14 @@ class Component(object):
                 cmd_instance = self.__class__.__dict__[k]
                 if cmd_instance in self.exclude_capture:
                     continue
-                if cmd_instance.__class__ == Command or \
-                   cmd_instance.__class__ == BoolCommand or \
-                   cmd_instance.__class__ == IntCommand or \
-                   cmd_instance.__class__ == FloatCommand or \
-                   cmd_instance.__class__ == DictCommand:
+
+                if issubclass(cmd_instance.__class__, Command) and \
+                   cmd_instance._set_enable and cmd_instance._get_enable:
+
                     commands[k] = cmd_instance.__get__(self, self.__class__)
-                elif cmd_instance.__class__ == IndexCommand or \
-                     cmd_instance.__class__ == BoolIndexCommand or \
-                     cmd_instance.__class__ == IntIndexCommand or \
-                     cmd_instance.__class__ == FloatIndexCommand or \
-                     cmd_instance.__class__ == DictIndexCommand:
+
+                elif issubclass(cmd_instance.__class__, IndexCommand) and \
+                         cmd_instance._set_enable and cmd_instance._get_enable:
 
                     index = cmd_instance.index_min
                     commands[k] = []
