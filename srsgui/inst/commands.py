@@ -73,7 +73,6 @@ class Command(object):
     def __get__(self, instance, instance_type):
         if instance is None:
             return self
-
         query_string = self._get_command_format.format(self.remote_command)
         reply = None
         try:
@@ -239,6 +238,7 @@ class FloatSetCommand(FloatCommand):
     To **query** a value is not allowed.
     """
     _get_enable = False
+
     def __get__(self, instance, instance_type):
         raise AttributeError('No query command for {}'
                              .format(self.remote_command))

@@ -344,7 +344,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
             for inst in self.inst_dict:
                 self.inst_info_handler.update_info(inst)
-
+            logger.debug('onTaskFinished finished')
         except Exception as e:
             logger.error('Error onTaskFinished: {}'.format(e))
 

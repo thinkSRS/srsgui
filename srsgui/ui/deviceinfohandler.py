@@ -58,7 +58,7 @@ class DeviceInfoHandler(object):
 
         browser.clear()
         browser.append(msg)
-        logger.debug(msg.replace('\n', ''))
+        logger.debug('{}: {}'.format(inst_name, msg.replace('\n', '')))
 
     def update_tabs(self):
         """

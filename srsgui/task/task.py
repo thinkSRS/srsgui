@@ -586,7 +586,7 @@ class Task(thread_class):
         self._log_error_detail = state
 
     def log_exception(self, err):
-        """With set_log_error_detail(True), an error is looged with traceback information
+        """With set_log_error_detail(True), an error is logged with traceback information
         """
         self.logger.error(f'{err.__class__.__name__}: {err}')
 

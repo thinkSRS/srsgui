@@ -53,7 +53,10 @@ class ListInput(BaseInput):
         return self.text
 
     def set_value(self, text):
-        self.value = self.item_list.index(text)
+        try:
+            self.value = self.item_list.index(text)
+        except ValueError:
+            pass
         self.text = text
 
     def get_index(self):
@@ -92,7 +95,10 @@ class IntegerListInput(ListInput):
         return int(self.text)
 
     def set_value(self, int_value):
-        self.value = self.item_list.index(str(int_value))
+        try:
+            self.value = self.item_list.index(str(int_value))
+        except ValueError:
+            pass
         self.text = self.item_list[self.value]
 
 
@@ -115,7 +121,10 @@ class FloatListInput(ListInput):
         return float(self.text)
 
     def set_value(self, float_number):
-        self.value = self.item_list.index(self.fmt.format(float_number))
+        try:
+            self.value = self.item_list.index(self.fmt.format(float_number))
+        except ValueError:
+            pass
         self.text = self.item_list[self.value]
 
 

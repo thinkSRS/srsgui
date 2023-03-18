@@ -6,7 +6,8 @@ from .communications.tcpipinterface import TcpipInterface
 from .instrument import Instrument
 from .component import Component
 from .exceptions import InstException, InstCommunicationError, \
-                        InstLoginFailureError, InstIdError
+                        InstLoginFailureError, InstIdError, \
+                        InstSetError, InstQueryError, InstIndexError
 
 from .commands import Command, GetCommand, SetCommand, \
                       BoolCommand, BoolGetCommand, BoolSetCommand, \
