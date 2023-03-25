@@ -1,4 +1,5 @@
 
+import math
 from .qt.QtCore import Qt
 from .qt.QtWidgets import QWidget, QDoubleSpinBox, QSpinBox, QComboBox, \
                           QLineEdit, QLabel, QGridLayout, QPushButton, QScrollArea
@@ -107,6 +108,7 @@ class InputPanel(QScrollArea):
                         widget.setMaximum(p.cmd_instance.maximum)
                         widget.setMinimum(p.cmd_instance.minimum)
                         widget.setSingleStep(p.cmd_instance.step)
+                        widget.setDecimals(math.ceil(math.log10(1.0 / p.cmd_instance.step)))
                         widget.setAlignment(Qt.AlignRight)
 
                     elif issubclass(p.cmd_instance.__class__, DictCommand) or \

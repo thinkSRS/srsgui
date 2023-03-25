@@ -12,7 +12,7 @@ class CommandTerminal(QFrame):
     """
     Terminal to control instruments defined in the .taskconfig file
 
-        Type a command in one of the following ways
+    Type a command in one of the following ways.
 
     inst_name:remote_command
 
@@ -33,13 +33,13 @@ class CommandTerminal(QFrame):
         in .taskconfig file.
 
         inst_name.(components.)dir  - it shows all available components, commands,
-            and methods in the instrument or its component as a Python dictionary.
+        and methods in the instrument or its component as a Python dictionary.
 
                 rga.dir
                 rga.status.dir
 
-        rga.status.id_string  - this returns the id string. It is a Python instrument
-                command defined in the rga.status component.
+        rga.status.id_string - this returns the id string. It is a Python instrument
+        command defined in the rga.status component.
         rga.scan.initial_mass = 10  - this changes the scan initial mass to 10.
         rga.scan.get_analog_scan()  - this is a method defined in the rga.scan component.
 

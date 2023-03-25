@@ -172,8 +172,7 @@ class Task(thread_class):
         self._keep_running = True
         self._error_raised = False
 
-        # We want to create self.result after self.name is assigned
-        self.result = TaskResult(self.name)
+        self.result = TaskResult(self.__class__.__name__)
         self.result.set_start_time_now()
 
         log_format = '%(asctime)s-%(levelname)s-%(message)s'

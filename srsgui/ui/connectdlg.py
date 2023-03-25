@@ -19,9 +19,10 @@ logger = logging.getLogger(__name__)
 class ConnectDlg(QDialog):
     """
     * To build the connection dialog box based on *available_interface* of subclasses of
-    :class:`srsgui.inst.instrument.Instrument` class listed in the current .taskconfig file.
+      :class:`srsgui.inst.instrument.Instrument` class listed in the current .taskconfig file.
 
-    * To connect to the selected interface of the instrument
+    * To connect to the selected interface of the instrument.
+
     """
 
     def __init__(self, inst, parent=None):
