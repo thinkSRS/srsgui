@@ -13,6 +13,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 
 from .commandterminal import CommandTerminal
+from .deviceinfowidget import DeviceInfoWidget
 
 logger = logging.getLogger(__name__)
 
@@ -42,6 +43,10 @@ class DockHandler(object):
         self.parent = parent
         self.dock_dict = {}
 
+        self.active_inst_dock_names = []
+        self.removed_inst_docks = []
+
+        self.active_figure_dock_names = []
         self.removed_figure_docks = []
         self.fig_dock_area = Qt.RightDockWidgetArea
         try:
@@ -55,6 +60,8 @@ class DockHandler(object):
         self.init_figure_dock(self.DefaultFigureName)
         self.init_terminal()
         self.init_console()
+        self.init_inst_dock('instrument info')
+
         fig = self.dock_dict.pop(self.DefaultFigureName)
         self.dock_dict[self.DefaultFigureName] = fig
 
@@ -136,6 +143,24 @@ class DockHandler(object):
         except Exception as e:
             logger.error(e)
 
+    def init_inst_dock(self, name):
+        try:
+            inst_dock = QDockWidget(self.parent)
+            inst_dock.setObjectName(name)
+            inst_dock.setFloating(False)
+            inst_dock.setWindowTitle(' {} '.format(name))
+            inst_dock.setMinimumSize(250, 150)
+
+            inst_dock.device_info_widget = DeviceInfoWidget(self.parent)
+            inst_dock.setWidget(inst_dock.device_info_widget)
+            self.parent.addDockWidget(Qt.LeftDockWidgetArea, inst_dock)
+            self.dock_dict[name] = inst_dock
+            self.active_inst_dock_names.append(name)
+            if len(self.active_inst_dock_names) > 1:
+                self.parent.tabifyDockWidget(
+                    self.dock_dict[self.active_inst_dock_names[0]], inst_dock)
+        except Exception as e:
+            logger.error(e)
     @staticmethod
     def setup_figure_canvas(widget: QDockWidget):
         widget.figure = Figure()
@@ -163,7 +188,8 @@ class DockHandler(object):
 
             self.parent.addDockWidget(self.fig_dock_area, figure_dock)
             self.dock_dict[name] = figure_dock
-            if len(self.dock_dict) > 3:
+            self.active_figure_dock_names.append(name)
+            if len(self.active_figure_dock_names) > 1:
                 self.parent.tabifyDockWidget(self.get_dock(), figure_dock)
         except Exception as e:
             logger.error(e)
@@ -226,15 +252,50 @@ class DockHandler(object):
         except Exception as e:
             logger.error(e)
 
+    def reset_inst_docks(self):
+        try:
+            while len(self.active_inst_dock_names):
+                name = self.active_inst_dock_names.pop()
+                if name in self.dock_dict:
+                    dock = self.dock_dict.pop(name)
+                    dock.setVisible(False)
+                    self.parent.removeDockWidget(dock)
+                    self.removed_inst_docks.append(dock)
+                    # logger.debug('removed {} {}'.format(name, dock))
+            for inst in self.parent.inst_dict:
+                print(' {}'.format(inst))
+                if self.removed_inst_docks:
+                    dock = self.removed_inst_docks.pop()
+                    dock.setWindowTitle(' {} '.format(inst))
+                    dock.setObjectName(inst)
+                    self.dock_dict[inst] = dock
+                    self.active_inst_dock_names.append(inst)
+                    self.parent.addDockWidget(Qt.LeftDockWidgetArea, dock)
+                    dock.setVisible(True)
+                    if len(self.active_inst_dock_names) > 1:
+                        self.parent.tabifyDockWidget(
+                            self.dock_dict[self.active_inst_dock_names[0]], dock)
+                else:
+                    self.init_inst_dock(inst)
+                    dock = self.dock_dict[inst]
+
+                dock.device_info_widget.set_inst(inst, self.parent.inst_dict[inst])
+                self.update_menu()
+        except Exception as e:
+            logger.error(e)
+
     def reset_figures(self, name_list):
         try:
             self.figure_update_time_dict = {}
-            while len(self.dock_dict) > 3:
-                name, fig = self.dock_dict.popitem()
-                fig.setVisible(False)
-                self.parent.removeDockWidget(fig)
-                self.removed_figure_docks.append(fig)
-                # logger.debug('removed {} {}'.format(name, fig))
+
+            while len(self.active_figure_dock_names) > 1:
+                name = self.active_figure_dock_names.pop()
+                if name in self.dock_dict:
+                    fig = self.dock_dict.pop(name)
+                    fig.setVisible(False)
+                    self.parent.removeDockWidget(fig)
+                    self.removed_figure_docks.append(fig)
+                    # logger.debug('removed {} {}'.format(name, fig))
 
             for name in name_list:
                 if self.removed_figure_docks:
@@ -242,9 +303,11 @@ class DockHandler(object):
                     dock.setWindowTitle(name)
                     dock.setObjectName(name)
                     self.dock_dict[name] = dock
+                    self.active_figure_dock_names.append(name)
                     self.parent.addDockWidget(self.fig_dock_area, dock)
                     dock.setVisible(True)
-                    self.parent.tabifyDockWidget(self.default_dock, dock)
+                    if len(self.active_figure_dock_names) > 1:
+                        self.parent.tabifyDockWidget(self.default_dock, dock)
                     # logger.debug('add {} {}'.format(name, dock))
                 else:
                     self.init_figure_dock(name)

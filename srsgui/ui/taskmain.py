@@ -184,6 +184,8 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                 del instr
             self.inst_dict = self.config.inst_dict
 
+            self.dock_handler.reset_inst_docks()
+
             self.inst_info_handler.update_tabs()
             for inst_name in self.inst_dict:
                 self.inst_info_handler.update_info(inst_name)

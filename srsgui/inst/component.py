@@ -249,45 +249,47 @@ class Component(object):
                 continue
             instance = self.__dict__[j]
             if issubclass(instance.__class__,  Component):
-                commands[j] = instance.capture_commands()
+                commands[j] = instance.capture_commands(include_query_only)
 
-            for k in self.__class__.__dict__:
-                cmd_instance = self.__class__.__dict__[k]
-                if cmd_instance in self.exclude_capture:
+        for k in self.__class__.__dict__:
+            cmd_instance = self.__class__.__dict__[k]
+            if cmd_instance in self.exclude_capture:
+                continue
+
+            allowed = False
+            if issubclass(cmd_instance.__class__, Command):
+                if include_query_only:
+                    allowed = cmd_instance._get_enable
+                else:
+                    allowed = cmd_instance._set_enable and cmd_instance._get_enable
+                if not allowed:
                     continue
 
-                if issubclass(cmd_instance.__class__, Command):
-                    if not include_query_only:
-                        allowed = cmd_instance._get_enable
-                    else:
-                        allowed = cmd_instance._set_enable and cmd_instance._get_enable
-                    if not allowed:
-                        continue
+                commands[k] = cmd_instance.__get__(self, self.__class__)
 
-                    commands[k] = cmd_instance.__get__(self, self.__class__)
+            elif issubclass(cmd_instance.__class__, IndexCommand):
 
-                elif issubclass(cmd_instance.__class__, IndexCommand):
-                    if not include_query_only:
-                        allowed = cmd_instance._get_enable
-                    else:
-                        allowed = cmd_instance._set_enable and cmd_instance._get_enable
-                    if not allowed:
-                        continue
+                if include_query_only:
+                    allowed = cmd_instance._get_enable
+                else:
+                    allowed = cmd_instance._set_enable and cmd_instance._get_enable
+                if not allowed:
+                    continue
 
-                    index = cmd_instance.index_min
-                    commands[k] = {}
-                    while index <= cmd_instance.index_max:
-                        try:
-                            if cmd_instance.index_dict is None:
-                                commands[k][index] = cmd_instance.__getitem__(index)
-                            else:
-                                for key, value in cmd_instance.index_dict.items():
-                                    if value == index:
-                                        commands[k][key] = cmd_instance.__getitem__(index)
-                                        break
-                            index += 1
-                        except Exception as e:
-                            print(f'  {type(e)} {e} command:{k} index: {index}')
-                            break
+                index = cmd_instance.index_min
+                commands[k] = {}
+                while index <= cmd_instance.index_max:
+                    try:
+                        if cmd_instance.index_dict is None:
+                            commands[k][index] = cmd_instance.__getitem__(index)
+                        else:
+                            for key, value in cmd_instance.index_dict.items():
+                                if value == index:
+                                    commands[k][key] = cmd_instance.__getitem__(index)
+                                    break
+                        index += 1
+                    except Exception as e:
+                        print(f'  {type(e)} {e} command:{k} index: {index}')
+                        break
         return commands
 
