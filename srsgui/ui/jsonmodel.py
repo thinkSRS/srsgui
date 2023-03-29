@@ -5,9 +5,9 @@ import json
 import sys
 from typing import Any, Iterable, List, Dict, Union
 
-from PySide2.QtWidgets import QTreeView, QApplication, QHeaderView
-from PySide2.QtCore import QAbstractItemModel, QModelIndex, QObject, Qt, QFileInfo
-from PySide2.QtGui import QBrush, QColor
+from .qt.QtWidgets import QTreeView, QApplication, QHeaderView
+from .qt.QtCore import QAbstractItemModel, QModelIndex, QObject, Qt, QFileInfo
+from .qt.QtGui import QBrush, QColor
 
 
 class TreeItem:

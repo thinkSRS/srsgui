@@ -173,7 +173,7 @@ class Component(object):
                 list of string of method names
         """
         method_list = []
-        current_attributes= []
+        current_attributes = []
         for c in self.__class__.__mro__:  # loop through the classes including super classes
             if not issubclass(c, Component):  # it should be subclass of Component
                 continue
@@ -237,27 +237,52 @@ class Component(object):
         if key not in cmd.set_dict:
             raise KeyError(f" '{key}' is in {cmd.set_dict} of command '{command}'.")
 
-    def capture_commands(self, include_query_only=False):
+    def capture_commands(self, include_query_only=False, include_set_only=False,
+                         include_excluded=False, include_methods=False, show_raw_cmds=False):
         """
         Query all command with both set and get methods in the component
         and its subcomponents
         """
-
         commands = {}
+
+        # Recursive calls to capture commands from subcomponents
         for j in self.__dict__:
             if j =='_parent':
                 continue
+
             instance = self.__dict__[j]
             if issubclass(instance.__class__,  Component):
-                commands[j] = instance.capture_commands(include_query_only)
+                commands[j] = instance.capture_commands(include_query_only, include_set_only,
+                                    include_excluded, include_methods, show_raw_cmds)
 
-        for k in self.__class__.__dict__:
-            cmd_instance = self.__class__.__dict__[k]
-            if cmd_instance in self.exclude_capture:
-                continue
+        # Capture commands from the current component
+        for key in self.__class__.__dict__:
+            cmd_instance = self.__class__.__dict__[key]
+
+            if show_raw_cmds and \
+                (issubclass(cmd_instance.__class__, Command) or \
+                 issubclass(cmd_instance.__class__, IndexCommand)):
+                k = key + f' <{cmd_instance.remote_command}>'
+            else:
+                k = key
 
             allowed = False
+            if callable(cmd_instance):
+                if include_methods and not k.startswith('_'):
+                    commands[k + '() [M]'] = ''
+                continue
+
+            if cmd_instance in self.exclude_capture:
+                if include_excluded:
+                    commands[k + ' [X]'] = ''
+                continue
+
             if issubclass(cmd_instance.__class__, Command):
+                if include_set_only:
+                    if cmd_instance._set_enable and not cmd_instance._get_enable:
+                        commands[k + ' [SO]'] = ''
+                        continue
+
                 if include_query_only:
                     allowed = cmd_instance._get_enable
                 else:
@@ -265,10 +290,13 @@ class Component(object):
                 if not allowed:
                     continue
 
-                commands[k] = cmd_instance.__get__(self, self.__class__)
+                if not cmd_instance._set_enable:
+                    name = k + ' [QO]'
+                else:
+                    name = k
+                commands[name] = cmd_instance.__get__(self, self.__class__)
 
             elif issubclass(cmd_instance.__class__, IndexCommand):
-
                 if include_query_only:
                     allowed = cmd_instance._get_enable
                 else:
@@ -276,16 +304,21 @@ class Component(object):
                 if not allowed:
                     continue
 
+                if not cmd_instance._set_enable:
+                    name = k + ' [QO]'
+                else:
+                    name = k
+
+                commands[name] = {}
                 index = cmd_instance.index_min
-                commands[k] = {}
                 while index <= cmd_instance.index_max:
                     try:
                         if cmd_instance.index_dict is None:
-                            commands[k][index] = cmd_instance.__getitem__(index)
+                            commands[name][index] = cmd_instance.__getitem__(index)
                         else:
                             for key, value in cmd_instance.index_dict.items():
                                 if value == index:
-                                    commands[k][key] = cmd_instance.__getitem__(index)
+                                    commands[name][key] = cmd_instance.__getitem__(index)
                                     break
                         index += 1
                     except Exception as e:

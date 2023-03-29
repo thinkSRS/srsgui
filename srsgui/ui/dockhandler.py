@@ -13,7 +13,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 
 from .commandterminal import CommandTerminal
-from .deviceinfowidget import DeviceInfoWidget
+from .capturecommandwidget import CaptureCommandWidget
 
 logger = logging.getLogger(__name__)
 
@@ -148,11 +148,12 @@ class DockHandler(object):
             inst_dock = QDockWidget(self.parent)
             inst_dock.setObjectName(name)
             inst_dock.setFloating(False)
+
             inst_dock.setWindowTitle(' {} '.format(name))
             inst_dock.setMinimumSize(250, 150)
 
-            inst_dock.device_info_widget = DeviceInfoWidget(self.parent)
-            inst_dock.setWidget(inst_dock.device_info_widget)
+            inst_dock.command_capture_widget = CaptureCommandWidget(self.parent)
+            inst_dock.setWidget(inst_dock.command_capture_widget)
             self.parent.addDockWidget(Qt.LeftDockWidgetArea, inst_dock)
             self.dock_dict[name] = inst_dock
             self.active_inst_dock_names.append(name)
@@ -161,6 +162,7 @@ class DockHandler(object):
                     self.dock_dict[self.active_inst_dock_names[0]], inst_dock)
         except Exception as e:
             logger.error(e)
+
     @staticmethod
     def setup_figure_canvas(widget: QDockWidget):
         widget.figure = Figure()
@@ -279,7 +281,7 @@ class DockHandler(object):
                     self.init_inst_dock(inst)
                     dock = self.dock_dict[inst]
 
-                dock.device_info_widget.set_inst(inst, self.parent.inst_dict[inst])
+                dock.command_capture_widget.set_inst(inst, self.parent.inst_dict[inst])
                 self.update_menu()
         except Exception as e:
             logger.error(e)
