@@ -81,5 +81,7 @@ class CaptureCommandWidget(QWidget, Ui_CaptureCommandWidget):
                 self.method_included, self.show_raw_command
             )
             self.model.load(capture, False)
+            self.tree_view.expandToDepth(1)
+            self.tree_view.resizeColumnToContents(0)
         else:
             logger.warning(f' {self.name} is NOT connected.')

@@ -154,7 +154,7 @@ class DockHandler(object):
 
             title = self.TitleFormat.format(name)
             inst_dock.setWindowTitle(title)
-            inst_dock.setMinimumSize(250, 150)
+            inst_dock.setMinimumSize(200, 350)
 
             inst_dock.command_capture_widget = CaptureCommandWidget(self.parent)
             inst_dock.setWidget(inst_dock.command_capture_widget)
@@ -283,6 +283,7 @@ class DockHandler(object):
                 else:
                     self.init_inst_dock(inst)
                     dock = list(self.dock_dict.values())[-1]
+                dock.setFloating(True)
                 dock.setVisible(False)
                 dock.command_capture_widget.set_inst(inst, self.parent.inst_dict[inst])
                 self.update_menu()

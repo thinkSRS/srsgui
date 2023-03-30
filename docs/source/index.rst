@@ -7,7 +7,7 @@
 ``srsgui`` : Organize your instrument-controlling Python scripts as a GUI application
 =======================================================================================
 
-``Srsgui`` is a simple platform:
+``Srsgui`` is a simple framework:
 
    - To define instrument classes for instruments that use remote communication,
      based on :class:`Instrument<srsgui.inst.instrument.Instrument>`

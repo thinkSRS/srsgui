@@ -199,8 +199,9 @@ class Component(object):
                     continue
                 if key.startswith('__'):
                     continue
-
                 child = c.__dict__[key]
+                if issubclass(child, Component):
+                    continue
                 if key in current_attributes:
                     continue
                 current_attributes.append(key)
@@ -261,9 +262,11 @@ class Component(object):
         for j in self.__dict__:
             if j =='_parent':
                 continue
-
             instance = self.__dict__[j]
             if issubclass(instance.__class__,  Component):
+                if instance in self.exclude_capture:
+                    if not include_excluded:
+                        continue
                 commands[j] = instance.capture_commands(include_query_only, include_set_only,
                                     include_excluded, include_methods, show_raw_cmds)
 
@@ -288,8 +291,9 @@ class Component(object):
                 else:
                     k = key
 
-                allowed = False
                 if callable(cmd_instance):
+                    if issubclass(cmd_instance.__class__, type):
+                        continue
                     if include_methods and not k.startswith('_'):
                         commands[k + '() [M]'] = ''
                     continue

@@ -49,7 +49,7 @@ the 3 main packages (pyserial_, matplotlib_ and pyside6_) and their dependencies
 If
 
     - you plan only to use the instrument driver part of ``srsgui`` package without GUI support,
-    - your system install matplotlib_ or pyside6_ from sources other than pip
+    - your system requires to install matplotlib_ or pyside6_ from sources other than pip
       (Some linux systems do so),
     - you want to use pyqt5_ or pyside2_ instead of pyside6_ as GUI backend,
     - you have trouble with the full installation and you want to install dependency manually,

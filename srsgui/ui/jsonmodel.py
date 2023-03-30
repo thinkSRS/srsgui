@@ -168,7 +168,7 @@ class JsonModel(QAbstractItemModel):
 
         elif role == Qt.BackgroundRole:
             if item.value_type == dict:
-                return QBrush(QColor(253, 235, 235))
+                return QBrush(QColor(243, 230, 225))
             if item.row() % 2 == 0:
                 return QBrush(QColor(240, 240, 253))
 
