@@ -33,6 +33,8 @@ class DockHandler(object):
     MenuDocksName = 'menu_Docks'
     MenuPlotName = 'menu_Plot'
 
+    TitleFormat = '{} - Capture'
+
     def __init__(self, parent):
         if not (hasattr(parent, self.MenuDocksName) and
                 type(parent.menu_Docks) == QMenu and
@@ -61,6 +63,7 @@ class DockHandler(object):
         self.init_terminal()
         self.init_console()
         self.init_inst_dock('instrument info')
+        list(self.dock_dict.values())[-1].hide()
 
         fig = self.dock_dict.pop(self.DefaultFigureName)
         self.dock_dict[self.DefaultFigureName] = fig
@@ -149,14 +152,15 @@ class DockHandler(object):
             inst_dock.setObjectName(name)
             inst_dock.setFloating(False)
 
-            inst_dock.setWindowTitle(' {} '.format(name))
+            title = self.TitleFormat.format(name)
+            inst_dock.setWindowTitle(title)
             inst_dock.setMinimumSize(250, 150)
 
             inst_dock.command_capture_widget = CaptureCommandWidget(self.parent)
             inst_dock.setWidget(inst_dock.command_capture_widget)
             self.parent.addDockWidget(Qt.LeftDockWidgetArea, inst_dock)
-            self.dock_dict[name] = inst_dock
-            self.active_inst_dock_names.append(name)
+            self.dock_dict[title] = inst_dock
+            self.active_inst_dock_names.append(title)
             if len(self.active_inst_dock_names) > 1:
                 self.parent.tabifyDockWidget(
                     self.dock_dict[self.active_inst_dock_names[0]], inst_dock)
@@ -265,22 +269,21 @@ class DockHandler(object):
                     self.removed_inst_docks.append(dock)
                     # logger.debug('removed {} {}'.format(name, dock))
             for inst in self.parent.inst_dict:
-                print(' {}'.format(inst))
+                title = self.TitleFormat.format(inst)
                 if self.removed_inst_docks:
                     dock = self.removed_inst_docks.pop()
-                    dock.setWindowTitle(' {} '.format(inst))
-                    dock.setObjectName(inst)
-                    self.dock_dict[inst] = dock
-                    self.active_inst_dock_names.append(inst)
+                    dock.setWindowTitle(title)
+                    dock.setObjectName(title)
+                    self.dock_dict[title] = dock
+                    self.active_inst_dock_names.append(title)
                     self.parent.addDockWidget(Qt.LeftDockWidgetArea, dock)
-                    dock.setVisible(True)
                     if len(self.active_inst_dock_names) > 1:
                         self.parent.tabifyDockWidget(
                             self.dock_dict[self.active_inst_dock_names[0]], dock)
                 else:
                     self.init_inst_dock(inst)
-                    dock = self.dock_dict[inst]
-
+                    dock = list(self.dock_dict.values())[-1]
+                dock.setVisible(False)
                 dock.command_capture_widget.set_inst(inst, self.parent.inst_dict[inst])
                 self.update_menu()
         except Exception as e:

@@ -590,7 +590,8 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             inst = self.inst_dict[name]
             msg += '{} version: {}\n'.format(inst.__class__.__name__, inst.__version__)
         msg += '\nSrsgui version: {}\n'.format(__version__)
-        # msg += '\n{} version: {}\n'.format(QT_BINDER, QT_BINDER_VERSION)
+        msg += '\n{} version: {}\n'.format(QT_BINDER, QT_BINDER_VERSION)
+        msg += 'Python version: {}\n'.format(sys.version)
         self.display_question(msg, None)
 
     def load_settings(self):

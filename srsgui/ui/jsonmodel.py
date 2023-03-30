@@ -187,14 +187,8 @@ class JsonModel(QAbstractItemModel):
             if index.column() == 1:
                 item = index.internalPointer()
                 item.value = str(value)
-
-                if __binding__ in ("PySide", "PyQt4"):
-                    self.dataChanged.emit(index, index)
-                else:
-                    self.dataChanged.emit(index, index, [Qt.EditRole])
-
+                self.dataChanged.emit(index, index, [Qt.EditRole])
                 return True
-
         return False
 
     def headerData(
