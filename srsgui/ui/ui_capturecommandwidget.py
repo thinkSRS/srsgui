@@ -17,9 +17,9 @@ class Ui_CaptureCommandWidget(object):
     def setupUi(self, CaptureCommandWidget):
         if not CaptureCommandWidget.objectName():
             CaptureCommandWidget.setObjectName(u"CaptureCommandWidget")
-        CaptureCommandWidget.resize(263, 440)
-        self.verticalLayout_2 = QVBoxLayout(CaptureCommandWidget)
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        CaptureCommandWidget.resize(398, 523)
+        self.verticalLayout_3 = QVBoxLayout(CaptureCommandWidget)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.verticalLayout = QVBoxLayout()
@@ -56,18 +56,37 @@ class Ui_CaptureCommandWidget(object):
 
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
+        self.verticalLayout_2 = QVBoxLayout()
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.capture_button = QPushButton(CaptureCommandWidget)
         self.capture_button.setObjectName(u"capture_button")
 
-        self.horizontalLayout.addWidget(self.capture_button)
+        self.verticalLayout_2.addWidget(self.capture_button)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Minimum)
+
+        self.verticalLayout_2.addItem(self.verticalSpacer)
+
+        self.expand_button = QPushButton(CaptureCommandWidget)
+        self.expand_button.setObjectName(u"expand_button")
+
+        self.verticalLayout_2.addWidget(self.expand_button)
+
+        self.collapse_button = QPushButton(CaptureCommandWidget)
+        self.collapse_button.setObjectName(u"collapse_button")
+
+        self.verticalLayout_2.addWidget(self.collapse_button)
 
 
-        self.verticalLayout_2.addLayout(self.horizontalLayout)
+        self.horizontalLayout.addLayout(self.verticalLayout_2)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout)
 
         self.tree_view = QTreeView(CaptureCommandWidget)
         self.tree_view.setObjectName(u"tree_view")
 
-        self.verticalLayout_2.addWidget(self.tree_view)
+        self.verticalLayout_3.addWidget(self.tree_view)
 
 
         self.retranslateUi(CaptureCommandWidget)
@@ -83,5 +102,7 @@ class Ui_CaptureCommandWidget(object):
         self.method_checkbox.setText(QCoreApplication.translate("CaptureCommandWidget", u"Show methods", None))
         self.raw_command_checkbox.setText(QCoreApplication.translate("CaptureCommandWidget", u"Show raw cmds", None))
         self.capture_button.setText(QCoreApplication.translate("CaptureCommandWidget", u"Capture", None))
+        self.expand_button.setText(QCoreApplication.translate("CaptureCommandWidget", u"Expand all", None))
+        self.collapse_button.setText(QCoreApplication.translate("CaptureCommandWidget", u"Collapse all", None))
     # retranslateUi
 

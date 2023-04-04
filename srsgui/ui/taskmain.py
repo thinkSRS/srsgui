@@ -206,12 +206,11 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             actions = self.menu_Instruments.actions()
             for action in actions:
                 self.menu_Instruments.removeAction(action)
-
             for item in self.inst_dict:
                 action_inst = QAction(self)
                 action_inst.setText(item)
                 self.menu_Instruments.addAction(action_inst)
-
+            logger.debug('Added new actions to Instruments menu')
             # Remove previous actions from Task menu
             actions = self.menu_Tasks.actions()
             for action in actions:
@@ -239,7 +238,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                                 exists = True
                                 break
                         if not exists:
-                            na = m.addMenu(QMenu(token))
+                            na = m.addMenu(QMenu(token, m))
                         m = na
                         exists = False
                     if type(m) == QAction:
@@ -252,7 +251,8 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                 action_task.setText(name)
                 m.addAction(action_task)
         except Exception as e:
-            print(e)
+            logger.error('Error adding to Task menu Task:{}  Error: {}'.format(name, e))
+
 
     def get_logo_file(self):
         return self.LogoFile

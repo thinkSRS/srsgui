@@ -37,6 +37,8 @@ class CaptureCommandWidget(QWidget, Ui_CaptureCommandWidget):
 
         # self.update_button.clicked.connect(self.on_update_clicked)
         self.capture_button.clicked.connect(self.on_capture_clicked)
+        self.expand_button.clicked.connect(self.on_expand_clicked)
+        self.collapse_button.clicked.connect(self.on_collapse_clicked)
 
     def set_inst(self, name, inst):
         self.inst = inst
@@ -85,3 +87,9 @@ class CaptureCommandWidget(QWidget, Ui_CaptureCommandWidget):
             self.tree_view.resizeColumnToContents(0)
         else:
             logger.warning(f' {self.name} is NOT connected.')
+
+    def on_expand_clicked(self):
+        self.tree_view.expandAll()
+
+    def on_collapse_clicked(self):
+        self.tree_view.collapseAll()

@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>263</width>
-    <height>440</height>
+    <width>398</width>
+    <height>523</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
@@ -69,11 +69,45 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="capture_button">
-       <property name="text">
-        <string>Capture</string>
-       </property>
-      </widget>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QPushButton" name="capture_button">
+         <property name="text">
+          <string>Capture</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Minimum</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="expand_button">
+         <property name="text">
+          <string>Expand all</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="collapse_button">
+         <property name="text">
+          <string>Collapse all</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
