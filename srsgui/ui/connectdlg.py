@@ -8,7 +8,7 @@ from .qt.QtWidgets import QDialog, QDialogButtonBox, \
                           QLineEdit, QSpinBox, QComboBox, \
                           QMessageBox
 
-from srsgui import Instrument
+from srsgui.inst.instrument import Instrument
 from srsgui.task.inputs import BaseInput, IntegerInput, IntegerListInput, \
                                Ip4Input, BoolInput, StringInput, \
                                FindListInput, PasswordInput

@@ -4,8 +4,8 @@ from .qt.QtCore import Qt
 from .qt.QtWidgets import QWidget, QDoubleSpinBox, QSpinBox, QComboBox, \
                           QLineEdit, QLabel, QGridLayout, QPushButton, QScrollArea
 
-from srsgui.inst import Command, IntCommand, FloatCommand, DictCommand, \
-                                 IntIndexCommand, FloatIndexCommand, DictIndexCommand
+from srsgui.inst.commands import Command, IntCommand, FloatCommand, DictCommand
+from srsgui.inst.indexcommands import IntIndexCommand, FloatIndexCommand, DictIndexCommand
 
 from srsgui.task.task import Task
 from srsgui.task.inputs import IntegerInput, FloatInput, StringInput, \

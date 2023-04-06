@@ -4,7 +4,7 @@ import logging
 from pathlib import Path
 from importlib import import_module, reload, invalidate_caches
 
-from srsgui.task import Task, GreenNormal, RedNormal
+from srsgui.task.task import Task, GreenNormal, RedNormal
 
 # from srs_insts.baseinsts import BaseInst
 from srsgui.inst.instrument import Instrument

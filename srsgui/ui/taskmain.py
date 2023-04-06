@@ -29,7 +29,7 @@ from .commandhandler import CommandHandler
 
 from srsgui.task.config import Config
 from srsgui.task.sessionhandler import SessionHandler
-from srsgui.task import Task, Bold
+from srsgui.task.task import Task, Bold
 
 from srsgui import __version__
 
