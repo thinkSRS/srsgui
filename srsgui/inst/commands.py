@@ -115,6 +115,7 @@ class GetCommand(Command):
     To **set** a value is not allowed.
     """
     _set_enable = False
+
     def __set__(self, instance, value):
         raise AttributeError('No set command for {}'
                              .format(self.remote_command))
@@ -126,6 +127,7 @@ class SetCommand(Command):
     To **query** a value is not allowed.
     """
     _get_enable = False
+
     def __get__(self, instance, instance_type):
         raise AttributeError('No query command for {}'
                              .format(self.remote_command))
@@ -149,6 +151,7 @@ class BoolGetCommand(BoolCommand):
     To **set** a value is not allowed.
     """
     _set_enable = False
+
     def __set__(self, instance, value):
         raise AttributeError('No set command for {}'
                              .format(self.remote_command))
@@ -160,6 +163,7 @@ class BoolSetCommand(BoolCommand):
     To **query** a value is not allowed.
     """
     _get_enable = False
+
     def __get__(self, instance, instance_type):
         raise AttributeError('No query command for {}'
                              .format(self.remote_command))
@@ -199,6 +203,7 @@ class IntSetCommand(IntCommand):
     To **query** a value is not allowed.
     """
     _get_enable = False
+
     def __get__(self, instance, instance_type):
         raise AttributeError('No query command for {}'
                              .format(self.remote_command))

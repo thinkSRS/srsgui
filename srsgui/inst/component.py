@@ -200,7 +200,7 @@ class Component(object):
                 if key.startswith('__'):
                     continue
                 child = c.__dict__[key]
-                if issubclass(child, Component):
+                if issubclass(type(child), Component):
                     continue
                 if key in current_attributes:
                     continue

@@ -45,36 +45,19 @@ class CaptureCommandWidget(QWidget, Ui_CaptureCommandWidget):
         self.name = name
 
     def on_query_only_changed(self, state):
-        self.query_only_included = state == Qt.Checked
+        self.query_only_included = state != Qt.Unchecked
 
     def on_set_only_changed(self, state):
-        self.set_only_included = state == Qt.Checked
+        self.set_only_included = state != Qt.Unchecked
 
     def on_excluded_changed(self, state):
-        self.excluded_included = state == Qt.Checked
+        self.excluded_included = state != Qt.Unchecked
 
     def on_method_changed(self, state):
-        self.method_included = state == Qt.Checked
+        self.method_included = state != Qt.Unchecked
 
     def on_raw_command_changed(self, state):
-        self.show_raw_command = state == Qt.Checked
-
-    """
-    def on_update_clicked(self):
-        inst = self.inst
-        browser = self.text_browser
-
-        if inst.is_connected():
-            msg = ''  # Name: {} \n S/N: {} \n F/W version: {} \n\n'.format(*inst.check_id())
-            msg += '  * Info *\n {} \n\n'.format(inst.get_info())
-            msg += '  * Status *\n {} \n'.format(inst.get_status())
-        else:
-            msg = "Disconnected"
-
-        browser.clear()
-        browser.append(msg)
-        logger.debug('{}: {}'.format(self.name, msg.replace('\n', '')))
-    """
+        self.show_raw_command = state != Qt.Unchecked
 
     def on_capture_clicked(self):
         if self.inst is not None and self.inst.is_connected():
