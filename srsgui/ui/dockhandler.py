@@ -13,8 +13,8 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 
 from .commandterminal import CommandTerminal
-from .capturecommandwidget import CaptureCommandWidget
-
+# from .capturecommandwidget import CaptureCommandWidget
+from .commandtreewidget import CommandTreeWidget
 logger = logging.getLogger(__name__)
 
 # define matplotlib level before importing to suppress debug messages
@@ -156,7 +156,9 @@ class DockHandler(object):
             inst_dock.setWindowTitle(title)
             inst_dock.setMinimumSize(200, 350)
 
-            inst_dock.command_capture_widget = CaptureCommandWidget(self.parent)
+            # inst_dock.command_capture_widget = CaptureCommandWidget(self.parent)
+            inst_dock.command_capture_widget = CommandTreeWidget(self.parent)
+
             inst_dock.setWidget(inst_dock.command_capture_widget)
             self.parent.addDockWidget(Qt.LeftDockWidgetArea, inst_dock)
             self.dock_dict[title] = inst_dock
