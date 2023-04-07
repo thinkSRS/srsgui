@@ -1,5 +1,6 @@
 
 import time
+import json
 import sys
 from typing import Any, Iterable, List, Dict, Union
 
@@ -80,11 +81,14 @@ class CommandModel(QAbstractItemModel):
 
             if index.column() == 1:
                 item = index.internalPointer()
+                v = item.value
+                if v is None:
+                    return
                 unit = item.get_unit()
                 if unit:
-                    val = f'{item.value}  {item.get_unit()}'
+                    val = f'{v}  {item.get_unit()}'
                 else:
-                    val = item.value
+                    val = v
                 return val
 
         elif role == Qt.EditRole:
@@ -237,4 +241,4 @@ if __name__ == "__main__":
     view.header().setSectionResizeMode(0, QHeaderView.Stretch)
     # view.setAlternatingRowColors(True)
     view.resize(500, 300)
-    app.exec()
+    app.exec_()

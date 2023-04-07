@@ -260,6 +260,11 @@ class DictCommand(Command):
 
     def __init__(self, remote_command_name, set_dict, get_dict=None, unit='', fmt='{}', default_value=None):
         super().__init__(remote_command_name, default_value)
+        if type(set_dict) is not dict:
+            raise TypeError('set_dict must be a dictionary')
+        if get_dict is not None and type(get_dict) is not dict:
+            raise TypeError('get_dict must be a dictionary')
+
         self.set_dict = set_dict
         if get_dict is None:
             self.get_dict = set_dict

@@ -1,17 +1,17 @@
 
 import logging
 
-from .qt.QtCore import Qt
-from .qt.QtWidgets import QWidget
-from .ui_capturecommandwidget import Ui_CaptureCommandWidget
+from srsgui.ui.qt.QtCore import Qt
+from srsgui.ui.qt.QtWidgets import QWidget
+from .ui_commandcapturewidget import Ui_CommandCaptureWidget
 
-from .commandtree.commandmodel import CommandModel
-from .commandtree.commanddelegate import CommandDelegate
+from .commandmodel import CommandModel
+from .commanddelegate import CommandDelegate
 
 logger = logging.getLogger(__name__)
 
 
-class CommandTreeWidget(QWidget, Ui_CaptureCommandWidget):
+class CommandTreeWidget(QWidget, Ui_CommandCaptureWidget):
     def __init__(self, parent=None):
         super(CommandTreeWidget, self).__init__(parent)
         self.parent = parent
@@ -27,8 +27,14 @@ class CommandTreeWidget(QWidget, Ui_CaptureCommandWidget):
 
         self.model = CommandModel()
         self.tree_view.setItemDelegate(CommandDelegate())
-        # self.model._headers = ["   Command  ", "   Value  "]
         self.tree_view.setModel(self.model)
+
+        self.query_only_checkbox.hide()
+        self.set_only_checkbox.hide()
+        self.excluded_checkbox.hide()
+        self.method_checkbox.hide()
+        self.raw_command_checkbox.hide()
+        self.expand_button.hide()
 
         self.query_only_checkbox.stateChanged.connect(self.on_query_only_changed)
         self.set_only_checkbox.stateChanged.connect(self.on_set_only_changed)
@@ -36,7 +42,6 @@ class CommandTreeWidget(QWidget, Ui_CaptureCommandWidget):
         self.method_checkbox.stateChanged.connect(self.on_method_changed)
         self.raw_command_checkbox.stateChanged.connect(self.on_raw_command_changed)
 
-        # self.update_button.clicked.connect(self.on_update_clicked)
         self.capture_button.clicked.connect(self.on_capture_clicked)
         self.expand_button.clicked.connect(self.on_expand_clicked)
         self.collapse_button.clicked.connect(self.on_collapse_clicked)
@@ -67,9 +72,13 @@ class CommandTreeWidget(QWidget, Ui_CaptureCommandWidget):
             #     self.method_included, self.show_raw_command
             # )
             # self.model.load(capture, False)
-            self.model.load(self.inst, False)
-            self.tree_view.expandToDepth(1)
-            self.tree_view.resizeColumnToContents(0)
+            try:
+                self.model.load(self.inst, False)
+                self.tree_view.expandToDepth(1)
+                self.tree_view.resizeColumnToContents(0)
+                self.tree_view.collapseAll()
+            except Exception as e:
+                logger.error(f'Failed to capture commands from {self.name}: {e}')
         else:
             logger.warning(f' {self.name} is NOT connected.')
 

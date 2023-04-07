@@ -2,16 +2,16 @@
 import logging
 from .jsonmodel import JsonModel
 
-from .qt.QtCore import Qt
-from .qt.QtWidgets import QWidget
-from .ui_capturecommandwidget import Ui_CaptureCommandWidget
+from srsgui.ui.qt.QtCore import Qt
+from srsgui.ui.qt.QtWidgets import QWidget
+from .ui_commandcapturewidget import Ui_CommandCaptureWidget
 
 logger = logging.getLogger(__name__)
 
 
-class CaptureCommandWidget(QWidget, Ui_CaptureCommandWidget):
+class CommandCaptureWidget(QWidget, Ui_CommandCaptureWidget):
     def __init__(self, parent=None):
-        super(CaptureCommandWidget, self).__init__(parent)
+        super(CommandCaptureWidget, self).__init__(parent)
         self.parent = parent
         self.setupUi(self)
         #self.splitter.setStretchFactor(0, 1)
