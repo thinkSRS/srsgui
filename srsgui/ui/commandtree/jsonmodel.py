@@ -5,9 +5,9 @@ import json
 import sys
 from typing import Any, Iterable, List, Dict, Union
 
-from .qt.QtWidgets import QTreeView, QApplication, QHeaderView
-from .qt.QtCore import QAbstractItemModel, QModelIndex, QObject, Qt, QFileInfo
-from .qt.QtGui import QBrush, QColor
+from srsgui.ui.qt.QtWidgets import QTreeView, QApplication, QHeaderView
+from srsgui.ui.qt.QtCore import QAbstractItemModel, QModelIndex, QObject, Qt, QFileInfo
+from srsgui.ui.qt.QtGui import QBrush, QColor
 
 
 class TreeItem:

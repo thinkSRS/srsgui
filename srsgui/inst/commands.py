@@ -115,6 +115,7 @@ class GetCommand(Command):
     To **set** a value is not allowed.
     """
     _set_enable = False
+
     def __set__(self, instance, value):
         raise AttributeError('No set command for {}'
                              .format(self.remote_command))
@@ -126,6 +127,7 @@ class SetCommand(Command):
     To **query** a value is not allowed.
     """
     _get_enable = False
+
     def __get__(self, instance, instance_type):
         raise AttributeError('No query command for {}'
                              .format(self.remote_command))
@@ -149,6 +151,7 @@ class BoolGetCommand(BoolCommand):
     To **set** a value is not allowed.
     """
     _set_enable = False
+
     def __set__(self, instance, value):
         raise AttributeError('No set command for {}'
                              .format(self.remote_command))
@@ -160,6 +163,7 @@ class BoolSetCommand(BoolCommand):
     To **query** a value is not allowed.
     """
     _get_enable = False
+
     def __get__(self, instance, instance_type):
         raise AttributeError('No query command for {}'
                              .format(self.remote_command))
@@ -199,6 +203,7 @@ class IntSetCommand(IntCommand):
     To **query** a value is not allowed.
     """
     _get_enable = False
+
     def __get__(self, instance, instance_type):
         raise AttributeError('No query command for {}'
                              .format(self.remote_command))
@@ -210,7 +215,8 @@ class FloatCommand(Command):
     **set** and **query** a **float** value
     """
 
-    def __init__(self, remote_command_name, unit='', min=-1000.0, max=1000.0, step=1.0, fmt='{}', default_value=None):
+    def __init__(self, remote_command_name, unit='', min=-1000.0, max=1000.0, step=0.1,
+                 significant_figures=4, default_value=None):
         super().__init__(remote_command_name, default_value)
         self._get_convert_function = float
 
@@ -218,7 +224,7 @@ class FloatCommand(Command):
         self.maximum = max
         self.minimum = min
         self.step = step
-        self.fmt = fmt
+        self.significant_figures = significant_figures
         self.default_value = default_value
 
 
@@ -254,6 +260,11 @@ class DictCommand(Command):
 
     def __init__(self, remote_command_name, set_dict, get_dict=None, unit='', fmt='{}', default_value=None):
         super().__init__(remote_command_name, default_value)
+        if type(set_dict) is not dict:
+            raise TypeError('set_dict must be a dictionary')
+        if get_dict is not None and type(get_dict) is not dict:
+            raise TypeError('get_dict must be a dictionary')
+
         self.set_dict = set_dict
         if get_dict is None:
             self.get_dict = set_dict
