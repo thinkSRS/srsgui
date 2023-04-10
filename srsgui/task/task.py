@@ -92,7 +92,7 @@ class Task(thread_class):
         super().__init__()
         self.parent = parent
 
-        self._keep_running = False
+        self._keep_running = False  # flag to tell if the task instance is running
         self._aborted = False
         self._error_raised = False
         self._task_passed = True
@@ -274,6 +274,15 @@ class Task(thread_class):
         if self._keep_running:
             self._aborted = True
             self._keep_running = False
+
+    def delay(self, seconds):
+        """
+        Check if the task is stopped and wait for the given seconds.
+        """
+        if not self._keep_running:
+            raise KeyboardInterrupt('Task is stopped')
+        else:
+            time.sleep(seconds)
 
     def set_session_handler(self, session_handler):
         """
