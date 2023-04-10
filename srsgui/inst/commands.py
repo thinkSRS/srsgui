@@ -68,7 +68,8 @@ class Command(object):
         self.default_value = default_value
         if default_value:
             self._value = default_value
-        self.fmt = '{}'  # format for string conversion
+        self.fmt = ''  # format for string conversion
+                       # '.3f' , '10.3e', 'd', 'x'
 
     def __get__(self, instance, instance_type):
         if instance is None:
@@ -258,7 +259,7 @@ class DictCommand(Command):
     **set** and **query** using a conversion dictionary
     """
 
-    def __init__(self, remote_command_name, set_dict, get_dict=None, unit='', fmt='{}', default_value=None):
+    def __init__(self, remote_command_name, set_dict, get_dict=None, unit='', fmt='', default_value=None):
         super().__init__(remote_command_name, default_value)
         if type(set_dict) is not dict:
             raise TypeError('set_dict must be a dictionary')

@@ -71,8 +71,12 @@ class CommandDelegate(QStyledItemDelegate):
             comp = item.comp
             comp_type = item.comp_type
 
-        if comp_type in (FloatCommand, IntCommand,
-                         FloatIndexCommand, IntIndexCommand):
+        if comp_type in (FloatCommand, FloatIndexCommand):
+            value = editor.value()
+            model.setData(index, value, Qt.EditRole)
+            item.precision = editor.precision
+            return True
+        elif comp_type in (IntCommand, IntIndexCommand):
             value = editor.value()
             model.setData(index, value, Qt.EditRole)
             return True

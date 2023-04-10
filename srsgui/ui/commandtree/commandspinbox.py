@@ -49,6 +49,7 @@ class FloatSpinBox(QDoubleSpinBox):
         super().__init__(*args, **kwargs)
         self.minimum_step = 0.1
         self.significant_figures = 4
+        self.precision = 1
 
     def set_minimum_step(self, value):
         self.minimum_step = value
@@ -75,6 +76,7 @@ class FloatSpinBox(QDoubleSpinBox):
         return value
 
     def textFromValue(self, value):
+        prec = self.decimals
         try:
             if value == 0:
                 return '0.0'
@@ -92,7 +94,7 @@ class FloatSpinBox(QDoubleSpinBox):
                 prec = self.decimals
         except Exception as e:
             print(e)
-
+        self.precision = prec
         format_string = '{:.' + str(prec) + 'f}'
         text = format_string.format(value)
         return text

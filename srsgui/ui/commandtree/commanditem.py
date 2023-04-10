@@ -1,7 +1,8 @@
 
 import time
 from srsgui import Component
-from srsgui.inst import Command, IndexCommand
+from srsgui.inst import Command, IndexCommand, \
+                        FloatCommand, FloatIndexCommand
 
 
 class Index:
@@ -18,7 +19,7 @@ class CommandItem:
         
         self.name = ""
         self.value_type = None  # There are 3 types of values: str, int, and float
-
+        self.precision = 4
         
         self.comp = None
         self.comp_type = None   # There are 5 types of components: Component, Commands, IndexCommands, method and Index
@@ -52,21 +53,29 @@ class CommandItem:
     @property
     def value(self):
         """Return the value of the current item"""
-        ts = time.time()
-        if ts - self.timestamp < 0.1: # Update value later than 0.1 s
-            return self._value
+        try:
+            ts = time.time()
+            if ts - self.timestamp < 0.1: # Update value later than 0.1 s
+                return self._value
 
-        if self.comp_type == Index and self.get_enable and not self.excluded:
-            self._value = self._parent.comp.__getitem__(self.comp)
-            self._value_type = type(self._value)
-            self.timestamp = ts
-        elif issubclass(type(self.comp), Command) and self.get_enable and not self.excluded:
-            self._value = self.comp.__get__(self._parent.comp, self._parent.comp.__class__)
-            self._value_type = type(self._value)
-            self.timestamp = ts
-        else:
-            self._value_type = type(self._value)
+            if self.comp_type == Index and self.get_enable and not self.excluded:
+                self._value = self._parent.comp.__getitem__(self.comp)
+                self._value_type = type(self._value)
+                self.timestamp = ts
+            elif issubclass(type(self.comp), Command) and self.get_enable and not self.excluded:
+                self._value = self.comp.__get__(self._parent.comp, self._parent.comp.__class__)
+                self._value_type = type(self._value)
+                self.timestamp = ts
+            else:
+                self._value_type = type(self._value)
 
+            # Round float to its precision
+            if self.comp_type == FloatCommand:
+                self._value = round(self._value, self.precision)
+            elif self.comp_type == Index and self._parent.comp_type == FloatIndexCommand:
+                self._value = round(self._value, self.precision)
+        except Exception as e:
+            print(e, self.name)
         return self._value
 
     @value.setter
@@ -110,6 +119,20 @@ class CommandItem:
             return comp.unit
         else:
             return ""
+
+    def get_format(self):
+        """Return the format of the item"""
+        comp = None
+        if self.comp_type == Index:
+            comp = self.parent().comp
+        elif issubclass(type(self.comp), Command) or \
+             issubclass(type(self.comp), IndexCommand):
+            comp = self.comp
+
+        if comp and hasattr(comp, 'fmt'):
+            return comp.fmt
+        else:
+            return ''
 
     @classmethod
     def load(

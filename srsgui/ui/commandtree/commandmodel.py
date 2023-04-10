@@ -85,10 +85,15 @@ class CommandModel(QAbstractItemModel):
                 if v is None:
                     return
                 unit = item.get_unit()
-                if unit:
-                    val = f'{v}  {item.get_unit()}'
-                else:
-                    val = v
+                fmt = item.get_format()
+                try:
+                    if unit:
+                        val = f'{v:{fmt}}  {item.get_unit()}'
+                    else:
+                        val = f'{v:{fmt}}'
+                except ValueError:
+                    print(f'ValueError: {item.raw_remote_command} {v} {fmt} {unit}')
+                    val = f'{v}'
                 return val
 
         elif role == Qt.EditRole:
