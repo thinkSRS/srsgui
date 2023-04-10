@@ -96,11 +96,11 @@ class Ui_CommandCaptureWidget(object):
 
     def retranslateUi(self, CommandCaptureWidget):
         CommandCaptureWidget.setWindowTitle(QCoreApplication.translate("CommandCaptureWidget", u"Form", None))
-        self.query_only_checkbox.setText(QCoreApplication.translate("CommandCaptureWidget", u"Include query-only cmds", None))
-        self.set_only_checkbox.setText(QCoreApplication.translate("CommandCaptureWidget", u"Show set-only cmds", None))
-        self.excluded_checkbox.setText(QCoreApplication.translate("CommandCaptureWidget", u"Show excluded cmds", None))
-        self.method_checkbox.setText(QCoreApplication.translate("CommandCaptureWidget", u"Show methods", None))
-        self.raw_command_checkbox.setText(QCoreApplication.translate("CommandCaptureWidget", u"Show raw cmds", None))
+        self.query_only_checkbox.setText(QCoreApplication.translate("CommandCaptureWidget", u"Show query-only cmds [QO]", None))
+        self.set_only_checkbox.setText(QCoreApplication.translate("CommandCaptureWidget", u"Show set-only cmds [SO]", None))
+        self.excluded_checkbox.setText(QCoreApplication.translate("CommandCaptureWidget", u"Show excluded cmds [EX]", None))
+        self.method_checkbox.setText(QCoreApplication.translate("CommandCaptureWidget", u"Show methods [M]", None))
+        self.raw_command_checkbox.setText(QCoreApplication.translate("CommandCaptureWidget", u"Show raw cmds <CMD>", None))
         self.capture_button.setText(QCoreApplication.translate("CommandCaptureWidget", u"Capture", None))
         self.expand_button.setText(QCoreApplication.translate("CommandCaptureWidget", u"Expand all", None))
         self.collapse_button.setText(QCoreApplication.translate("CommandCaptureWidget", u"Collapse all", None))

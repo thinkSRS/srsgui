@@ -56,7 +56,7 @@ class CommandModel(QAbstractItemModel):
     def data(self, index: QModelIndex, role: Qt.ItemDataRole) -> Any:
         """Override from QAbstractItemModel
 
-        Return data from a json item according index and role
+        Return data from an item according index and role
         """
 
         if not index.isValid():

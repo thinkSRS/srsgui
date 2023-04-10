@@ -80,7 +80,7 @@ class FloatSpinBox(QDoubleSpinBox):
                 return '0.0'
 
             digits = math.ceil(math.log10(abs(value)))
-            digits = 0 if digits < 0 else digits
+            # digits = 0 if digits < 0 else digits
 
             if digits == self.significant_figures:
                 step = 1
@@ -88,6 +88,8 @@ class FloatSpinBox(QDoubleSpinBox):
                 step = 10 ** (digits - self.significant_figures)
             value = round(value / step) * step
             prec = self.significant_figures - digits
+            if prec > self.decimals:
+                prec = self.decimals
         except Exception as e:
             print(e)
 
