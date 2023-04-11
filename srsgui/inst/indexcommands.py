@@ -244,7 +244,8 @@ class DictIndexCommand(IndexCommand):
     **set** and **query** using a conversion dictionary
     """
 
-    def __init__(self, remote_command_name, set_dict, index_max, index_min=0, index_dict=None, get_dict=None, unit=''):
+    def __init__(self, remote_command_name, set_dict, index_max, index_min=0,
+                 index_dict=None, get_dict=None, unit=''):
         super().__init__(remote_command_name, index_max, index_min, index_dict)
         self.set_dict = set_dict
         if get_dict is None:

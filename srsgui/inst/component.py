@@ -55,7 +55,10 @@ class Component(object):
     """ class instance of DirCommand"""
 
     exclude_capture = []
-    """exclude commands from query in capture_commands"""
+    """Exclude commands from query in capture_commands"""
+
+    allow_run_button = []
+    """Allow methods to have run buttons in a control panel"""
 
     def __init__(self, parent, name='unnamed'):
         self._name = name
