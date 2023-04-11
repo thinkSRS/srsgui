@@ -116,6 +116,8 @@ class InputPanel(QScrollArea):
                         widget = QComboBox()
                         item_list = map(str, p.cmd_instance.set_dict.keys())
                         widget.addItems(item_list)
+                        if p.value is None:
+                            p.value = 0
                         widget.setCurrentIndex(p.value)
                         p.text = widget.currentText()
 
@@ -197,15 +199,41 @@ class InputPanel(QScrollArea):
     def on_default(self):
         try:
             params = self.task_class.input_parameters
-            for i in params.keys():
-                params[i].value = params[i].default_value
-                widget = getattr(self, i, None)
-                if type(widget) == QLineEdit:
-                    widget.setText(params[i].default_value)
-                elif type(widget) == QComboBox:
-                    widget.setCurrentIndex(params[i].default_value)
+            for name in params.keys():
+                if params[name].default_value is None:
+                    continue
+                widget = getattr(self, name, None)
+                cmd = None
+                if type(widget) == QLineEdit and type(params[name].default_value) == str:
+                    params[name].value = params[name].default_value
+                    widget.setText(params[name].default_value)
+                    if type(params[name]) == CommandInput:
+                        cmd = '{} = "{}"'.format(params[name].cmd, params[name].default_value)
+                elif type(widget) == QComboBox and type(params[name].default_value) == int:
+                    params[name].value = params[name].default_value
+                    widget.setCurrentIndex(params[name].default_value)
+                    params[name].text = widget.currentText()
+                    if type(params[name]) == CommandInput:
+                        if hasattr(params[name].cmd_instance, 'key_type') and \
+                           getattr(params[name].cmd_instance, 'key_type') == 'int':
+                            cmd = '{} = {}'.format(params[name].cmd, params[name].default_value)
+                        else:
+                            cmd = '{} = "{}"'.format(params[name].cmd, params[name].text)
+                elif type(widget) == QSpinBox and type(params[name].default_value) == int:
+                    params[name].value = params[name].default_value
+                    widget.setValue(params[name].default_value)
+                    if type(params[name]) == CommandInput:
+                        cmd = '{} = {}'.format(params[name].cmd, params[name].default_value)
+                elif type(widget) == QDoubleSpinBox and type(params[name].default_value) == float:
+                    params[name].value = params[name].default_value
+                    widget.setValue(params[name].default_value)
+                    if type(params[name]) == CommandInput:
+                        cmd = '{} = {}'.format(params[name].cmd, params[name].default_value)
                 else:
-                    widget.setValue(params[i].default_value)
+                    logger.error('error to reset "{}" to default, {}'.
+                                 format(name, params[name].default_value))
+                if cmd:
+                    self.command_handler.process_command(cmd, '')
             logger.debug("{} reset to default".format(self.__class__.__name__))
         except Exception as e:
             logger.error(e)

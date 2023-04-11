@@ -165,8 +165,8 @@ class Ip4Input(BaseInput):
 
 
 class CommandInput(IntegerInput):
-    def __init__(self, cmd_name, cmd_instance):
-        super().__init__(0)
+    def __init__(self, cmd_name, cmd_instance, default_value=None):
+        super().__init__(default_value)
 
         self.inst_name = ''
         self.cmd_name = cmd_name
