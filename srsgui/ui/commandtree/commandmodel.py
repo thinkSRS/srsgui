@@ -110,6 +110,12 @@ class CommandModel(QAbstractItemModel):
             if item.row() % 2 == 0:
                 return QBrush(QColor(240, 240, 253))
 
+        elif role == Qt.ToolTipRole:
+            item = index.internalPointer()
+            if item.is_method or issubclass(item.comp_type, Component):
+                if hasattr(item.comp, '__doc__') and index.column() == 0:
+                    return item.comp.__doc__
+
     def setData(self, index: QModelIndex, value: Any, role: Qt.ItemDataRole):
         """Override from QAbstractItemModel
 

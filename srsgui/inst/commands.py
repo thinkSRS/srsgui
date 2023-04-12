@@ -216,7 +216,7 @@ class FloatCommand(Command):
     **set** and **query** a **float** value
     """
 
-    def __init__(self, remote_command_name, unit='', min=-1000.0, max=1000.0, step=0.1,
+    def __init__(self, remote_command_name, unit='', min=-1e6, max=1e6, step=0.001,
                  significant_figures=4, default_value=None):
         super().__init__(remote_command_name, default_value)
         self._get_convert_function = float

@@ -3,7 +3,7 @@ import inspect
 import logging
 
 from srsgui.ui.qt.QtCore import Qt, QModelIndex
-from srsgui.ui.qt.QtWidgets import QTreeView, QApplication, QHeaderView, QPushButton
+from srsgui.ui.qt.QtWidgets import QTreeView, QApplication, QHeaderView
 
 from .commandmodel import CommandModel
 from .commanddelegate import CommandDelegate
@@ -51,7 +51,12 @@ class CommandTreeView(QTreeView):
                 item = index.internalPointer()
                 if item.is_method:
                     widget_index = self.model().index(i, 1, parent)
-                    if len(inspect.getfullargspec(item.comp).args) == 1:
+                    spec = inspect.getfullargspec(item.comp)
+                    if spec.defaults is None:
+                        flag = len(spec.args) == 1
+                    else:
+                        flag = len(spec.args) - len(spec.defaults) == 1
+                    if flag:
                         parent_comp = item.parent().comp
                         meth = getattr(parent_comp, item.name)
                         if meth and meth.__func__ in parent_comp.allow_run_button:
