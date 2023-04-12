@@ -280,7 +280,7 @@ class Task(thread_class):
         Check if the task is stopped and wait for the given seconds.
         """
         if not self._keep_running:
-            raise KeyboardInterrupt('Task is stopped')
+            raise Task.TaskException('Task is requested to stopped')
         else:
             time.sleep(seconds)
 
