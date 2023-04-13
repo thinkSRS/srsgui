@@ -4,15 +4,14 @@ import logging
 from srsgui.ui.qt.QtCore import Qt, QModelIndex
 from srsgui.ui.qt.QtWidgets import QWidget
 
-from .ui_commandcapturewidget import Ui_CommandCaptureWidget
-
+from .ui_commandtreewidget import Ui_CommandTreeWidget
 from .commandmodel import CommandModel
 from .commanddelegate import CommandDelegate
 
 logger = logging.getLogger(__name__)
 
 
-class CommandTreeWidget(QWidget, Ui_CommandCaptureWidget):
+class CommandTreeWidget(QWidget, Ui_CommandTreeWidget):
     def __init__(self, parent=None):
         super(CommandTreeWidget, self).__init__(parent)
         self.parent = parent
@@ -47,46 +46,24 @@ class CommandTreeWidget(QWidget, Ui_CommandCaptureWidget):
         self.name = name
 
     def on_query_only_changed(self, state):
-        self.query_only_included = state
-        self.update_item_display()
-
-    def update_item_display(self, parent=QModelIndex()):
-        for i in range(self.model.rowCount(parent)):
-            index = self.model.index(i, 0, parent)
-            self.update_item_display(index)
-
-            item = index.internalPointer()
-            query_only = set_only = is_method = is_excluded = False
-            if not self.query_only_included:
-                if not item.set_enable and item.get_enable:
-                    query_only = True
-            if not self.set_only_included:
-                if item.set_enable and not item.get_enable:
-                    set_only = True
-            if not self.method_included:
-                if item.is_method:
-                    is_method = True
-            if not self.excluded_included:
-                if item.excluded:
-                    is_excluded = True
-            state = query_only or set_only or is_method or is_excluded
-            self.tree_view.setRowHidden(i, parent, state)
+        self.tree_view.query_only_included = state
+        self.tree_view.update_item_display()
 
     def on_set_only_changed(self, state):
-        self.set_only_included = state
-        self.update_item_display()
+        self.tree_view.set_only_included = state
+        self.tree_view.update_item_display()
 
     def on_excluded_changed(self, state):
-        self.excluded_included = state
-        self.update_item_display()
+        self.tree_view.excluded_included = state
+        self.tree_view.update_item_display()
 
     def on_method_changed(self, state):
-        self.method_included = state
-        self.update_item_display()
+        self.tree_view.method_included = state
+        self.tree_view.update_item_display()
 
     def on_raw_command_changed(self, state):
-        self.show_raw_command = state
-        self.model.show_raw_remote_command = self.show_raw_command
+        self.tree_view.show_raw_command = state
+        self.model.show_raw_remote_command = self.tree_view.show_raw_command
 
     def on_capture_clicked(self):
         if self.inst is not None and self.inst.is_connected():
@@ -96,7 +73,9 @@ class CommandTreeWidget(QWidget, Ui_CommandCaptureWidget):
                 self.tree_view.expandToDepth(1)
                 self.tree_view.resizeColumnToContents(0)
                 # self.tree_view.collapseAll()
-                self.update_item_display()
+                self.tree_view.update_item_display()
+                self.tree_view.connect_methods_to_buttons()
+
             except Exception as e:
                 logger.error(f'Failed to load command tree from {self.name}: {e}')
         else:
@@ -107,3 +86,30 @@ class CommandTreeWidget(QWidget, Ui_CommandCaptureWidget):
 
     def on_collapse_clicked(self):
         self.tree_view.collapseAll()
+
+
+if __name__ == '__main__':
+    import sys
+    from srsgui.ui.qt.QtWidgets import QApplication, QHeaderView
+    from srsinst.sr860 import SR860
+
+    app = QApplication(sys.argv)
+
+    widget = CommandTreeWidget()
+
+    inst = SR860('tcpip', '172.25.70.129')
+    inst.query_text(' ')
+
+    widget.set_inst('lockin', inst)
+
+    # print(inst.check_id())
+    # inst.comm.set_callbacks(print, print)
+
+    # widget.model.load(inst)
+
+    widget.show()
+
+    widget.tree_view.header().setSectionResizeMode(0, QHeaderView.Stretch)
+    widget.resize(600, 400)
+
+    app.exec_()
