@@ -19,7 +19,7 @@ class CommandItem:
         
         self.name = ""
         self.value_type = None  # There are 3 types of values: str, int, and float
-        self.precision = 4
+        self.precision = 6
         
         self.comp = None
         self.comp_type = None   # There are 5 types of components: Component, Commands, IndexCommands, method and Index
@@ -55,7 +55,7 @@ class CommandItem:
         """Return the value of the current item"""
         try:
             ts = time.time()
-            if ts - self.timestamp < 0.1: # Update value later than 0.1 s
+            if ts - self.timestamp < 0.1:  # Update value later than 0.1 s
                 return self._value
 
             if self.comp_type == Index and self.get_enable and not self.excluded:
@@ -74,8 +74,9 @@ class CommandItem:
                 self._value = round(self._value, self.precision)
             elif self.comp_type == Index and self._parent.comp_type == FloatIndexCommand:
                 self._value = round(self._value, self.precision)
+
         except Exception as e:
-            print(e, self.name)
+            print('Error: {} {}'.format(e, self.name))
         return self._value
 
     @value.setter

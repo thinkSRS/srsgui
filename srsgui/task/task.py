@@ -354,7 +354,7 @@ class Task(thread_class):
         for fig in self.figure_dict.values():
             if hasattr(fig, 'canvas'):
                 fig.clear()
-                self.request_figure_update()
+                self.request_figure_update(fig)
 
     def is_running(self):
         """
