@@ -2,6 +2,7 @@
 import time
 import json
 import sys
+
 from typing import Any, Iterable, List, Dict, Union
 
 from srsgui.ui.qt.QtWidgets import QTreeView, QApplication, QHeaderView
@@ -20,10 +21,6 @@ class CommandModel(QAbstractItemModel):
     def __init__(self, parent: QObject = None):
         super().__init__(parent)
 
-        self.show_methods = True
-        self.show_excluded = True
-        self.show_set_only = True
-        self.show_query_only = True
         self.show_raw_remote_command = True
 
         self._rootItem = CommandItem()
@@ -69,39 +66,23 @@ class CommandModel(QAbstractItemModel):
 
                 if self.show_raw_remote_command:
                     name += f' <{item.raw_remote_command}>' if item.raw_remote_command else ''
-                if self.show_methods:
-                    name += ' [M]' if item.is_method else ''
-                if self.show_excluded:
-                    name += ' [EX]' if item.excluded else ''
-                if self.show_set_only:
-                    name += ' [SO]' if item.set_enable and not item.get_enable else ''
-                if self.show_query_only:
-                    name += ' [QO]' if item.get_enable and not item.set_enable else ''
+
+                name += ' [M]' if item.is_method else ''
+                name += ' [EX]' if item.excluded else ''
+                name += ' [SO]' if item.set_enable and not item.get_enable else ''
+                name += ' [QO]' if item.get_enable and not item.set_enable else ''
                 return name
 
             if index.column() == 1:
                 item = index.internalPointer()
                 v = item.value
-                if v is None:
-                    return
-                unit = item.get_unit()
-                fmt = item.get_format()
-                try:
-                    if unit:
-                        val = f'{v:{fmt}}  {item.get_unit()}'
-                    else:
-                        val = f'{v:{fmt}}'
-                except ValueError:
-                    print(f'ValueError: {item.raw_remote_command} {v} {fmt} {unit}')
-                    val = f'{v}'
-                return val
+                if v is not None:
+                    return item.get_formatted_value(v)
 
         elif role == Qt.EditRole:
             if index.column() == 1:
                 item = index.internalPointer()
-                val = item.value
-                # print('data', item.name, item.comp, val)
-                return val
+                return item.value
 
         elif role == Qt.BackgroundRole:
             item = index.internalPointer()

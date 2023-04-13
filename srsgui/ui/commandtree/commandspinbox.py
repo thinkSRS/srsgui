@@ -53,11 +53,12 @@ class FloatSpinBox(QDoubleSpinBox):
         self.minimum_step = 0.1
         self.significant_figures = 4
         self.precision = 1
+        self.decis = 1
 
     def set_minimum_step(self, value):
         self.minimum_step = value
         step = self.minimum_step if self.minimum_step > 1e-12 else 1e-12
-        self.decimals = math.ceil(math.log10(1.0 / step))
+        self.decis = math.ceil(-math.log10(step))
 
     def set_significant_figures(self, value):
         self.significant_figures = value
@@ -67,34 +68,37 @@ class FloatSpinBox(QDoubleSpinBox):
             if self.suffix():
                 unit_len = len(self.suffix())
                 value = float(text[:-unit_len])
+
             else:
                 value = float(text)
             if value < self.minimum():
                 value = self.minimum()
             elif value > self.maximum():
                 value = self.maximum()
+
+
         except ValueError:
             print('valueFromText ValueError', text, self.suffix())
             value = self.minimum()
         return value
 
     def textFromValue(self, value):
-        prec = self.decimals
+        prec = self.decis
         try:
             if value == 0:
                 return '0.0'
 
             digits = math.ceil(math.log10(abs(value)))
-            # digits = 0 if digits < 0 else digits
-
+            """
             if digits == self.significant_figures:
                 step = 1
             else:
                 step = 10 ** (digits - self.significant_figures)
             value = round(value / step) * step
+            """
             prec = self.significant_figures - digits
-            if prec > self.decimals:
-                prec = self.decimals
+            if prec > self.decis:
+                prec = self.decis
         except Exception as e:
             print(e)
         self.precision = prec
