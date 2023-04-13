@@ -1,5 +1,7 @@
 
 import time
+import math
+
 from srsgui import Component
 from srsgui.inst import Command, IndexCommand, \
                         FloatCommand, FloatIndexCommand
@@ -19,8 +21,7 @@ class CommandItem:
         
         self.name = ""
         self.value_type = None  # There are 3 types of values: str, int, and float
-        self.precision = 6
-        
+
         self.comp = None
         self.comp_type = None   # There are 5 types of components: Component, Commands, IndexCommands, method and Index
         self.set_enable = False
@@ -60,20 +61,22 @@ class CommandItem:
 
             if self.comp_type == Index and self.get_enable and not self.excluded:
                 self._value = self._parent.comp.__getitem__(self.comp)
-                self._value_type = type(self._value)
+                self.value_type = type(self._value)
                 self.timestamp = ts
             elif issubclass(type(self.comp), Command) and self.get_enable and not self.excluded:
                 self._value = self.comp.__get__(self._parent.comp, self._parent.comp.__class__)
-                self._value_type = type(self._value)
+                self.value_type = type(self._value)
                 self.timestamp = ts
+            """    
             else:
-                self._value_type = type(self._value)
-
+                self.value_type = type(self._value)
+        
             # Round float to its precision
             if self.comp_type == FloatCommand:
                 self._value = round(self._value, self.precision)
             elif self.comp_type == Index and self._parent.comp_type == FloatIndexCommand:
                 self._value = round(self._value, self.precision)
+            """
 
         except Exception as e:
             print('Error: {} {}'.format(e, self.name))
@@ -134,6 +137,40 @@ class CommandItem:
             return comp.fmt
         else:
             return ''
+
+    def get_formatted_value(self, value):
+        """Return formatted value of a float"""
+
+        comp = None
+        if self.comp_type == Index:
+            comp = self.parent().comp
+        elif issubclass(type(self.comp), Command) or \
+             issubclass(type(self.comp), IndexCommand):
+            comp = self.comp
+
+        fmt = comp.fmt if comp and hasattr(comp, 'fmt') else ''
+        unit = comp.unit if comp and hasattr(comp, 'unit') else ''
+
+        if comp and (issubclass(type(comp), FloatIndexCommand) or
+                     issubclass(type(comp), FloatCommand)):
+            if value == 0.0:
+                return '0' + f' {unit}'
+            step = comp.step
+            significant_figures = comp.significant_figures
+
+            decimals = math.ceil(-math.log10(step))
+            digits = math.ceil(math.log10(abs(value))) if value else 0
+            precision = min(decimals, significant_figures - digits)
+            precision = max(precision, 0)
+            if abs(value) >= 0.1 or precision < significant_figures:
+                return f'{value:.{precision}f}'.rstrip('0').rstrip('.') + f' {unit}'
+            else:
+                v = f'{value:.{significant_figures}e}'
+                t = v.split('e')
+                return f'{t[0].rstrip("0").rstrip(".")}e{t[1]}' + f'  {unit}'
+
+        else:
+            return f'{value:{fmt}}' + f' {unit}'
 
     @classmethod
     def load(
