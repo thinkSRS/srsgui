@@ -46,14 +46,14 @@ class IntegerSpinBox(QSpinBox):
 
 class FloatSpinBox(QDoubleSpinBox):
     """
-    Adjust step size depending on the cursor postion
+    Adjust step size depending on the cursor position
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.minimum_step = 0.1
         self.significant_figures = 4
-        self.precision = 1
-        self.decis = 1
+        self.precision = 3
+        self.decis = 3
 
     def set_minimum_step(self, value):
         self.minimum_step = value
@@ -76,7 +76,6 @@ class FloatSpinBox(QDoubleSpinBox):
             elif value > self.maximum():
                 value = self.maximum()
 
-
         except ValueError:
             print('valueFromText ValueError', text, self.suffix())
             value = self.minimum()
@@ -97,13 +96,14 @@ class FloatSpinBox(QDoubleSpinBox):
             value = round(value / step) * step
             """
             prec = self.significant_figures - digits
-            if prec > self.decis:
-                prec = self.decis
+            prec = self.decis if prec > self.decis else prec
+            prec = 0 if prec < 0 else prec
+            self.precision = prec
+            format_string = '{:.' + str(prec) + 'f}'
+            text = format_string.format(value)
         except Exception as e:
             print(e)
-        self.precision = prec
-        format_string = '{:.' + str(prec) + 'f}'
-        text = format_string.format(value)
+            return ''
         return text
 
     def stepBy(self, steps):

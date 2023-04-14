@@ -99,8 +99,12 @@ class CommandItem:
         else:
             return False
 
-    def get_formatted_value(self, value):
+    def get_formatted_value(self):
         """Return formatted value of a float"""
+
+        value = self.value
+        if value is None:
+            return None
 
         comp = None
         if self.comp_type == Index:
@@ -125,7 +129,11 @@ class CommandItem:
             precision = max(precision, 0)
             if abs(value) >= 0.1 or precision < significant_figures:
                 # Remove trailing zeros and return
-                return f'{value:.{precision}f}'.rstrip('0').rstrip('.') + f' {unit}'
+                s = f'{value:.{precision}f}'
+                if '.' in s:
+                    return s.rstrip('0').rstrip('.') + f' {unit}'
+                else:
+                    return s + f' {unit}'
             else:
                 v = f'{value:.{significant_figures}e}'
                 # Remove trailing zeros before 'e' and return

@@ -203,6 +203,7 @@ class IntIndexGetCommand(IntIndexCommand):
     using only **query** returning an **integer**, without **set**.
     """
     _set_enable = False
+
     def __setitem__(self, instance, value):
         raise InstIndexError('No set allowed for index command {}'
                              .format(self.remote_command))

@@ -74,9 +74,7 @@ class CommandModel(QAbstractItemModel):
 
             if index.column() == 1:
                 item = index.internalPointer()
-                v = item.value
-                if v is not None:
-                    return item.get_formatted_value(v)
+                return item.get_formatted_value()
 
         elif role == Qt.EditRole:
             if index.column() == 1:

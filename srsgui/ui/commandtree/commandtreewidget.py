@@ -64,6 +64,7 @@ class CommandTreeWidget(QWidget, Ui_CommandTreeWidget):
     def on_raw_command_changed(self, state):
         self.tree_view.show_raw_command = state
         self.model.show_raw_remote_command = self.tree_view.show_raw_command
+        self.model.dataChanged.emit(QModelIndex(), QModelIndex())
 
     def on_capture_clicked(self):
         if self.inst is not None and self.inst.is_connected():
