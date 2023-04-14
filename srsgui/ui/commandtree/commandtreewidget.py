@@ -69,7 +69,7 @@ class CommandTreeWidget(QWidget, Ui_CommandTreeWidget):
         if self.inst is not None and self.inst.is_connected():
             try:
                 self.model.show_raw_remote_command = self.show_raw_command
-                self.model.load(self.inst, False)
+                self.model.load(self.inst)
                 self.tree_view.expandToDepth(1)
                 self.tree_view.resizeColumnToContents(0)
                 # self.tree_view.collapseAll()

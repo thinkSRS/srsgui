@@ -67,17 +67,6 @@ class CommandItem:
                 self._value = self.comp.__get__(self._parent.comp, self._parent.comp.__class__)
                 self.value_type = type(self._value)
                 self.timestamp = ts
-            """    
-            else:
-                self.value_type = type(self._value)
-        
-            # Round float to its precision
-            if self.comp_type == FloatCommand:
-                self._value = round(self._value, self.precision)
-            elif self.comp_type == Index and self._parent.comp_type == FloatIndexCommand:
-                self._value = round(self._value, self.precision)
-            """
-
         except Exception as e:
             print('Error: {} {}'.format(e, self.name))
         return self._value
@@ -110,34 +99,6 @@ class CommandItem:
         else:
             return False
 
-    def get_unit(self):
-        """Return the unit of the item"""
-        comp = None
-        if self.comp_type == Index:
-            comp = self.parent().comp
-        elif issubclass(type(self.comp), Command) or \
-             issubclass(type(self.comp), IndexCommand):
-            comp = self.comp
-
-        if comp and hasattr(comp, 'unit'):
-            return comp.unit
-        else:
-            return ""
-
-    def get_format(self):
-        """Return the format of the item"""
-        comp = None
-        if self.comp_type == Index:
-            comp = self.parent().comp
-        elif issubclass(type(self.comp), Command) or \
-             issubclass(type(self.comp), IndexCommand):
-            comp = self.comp
-
-        if comp and hasattr(comp, 'fmt'):
-            return comp.fmt
-        else:
-            return ''
-
     def get_formatted_value(self, value):
         """Return formatted value of a float"""
 
@@ -163,19 +124,19 @@ class CommandItem:
             precision = min(decimals, significant_figures - digits)
             precision = max(precision, 0)
             if abs(value) >= 0.1 or precision < significant_figures:
+                # Remove trailing zeros and return
                 return f'{value:.{precision}f}'.rstrip('0').rstrip('.') + f' {unit}'
             else:
                 v = f'{value:.{significant_figures}e}'
+                # Remove trailing zeros before 'e' and return
                 t = v.split('e')
                 return f'{t[0].rstrip("0").rstrip(".")}e{t[1]}' + f'  {unit}'
-
         else:
             return f'{value:{fmt}}' + f' {unit}'
 
     @classmethod
     def load(
-        cls, comp, parent: "CommandItem" = None, sort=False
-    ) -> "CommandItem":
+        cls, comp, parent: "CommandItem" = None) -> "CommandItem":
         """Create a 'root' CommandItem from a Component and 
         populate its subcomponent and commands recursively.
 
@@ -192,7 +153,7 @@ class CommandItem:
                     continue
                 instance = comp.__dict__[j]
                 if issubclass(instance.__class__,  Component):                
-                    child = cls.load(instance, root_item, sort)
+                    child = cls.load(instance, root_item)
                     child.name = j
                     child.comp = instance
                     if instance in comp.exclude_capture:
@@ -214,7 +175,7 @@ class CommandItem:
                     current_attributes.append(key)
 
                     if issubclass(cmd_instance.__class__, Command):
-                        child = cls.load(cmd_instance, root_item, sort)
+                        child = cls.load(cmd_instance, root_item)
                         child.name = key
                         child.comp = cmd_instance
                         child.comp_type = type(cmd_instance)
@@ -222,7 +183,7 @@ class CommandItem:
                         root_item.appendChild(child)
 
                     elif issubclass(cmd_instance.__class__, IndexCommand):
-                        child = cls.load(cmd_instance, root_item, sort)
+                        child = cls.load(cmd_instance, root_item)
                         child.name = key
                         child.comp = cmd_instance
                         child.comp_type = type(cmd_instance)
@@ -234,7 +195,7 @@ class CommandItem:
                         if key.startswith('_'):
                             continue
                         
-                        child = cls.load(cmd_instance, root_item, sort)
+                        child = cls.load(cmd_instance, root_item)
                         child.name = key
                         child.comp = cmd_instance
                         child.comp_type = type(cmd_instance)
@@ -265,7 +226,7 @@ class CommandItem:
                     if comp.index_dict is None:
                         index = comp.index_min
                         while index <= comp.index_max:
-                            child = cls.load(index, root_item, sort)
+                            child = cls.load(index, root_item)
                             child.name = f'{index}'
                             child.comp = index
                             child.comp_type = Index
@@ -276,7 +237,7 @@ class CommandItem:
                             index += 1
                     else:
                         for key in comp.index_dict:
-                            child = cls.load(key, root_item, sort)
+                            child = cls.load(key, root_item)
                             child.name = f'{key}'
                             child.comp = key
                             child.comp_type = Index

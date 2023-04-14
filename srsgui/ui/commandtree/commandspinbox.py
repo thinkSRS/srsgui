@@ -19,7 +19,7 @@ class IntegerSpinBox(QSpinBox):
 
         text = self.lineEdit().text()
         cur_pos = self.lineEdit().cursorPosition()
-        sep_pos = len(text)
+        sep_pos = len(text) - len(self.suffix())
 
         if cur_pos < min_pos:
             return
@@ -36,7 +36,7 @@ class IntegerSpinBox(QSpinBox):
         min_pos = prefix_len + 1 if self.value() < 0 else prefix_len
 
         text = self.lineEdit().text()
-        new_sep_pos = len(text)
+        new_sep_pos = len(text) - len(self.suffix())
 
         new_cur_pos = cur_pos + new_sep_pos - sep_pos
         if new_cur_pos < min_pos:

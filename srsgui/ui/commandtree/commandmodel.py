@@ -30,7 +30,7 @@ class CommandModel(QAbstractItemModel):
         """ Clear data from the model """
         self.load(Component())
 
-    def load(self, document: Component, sort=False):
+    def load(self, document: Component):
         """Load model from a nested dictionary returned by json.loads()
 
         Arguments:
@@ -39,15 +39,14 @@ class CommandModel(QAbstractItemModel):
 
         assert isinstance(
             document, Component
-        ), "`document` must be of dict, list or tuple, " f"not {type(document)}"
+        ), "`document` must be a Component, " f"not {type(document)}"
 
         self.beginResetModel()
 
-        self._rootItem = CommandItem.load(document, sort=sort)
+        self._rootItem = CommandItem.load(document)
         self._rootItem.value_type = type(document)
 
         self.endResetModel()
-
         return True
 
     def data(self, index: QModelIndex, role: Qt.ItemDataRole) -> Any:

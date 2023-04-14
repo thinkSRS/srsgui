@@ -23,22 +23,22 @@ class CommandDelegate(QStyledItemDelegate):
             comp = item.comp
             comp_type = item.comp_type
 
-        if comp_type in (FloatCommand, FloatIndexCommand):
+        if issubclass(comp_type, FloatCommand) or issubclass(comp_type, FloatIndexCommand):
             editor = FloatSpinBox(parent)
             editor.setDecimals(10)
             editor.setSingleStep(0.1)
             editor.setMinimum(comp.minimum)
             editor.setMaximum(comp.maximum)
-            editor.setSuffix(comp.unit)
+            editor.setSuffix(' ' + comp.unit)
             editor.set_significant_figures(comp.significant_figures)
             editor.set_minimum_step(comp.step)
             return editor
 
-        elif comp_type in (IntCommand, IntIndexCommand):
+        elif issubclass(comp_type, IntCommand) or issubclass(comp_type, IntIndexCommand):
             editor = IntegerSpinBox(parent)
             editor.setMinimum(comp.minimum)
             editor.setMaximum(comp.maximum)
-            editor.setSuffix(comp.unit)
+            editor.setSuffix(' ' + comp.unit)
             return editor
 
         elif comp_type in (DictCommand, DictIndexCommand):
@@ -71,12 +71,12 @@ class CommandDelegate(QStyledItemDelegate):
             comp = item.comp
             comp_type = item.comp_type
 
-        if comp_type in (FloatCommand, FloatIndexCommand):
+        if issubclass(comp_type, FloatCommand) or issubclass(comp_type, FloatIndexCommand):
             value = editor.value()
             model.setData(index, value, Qt.EditRole)
             item.precision = editor.precision
             return True
-        elif comp_type in (IntCommand, IntIndexCommand):
+        elif issubclass(comp_type, IntCommand) or issubclass(comp_type, IntIndexCommand):
             value = editor.value()
             model.setData(index, value, Qt.EditRole)
             return True
