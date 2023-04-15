@@ -54,6 +54,13 @@ class CommandItem:
     @property
     def value(self):
         """Return the value of the current item"""
+        return self._value
+
+    @value.setter
+    def value(self, value):
+        self._value = value
+
+    def query_value(self):
         try:
             ts = time.time()
             if ts - self.timestamp < 0.1:  # Update value later than 0.1 s
@@ -70,10 +77,6 @@ class CommandItem:
         except Exception as e:
             print('Error: {} {}'.format(e, self.name))
         return self._value
-
-    @value.setter
-    def value(self, value):
-        self._value = value
 
     def set_value(self, value):
         """Set value to the instrument and update the value of the item"""
@@ -254,5 +257,5 @@ class CommandItem:
                             child.get_enable = comp._get_enable
                             root_item.appendChild(child)
                 except Exception as e:
-                    print(f'  {type(e)} {e} command:{comp.remote_command} index: {index}')
+                    print(f'  {type(e)} {e} command:{comp.remote_command}')
         return root_item

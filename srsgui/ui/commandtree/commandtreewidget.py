@@ -88,6 +88,8 @@ class CommandTreeWidget(QWidget, Ui_CommandTreeWidget):
     def on_collapse_clicked(self):
         self.tree_view.collapseAll()
 
+    def closeEvent(self, event) -> None:
+        self.model.command_handler.stop()
 
 if __name__ == '__main__':
     import sys

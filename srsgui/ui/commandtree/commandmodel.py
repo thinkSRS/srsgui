@@ -7,16 +7,21 @@ from typing import Any, Iterable, List, Dict, Union
 
 from srsgui.ui.qt.QtWidgets import QTreeView, QApplication, QHeaderView
 from srsgui.ui.qt.QtGui import QBrush, QColor
-from srsgui.ui.qt.QtCore import QAbstractItemModel, QModelIndex, QObject, Qt, QFileInfo
+from srsgui.ui.qt.QtCore import QAbstractItemModel, QModelIndex, \
+                                QObject, Qt, Signal
 
 from srsgui import Component
 
 from .commanditem import CommandItem, Index
 from .commanddelegate import CommandDelegate
+from .commandhandler import CommandHandler
 
 
 class CommandModel(QAbstractItemModel):
     """ An editable model of Command and Component """
+
+    query_requested = Signal(QModelIndex)
+    set_requested = Signal(tuple)
 
     def __init__(self, parent: QObject = None):
         super().__init__(parent)
@@ -25,6 +30,19 @@ class CommandModel(QAbstractItemModel):
 
         self._rootItem = CommandItem()
         self._headers = ("  command  ", "  value  ")
+
+        self.command_handler = CommandHandler()
+        self.query_requested.connect(self.command_handler.worker.handle_query)
+        self.set_requested.connect(self.command_handler.worker.handle_set)
+        self.command_handler.worker.query_processed.connect(self.handle_command)
+        self.command_handler.worker.set_processed.connect(self.handle_command)
+
+    def handle_command(self, cmd_tuple):
+        index = cmd_tuple[0]
+        value = cmd_tuple[1]
+        changed = cmd_tuple[2]
+        if changed:
+            self.dataChanged.emit(index, index, [Qt.ItemDataRole, Qt.EditRole])
 
     def clear(self):
         """ Clear data from the model """
@@ -74,11 +92,13 @@ class CommandModel(QAbstractItemModel):
 
             if index.column() == 1:
                 item = index.internalPointer()
+                self.query_requested.emit(index)
                 return item.get_formatted_value()
 
         elif role == Qt.EditRole:
             if index.column() == 1:
                 item = index.internalPointer()
+                self.query_requested.emit(index)
                 return item.value
 
         elif role == Qt.BackgroundRole:
@@ -108,13 +128,14 @@ class CommandModel(QAbstractItemModel):
         if role == Qt.EditRole:
             if index.column() == 1:
                 item = index.internalPointer()
+                self.set_requested.emit((index, value))
                 item.set_value(value)
                 self.dataChanged.emit(index, index, [Qt.EditRole])
                 return True
             return False
     
     def headerData(self, section: int, orientation: Qt.Orientation,
-                   role: Qt.ItemDataRole    ):
+                   role: Qt.ItemDataRole):
         """Override from QAbstractItemModel
 
         it returns only data for columns (orientation = Horizontal)
