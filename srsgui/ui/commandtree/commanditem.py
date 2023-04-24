@@ -159,6 +159,7 @@ class CommandItem:
         root_item.comp = comp
 
         if issubclass(comp.__class__, Component):
+            root_item.name = comp.get_name()
             for j in comp.__dict__:
                 if j == '_parent':
                     continue

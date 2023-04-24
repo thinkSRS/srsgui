@@ -516,16 +516,10 @@ class Task(thread_class):
     def notify_data_available(self, data={}):
         self.callbacks.data_available(data)
 
-    # These callbacks are used to update display for streaming data from another class or thread
-    # Signals are wrapped as a callback functions 
-
-    def data_available_callback(self, data={}, *args):
-        self.callbacks.data_available(data)
-
     def update(self, data: dict):
         """
-        when data_available signal emits, this method handles display update.
-        By default, it does no data handling, but figure update request.
+        when notify_data_available is called, this method handles data processing
+        and display update. By default, it does no data handling, but figure update request.
         GUI related data processing needs to be done here to be handled
         in proper order by the GUI event loop handler.
         """

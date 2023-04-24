@@ -1,11 +1,12 @@
 
 from srsgui.ui.qt.QtCore import QObject, QThread, QModelIndex, Signal
+from .commanditem import Index
 
 
 class CommandWorker(QObject):
     query_processed = Signal(tuple)
     set_processed = Signal(tuple)
-
+    set_command_sent = Signal(str, str)
     def handle_query(self, index: QModelIndex):
         item = index.internalPointer()
         old_value = item.value
@@ -20,12 +21,40 @@ class CommandWorker(QObject):
 
         item = index.internalPointer()
         old_value = item.value
-        print('Set starts')
         item.set_value(v)
+        sent_command = self.construct_set_command_string(item, v)
+        self.set_command_sent.emit(sent_command, None)
+        print(sent_command)
+        
         new_value = item.query_value()
         changed = old_value != new_value
-        # print('Set cmd: {}, Parameter: {}'.format(item.name, new_value))
         self.set_processed.emit((index, new_value, changed))
+
+    def construct_set_command_string(self, item, value):
+        self.buffer = []
+        self.get_item_name(item)
+        self.buffer.reverse()
+        if type(value) is str:
+            s = '{} = "{}"'.format('.'.join(self.buffer), value)
+        else:
+            s = '{} = {}'.format('.'.join(self.buffer), value)
+
+        s = s.replace('.[', '[')
+        return s
+
+    def get_item_name(self, item):
+        if item is None:
+            return None
+        elif item.comp_type == Index:
+            if type(item.comp) is str:
+                self.buffer.append('["{}"]'.format(item.name))
+                self.get_item_name(item.parent())
+            else:
+                self.buffer.append('[{}]'.format(item.name))
+                self.get_item_name(item.parent())
+        else:
+            self.buffer.append(item.name)
+            self.get_item_name(item.parent())
 
 
 class CommandHandler(QObject):
