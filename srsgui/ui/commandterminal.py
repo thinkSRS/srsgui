@@ -152,7 +152,7 @@ class CommandTerminal(QFrame):
     def handle_command(self, cmd, reply):
         try:
             if reply:
-                self.tbCommand.append(f'{cmd}   returned   {reply}')
+                self.tbCommand.append(f'{cmd}   ==>   {reply}')
             else:
                 self.tbCommand.append(f'{cmd}')
 

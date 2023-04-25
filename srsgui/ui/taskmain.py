@@ -24,8 +24,8 @@ from .signalhandler import SignalHandler
 from .stdout import StdOut
 from .qtloghandler import QtLogHandler
 from .deviceinfohandler import DeviceInfoHandler
+
 from .dockhandler import DockHandler
-from .commandhandler import CommandHandler
 
 from srsgui.task.config import Config
 from srsgui.task.sessionhandler import SessionHandler
@@ -77,14 +77,12 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         self.inst_info_handler = DeviceInfoHandler(self)
 
         self.dock_handler = DockHandler(self)
+        self.command_handler = self.dock_handler.terminal_command_handler
         self.console = self.dock_handler.console
         self.terminal_widget = self.dock_handler.terminal_widget
         self.plotDockWidget = self.dock_handler.get_dock()
 
         # Make the terminal not blocking for log query
-        self.command_handler = CommandHandler(self)
-        self.terminal_widget.command_requested.connect(self.command_handler.process_command)
-        self.command_handler.command_processed.connect(self.terminal_widget.handle_command)
 
         self.geometry_dict = {}
         try:
@@ -224,8 +222,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                 p = self.config.task_path_dict[name]
                 if p:
                     tokens = p.split('/')
-                    exists = False
                     for token in tokens:
+                        exists = False
+                        na = None
                         if type(m) == QAction:
                             ma = m.menu()
                             if ma:
@@ -240,7 +239,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                         if not exists:
                             na = m.addMenu(QMenu(token, m))
                         m = na
-                        exists = False
                     if type(m) == QAction:
                         ma = m.menu()
                         if ma:
@@ -252,7 +250,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                 m.addAction(action_task)
         except Exception as e:
             logger.error('Error adding to Task menu Task:{}  Error: {}'.format(name, e))
-
 
     def get_logo_file(self):
         return self.LogoFile
@@ -560,7 +557,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             # Save settings
             self.save_settings()
 
-            self.command_handler.stop()
+            self.dock_handler.stop_command_handlers()
 
             # Close instruments
             inst_dict = self.inst_dict

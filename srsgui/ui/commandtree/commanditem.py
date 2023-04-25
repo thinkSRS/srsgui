@@ -30,6 +30,7 @@ class CommandItem:
         self.excluded = False
         self.raw_remote_command = ""
         self.timestamp = 0.0
+        self.query_update_period = 0.3
 
     def appendChild(self, item: "CommandItem"):
         """Add item as a child"""
@@ -63,7 +64,7 @@ class CommandItem:
     def query_value(self):
         try:
             ts = time.time()
-            if ts - self.timestamp < 0.1:  # Update value later than 0.1 s
+            if ts - self.timestamp < self.query_update_period:  # Don't update too often
                 return self._value
 
             if self.comp_type == Index and self.get_enable and not self.excluded:
@@ -75,21 +76,25 @@ class CommandItem:
                 self.value_type = type(self._value)
                 self.timestamp = ts
         except Exception as e:
-            print('Error: {} {}'.format(e, self.name))
-        return self._value
+            print('Query error: {} {}'.format(e, self.name))
+        finally:
+            return self._value
 
     def set_value(self, value):
         """Set value to the instrument and update the value of the item"""
-        if self.comp_type == Index:
-            self._parent.comp.__setitem__(self.comp, value)
-            self._value = self._parent.comp.__getitem__(self.comp)
-            self.timestamp = time.time()
-        elif issubclass(type(self.comp), Command):
-            self.comp.__set__(self._parent.comp, value)
-            self._value = self.comp.__get__(self._parent.comp, self._parent.comp.__class__)
-            self.timestamp = time.time()
-        else:
-            self._value = value
+        try:
+            if self.comp_type == Index:
+                self._parent.comp.__setitem__(self.comp, value)
+                self._value = self._parent.comp.__getitem__(self.comp)
+                self.timestamp = time.time()
+            elif issubclass(type(self.comp), Command):
+                self.comp.__set__(self._parent.comp, value)
+                self._value = self.comp.__get__(self._parent.comp, self._parent.comp.__class__)
+                self.timestamp = time.time()
+            else:
+                self._value = value
+        except Exception as e:
+            print('Set error: {} {}'.format(e, self.name))
 
     def is_editable(self):
         """Return True if the item is editable"""
@@ -144,6 +149,32 @@ class CommandItem:
                 return f'{t[0].rstrip("0").rstrip(".")}e{t[1]}' + f'  {unit}'
         else:
             return f'{value:{fmt}}' + f' {unit}'
+
+    def construct_set_command_string(self, value):
+        """
+        Construct python command string corresponding to the item
+        """
+        self.name_buffer = []
+        self.get_name_string(self)
+        self.name_buffer.reverse()
+        if type(value) is str:
+            s = '{} = "{}"'.format('.'.join(self.name_buffer), value)
+        else:
+            s = '{} = {}'.format('.'.join(self.name_buffer), value)
+
+        s = s.replace('.[', '[')
+        return s
+
+    def get_name_string(self, item):
+        if item.comp_type == Index:
+            if type(item.comp) is str:
+                self.name_buffer.append('["{}"]'.format(item.name))
+            else:
+                self.name_buffer.append('[{}]'.format(item.name))
+        else:
+            self.name_buffer.append(item.name)
+        if item.parent():
+            self.get_name_string(item.parent())
 
     @classmethod
     def load(

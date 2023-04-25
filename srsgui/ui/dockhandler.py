@@ -12,7 +12,11 @@ import matplotlib.image as mpimg
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 
+from .commandhandler import CommandHandler as TerminalCommandHandler
+from .commandtree.commandhandler import CommandHandler as CommandTreeCommandHandler
+
 from .commandterminal import CommandTerminal
+
 # from .commandtree.commandcapturewidget import CommandCaptureWidget
 from .commandtree.commandtreewidget import CommandTreeWidget
 
@@ -59,6 +63,12 @@ class DockHandler(object):
         actions = parent.menu_Docks.actions()
         for action in actions:
             parent.menu_Docks.removeAction(action)
+
+        # terminal_command_handler needs to access to self.parent.inst_dict
+        self.terminal_command_handler = TerminalCommandHandler(self.parent)
+
+        # CommandItemModel uses command_tree_command_handler to access Commands
+        self.command_tree_command_handler = CommandTreeCommandHandler()
 
         self.init_figure_dock(self.DefaultFigureName)
         self.init_terminal()
@@ -143,6 +153,11 @@ class DockHandler(object):
             terminal_dock.setWidget(self.terminal_widget)
             self.parent.addDockWidget(Qt.RightDockWidgetArea, terminal_dock)
             self.dock_dict[name] = terminal_dock
+
+            # Commands from terminal are processed by terminal_command_handler
+            self.terminal_widget.command_requested.connect(self.terminal_command_handler.process_command)
+            self.terminal_command_handler.command_processed.connect(self.terminal_widget.handle_command)
+
         except Exception as e:
             logger.error(e)
 
@@ -158,6 +173,13 @@ class DockHandler(object):
 
             # inst_dock.command_capture_widget = CommandCaptureWidget(self.parent)
             inst_dock.command_capture_widget = CommandTreeWidget(self.parent)
+
+            # Connect the command handler in parent to signals and slots in CommandModel
+            inst_dock.command_capture_widget.model.set_command_sent.connect(self.terminal_widget.handle_command)
+            inst_dock.command_capture_widget.model.query_requested.connect(self.command_tree_command_handler.worker.handle_query)
+            inst_dock.command_capture_widget.model.set_requested.connect(self.command_tree_command_handler.worker.handle_set)
+            self.command_tree_command_handler.worker.query_processed.connect(inst_dock.command_capture_widget.model.handle_command)
+            self.command_tree_command_handler.worker.set_processed.connect(inst_dock.command_capture_widget.model.handle_command)
 
             inst_dock.setWidget(inst_dock.command_capture_widget)
             self.parent.addDockWidget(Qt.LeftDockWidgetArea, inst_dock)
@@ -362,3 +384,7 @@ class DockHandler(object):
             for dock in self.dock_dict.values():
                 if hasattr(dock, 'toolbar'):
                     dock.toolbar.hide()
+
+    def stop_command_handlers(self):
+        self.terminal_command_handler.stop()
+        self.command_tree_command_handler.stop()

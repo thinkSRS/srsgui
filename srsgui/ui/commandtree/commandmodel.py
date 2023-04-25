@@ -20,8 +20,14 @@ from .commandhandler import CommandHandler
 class CommandModel(QAbstractItemModel):
     """ An editable model of Command and Component """
 
+    # Signal to request to process a query to an outside command processor
     query_requested = Signal(QModelIndex)
+
+    # Signal to request to process a set to an outside command processor
     set_requested = Signal(tuple)
+
+    # Signal to display full Python command to CommandTerminal
+    set_command_sent = Signal(str, str)
 
     def __init__(self, parent: QObject = None):
         super().__init__(parent)
@@ -31,13 +37,10 @@ class CommandModel(QAbstractItemModel):
         self._rootItem = CommandItem()
         self._headers = ("  command  ", "  value  ")
 
-        self.command_handler = CommandHandler()
-        self.query_requested.connect(self.command_handler.worker.handle_query)
-        self.set_requested.connect(self.command_handler.worker.handle_set)
-        self.command_handler.worker.query_processed.connect(self.handle_command)
-        self.command_handler.worker.set_processed.connect(self.handle_command)
-
     def handle_command(self, cmd_tuple):
+        """
+        Outside command processor calls this slot once a command is processed
+        """
         index = cmd_tuple[0]
         value = cmd_tuple[1]
         changed = cmd_tuple[2]
@@ -129,8 +132,10 @@ class CommandModel(QAbstractItemModel):
             if index.column() == 1:
                 item = index.internalPointer()
                 self.set_requested.emit((index, value))
-                item.set_value(value)
-                self.dataChanged.emit(index, index, [Qt.EditRole])
+                sent_command = item.construct_set_command_string(value)
+                self.set_command_sent.emit(sent_command, None)
+                # item.set_value(value)
+                #self.dataChanged.emit(index, index, [Qt.EditRole])
                 return True
             return False
     
