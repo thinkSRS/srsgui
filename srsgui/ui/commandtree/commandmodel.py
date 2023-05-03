@@ -35,17 +35,7 @@ class CommandModel(QAbstractItemModel):
         self.show_raw_remote_command = True
 
         self._rootItem = CommandItem()
-        self._headers = ("  command  ", "  value  ")
-
-    def handle_command(self, cmd_tuple):
-        """
-        Outside command processor calls this slot once a command is processed
-        """
-        index = cmd_tuple[0]
-        value = cmd_tuple[1]
-        changed = cmd_tuple[2]
-        if changed:
-            self.dataChanged.emit(index, index, [Qt.ItemDataRole, Qt.EditRole])
+        self._headers = ("  Command  ", "  Value  ")
 
     def clear(self):
         """ Clear data from the model """
@@ -228,6 +218,16 @@ class CommandModel(QAbstractItemModel):
             return item.is_editable()
         else:
             return False
+
+    def handle_command(self, cmd_tuple):
+        """
+        External command processor calls this slot once a command is processed
+        """
+        index = cmd_tuple[0]
+        value = cmd_tuple[1]
+        changed = cmd_tuple[2]
+        if changed:
+            self.dataChanged.emit(index, index, [Qt.ItemDataRole, Qt.EditRole])
 
 
 if __name__ == "__main__":

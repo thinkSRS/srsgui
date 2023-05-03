@@ -95,7 +95,7 @@ class InputPanel(QScrollArea):
                     if issubclass(p.cmd_instance.__class__, IntCommand) or \
                        issubclass(p.cmd_instance.__class__, IntIndexCommand):
                         widget = QSpinBox()
-                        widget.setSuffix(p.cmd_instance.unit)
+                        widget.setSuffix(' ' + p.cmd_instance.unit)
                         widget.setMaximum(p.cmd_instance.maximum)
                         widget.setMinimum(p.cmd_instance.minimum)
                         widget.setSingleStep(p.cmd_instance.step)
@@ -104,7 +104,7 @@ class InputPanel(QScrollArea):
                     elif issubclass(p.cmd_instance.__class__, FloatCommand) or \
                          issubclass(p.cmd_instance.__class__, FloatIndexCommand):
                         widget = QDoubleSpinBox()
-                        widget.setSuffix(p.cmd_instance.unit)
+                        widget.setSuffix(' ' + p.cmd_instance.unit)
                         widget.setMaximum(p.cmd_instance.maximum)
                         widget.setMinimum(p.cmd_instance.minimum)
                         widget.setSingleStep(p.cmd_instance.step)
@@ -156,7 +156,7 @@ class InputPanel(QScrollArea):
                     widget.setMaximum(p.maximum)
                     widget.setEnabled(True)
                 widget.setSingleStep(p.single_step)
-                widget.setSuffix(p.suffix)
+                widget.setSuffix(' ' + p.suffix)
                 widget.setValue(p.value)
 
                 label = QLabel(name.capitalize())

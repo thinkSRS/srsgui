@@ -4,15 +4,10 @@ import logging
 from pathlib import Path
 from datetime import datetime
 
-# from wip.local_results import LocalClient
-# from wip.wip_api import DutNotRegisteredError
-
 from srsgui.task.taskresult import TaskResult
 
 RedBold = '<font color="red"><b>{}</b></font>'
 logger = logging.getLogger(__name__)
-
-logging.getLogger('urllib3').setLevel(logging.WARNING)
 
 
 class SessionHandler(object):

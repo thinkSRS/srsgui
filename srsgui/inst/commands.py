@@ -86,8 +86,9 @@ class Command(object):
         except InstCommunicationError:
             raise InstQueryError('Error during querying: CMD: {}'.format(query_string))
         except ValueError:
-            raise InstQueryError('Error during conversion CMD: {} Reply: {}'
-                                 .format(query_string, reply))
+            raise InstQueryError('Error during conversion CMD: {} Reply: {}, Hex:{}'
+                                 .format(query_string, reply,
+                                         list(map(hex, reply.encode('ascii')))))
         return self._value
 
     def __set__(self, instance, value):

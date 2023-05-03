@@ -90,6 +90,7 @@ class IndexCommand(object):
     def __getitem__(self, index):
         converted_index = self._convert_index(index)
         query_string = '{}? {}'.format(self.remote_command, converted_index)
+        reply = None
         value = None
         try:
             reply = self._parent.comm.query_text(query_string)
@@ -101,8 +102,9 @@ class IndexCommand(object):
         except InstCommunicationError:
             raise InstQueryError('Error during querying: CMD: {}'.format(query_string))
         except ValueError:
-            raise InstQueryError('Error during conversion CMD: {} Reply: {}'
-                                 .format(query_string, reply))
+            raise InstQueryError('Error during conversion CMD: {} Reply: {}, Hex:{}'
+                                 .format(query_string, reply,
+                                         (*map(hex, reply.encode('ascii')),)))
         return value
 
     def __setitem__(self, index, value):

@@ -585,7 +585,12 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         msg = ''
         for name in self.inst_dict:
             inst = self.inst_dict[name]
-            msg += '{} version: {}\n'.format(inst.__class__.__name__, inst.__version__)
+            if hasattr(inst, __version__):
+                version = inst.__version__
+            else:
+                version = 'N/A'
+
+            msg += '{} version: {}\n'.format(inst.__class__.__name__, version)
         msg += '\nSrsgui version: {}\n'.format(__version__)
         msg += '\n{} version: {}\n'.format(QT_BINDER, QT_BINDER_VERSION)
         msg += 'Python version: {}\n'.format(sys.version)
