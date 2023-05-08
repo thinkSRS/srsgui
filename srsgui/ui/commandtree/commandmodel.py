@@ -1,6 +1,4 @@
 
-import time
-import json
 import sys
 
 from typing import Any, Iterable, List, Dict, Union
@@ -119,14 +117,17 @@ class CommandModel(QAbstractItemModel):
         """
 
         if role == Qt.EditRole:
+
             if index.column() == 1:
                 item = index.internalPointer()
                 self.set_requested.emit((index, value))
                 sent_command = item.construct_set_command_string(value)
                 self.set_command_sent.emit(sent_command, None)
+
                 # item.set_value(value)
-                #self.dataChanged.emit(index, index, [Qt.EditRole])
+                # self.dataChanged.emit(index, index, [Qt.EditRole])
                 return True
+
             return False
     
     def headerData(self, section: int, orientation: Qt.Orientation,
@@ -227,7 +228,7 @@ class CommandModel(QAbstractItemModel):
         value = cmd_tuple[1]
         changed = cmd_tuple[2]
         if changed:
-            self.dataChanged.emit(index, index, [Qt.ItemDataRole, Qt.EditRole])
+            self.dataChanged.emit(index, index, [Qt.DisplayRole, Qt.EditRole])
 
 
 if __name__ == "__main__":

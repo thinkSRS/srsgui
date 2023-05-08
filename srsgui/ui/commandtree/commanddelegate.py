@@ -1,3 +1,4 @@
+import logging
 
 from srsgui.ui.qt.QtCore import Qt
 from srsgui.ui.qt.QtWidgets import QStyledItemDelegate, QComboBox
@@ -7,6 +8,8 @@ from srsgui.inst import DictCommand, FloatCommand, IntCommand, \
 
 from .commandspinbox import FloatSpinBox, IntegerSpinBox
 from .commanditem import Index
+
+logger = logging.getLogger(__file__)
 
 
 class CommandDelegate(QStyledItemDelegate):
@@ -51,6 +54,7 @@ class CommandDelegate(QStyledItemDelegate):
             return super().createEditor(parent, option, index)
 
     def setEditorData(self, editor, index):
+
         if type(editor) in (FloatSpinBox, IntegerSpinBox):
             item = index.internalPointer()
             val = index.model().data(index, Qt.EditRole)
@@ -63,30 +67,34 @@ class CommandDelegate(QStyledItemDelegate):
         return super().setEditorData(editor, index)
 
     def setModelData(self, editor, model, index):
-        item = index.internalPointer()
-        if item.comp_type == Index:
-            comp = item.parent().comp
-            comp_type = item.parent().comp_type
-        else:
-            comp = item.comp
-            comp_type = item.comp_type
 
-        if issubclass(comp_type, FloatCommand) or issubclass(comp_type, FloatIndexCommand):
-            value = editor.value()
-            model.setData(index, value, Qt.EditRole)
-            item.precision = editor.precision
-            return True
-        elif issubclass(comp_type, IntCommand) or issubclass(comp_type, IntIndexCommand):
-            value = editor.value()
-            model.setData(index, value, Qt.EditRole)
-            return True
-        elif comp_type in (DictCommand, DictIndexCommand):
-            val = editor.currentText()
-            convert = type(list(comp.get_dict.keys())[0])
-            value = convert(val)
-            model.setData(index, value, Qt.EditRole)
-            return True
-        return super().setModelData(editor, model, index)
+        try:
+            item = index.internalPointer()
+            if item.comp_type == Index:
+                comp = item.parent().comp
+                comp_type = item.parent().comp_type
+            else:
+                comp = item.comp
+                comp_type = item.comp_type
+
+            if issubclass(comp_type, FloatCommand) or issubclass(comp_type, FloatIndexCommand):
+                value = editor.value()
+                model.setData(index, value, Qt.EditRole)
+                item.precision = editor.precision
+            elif issubclass(comp_type, IntCommand) or issubclass(comp_type, IntIndexCommand):
+                pass
+
+                value = editor.value()
+                model.setData(index, value, Qt.EditRole)
+            elif comp_type in (DictCommand, DictIndexCommand):
+                val = editor.currentText()
+                convert = type(list(comp.get_dict.keys())[0])
+                value = convert(val)
+                model.setData(index, value, Qt.EditRole)
+            else:
+                return super().setModelData(editor, model, index)
+        except Exception as e:
+            logger.error(e)
 
     def updateEditorGeometry(self, editor, option, index):
         return super().updateEditorGeometry(editor, option, index)
