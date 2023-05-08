@@ -129,6 +129,15 @@ class Interface(object):
         """
         raise NotImplementedError
 
+    def _write_binary(self, binary_array: bytes):
+        """
+        Send an array of bytes over an interface without the lock.
+        It does not append the termination character at the end of the array.
+
+        :return: None
+        """
+        raise NotImplementedError
+
     def _recv(self):
         """
         Receive a reply up to the termination character over an interface without the lock.

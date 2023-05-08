@@ -88,7 +88,7 @@ class Command(object):
         except ValueError:
             raise InstQueryError('Error during conversion CMD: {} Reply: {}, Hex:{}'
                                  .format(query_string, reply,
-                                         list(map(hex, reply.encode('ascii')))))
+                                         (*map(hex, reply.encode('ascii')),)))
         return self._value
 
     def __set__(self, instance, value):

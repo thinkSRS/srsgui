@@ -54,6 +54,15 @@ class TcpipInterface(Interface):
             raise InstCommunicationError("Sending cmd '{}' to IP address: '{}' failed"
                                          .format(cmd, self._ip_address))
 
+    def _write_binary(self, binary_array):
+        if type(binary_array) not in (bytes, bytearray):
+            raise TypeError('_write_binary requires bytes or bytearray')
+        try:
+            self.socket.sendall(binary_array)
+        except OSError:
+            raise InstCommunicationError("Writing binary '{}' to IP address: '{}' failed"
+                                         .format((*map(hex, binary_array),), self._ip_address))
+
     def _recv(self):
         """
         Receive a reply over TCP/IP without the lock.

@@ -140,6 +140,17 @@ class SerialInterface(Interface):
         except serial.SerialException:
             raise InstCommunicationError("Sending cmd '{}' to port '{}' failed".format(cmd, self._port))
 
+    def _write_bibary(self, binary_array):
+        if type(binary_array) not in (bytes, bytearray):
+            raise TypeError('_write_binary requires bytes or bytearray')
+        try:
+            self._serial.write(binary_array)
+        except (self.port_not_open_error, AttributeError):
+            raise InstCommunicationError('Port not open to write')
+        except serial.SerialException:
+            raise InstCommunicationError("writing binary '{}' to port '{}' failed".format(
+                (*map(hex, binary_array),), self._port))
+
     def _recv(self):
         """
         Receive a reply over serial interface without the lock.
