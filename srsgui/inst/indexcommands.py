@@ -102,9 +102,11 @@ class IndexCommand(object):
         except InstCommunicationError:
             raise InstQueryError('Error during querying: CMD: {}'.format(query_string))
         except ValueError:
-            raise InstQueryError('Error during conversion CMD: {} Reply: {}, Hex:{}'
-                                 .format(query_string, reply,
-                                         (*map(hex, reply.encode('ascii')),)))
+            if reply:
+                raise InstQueryError('Error during conversion CMD: {} Reply: {}, Hex:{}'
+                                     .format(query_string, reply, (*map(hex, reply.encode('ascii')),)))
+            else:
+                raise InstQueryError('CMD: {} returned "{}"'.format(query_string, reply))
         return value
 
     def __setitem__(self, index, value):

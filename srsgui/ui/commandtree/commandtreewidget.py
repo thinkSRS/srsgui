@@ -12,6 +12,11 @@ logger = logging.getLogger(__name__)
 
 
 class CommandTreeWidget(QWidget, Ui_CommandTreeWidget):
+    """
+    CommandTreeWidget is used to display an Instrument class in a tree view
+    based on Qt Model/View architecture.
+    """
+
     def __init__(self, parent=None):
         super(CommandTreeWidget, self).__init__(parent)
         self.parent = parent

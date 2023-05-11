@@ -12,7 +12,10 @@ class Index:
 
 
 class CommandItem:
-    """A Command item corresponding to a line in QTreeView"""
+    """
+    Command item corresponding to a line in QTreeView. It encapsulates
+    Component, Command, and Index class used in srsgui.Instrument class.
+    """
 
     def __init__(self, parent: "CommandItem" = None):
         self._parent = parent

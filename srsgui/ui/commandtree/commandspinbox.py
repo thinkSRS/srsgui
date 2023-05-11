@@ -15,11 +15,12 @@ class IntegerSpinBox(QSpinBox):
 
     def stepBy(self, steps):
         prefix_len = len(self.prefix())
+        suffix_len = len(self.suffix())
         min_pos = prefix_len + 1 if self.value() < 0 else prefix_len
 
         text = self.lineEdit().text()
         cur_pos = self.lineEdit().cursorPosition()
-        sep_pos = len(text) - len(self.suffix())
+        sep_pos = len(text) - suffix_len
 
         if cur_pos < min_pos:
             return
@@ -36,7 +37,7 @@ class IntegerSpinBox(QSpinBox):
         min_pos = prefix_len + 1 if self.value() < 0 else prefix_len
 
         text = self.lineEdit().text()
-        new_sep_pos = len(text) - len(self.suffix())
+        new_sep_pos = len(text) - suffix_len
 
         new_cur_pos = cur_pos + new_sep_pos - sep_pos
         if new_cur_pos < min_pos:
@@ -108,13 +109,14 @@ class FloatSpinBox(QDoubleSpinBox):
 
     def stepBy(self, steps):
         prefix_len = len(self.prefix())
+        suffix_len = len(self.suffix())
         min_pos = prefix_len + 1 if self.value() < 0 else prefix_len
 
         text = self.lineEdit().text()
         cur_pos = self.lineEdit().cursorPosition()
         sep_pos = text.find('.')
         if sep_pos < 0:
-            sep_pos = len(text)
+            sep_pos = len(text) - suffix_len
 
         if cur_pos < min_pos:
             return
@@ -138,7 +140,7 @@ class FloatSpinBox(QDoubleSpinBox):
         text = self.lineEdit().text()
         new_sep_pos = text.find('.')
         if new_sep_pos < 0:
-            new_sep_pos = len(text)
+            new_sep_pos = len(text) - suffix_len
 
         new_cur_pos = cur_pos + new_sep_pos - sep_pos
         if new_cur_pos < min_pos:
