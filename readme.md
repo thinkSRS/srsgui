@@ -57,8 +57,8 @@ It will start `srsgui` application.
 By default, `srsgui` application starts with the last project it ran,
 when it is closed.
  
-To open the example project included in the `srsgui` package,
-, if it does not start with the example project, go to the `srsgui` package 
+To open the example project included in the `srsgui` package 
+(if it does not start with the example project), go to the `srsgui` package 
 directory, find the examples directory, and find a .taskconfig file in an 
 example project folder. 
 
@@ -69,6 +69,6 @@ even without any instruments connected.
 
 `Srsgui` is a platform that helps you to write your own instrument-controlling 
 Python scripts running as a GUI application. Using its APIs, you can write 
-
 scripts running in GUI with the same amount of code with writing console-based 
-scripts.
+scripts. For programming API, refer to
+[`srsgui` documentation](https://thinksrs.github.io/srsgui/html/index.html).
