@@ -10,7 +10,7 @@ from srsgui.ui.qt.QtWidgets import QApplication, QWidget, QSpinBox, QDoubleSpinB
 
 class IntegerSpinBox(QSpinBox):
     """
-    Adjust step size depending on the cursor postion
+    Adjust step size depending on the cursor position
     """
 
     def stepBy(self, steps):

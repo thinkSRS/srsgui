@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Writing a task script &mdash; srsgui  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Example project" href="example.html" />
+    <link rel="prev" title="Defining instrument classes" href="define-instrument.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> srsgui
+          </a>
+              <div class="version">
+                0.2.16
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-project.html">Creating a project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="define-instrument.html">Defining instrument classes</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Writing a task script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Example project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="srsgui.html">srsgui APIs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">srsgui</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Writing a task script</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/create-task.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="writing-a-task-script">
+<h1>Writing a task script<a class="headerlink" href="#writing-a-task-script" title="Permalink to this heading"></a></h1>
+<p>When you write a Python script that runs with <cite>‘srsgui`</cite>, you make a subclass of
+<a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task" title="srsgui.task.task.Task"><code class="xref py py-class docutils literal notranslate"><span class="pre">Task</span></code></a> class, and implement
+<a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.setup" title="srsgui.task.task.Task.setup"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setup</span></code></a>,
+<a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.test" title="srsgui.task.task.Task.test"><code class="xref py py-meth docutils literal notranslate"><span class="pre">test</span></code></a> and
+<a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.cleanup" title="srsgui.task.task.Task.cleanup"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cleanup</span></code></a>.</p>
+<p>Following is the simplest form of a task. Even though it does not do much,
+<code class="docutils literal notranslate"><span class="pre">srsgui</span></code> is happy to run the task, if it is included in a .taskconfig file.</p>
+<div class="highlight-default notranslate" id="top-of-bare-bone-task"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">srsgui</span> <span class="kn">import</span> <span class="n">Task</span>
+
+<span class="k">class</span> <span class="nc">ZerothTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Setup done.&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test finished.&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Cleanup done.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When a task runs, the setup() method runs first. if the setup finished with an exception,
+the task is aborted without running test() or cleanup(). If the setup() method completes
+without exception, the test() method runs next. Regardless of exception happened while
+the test() is finished, running the cleanup() method completes the task.</p>
+<p>You write a task based on the template any way you want, utilizing the resources and APIs
+provided in Task class for Graphic User Interface (GUI) inputs and outputs. As long as
+your tasks use the limited GUI resources available from Task class,
+your task will run along with <code class="docutils literal notranslate"><span class="pre">srsgui</span></code> application.</p>
+<p>A task is a Python <a class="reference external" href="https://realpython.com/intro-to-python-threading/">thread</a> (if it is run by an application with a Qt backend,
+it will be <a class="reference external" href="https://doc.qt.io/qt-6/qthread.html">QThread</a>.), running as concurrently with the main application.</p>
+<p>The <a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task" title="srsgui.task.task.Task"><code class="xref py py-class docutils literal notranslate"><span class="pre">Task</span></code></a> is designed with much consideration
+on protection of the main application from crashing caused by unhandled Exception,
+while a buggy task running. <code class="docutils literal notranslate"><span class="pre">srsgui</span></code> provides information as much as Python
+interpreter does. After modifying a task, reopen the .taskconfig file will reload
+the modified task before you run it again.</p>
+<p>The main application provides resources that a task can use,
+and responds to the callbacks from the task. The resources are set using
+the APIs provided by the task.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.set_inst_dict" title="srsgui.task.task.Task.set_inst_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_inst_dict</span></code></a> is to set the
+instrument dictionary that contains the instrument instances.</p></li>
+<li><p><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.set_data_dict" title="srsgui.task.task.Task.set_data_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_data_dict</span></code></a> is to set the
+data dictionary that contains the data instances.</p></li>
+<li><p><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.set_figure_dict" title="srsgui.task.task.Task.set_figure_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_figure_dict</span></code></a> is to set the
+figure dictionary that contains the figure instances.</p></li>
+<li><dl class="simple">
+<dt><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.set_session_handler" title="srsgui.task.task.Task.set_session_handler"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_session_handler</span></code></a> is</dt><dd><p>to set the session handler that saves the data to a file.</p>
+</dd>
+</dl>
+</li>
+<li><p><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.set_session_handler" title="srsgui.task.task.Task.set_session_handler"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_callback_handler</span></code></a> is
+to set the callback handler that handles the callbacks from the task.</p></li>
+</ul>
+</div></blockquote>
+<p>The main application and the running task are separate threads, and the main application responds only to
+the callbacks from the task.</p>
+<dl class="simple">
+<dt>For text output,</dt><dd><ul class="simple">
+<li><p><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.write_text" title="srsgui.task.task.Task.write_text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">write_text</span></code></a> is the base method for Task to use
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">callbacks.text_available</span></code> callback.</p></li>
+<li><p><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.display_device_info" title="srsgui.task.task.Task.display_device_info"><code class="xref py py-meth docutils literal notranslate"><span class="pre">display_device_info</span></code></a></p></li>
+<li><p><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.display_result" title="srsgui.task.task.Task.display_result"><code class="xref py py-meth docutils literal notranslate"><span class="pre">display_result</span></code></a></p></li>
+<li><p><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.update_status" title="srsgui.task.task.Task.update_status"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update_status</span></code></a></p></li>
+<li><p><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.print_redirect" title="srsgui.ui.taskmain.TaskMain.print_redirect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">print</span></code></a></p></li>
+</ul>
+</dd>
+<dt>For python <a class="reference external" href="https://docs.python.org/3/howto/logging.html">logging</a>,</dt><dd><ul class="simple">
+<li><p><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.get_logger" title="srsgui.task.task.Task.get_logger"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_logger</span></code></a> is to get the logger instance for the task.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.debug</span></code> is to use the logger instance to log debug messages.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.info</span></code> is to use the logger instance to log info messages.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.error</span></code> is to use the logger instance to log error messages.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.warning</span></code> is to use the logger instance to log warning messages.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.critical</span></code> is to use the logger instance to log critical messages.</p></li>
+</ul>
+</dd>
+<dt>For the input panel in the <code class="docutils literal notranslate"><span class="pre">srsgui</span></code> main window,</dt><dd><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">input_parameters</span></code> is a dictionary that contains
+the input parameters that will be displayed in the input panel.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.get_all_input_parameters" title="srsgui.task.task.Task.get_all_input_parameters"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_all_input_parameters</span></code></a> is to get all the input
+parameters that are displayed in the input panel.</p></li>
+<li><p><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.set_input_parameter" title="srsgui.task.task.Task.set_input_parameter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_input_parameter</span></code></a> is to set the value of an input
+parameter.</p></li>
+<li><p><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.get_input_parameter" title="srsgui.task.task.Task.get_input_parameter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_input_parameter</span></code></a> is to get the value of an input
+parameter.</p></li>
+<li><p><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.notify_parameter_changed" title="srsgui.task.task.Task.notify_parameter_changed"><code class="xref py py-meth docutils literal notranslate"><span class="pre">notify_parameter_changed</span></code></a> is a wrapper method for
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">callbacks.parameter_changed</span> <span class="pre">&lt;srsgui.task.callbacks.parameter_changed()</span></code>, which is to notify the
+main application that the value of an input parameter has changed. The main application will
+update the value of the input parameter in the input panel.</p></li>
+</ul>
+</dd>
+</dl>
+<p>For Matplotlib Figures,</p>
+<blockquote>
+<div><p>callbacks.request_figure_update - draw
+callbacks.notify_data_available - update
+clear_figure
+get_figure</p>
+</div></blockquote>
+<dl class="simple">
+<dt>For a question dialog box during running a task,</dt><dd><ul class="simple">
+<li><p><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.ask_question" title="srsgui.task.task.Task.ask_question"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ask_question</span></code></a> is a wrapper method
+for the Task <code class="xref py py-meth docutils literal notranslate"><span class="pre">callbacks.new_question</span></code>.</p></li>
+<li><p><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.question_background_update" title="srsgui.task.task.Task.question_background_update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">question_background_update</span></code></a></p></li>
+</ul>
+</dd>
+<dt>For the session_handler that save information from a task to a file,</dt><dd><p>add_details
+create_table
+add_data_to_table
+create_table_in_file
+add_to_table_in_file</p>
+</dd>
+<dt>For inst_dict</dt><dd><ul class="simple">
+<li><p><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.get_instrument" title="srsgui.task.task.Task.get_instrument"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_instrument</span></code></a> is to retrieve
+the Instrument subclass instance named in the .taskconfig file. Once getting
+the instrument instance, you can use it in the task in the same way with
+the instance created from a Python interpreter.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Once you get used to the APIs of Task class, you can write scripts that runs
+as a part of <code class="docutils literal notranslate"><span class="pre">srsgui</span></code>.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="define-instrument.html" class="btn btn-neutral float-left" title="Defining instrument classes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="example.html" class="btn btn-neutral float-right" title="Example project" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Chulhoon Kim.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

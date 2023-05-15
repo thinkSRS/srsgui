@@ -22,6 +22,7 @@ var/
 wheels/
 old/
 local data/
+doctrees/
 *.egg-info/
 .installed.cfg
 *.egg

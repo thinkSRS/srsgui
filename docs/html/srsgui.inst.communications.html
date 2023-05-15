@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>srsgui.inst.communications package &mdash; srsgui  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="srsgui.task package" href="srsgui.task.html" />
+    <link rel="prev" title="srsgui.inst package" href="srsgui.inst.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> srsgui
+          </a>
+              <div class="version">
+                0.2.16
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-project.html">Creating a project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="define-instrument.html">Defining instrument classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-task.html">Writing a task script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Example project</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="srsgui.html">srsgui APIs</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="srsgui.inst.html">srsgui.inst package</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">srsgui.inst.communications package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-srsgui.inst.communications.interface">srsgui.inst.communications.interface module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-srsgui.inst.communications.serialinterface">srsgui.inst.communications.serialinterface module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-srsgui.inst.communications.serial_ports">srsgui.inst.communications.serial_ports module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-srsgui.inst.communications.tcpipinterface">srsgui.inst.communications.tcpipinterface module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#module-srsgui.inst.instrument">srsgui.inst.instrument module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#module-srsgui.inst.component">srsgui.inst.component module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#module-srsgui.inst.commands">srsgui.inst.commands module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#module-srsgui.inst.indexcommands">srsgui.inst.indexcommands module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#module-srsgui.inst.exceptions">srsgui.inst.exceptions module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.task.html">srsgui.task package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.html">srsgui.ui package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">srsgui</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="srsgui.html">srsgui APIs</a> &raquo;</li>
+          <li><a href="srsgui.inst.html">srsgui.inst package</a> &raquo;</li>
+      <li>srsgui.inst.communications package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/srsgui.inst.communications.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="srsgui-inst-communications-package">
+<h1>srsgui.inst.communications package<a class="headerlink" href="#srsgui-inst-communications-package" title="Permalink to this heading"></a></h1>
+<section id="module-srsgui.inst.communications.interface">
+<span id="srsgui-inst-communications-interface-module"></span><h2>srsgui.inst.communications.interface module<a class="headerlink" href="#module-srsgui.inst.communications.interface" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.communications.interface.Interface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.communications.interface.</span></span><span class="sig-name descname"><span class="pre">Interface</span></span><a class="headerlink" href="#srsgui.inst.communications.interface.Interface" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for communication interfaces to be used in Instrument class.
+A subclass should implement all the methods in the class</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.inst.communications.interface.Interface.NAME">
+<span class="sig-name descname"><span class="pre">NAME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'interface'</span></em><a class="headerlink" href="#srsgui.inst.communications.interface.Interface.NAME" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.interface.Interface.set_callbacks">
+<span class="sig-name descname"><span class="pre">set_callbacks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">queried</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recvd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connected</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disconnected</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.interface.Interface.set_callbacks" title="Permalink to this definition"></a></dt>
+<dd><p>Set callback functions for query_text, send, recv, connect, disconnect operation of the interface.
+Typically, callback functions are used to log the communication activity.
+<code class="docutils literal notranslate"><span class="pre">print</span></code> and <code class="docutils literal notranslate"><span class="pre">logging.debug</span></code> is simple callback functions to use.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>queried</strong> (<em>function</em><em>(</em><em>msg:str</em><em>)</em>) – function called after query_text()</p></li>
+<li><p><strong>sent</strong> (<em>function</em><em>(</em><em>msg:str</em><em>)</em>) – function called after send()</p></li>
+<li><p><strong>recvd</strong> (<em>function</em><em>(</em><em>msg:str</em><em>)</em>) – function called after recv()</p></li>
+<li><p><strong>connected</strong> (<em>function</em><em>(</em><em>msg:str</em><em>)</em>) – function called after connect()</p></li>
+<li><p><strong>disconnected</strong> (<em>function</em><em>(</em><em>msg</em><em>(</em><em>str</em><em>)</em>) – function called after disconnect()</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.interface.Interface.get_lock">
+<span class="sig-name descname"><span class="pre">get_lock</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.interface.Interface.get_lock" title="Permalink to this definition"></a></dt>
+<dd><p>Get the lock to secure exclusive access to the communication interface</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.interface.Interface.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.interface.Interface.connect" title="Permalink to this definition"></a></dt>
+<dd><p>connect to the communication interface</p>
+<p>Subclass will have its own connect arguments</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.interface.Interface.disconnect">
+<span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.interface.Interface.disconnect" title="Permalink to this definition"></a></dt>
+<dd><p>Disconnect from the communication interface</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.interface.Interface.is_connected">
+<span class="sig-name descname"><span class="pre">is_connected</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.interface.Interface.is_connected" title="Permalink to this definition"></a></dt>
+<dd><p>check if the communication interface is connected</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.interface.Interface.parse_parameter_string">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_parameter_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.interface.Interface.parse_parameter_string" title="Permalink to this definition"></a></dt>
+<dd><p>Parse a connection parameter string used in .taskconfig file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.interface.Interface.set_term_char">
+<span class="sig-name descname"><span class="pre">set_term_char</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ch</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.interface.Interface.set_term_char" title="Permalink to this definition"></a></dt>
+<dd><p>Set termination character for text-based communication</p>
+<p>Some instruments use the line-feed character, b’n’
+as termination character for the remote commands and the replies,
+or others use the carriage return character, b’r’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ch</strong> (<em>bytes</em>) – termination character</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.interface.Interface.get_term_char">
+<span class="sig-name descname"><span class="pre">get_term_char</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.interface.Interface.get_term_char" title="Permalink to this definition"></a></dt>
+<dd><p>Get termination character for text-based communication</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.interface.Interface.send">
+<span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.interface.Interface.send" title="Permalink to this definition"></a></dt>
+<dd><p>Send a remote command to the instrument</p>
+<p>If the cmd does not have the termination character,
+it will attach one at the end of the cmd string,
+and convert the string to a byte array before sending</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cmd</strong> (<em>str</em>) – remote command to send</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.interface.Interface.recv">
+<span class="sig-name descname"><span class="pre">recv</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.interface.Interface.recv" title="Permalink to this definition"></a></dt>
+<dd><p>Receive a byte array until a termination character and convert to a string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>reply string converted from a byte array</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.interface.Interface.query_text">
+<span class="sig-name descname"><span class="pre">query_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.interface.Interface.query_text" title="Permalink to this definition"></a></dt>
+<dd><p>Send a remote command and receive a reply with the lock acquired</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cmd</strong> (<em>str</em>) – remote command</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.interface.Interface.query_int">
+<span class="sig-name descname"><span class="pre">query_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.interface.Interface.query_int" title="Permalink to this definition"></a></dt>
+<dd><p>Query for an integer-returning remote command</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cmd</strong> (<em>str</em>) – remote command</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.interface.Interface.query_float">
+<span class="sig-name descname"><span class="pre">query_float</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.interface.Interface.query_float" title="Permalink to this definition"></a></dt>
+<dd><p>Query for a float-returning remote command</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cmd</strong> (<em>str</em>) – remote command</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.interface.Interface.set_timeout">
+<span class="sig-name descname"><span class="pre">set_timeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.interface.Interface.set_timeout" title="Permalink to this definition"></a></dt>
+<dd><p>Set timeout for send and recv operation of the communication interface</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>seconds</strong> (<em>float</em>) – timeout value</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.interface.Interface.get_timeout">
+<span class="sig-name descname"><span class="pre">get_timeout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.interface.Interface.get_timeout" title="Permalink to this definition"></a></dt>
+<dd><p>Get timeout value for send and recv operation of the communication interface</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.interface.Interface.query_text_with_long_timeout">
+<span class="sig-name descname"><span class="pre">query_text_with_long_timeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.interface.Interface.query_text_with_long_timeout" title="Permalink to this definition"></a></dt>
+<dd><p>Query a command returning a delayed reply</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cmd</strong> (<em>str</em>) – remote command, such as CL, DG</p></li>
+<li><p><strong>timeout</strong> (<em>int</em>) – timeout value to use for the remote command</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Error status byte</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.interface.Interface.get_info">
+<span class="sig-name descname"><span class="pre">get_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#srsgui.inst.communications.interface.Interface.get_info" title="Permalink to this definition"></a></dt>
+<dd><p>Return the interface information in a dict</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.inst.communications.serialinterface">
+<span id="srsgui-inst-communications-serialinterface-module"></span><h2>srsgui.inst.communications.serialinterface module<a class="headerlink" href="#module-srsgui.inst.communications.serialinterface" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.communications.serialinterface.SerialInterface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.communications.serialinterface.</span></span><span class="sig-name descname"><span class="pre">SerialInterface</span></span><a class="headerlink" href="#srsgui.inst.communications.serialinterface.SerialInterface" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.communications.interface.Interface" title="srsgui.inst.communications.interface.Interface"><code class="xref py py-class docutils literal notranslate"><span class="pre">Interface</span></code></a></p>
+<p>Interface to use RS232 serial communication</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.inst.communications.serialinterface.SerialInterface.NAME">
+<span class="sig-name descname"><span class="pre">NAME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'serial'</span></em><a class="headerlink" href="#srsgui.inst.communications.serialinterface.SerialInterface.NAME" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.serialinterface.SerialInterface.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baud_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">115200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hardware_flow_control</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.serialinterface.SerialInterface.connect" title="Permalink to this definition"></a></dt>
+<dd><p>Connect to an instrument using the serial interface</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>port</strong> (<em>str</em>) – serial port to use for serial communication,
+e.g., ‘COM3 for Windows, ‘/dev/ttyUSB0’ for Linux</p></li>
+<li><p><strong>baud_rate</strong> (<em>integer</em><em>, </em><em>optional</em>) – the default is 115200, You have to use the same baud rate
+with the connecting instrument.</p></li>
+<li><p><strong>hardware_flow_control</strong> (<em>bool</em><em>, </em><em>optional</em>) – the default is False, some instruments require
+RTS/CTS hardware flow control to work properly</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.serialinterface.SerialInterface.disconnect">
+<span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.serialinterface.SerialInterface.disconnect" title="Permalink to this definition"></a></dt>
+<dd><p>Disconnect from the communication interface</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.serialinterface.SerialInterface.parse_parameter_string">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_parameter_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.serialinterface.SerialInterface.parse_parameter_string" title="Permalink to this definition"></a></dt>
+<dd><p>Parse a connection parameter string used in .taskconfig file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.serialinterface.SerialInterface.send_break">
+<span class="sig-name descname"><span class="pre">send_break</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.serialinterface.SerialInterface.send_break" title="Permalink to this definition"></a></dt>
+<dd><p>Send break signal over serial interface
+:param duration: to set how long the break signal will be
+:type duration: float, optioanl</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.serialinterface.SerialInterface.set_timeout">
+<span class="sig-name descname"><span class="pre">set_timeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.serialinterface.SerialInterface.set_timeout" title="Permalink to this definition"></a></dt>
+<dd><p>Set timeout for send and recv operation of the communication interface</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>seconds</strong> (<em>float</em>) – timeout value</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.serialinterface.SerialInterface.get_timeout">
+<span class="sig-name descname"><span class="pre">get_timeout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.serialinterface.SerialInterface.get_timeout" title="Permalink to this definition"></a></dt>
+<dd><p>Get timeout value for send and recv operation of the communication interface</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.serialinterface.SerialInterface.query_text">
+<span class="sig-name descname"><span class="pre">query_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.serialinterface.SerialInterface.query_text" title="Permalink to this definition"></a></dt>
+<dd><p>Send a remote command and receive a reply with the lock acquired</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cmd</strong> (<em>str</em>) – remote command</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.serialinterface.SerialInterface.clear_buffer">
+<span class="sig-name descname"><span class="pre">clear_buffer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.serialinterface.SerialInterface.clear_buffer" title="Permalink to this definition"></a></dt>
+<dd><p>Read out any characters left in the communication buffer.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.serialinterface.SerialInterface.get_info">
+<span class="sig-name descname"><span class="pre">get_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.serialinterface.SerialInterface.get_info" title="Permalink to this definition"></a></dt>
+<dd><p>Get information on the communcation interface.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.serialinterface.SerialInterface.find">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.serialinterface.SerialInterface.find" title="Permalink to this definition"></a></dt>
+<dd><p>Find available serial ports and return a list of the ports.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.inst.communications.serial_ports">
+<span id="srsgui-inst-communications-serial-ports-module"></span><h2>srsgui.inst.communications.serial_ports module<a class="headerlink" href="#module-srsgui.inst.communications.serial_ports" title="Permalink to this heading"></a></h2>
+<p>Get all available serial ports.</p>
+<p>Snippet from <a class="reference external" href="http://stackoverflow.com/questions/12090503/listing-available-com-ports-with-python">http://stackoverflow.com/questions/12090503/listing-available-com-ports-with-python</a></p>
+<dl class="py function">
+<dt class="sig sig-object py" id="srsgui.inst.communications.serial_ports.serial_ports">
+<span class="sig-prename descclassname"><span class="pre">srsgui.inst.communications.serial_ports.</span></span><span class="sig-name descname"><span class="pre">serial_ports</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.serial_ports.serial_ports" title="Permalink to this definition"></a></dt>
+<dd><p>Lists serial port names</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>EnvironmentError</strong> – On unsupported or unknown platforms</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of the serial ports available on the system</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-srsgui.inst.communications.tcpipinterface">
+<span id="srsgui-inst-communications-tcpipinterface-module"></span><h2>srsgui.inst.communications.tcpipinterface module<a class="headerlink" href="#module-srsgui.inst.communications.tcpipinterface" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.communications.tcpipinterface.TcpipInterface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.communications.tcpipinterface.</span></span><span class="sig-name descname"><span class="pre">TcpipInterface</span></span><a class="headerlink" href="#srsgui.inst.communications.tcpipinterface.TcpipInterface" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.communications.interface.Interface" title="srsgui.inst.communications.interface.Interface"><code class="xref py py-class docutils literal notranslate"><span class="pre">Interface</span></code></a></p>
+<p>Interface to use Ethernet TCP/IP communication</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.inst.communications.tcpipinterface.TcpipInterface.NAME">
+<span class="sig-name descname"><span class="pre">NAME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'tcpip'</span></em><a class="headerlink" href="#srsgui.inst.communications.tcpipinterface.TcpipInterface.NAME" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.tcpipinterface.TcpipInterface.query_text">
+<span class="sig-name descname"><span class="pre">query_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.tcpipinterface.TcpipInterface.query_text" title="Permalink to this definition"></a></dt>
+<dd><p>Send a remote command and receive a reply with the lock acquired</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cmd</strong> (<em>str</em>) – remote command</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.tcpipinterface.TcpipInterface.set_timeout">
+<span class="sig-name descname"><span class="pre">set_timeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.tcpipinterface.TcpipInterface.set_timeout" title="Permalink to this definition"></a></dt>
+<dd><p>Set timeout for send and recv operation of the communication interface</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>seconds</strong> (<em>float</em>) – timeout value</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.tcpipinterface.TcpipInterface.get_timeout">
+<span class="sig-name descname"><span class="pre">get_timeout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.tcpipinterface.TcpipInterface.get_timeout" title="Permalink to this definition"></a></dt>
+<dd><p>Get timeout value for send and recv operation of the communication interface</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.tcpipinterface.TcpipInterface.connect_without_login">
+<span class="sig-name descname"><span class="pre">connect_without_login</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip_address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">23</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.tcpipinterface.TcpipInterface.connect_without_login" title="Permalink to this definition"></a></dt>
+<dd><p>Connect to a instrument that does not require login</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.tcpipinterface.TcpipInterface.connect_with_login">
+<span class="sig-name descname"><span class="pre">connect_with_login</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip_address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">userid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">818</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.tcpipinterface.TcpipInterface.connect_with_login" title="Permalink to this definition"></a></dt>
+<dd><p>Connect and login to an instrument</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ip_address</strong> (<em>str</em>) – IP address of the instrument to connect, e.g., “192.168.1.100”</p></li>
+<li><p><strong>userid</strong> (<em>str</em>) – User name to login</p></li>
+<li><p><strong>password</strong> (<em>str</em>) – Password to login</p></li>
+<li><p><strong>port</strong> (<em>int</em><em>, </em><em>optional</em>) – the default is 818, SRS RGA port.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.tcpipinterface.TcpipInterface.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.tcpipinterface.TcpipInterface.connect" title="Permalink to this definition"></a></dt>
+<dd><p>connect to the communication interface</p>
+<p>Subclass will have its own connect arguments</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.tcpipinterface.TcpipInterface.disconnect">
+<span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.tcpipinterface.TcpipInterface.disconnect" title="Permalink to this definition"></a></dt>
+<dd><p>Disconnect from the communication interface</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.tcpipinterface.TcpipInterface.parse_parameter_string">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_parameter_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.tcpipinterface.TcpipInterface.parse_parameter_string" title="Permalink to this definition"></a></dt>
+<dd><p>Parse a connection parameter string used in .taskconfig file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.tcpipinterface.TcpipInterface.clear_buffer">
+<span class="sig-name descname"><span class="pre">clear_buffer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.tcpipinterface.TcpipInterface.clear_buffer" title="Permalink to this definition"></a></dt>
+<dd><p>It does not do anything for TCPIP interface</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.communications.tcpipinterface.TcpipInterface.get_info">
+<span class="sig-name descname"><span class="pre">get_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.communications.tcpipinterface.TcpipInterface.get_info" title="Permalink to this definition"></a></dt>
+<dd><p>Return the interface information in a dict</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="srsgui.inst.html" class="btn btn-neutral float-left" title="srsgui.inst package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="srsgui.task.html" class="btn btn-neutral float-right" title="srsgui.task package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Chulhoon Kim.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

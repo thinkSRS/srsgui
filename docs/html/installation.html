@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installation &mdash; srsgui  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Creating a project" href="create-project.html" />
+    <link rel="prev" title="srsgui : Organize your instrument-controlling Python scripts as a GUI application" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> srsgui
+          </a>
+              <div class="version">
+                0.2.16
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#preparation">Preparation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#srsgui-installation">Srsgui installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-srsgui-application">Running srsgui application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="create-project.html">Creating a project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="define-instrument.html">Defining instrument classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-task.html">Writing a task script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Example project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="srsgui.html">srsgui APIs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">srsgui</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Installation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
+<section id="preparation">
+<h2>Preparation<a class="headerlink" href="#preparation" title="Permalink to this heading"></a></h2>
+<p>To install <code class="docutils literal notranslate"><span class="pre">srsgui</span></code>,  make sure you have Python version 3.7 or later.
+you can check your Python version by running from the command line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">--</span><span class="n">version</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Commands running from the command prompt shown here are assumed using
+a Windows computer system. If you use other systems, commands may be
+different. Refer to <a class="reference external" href="https://packaging.python.org/en/latest/tutorials/installing-packages/">this page.</a></p>
+</div>
+<p>If you have a Python older than the required version,
+<a class="reference external" href="https://realpython.com/installing-python/">install a newer Python.</a></p>
+<p>Using <a class="reference external" href="https://realpython.com/python-virtual-environments-a-primer/">virtual environment</a> avoids possible dependency
+conflict among Python packages. If you want to use a virtual environment, create one with
+your favorite virtual environment package. If you do not have a preference,
+use Python default <code class="docutils literal notranslate"><span class="pre">venv</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">venv</span> <span class="n">env</span>
+<span class="o">.</span>\<span class="n">env</span>\<span class="n">Scripts</span>\<span class="n">activate</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Commands to use <code class="docutils literal notranslate"><span class="pre">venv</span></code> are different among computer systems. Other than Windows, refer to
+<a class="reference external" href="https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/">this page</a>.</p>
+</div>
+</section>
+<section id="srsgui-installation">
+<h2>Srsgui installation<a class="headerlink" href="#srsgui-installation" title="Permalink to this heading"></a></h2>
+<p>To run <code class="docutils literal notranslate"><span class="pre">srsgui</span></code> as a GUI application, install it with [full] option using <a class="reference external" href="https://realpython.com/what-is-pip/">pip</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">srsgui</span><span class="p">[</span><span class="n">full</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>It will install <code class="docutils literal notranslate"><span class="pre">srsgui</span></code> package along with
+the 3 main packages (<a class="reference external" href="https://pyserial.readthedocs.io/en/latest/pyserial.html">pyserial</a>, <a class="reference external" href="https://matplotlib.org/stable/tutorials/introductory/quick_start.html">matplotlib</a> and <a class="reference external" href="https://wiki.qt.io/Qt_for_Python">pyside6</a>) and their dependencies.</p>
+<p>If</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>you plan only to use the instrument driver part of <code class="docutils literal notranslate"><span class="pre">srsgui</span></code> package without GUI support,</p></li>
+<li><p>your system requires to install <a class="reference external" href="https://matplotlib.org/stable/tutorials/introductory/quick_start.html">matplotlib</a> or <a class="reference external" href="https://wiki.qt.io/Qt_for_Python">pyside6</a> from sources other than pip
+(Some linux systems do so),</p></li>
+<li><p>you want to use <a class="reference external" href="https://pypi.org/project/PyQt5/">pyqt5</a> or <a class="reference external" href="https://pypi.org/project/PySide2/">pyside2</a> instead of <a class="reference external" href="https://wiki.qt.io/Qt_for_Python">pyside6</a> as GUI backend,</p></li>
+<li><p>you have trouble with the full installation and you want to install dependency manually,</p></li>
+</ul>
+</div></blockquote>
+<p>you can install without the extra [full] option:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">srsgui</span>
+</pre></div>
+</div>
+<p>It will install <code class="docutils literal notranslate"><span class="pre">srsgui</span></code> with <a class="reference external" href="https://pyserial.readthedocs.io/en/latest/pyserial.html">pyserial</a> only.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">srsgui</span></code> runs with either <a class="reference external" href="https://wiki.qt.io/Qt_for_Python">pyside6</a>, <a class="reference external" href="https://pypi.org/project/PySide2/">pyside2</a> or <a class="reference external" href="https://pypi.org/project/PyQt5/">pyqt5</a> installed as GUI backend.
+If your system already have <a class="reference external" href="https://pypi.org/project/PySide2/">pyside2</a> or <a class="reference external" href="https://pypi.org/project/PyQt5/">pyqt5</a> installed, you do not have to install <a class="reference external" href="https://wiki.qt.io/Qt_for_Python">pyside6</a>.</p>
+<blockquote>
+<div><p>python -m pip show pyside2</p>
+<p>python -m pip show pyqt5</p>
+</div></blockquote>
+<p>will show if <a class="reference external" href="https://pypi.org/project/PySide2/">pyside2</a> or <a class="reference external" href="https://pypi.org/project/PyQt5/">pyqt5</a> is installed.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In order to maintain the <a class="reference external" href="https://choosealicense.com/licenses/mit/">MIT</a> license for your projects or modified <code class="docutils literal notranslate"><span class="pre">srsgui</span></code>, you have to use
+<a class="reference external" href="https://wiki.qt.io/Qt_for_Python">pyside6</a> or <a class="reference external" href="https://pypi.org/project/PySide2/">pyside2</a>. Note that <a class="reference external" href="https://pypi.org/project/PyQt5/">pyqt5</a> imposes <a class="reference external" href="https://choosealicense.com/licenses/gpl-3.0/">GPLv3</a> license to packages using <a class="reference external" href="https://pypi.org/project/PyQt5/">pyqt5</a>.</p>
+</div>
+</section>
+<section id="running-srsgui-application">
+<h2>Running srsgui application<a class="headerlink" href="#running-srsgui-application" title="Permalink to this heading"></a></h2>
+<p>After <code class="docutils literal notranslate"><span class="pre">srsgui</span></code> is installed, you can start <code class="docutils literal notranslate"><span class="pre">srsgui</span></code> application from the command line</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">srsgui</span>
+
+<span class="ow">or</span>
+
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">srsgui</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">srsgui</span></code> installs a executable script named “srsgui” in Python/Scripts directory.
+If the directory is included in PATH environment variable, <strong>srsgui</strong> command will work.
+Otherwise, <strong>python -m srsgui</strong> will work regardless of PATH setting.</p>
+<figure class="align-center" id="top-of-initial-screen-capture">
+<img alt="_images/initial-screen-capture.png" src="_images/initial-screen-capture.png" />
+</figure>
+<p>If you see the application is open and running, the installation is successful!</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Instead of seeing the application running, you may get errors, probably ImportError.
+Carefully look through the exception traceback to find out which package causes the error.
+When the latest python is installed, some packages may not install properly. If the problem
+is not from <code class="docutils literal notranslate"><span class="pre">srsgui</span></code> directly, web search of the problem usually leads to a fix.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="srsgui : Organize your instrument-controlling Python scripts as a GUI application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="create-project.html" class="btn btn-neutral float-right" title="Creating a project" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Chulhoon Kim.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

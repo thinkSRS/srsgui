@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Example project &mdash; srsgui  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="srsgui APIs" href="srsgui.html" />
+    <link rel="prev" title="Writing a task script" href="create-task.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> srsgui
+          </a>
+              <div class="version">
+                0.2.16
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-project.html">Creating a project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="define-instrument.html">Defining instrument classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-task.html">Writing a task script</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example project</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#directory-structure">Directory structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#project-configuration-file">Project configuration file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#instrument-drivers">Instrument drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cg635">CG635</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sds1202">SDS1202</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tasks">Tasks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-run-a-task">How to run a task</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#firsttask">FirstTask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#secondtask">SecondTask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#thirdtask">ThirdTask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fourthtask">FourthTask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fifthtask">FifthTask</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="srsgui.html">srsgui APIs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">srsgui</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Example project</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/example.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="example-project">
+<span id="top-of-example-project"></span><h1>Example project<a class="headerlink" href="#example-project" title="Permalink to this heading"></a></h1>
+<p>When you run the <code class="docutils literal notranslate"><span class="pre">srsgui</span></code> application, it shows in the console window
+where the Python is running from, and where <code class="docutils literal notranslate"><span class="pre">srsgui</span></code> is located.
+If you go into the directory where <code class="docutils literal notranslate"><span class="pre">srsgui</span></code> resides, you can find
+the ‘examples’ directory. When you find a  .taskconfig file in “oscilloscope example”
+directory, Open the file from the menu <em>/File/Open Config</em> of <code class="docutils literal notranslate"><span class="pre">srsgui</span></code> application.
+If you plan to modify files in the project, you better copy the whole example directory
+to where you usually keep your documents for programing. And open the .taskconfig file
+form the copied directory, then no worries about losing the original files.</p>
+<p>As an example project of <code class="docutils literal notranslate"><span class="pre">srsgui</span></code>, I wanted to use ubiquitous measurement
+instruments with remote communication available. I happened to have an
+oscilloscope and a function generator (more specifically, a clock generator)
+on my desk:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Siglent <a class="reference external" href="https://siglentna.com/product/sds1202x-e/">SDS1202XE</a> digital oscilloscope (1 GSa/s, 200 MHz bandwidth),
+I bought it because of its affordable price and it works nicely!</p></li>
+<li><p>Stanford Research Systems <a class="reference external" href="https://thinksrs.com/products/cg635.html">CG635</a>, 2 GHz Clock Generator
+(Disclaimer: I work for the company).</p></li>
+</ul>
+</div></blockquote>
+<p>I built a project that controls both instruments and
+capture output waveform from the clock generator with the oscilloscope,
+run FFT and display the waveforms in <code class="docutils literal notranslate"><span class="pre">srsgui</span></code> application.</p>
+<p>Any oscilloscope and function generator will work for this example.
+If you got interested in <code class="docutils literal notranslate"><span class="pre">srsgui</span></code>, I bet you can find an oscilloscope
+and a function generator somewhere in your building.</p>
+<p>If you could not, don’t worry. Even without an any instruments, we can generate
+simulated waveform to demonstrate the usability of <code class="docutils literal notranslate"><span class="pre">srsgui</span></code> as an organizer for
+Python scripts and GUI environment for convenient data acquisition and data visualization.</p>
+<section id="directory-structure">
+<h2>Directory structure<a class="headerlink" href="#directory-structure" title="Permalink to this heading"></a></h2>
+<p>Let’s look at the directory structure of the project.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">Oscilloscope</span> <span class="n">example</span> <span class="n">project</span> <span class="n">directory</span>
+    <span class="o">/</span><span class="n">instruments</span>
+        <span class="n">cg635</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">sds1202</span><span class="o">.</span><span class="n">py</span>
+    <span class="o">/</span><span class="n">tasks</span>
+        <span class="n">first</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">second</span><span class="o">.</span><span class="n">py</span>
+        <span class="o">...</span>
+
+    <span class="n">oscilloscope</span> <span class="n">example</span> <span class="n">project</span><span class="o">.</span><span class="n">taskconfig</span>
+</pre></div>
+</div>
+<p>This file structure follows the guideline described in
+<a class="reference internal" href="create-project.html#creating-file-structure-for-a-project"><span class="std std-ref">Creating file structure for a project</span></a>.
+We have two instrument driver scripts for <a class="reference external" href="https://siglentna.com/product/sds1202x-e/">SDS1202XE</a> and <a class="reference external" href="https://thinksrs.com/products/cg635.html">CG635</a>
+in the subdirectory called <strong>instruments</strong>, five task scripts
+in the subdirectory called <strong>tasks</strong> along with a configuration file
+in the project root directory.</p>
+</section>
+<section id="project-configuration-file">
+<h2>Project configuration file<a class="headerlink" href="#project-configuration-file" title="Permalink to this heading"></a></h2>
+<p>The structure of a .taskconfig file is simple and
+explained in <a class="reference internal" href="create-project.html#populating-the-taskconfig-file"><span class="std std-ref">Populating the .taskconfig file</span></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">name</span><span class="p">:</span> <span class="n">Srsgui</span> <span class="n">example</span> <span class="n">project</span> <span class="n">using</span> <span class="n">an</span> <span class="n">oscilloscope</span> <span class="ow">and</span> <span class="n">a</span> <span class="n">clock</span> <span class="n">generator</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="n">inst</span><span class="p">:</span> <span class="n">cg</span><span class="p">,</span>  <span class="n">instruments</span><span class="o">.</span><span class="n">cg635</span><span class="p">,</span>   <span class="n">CG635</span>
+<span class="linenos">4</span><span class="n">inst</span><span class="p">:</span> <span class="n">osc</span><span class="p">,</span> <span class="n">instruments</span><span class="o">.</span><span class="n">sds1202</span><span class="p">,</span> <span class="n">SDS1202</span>
+<span class="linenos">5</span>
+<span class="linenos">6</span><span class="n">task</span><span class="p">:</span> <span class="o">*</span><span class="n">IDN</span> <span class="n">test</span><span class="p">,</span>                 <span class="n">tasks</span><span class="o">.</span><span class="n">first</span><span class="p">,</span>  <span class="n">FirstTask</span>
+<span class="linenos">7</span><span class="n">task</span><span class="p">:</span> <span class="n">Plot</span> <span class="n">example</span><span class="p">,</span>              <span class="n">tasks</span><span class="o">.</span><span class="n">second</span><span class="p">,</span> <span class="n">SecondTask</span>
+<span class="linenos">8</span><span class="o">...</span>
+</pre></div>
+</div>
+</section>
+<section id="instrument-drivers">
+<h2>Instrument drivers<a class="headerlink" href="#instrument-drivers" title="Permalink to this heading"></a></h2>
+</section>
+<section id="cg635">
+<h2>CG635<a class="headerlink" href="#cg635" title="Permalink to this heading"></a></h2>
+<p>Let’s take a look into the instrument/cg635.py module. Even though it seems long,
+it has only 5 line if the comment lines removed. If you have a CG635,
+congratulations! You can use the file as is. If you have any function
+generator that can change the output frequency, you can use it instead of CG635
+in the example. You change the class name and _IdString to match the instrument name,
+along with _term_char, and find out the command to change frequency, referring to the manual.
+And save it to a different name. Change the inst: line for ‘cg’
+in the .taskconfig file to match the module path and the class name.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">from</span> <span class="nn">srsgui</span> <span class="kn">import</span> <span class="n">Instrument</span>
+<span class="linenos">2</span><span class="kn">from</span> <span class="nn">srsgui.inst</span> <span class="kn">import</span> <span class="n">FloatCommand</span>
+<span class="linenos">3</span>
+<span class="linenos">4</span><span class="k">class</span> <span class="nc">CG635</span><span class="p">(</span><span class="n">Instrument</span><span class="p">):</span>
+<span class="linenos">5</span>    <span class="n">_IdString</span> <span class="o">=</span> <span class="s1">&#39;CG635&#39;</span>
+<span class="linenos">6</span>    <span class="n">frequency</span> <span class="o">=</span> <span class="n">FloatCommand</span><span class="p">(</span><span class="s1">&#39;FREQ&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Without redefining <strong>availab_interfaces</strong> class attribute, you can use the serial
+communication only. If you want to use GPIB communication, you have to uncomment the
+<strong>available_interfaces</strong> in CG635 class.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">srsgui</span> <span class="kn">import</span> <span class="n">SerialInterface</span><span class="p">,</span> <span class="n">FindListInput</span>
+<span class="kn">from</span> <span class="nn">srsinst.sr860</span> <span class="kn">import</span> <span class="n">VisaInterface</span>
+
+<span class="n">available_interfaces</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span>   <span class="n">SerialInterface</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;COM port&#39;</span><span class="p">:</span> <span class="n">FindListInput</span><span class="p">(),</span>
+            <span class="s1">&#39;baud rate&#39;</span><span class="p">:</span> <span class="mi">9600</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="p">[</span>   <span class="n">VisaInterface</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;resource&#39;</span><span class="p">:</span> <span class="n">FindListInput</span><span class="p">(),</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>you have to install <a class="reference external" href="https://pypi.org/project/srsinst.sr860/">srsinst.sr860</a> for VisaInterface class, and <a class="reference external" href="https://pyvisa.readthedocs.io/en/latest/">PyVISA</a> and
+its backend library, following PyVisa installation instruction.</p>
+<p>Once CG635 is connected, you will see the connection information in the instrument info panel,
+and you can use it in the terminal, as shown below.</p>
+<figure class="align-center">
+<img alt="_images/cg-terminal-screen-capture.png" src="_images/cg-terminal-screen-capture.png" />
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>To fix the ‘Not implemented’ warning,
+<a class="reference internal" href="srsgui.inst.html#srsgui.inst.instrument.Instrument.get_status" title="srsgui.inst.instrument.Instrument.get_status"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Instrument.get_status()</span></code></a>
+need to be redefined. To feel better, we can override it  as a CG635 method as following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;Status: OK&#39;</span>
+</pre></div>
+</div>
+<p>We will use only one command .frequency, or its raw remote command, ‘freq’ in this example.
+Because ‘cg’ is the default instrument, the first instrument mentioned in the .taskconfig file,
+you can send any raw remote command without ‘cg:’ prefix if you want to.
+Both ‘*idn?’ and ‘cg:*idn?’ will return the correct reply.</p>
+<p>We use the prefix ‘cg:’ for raw remote command and the prefix ‘cg.’ for Python commands.
+In the terminal all attribute and method of CG835 calss can be used with prefix ‘cg.’.
+Because we defined frequency as a FloatCommand, we can use ‘cg.frequency’ property in the
+terminal and any python scripts, once get_instrument(‘cg’) in a task class.
+Because qurey_float() is the float query command defined in the Instrument class,
+you can use it in the terminal.</p>
+<p>Actually you can use all the attribute and method defined in CG635 class and its super classes.
+There is cg.dir() method defined in Component class. It shows all the available
+components, commands, and method. It helps us to navigate through resources
+available with the class.</p>
+<figure class="align-center">
+<img alt="_images/cg-dir-terminal-screen-capture.png" src="_images/cg-dir-terminal-screen-capture.png" />
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>From the terminal, you can control all the instruments, as much as you can do with task scripts.
+Defining many useful methods in an instrument class provides more controls from the terminal,
+while you are tweaking to find optimal operation parameters of instruments.</p>
+</section>
+<section id="sds1202">
+<h2>SDS1202<a class="headerlink" href="#sds1202" title="Permalink to this heading"></a></h2>
+<p>Even though you may not have an SDS1202 oscilloscope that I happened
+to use for this example, I bet you can find an oscilloscope somewhere
+in your building. When you get a hold of one, it may have a USB connector only,
+like a lot of base model oscilloscopes do.
+It means you have to use USB-TMC interface. In order to do that, you need to
+install PyVISA amd make it work. You need to uncomment the available_interfaces of
+SDS1202 class, modify it to fit the specification of your oscilloscope, along with
+changing to the correct _IdString. And you have to get waveform download working.
+If you are lucky, you can find a working Python snippet from judicious web search.
+If not you have to decipher the programming manual of the oscilloscope to make the waveform
+download working. It may take time, It will be very rewarding for your data acquisition
+skill set improvement.</p>
+<p>Other than the binary waveform download, Communication with an oscilloscope will work OK
+using text based communication for most of remote commands.</p>
+<p>With default available_interfaces of Instrument class, TcpipInterface should be used with port 5025.</p>
+<p>The instrument driver for SDS1202 will work with 4 lines of code, just like CG635,
+before adding the method to download waveforms from the oscilloscope. Add attributes and methods
+incrementally as you need to use more functions of the instrument.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos"> 2</span><span class="kn">from</span> <span class="nn">srsgui</span> <span class="kn">import</span> <span class="n">Instrument</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="k">class</span> <span class="nc">SDS1202</span><span class="p">(</span><span class="n">Instrument</span><span class="p">):</span>
+<span class="linenos"> 5</span>    <span class="n">_IdString</span> <span class="o">=</span> <span class="s1">&#39;SDS1202&#39;</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>    <span class="k">def</span> <span class="nf">get_waveform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
+<span class="linenos"> 8</span>        <span class="o">...</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>    <span class="k">def</span> <span class="nf">get_sampling_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">11</span>        <span class="o">...</span>
+</pre></div>
+</div>
+<p>Once the oscilloscope is connected to the application, you can use the terminal to explore the oscilloscope.</p>
+<figure class="align-center">
+<img alt="_images/osc-dir-terminal-screen-capture.png" src="_images/osc-dir-terminal-screen-capture.png" />
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Becasue ‘osc’ is not the default instrument, you have to use the prefix ‘osc:’ with all the
+raw remote commands you send to the instrument. As shown with ‘osc.dir’, there are many methods
+avaiable with ‘osc.’ Even osc.get_waveform() is available from the terminal. The terminal kindly
+tells me that there is a missing argument in a function call, when you use a method incorrectly.
+You can see osc.get_waveform(channel) method returns two numpy array, if you run it.
+Since the terminal only allow to use attributes and methods of instruments defined in the
+configuration file, if you have more useful methods defined for the instrument,
+you can do more in the terminal. However, you are supposed to run more sophisticated data
+handling in tasks not from the terminal.</p>
+</section>
+<section id="tasks">
+<h2>Tasks<a class="headerlink" href="#tasks" title="Permalink to this heading"></a></h2>
+<section id="how-to-run-a-task">
+<h3>How to run a task<a class="headerlink" href="#how-to-run-a-task" title="Permalink to this heading"></a></h3>
+<p>Start <code class="docutils literal notranslate"><span class="pre">srsgui</span></code> application. You can see where the .config file is opened
+from the console window (<a class="reference internal" href="installation.html#top-of-initial-screen-capture"><span class="std std-ref">here</span></a>).
+If you made a copy of the original example from the <code class="docutils literal notranslate"><span class="pre">srsgui</span></code>
+package directory, open it again from the correct directory.</p>
+<p>If there is no error message in the Console window, connect the function generator
+and the oscilloscope from the Instruments menu, clicking the instrument name
+that you want to connect.</p>
+<p>Select the first task (*IDN test) from the Tasks menu or otheres in the Tasks menu
+and click the green arrow in the tool bar to run the task.</p>
+<p>The overall structure of a task is described in <a class="reference internal" href="create-task.html#writing-a-task-script"><span class="std std-ref">Writing a task script</span></a> section.
+There are 5 tasks are included in the example project. They gradually adds more features
+on the top of the previous tasks. Hopefully, they show most of Task class usage.</p>
+</section>
+</section>
+<section id="firsttask">
+<h2>FirstTask<a class="headerlink" href="#firsttask" title="Permalink to this heading"></a></h2>
+<p>The first task shows:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>How to use module-level logger for Python <a class="reference external" href="https://docs.python.org/3/howto/logging.html">logging</a> in a task</p></li>
+<li><p>How to use instruments defined in the configuration file</p></li>
+<li><p>How to use text output to the console window</p></li>
+</ul>
+</div></blockquote>
+<p>It is not much different from the <a class="reference internal" href="create-task.html#top-of-bare-bone-task"><span class="std std-ref">bare bone structure</span></a>
+shown in the <a class="reference internal" href="create-task.html#writing-a-task-script"><span class="std std-ref">Writing a task script</span></a> section.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">srsgui</span> <span class="kn">import</span> <span class="n">Task</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="k">class</span> <span class="nc">FirstTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+<span class="linenos"> 5</span>    <span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos"> 6</span><span class="sd">Query *IDN? to instruments, &#39;cg&#39; and &#39;osc&#39; \</span>
+<span class="linenos"> 7</span><span class="sd">defined in the configuration file.</span>
+<span class="linenos"> 8</span><span class="sd">    &quot;&quot;&quot;</span>
+<span class="linenos"> 9</span>    
+<span class="linenos">10</span>    <span class="c1"># No interactive input parameters to set before running </span>
+<span class="linenos">11</span>    <span class="n">input_parameters</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="linenos">12</span>    
+<span class="linenos">13</span>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">14</span>        <span class="c1"># To use Python logging</span>
+<span class="linenos">15</span>        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>        <span class="c1"># To use the instrument defined in .taskconfig file</span>
+<span class="linenos">18</span>        <span class="bp">self</span><span class="o">.</span><span class="n">cg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_instrument</span><span class="p">(</span><span class="s1">&#39;cg&#39;</span><span class="p">)</span>
+<span class="linenos">19</span>        <span class="bp">self</span><span class="o">.</span><span class="n">osc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_instrument</span><span class="p">(</span><span class="s1">&#39;osc&#39;</span><span class="p">)</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span>        <span class="c1"># Set clock frequency tp 10 MHz</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>        <span class="c1"># frequency is define as FloatCommand in CG635 class</span>
+<span class="linenos">24</span>        <span class="bp">self</span><span class="o">.</span><span class="n">cg</span><span class="o">.</span><span class="n">frequency</span> <span class="o">=</span> <span class="mi">10000000</span>
+<span class="linenos">25</span>        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Current frequency: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cg</span><span class="o">.</span><span class="n">frequency</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span>        <span class="c1"># You can do the same thing with FloatCommand defined.</span>
+<span class="linenos">28</span>        <span class="c1"># You can use send() and query_float() with raw remote command</span>
+<span class="linenos">29</span>        <span class="c1"># self.cg.send(&#39;FREQ 10000000&#39;)</span>
+<span class="linenos">30</span>        <span class="c1"># self.current_frequency = self.cg.query_float(&#39;FREQ?&#39;)</span>
+<span class="linenos">31</span>        <span class="c1"># self.logger.info(self.current_frequency)</span>
+<span class="linenos">32</span>
+<span class="linenos">33</span>    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">34</span>        <span class="c1"># You can use print() only with one argument.</span>
+<span class="linenos">35</span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">Let&#39;s query IDs of instruments!!</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="linenos">36</span>
+<span class="linenos">37</span>        <span class="c1"># Use query_text for raw remote command query returning string</span>
+<span class="linenos">38</span>        <span class="n">cg_id_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cg</span><span class="o">.</span><span class="n">query_text</span><span class="p">(</span><span class="s1">&#39;*idn?&#39;</span><span class="p">)</span>
+<span class="linenos">39</span>        <span class="n">osc_id_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">osc</span><span class="o">.</span><span class="n">query_text</span><span class="p">(</span><span class="s1">&#39;*idn?&#39;</span><span class="p">)</span>
+<span class="linenos">40</span>        
+<span class="linenos">41</span>        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CG *IDN : </span><span class="si">{</span><span class="n">cg_id_string</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="linenos">42</span>        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;OSC *IDN : </span><span class="si">{</span><span class="n">osc_id_string</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="linenos">43</span>
+<span class="linenos">44</span>    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">45</span>        <span class="c1"># We have nothing to clean up</span>
+<span class="linenos">46</span>        <span class="k">pass</span>
+</pre></div>
+</div>
+<p>Using <strong>self.logger</strong> sends the logging output to the console window, the master logging file in
+~/task-results directory/mainlog-xx.txt.x, and to the task result data file located in
+~/task-results/project-name-in-config-file/RNxxx directory.</p>
+<p>With <a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.get_instrument" title="srsgui.task.task.Task.get_instrument"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_instrument</span></code></a> you can get the instrument
+defined in the configuration file in a task. <strong>Do not disconnect the instrument in the task!</strong>
+Instrument Connectivity is managed in the application level.</p>
+<p>It show how much it simplifies remote command set and query transactions by defining frequency
+attribute using <a class="reference internal" href="srsgui.inst.html#module-srsgui.inst.commands" title="srsgui.inst.commands"><code class="xref py py-mod docutils literal notranslate"><span class="pre">srsgui.inst.commands</span></code></a> module.</p>
+</section>
+<section id="secondtask">
+<h2>SecondTask<a class="headerlink" href="#secondtask" title="Permalink to this heading"></a></h2>
+<p>The second task shows:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>How to define <a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.input_parameters" title="srsgui.task.task.Task.input_parameters"><code class="xref py py-attr docutils literal notranslate"><span class="pre">input_parameters</span></code></a>
+for interactive user input from the application input panel</p></li>
+<li><p>How to get matploglib figure and use it to plot</p></li>
+<li><p>How to send text output to result window using
+<a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.display_result" title="srsgui.task.task.Task.display_result"><code class="xref py py-meth docutils literal notranslate"><span class="pre">display_result()</span></code></a></p></li>
+<li><p>How to stop the main loop by checking
+<a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.is_running" title="srsgui.task.task.Task.is_running"><code class="xref py py-meth docutils literal notranslate"><span class="pre">is_running()</span></code></a>.</p></li>
+</ul>
+</div></blockquote>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">time</span>
+<span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">math</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="kn">from</span> <span class="nn">srsgui</span> <span class="kn">import</span> <span class="n">Task</span>
+<span class="linenos"> 5</span><span class="kn">from</span> <span class="nn">srsgui</span> <span class="kn">import</span> <span class="n">IntegerInput</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="k">class</span> <span class="nc">SecondTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+<span class="linenos"> 9</span>    <span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos">10</span><span class="sd">It shows how to use a Matplotlib plot in a task. \</span>
+<span class="linenos">11</span><span class="sd">No hardware connection is required to plot a sine curve.</span>
+<span class="linenos">12</span><span class="sd">    &quot;&quot;&quot;</span>
+<span class="linenos">13</span>    
+<span class="linenos">14</span>    <span class="c1"># Interactive input parameters to set before running </span>
+<span class="linenos">15</span>    <span class="n">Angle</span> <span class="o">=</span> <span class="s1">&#39;final angle to plot&#39;</span>
+<span class="linenos">16</span>    <span class="n">input_parameters</span> <span class="o">=</span> <span class="p">{</span>
+<span class="linenos">17</span>        <span class="n">Angle</span><span class="p">:</span> <span class="n">IntegerInput</span><span class="p">(</span><span class="mi">360</span><span class="p">,</span> <span class="s1">&#39; degree&#39;</span><span class="p">)</span>
+<span class="linenos">18</span>    <span class="p">}</span>
+<span class="linenos">19</span>    <span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos">20</span><span class="sd">    Use input_parameters to get parameters used in the task </span>
+<span class="linenos">21</span><span class="sd">    &quot;&quot;&quot;</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span>        <span class="c1"># Get a value from input_parameters</span>
+<span class="linenos">26</span>        <span class="bp">self</span><span class="o">.</span><span class="n">total_angle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input_parameter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Angle</span><span class="p">)</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span>        <span class="c1"># Get the Python logging handler</span>
+<span class="linenos">29</span>        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span>        <span class="c1"># Get the default Matplotlib figure</span>
+<span class="linenos">32</span>        <span class="bp">self</span><span class="o">.</span><span class="n">figure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span>
+<span class="linenos">33</span>
+<span class="linenos">34</span>        <span class="c1"># Once you get the figure, the followings are typical Matplotlib things to plot.</span>
+<span class="linenos">35</span>        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="linenos">36</span>        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_angle</span><span class="p">)</span>
+<span class="linenos">37</span>        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)</span>
+<span class="linenos">38</span>        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_angle</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;Drawing sine curve...&#39;</span><span class="p">)</span>
+<span class="linenos">39</span>        <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="p">,</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="linenos">40</span>        
+<span class="linenos">41</span>    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">42</span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">Let&#39;s plot!</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="linenos">43</span>        
+<span class="linenos">44</span>        <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">45</span>        <span class="n">y</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">46</span>        <span class="n">rad</span> <span class="o">=</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span>
+<span class="linenos">47</span>
+<span class="linenos">48</span>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_angle</span><span class="p">):</span>
+<span class="linenos">49</span>            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span><span class="p">():</span>  <span class="c1"># if the stop button is pressed, stop the task</span>
+<span class="linenos">50</span>                <span class="k">break</span>
+<span class="linenos">51</span>       
+<span class="linenos">52</span>            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Adding point </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="linenos">53</span>
+<span class="linenos">54</span>            <span class="c1"># Display in the result panel</span>
+<span class="linenos">55</span>            <span class="bp">self</span><span class="o">.</span><span class="n">display_result</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">Plotting </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> degree...</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos">56</span>
+<span class="linenos">57</span>            <span class="c1"># Add data to the Matplotlib line and update the plot</span>
+<span class="linenos">58</span>            <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="linenos">59</span>            <span class="n">y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="n">rad</span><span class="p">))</span>
+<span class="linenos">60</span>            <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="linenos">61</span>
+<span class="linenos">62</span>            <span class="c1"># Figure update should be done in the main thread, not locally.</span>
+<span class="linenos">63</span>            <span class="bp">self</span><span class="o">.</span><span class="n">request_figure_update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="p">)</span>
+<span class="linenos">64</span>            
+<span class="linenos">65</span>            <span class="c1"># Delay a bit as if a sine function computation takes time.</span>
+<span class="linenos">66</span>            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="linenos">67</span>
+<span class="linenos">68</span>    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">69</span>        <span class="bp">self</span><span class="o">.</span><span class="n">display_result</span><span class="p">(</span><span class="s1">&#39;Done!&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using <a class="reference external" href="https://matplotlib.org/stable/index.html">matplotlib</a> is straightforward. No harder than standard plots using figures and axes.
+Refer to <a class="reference external" href="https://matplotlib.org/stable/index.html">matplotlib</a> documentation on how to use it.</p>
+<dl class="simple">
+<dt>The important differences using matplotlib in <code class="docutils literal notranslate"><span class="pre">srsgui</span></code> are:</dt><dd><ul class="simple">
+<li><p>You have to get the figure using get_figure(), not creating one  on your own.</p></li>
+<li><p>You create plots during setup(), because it is slow process. During test(),
+you just update data using set_data() or similiar methods for data update.</p></li>
+<li><p>You have use request_figure_update() to redraw the plot, after set_data().
+The event loop handler in the main application will update the plot at its earliest
+convenience.</p></li>
+</ul>
+</dd>
+</dl>
+<figure class="align-center">
+<img alt="_images/second-task-screen-capture.png" src="_images/second-task-screen-capture.png" />
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</section>
+<section id="thirdtask">
+<h2>ThirdTask<a class="headerlink" href="#thirdtask" title="Permalink to this heading"></a></h2>
+<p>The third task uses the oscilloscope only. It gets the number of captures from user input,
+repeat oscilloscope waveform capture and update the waveform plot. It stops after repeats
+the number of times selected berfore run, or when the Stop button is pressued.
+When it runs it captures and display a waveform with 700000 points every 0.2 second
+over TCPIP communcation.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">time</span>
+<span class="linenos"> 2</span><span class="kn">from</span> <span class="nn">srsgui</span> <span class="kn">import</span> <span class="n">Task</span>
+<span class="linenos"> 3</span><span class="kn">from</span> <span class="nn">srsgui</span> <span class="kn">import</span> <span class="n">IntegerInput</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="k">class</span> <span class="nc">ThirdTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+<span class="linenos"> 7</span>    <span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos"> 8</span><span class="sd">It captures waveforms from an oscilloscope, \</span>
+<span class="linenos"> 9</span><span class="sd">and plot the waveforms real time.</span>
+<span class="linenos">10</span><span class="sd">    &quot;&quot;&quot;</span>
+<span class="linenos">11</span>    
+<span class="linenos">12</span>    <span class="c1"># Use input_parameters to set parameters before running </span>
+<span class="linenos">13</span>    <span class="n">Count</span> <span class="o">=</span> <span class="s1">&#39;number of captures&#39;</span>
+<span class="linenos">14</span>    <span class="n">input_parameters</span> <span class="o">=</span> <span class="p">{</span>
+<span class="linenos">15</span>        <span class="n">Count</span><span class="p">:</span> <span class="n">IntegerInput</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> 
+<span class="linenos">16</span>    <span class="p">}</span>
+<span class="linenos">17</span>    
+<span class="linenos">18</span>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">19</span>        <span class="bp">self</span><span class="o">.</span><span class="n">repeat_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input_parameter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Count</span><span class="p">)</span>
+<span class="linenos">20</span>        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>        
+<span class="linenos">21</span>
+<span class="linenos">22</span>        <span class="bp">self</span><span class="o">.</span><span class="n">osc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_instrument</span><span class="p">(</span><span class="s1">&#39;osc&#39;</span><span class="p">)</span> <span class="c1"># use the inst name in taskconfig file</span>
+<span class="linenos">23</span>        
+<span class="linenos">24</span>        <span class="c1"># Get the Matplotlib figure to plot in</span>
+<span class="linenos">25</span>        <span class="bp">self</span><span class="o">.</span><span class="n">figure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span>        <span class="c1"># Once you get the figure, the following are about Matplotlib things to plot</span>
+<span class="linenos">28</span>        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="linenos">29</span>        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e-5</span><span class="p">)</span>
+<span class="linenos">30</span>        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+<span class="linenos">31</span>        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Scope waveform Capture&#39;</span><span class="p">)</span>
+<span class="linenos">32</span>        <span class="bp">self</span><span class="o">.</span><span class="n">x_data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos">33</span>        <span class="bp">self</span><span class="o">.</span><span class="n">y_data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos">34</span>        <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="p">,</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_data</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">y_data</span><span class="p">)</span>
+<span class="linenos">35</span>        
+<span class="linenos">36</span>    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">37</span>        <span class="n">prev_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="linenos">38</span>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">repeat_count</span><span class="p">):</span>
+<span class="linenos">39</span>            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span><span class="p">():</span> <span class="c1"># if the Stop button is pressed</span>
+<span class="linenos">40</span>                <span class="k">break</span>
+<span class="linenos">41</span>            
+<span class="linenos">42</span>            <span class="c1"># Add data to the Matplotlib line and update the figure</span>
+<span class="linenos">43</span>            <span class="n">t</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">osc</span><span class="o">.</span><span class="n">get_waveform</span><span class="p">(</span><span class="s1">&#39;C1&#39;</span><span class="p">)</span>  <span class="c1"># Get a waveform of the Channel 1 from the oscilloscope</span>
+<span class="linenos">44</span>            <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+<span class="linenos">45</span>            <span class="bp">self</span><span class="o">.</span><span class="n">request_figure_update</span><span class="p">()</span>
+<span class="linenos">46</span>            
+<span class="linenos">47</span>            <span class="c1"># Calculate the time for each capture</span>
+<span class="linenos">48</span>            <span class="n">current_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="linenos">49</span>            <span class="n">diff</span> <span class="o">=</span> <span class="n">current_time</span> <span class="o">-</span> <span class="n">prev_time</span>
+<span class="linenos">50</span>            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Capture time for </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s1"> points of waveform </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">diff</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> s&#39;</span><span class="p">)</span>
+<span class="linenos">51</span>            <span class="n">prev_time</span> <span class="o">=</span> <span class="n">current_time</span>
+<span class="linenos">52</span>            
+<span class="linenos">53</span>    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">54</span>        <span class="k">pass</span>
+</pre></div>
+</div>
+</section>
+<section id="fourthtask">
+<h2>FourthTask<a class="headerlink" href="#fourthtask" title="Permalink to this heading"></a></h2>
+<p>The fourth example is the climax of the examples series. It uses input_parameters
+to change output frequency of the clock generator interactively, captures waveforms
+from the oscilloscope, run FFT of the waveforms with Numpy, and plot
+using 2 matplotlib figures.</p>
+<p>by adding the names of figures that you want to use in additional_figure_names,
+<code class="docutils literal notranslate"><span class="pre">srsgui</span></code> provides more figures to the task before it starts.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="kn">import</span> <span class="nn">time</span>
+<span class="linenos">  2</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos">  3</span><span class="kn">from</span> <span class="nn">srsgui</span> <span class="kn">import</span> <span class="n">Task</span>
+<span class="linenos">  4</span><span class="kn">from</span> <span class="nn">srsgui</span> <span class="kn">import</span> <span class="n">IntegerInput</span>
+<span class="linenos">  5</span>
+<span class="linenos">  6</span>
+<span class="linenos">  7</span><span class="k">class</span> <span class="nc">FourthTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+<span class="linenos">  8</span>    <span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos">  9</span><span class="sd">Change the frequency of the clock generator output interactively, \</span>
+<span class="linenos"> 10</span><span class="sd">capture waveforms from the oscilloscope, \</span>
+<span class="linenos"> 11</span><span class="sd">calculate FFT of the waveforms, \</span>
+<span class="linenos"> 12</span><span class="sd">plot the waveforms and repeat until the stop button pressed.  </span>
+<span class="linenos"> 13</span><span class="sd">    &quot;&quot;&quot;</span>
+<span class="linenos"> 14</span>
+<span class="linenos"> 15</span>    <span class="c1"># Interactive input parameters to set before running </span>
+<span class="linenos"> 16</span>    <span class="n">Frequency</span> <span class="o">=</span> <span class="s1">&#39;Frequency to set&#39;</span>
+<span class="linenos"> 17</span>    <span class="n">Count</span> <span class="o">=</span> <span class="s1">&#39;number of runs&#39;</span>
+<span class="linenos"> 18</span>    <span class="n">input_parameters</span> <span class="o">=</span> <span class="p">{</span>
+<span class="linenos"> 19</span>        <span class="n">Frequency</span><span class="p">:</span> <span class="n">IntegerInput</span><span class="p">(</span><span class="mi">10000000</span><span class="p">,</span> <span class="s1">&#39; Hz&#39;</span><span class="p">,</span> <span class="mi">100000</span><span class="p">,</span> <span class="mi">200000000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span>
+<span class="linenos"> 20</span>        <span class="n">Count</span><span class="p">:</span> <span class="n">IntegerInput</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span>
+<span class="linenos"> 21</span>    <span class="p">}</span>
+<span class="linenos"> 22</span>
+<span class="linenos"> 23</span>    <span class="c1"># Add another figure for more plots</span>
+<span class="linenos"> 24</span>    <span class="n">FFTPlot</span> <span class="o">=</span> <span class="s1">&#39;FFT plot&#39;</span>
+<span class="linenos"> 25</span>    <span class="n">additional_figure_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">FFTPlot</span><span class="p">]</span>
+<span class="linenos"> 26</span>
+<span class="linenos"> 27</span>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos"> 28</span>        <span class="bp">self</span><span class="o">.</span><span class="n">repeat_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input_parameter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Count</span><span class="p">)</span>
+<span class="linenos"> 29</span>        <span class="bp">self</span><span class="o">.</span><span class="n">set_freq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_parameters</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">Frequency</span><span class="p">]</span>
+<span class="linenos"> 30</span>
+<span class="linenos"> 31</span>        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+<span class="linenos"> 32</span>        
+<span class="linenos"> 33</span>        <span class="bp">self</span><span class="o">.</span><span class="n">osc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_instrument</span><span class="p">(</span><span class="s1">&#39;osc&#39;</span><span class="p">)</span> <span class="c1"># use the inst name in taskconfig file</span>
+<span class="linenos"> 34</span>        
+<span class="linenos"> 35</span>        <span class="bp">self</span><span class="o">.</span><span class="n">cg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_instrument</span><span class="p">(</span><span class="s1">&#39;cg&#39;</span><span class="p">)</span>
+<span class="linenos"> 36</span>        <span class="bp">self</span><span class="o">.</span><span class="n">cg</span><span class="o">.</span><span class="n">frequency</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_freq</span>  <span class="c1"># Set cg frequency</span>
+<span class="linenos"> 37</span>        
+<span class="linenos"> 38</span>        <span class="bp">self</span><span class="o">.</span><span class="n">init_plots</span><span class="p">()</span>
+<span class="linenos"> 39</span>        
+<span class="linenos"> 40</span>    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos"> 41</span>        <span class="n">prev_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="linenos"> 42</span>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">repeat_count</span><span class="p">):</span>
+<span class="linenos"> 43</span>            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span><span class="p">():</span> <span class="c1"># if the Stop button is pressed</span>
+<span class="linenos"> 44</span>                <span class="k">break</span>
+<span class="linenos"> 45</span>                
+<span class="linenos"> 46</span>            <span class="c1"># Check if the user changed the set_frequency </span>
+<span class="linenos"> 47</span>            <span class="n">freq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input_parameter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Frequency</span><span class="p">)</span>
+<span class="linenos"> 48</span>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_freq</span> <span class="o">!=</span> <span class="n">freq</span><span class="p">:</span>
+<span class="linenos"> 49</span>                <span class="bp">self</span><span class="o">.</span><span class="n">set_frequency</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span>
+<span class="linenos"> 50</span>                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Frequency changed to </span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s1"> Hz&#39;</span><span class="p">)</span>
+<span class="linenos"> 51</span>                <span class="bp">self</span><span class="o">.</span><span class="n">set_freq</span> <span class="o">=</span> <span class="n">freq</span>
+<span class="linenos"> 52</span>                
+<span class="linenos"> 53</span>            <span class="c1"># Get a waveform from the oscillscope and update the plot </span>
+<span class="linenos"> 54</span>            <span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">sara</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_waveform</span><span class="p">()</span>
+<span class="linenos"> 55</span>            <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+<span class="linenos"> 56</span>            <span class="bp">self</span><span class="o">.</span><span class="n">request_figure_update</span><span class="p">()</span>
+<span class="linenos"> 57</span>
+<span class="linenos"> 58</span>            <span class="c1"># Calculate FFT with the waveform and update the plot</span>
+<span class="linenos"> 59</span>            <span class="n">size</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span>  <span class="c1"># largest power of 2 &lt;= waveform length</span>
+<span class="linenos"> 60</span>
+<span class="linenos"> 61</span>            <span class="n">window</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hanning</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>  <span class="c1"># get a FFT window</span>
+<span class="linenos"> 62</span>            <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">v</span><span class="p">[:</span><span class="n">size</span><span class="p">]</span> <span class="o">*</span> <span class="n">window</span><span class="p">)</span>
+<span class="linenos"> 63</span>            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sara</span> <span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+<span class="linenos"> 64</span>            <span class="bp">self</span><span class="o">.</span><span class="n">fft_line</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+<span class="linenos"> 65</span>
+<span class="linenos"> 66</span>            <span class="bp">self</span><span class="o">.</span><span class="n">request_figure_update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fft_fig</span><span class="p">)</span> 
+<span class="linenos"> 67</span>
+<span class="linenos"> 68</span>            <span class="c1"># Calculate time for each capture</span>
+<span class="linenos"> 69</span>            <span class="n">current_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="linenos"> 70</span>            <span class="n">diff</span> <span class="o">=</span> <span class="n">current_time</span> <span class="o">-</span> <span class="n">prev_time</span>
+<span class="linenos"> 71</span>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Waveform no. </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s1"> points, time taken: </span><span class="si">{</span><span class="n">diff</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> s&#39;</span><span class="p">)</span>
+<span class="linenos"> 72</span>            <span class="n">prev_time</span> <span class="o">=</span> <span class="n">current_time</span>
+<span class="linenos"> 73</span>            
+<span class="linenos"> 74</span>    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos"> 75</span>        <span class="k">pass</span>
+<span class="linenos"> 76</span>        
+<span class="linenos"> 77</span>    <span class="k">def</span> <span class="nf">init_plots</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos"> 78</span>        <span class="c1"># Once you get the figure, the following are about Matplotlib things to plot</span>
+<span class="linenos"> 79</span>        <span class="bp">self</span><span class="o">.</span><span class="n">figure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span>
+<span class="linenos"> 80</span>        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="linenos"> 81</span>        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">)</span>
+<span class="linenos"> 82</span>        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+<span class="linenos"> 83</span>        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Clock waveform&#39;</span><span class="p">)</span>
+<span class="linenos"> 84</span>        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;time (s)&#39;</span><span class="p">)</span>
+<span class="linenos"> 85</span>        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Amplitude (V)&#39;</span><span class="p">)</span>
+<span class="linenos"> 86</span>        <span class="bp">self</span><span class="o">.</span><span class="n">x_data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos"> 87</span>        <span class="bp">self</span><span class="o">.</span><span class="n">y_data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos"> 88</span>        <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="p">,</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_data</span><span class="p">)</span>
+<span class="linenos"> 89</span>
+<span class="linenos"> 90</span>        <span class="c1"># Get the second figure for FFT plot.</span>
+<span class="linenos"> 91</span>        <span class="bp">self</span><span class="o">.</span><span class="n">fft_fig</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_figure</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">FFTPlot</span><span class="p">)</span>
+<span class="linenos"> 92</span>
+<span class="linenos"> 93</span>        <span class="bp">self</span><span class="o">.</span><span class="n">fft_ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fft_fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="linenos"> 94</span>        <span class="bp">self</span><span class="o">.</span><span class="n">fft_ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1e8</span><span class="p">)</span>
+<span class="linenos"> 95</span>        <span class="bp">self</span><span class="o">.</span><span class="n">fft_ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e1</span><span class="p">)</span>
+<span class="linenos"> 96</span>        <span class="bp">self</span><span class="o">.</span><span class="n">fft_ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;FFT spectum&#39;</span><span class="p">)</span>
+<span class="linenos"> 97</span>        <span class="bp">self</span><span class="o">.</span><span class="n">fft_ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency (Hz)&#39;</span><span class="p">)</span>
+<span class="linenos"> 98</span>        <span class="bp">self</span><span class="o">.</span><span class="n">fft_ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Magnitude (V)&#39;</span><span class="p">)</span>
+<span class="linenos"> 99</span>        <span class="bp">self</span><span class="o">.</span><span class="n">fft_x_data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos">100</span>        <span class="bp">self</span><span class="o">.</span><span class="n">fft_y_data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>     
+<span class="linenos">101</span>        <span class="bp">self</span><span class="o">.</span><span class="n">fft_line</span><span class="p">,</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fft_ax</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fft_x_data</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">fft_y_data</span><span class="p">)</span>        
+<span class="linenos">102</span>
+<span class="linenos">103</span>    <span class="k">def</span> <span class="nf">get_waveform</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">104</span>        <span class="n">t</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">osc</span><span class="o">.</span><span class="n">get_waveform</span><span class="p">(</span><span class="s1">&#39;c1&#39;</span><span class="p">)</span> <span class="c1"># Get Ch. 1 waveform</span>
+<span class="linenos">105</span>        <span class="n">sara</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">osc</span><span class="o">.</span><span class="n">get_sampling_rate</span><span class="p">()</span>
+<span class="linenos">106</span>        <span class="k">return</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">sara</span>
+<span class="linenos">107</span>        
+<span class="linenos">108</span>    <span class="k">def</span> <span class="nf">set_frequency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+<span class="linenos">109</span>        <span class="bp">self</span><span class="o">.</span><span class="n">cg</span><span class="o">.</span><span class="n">frequency</span> <span class="o">=</span> <span class="n">f</span>
+</pre></div>
+</div>
+</section>
+<section id="fifthtask">
+<h2>FifthTask<a class="headerlink" href="#fifthtask" title="Permalink to this heading"></a></h2>
+<p>the fifth examples is to show how to subclass an existing task class to reuse.
+the method get_waveform() in the fourth example is reimplemented to generate
+simulated waveform that runs without any real oscilloscope.</p>
+<p>Note that the square wave edge calculation is crude, and causing modulation in pulse width
+that shows side bands in FFT spectrum, if the set frequency is not commensurated with
+the sampling rate. To generate clean square wave, the rising and falling edges should
+have at least two points to represent exact phase. Direct transition from low to high
+without any intermediate points suffers from subtle modulation in time domain,
+which manifests as side bands in FFT. This is a common problem in digital signal
+processing. It is not a problem in the real world, because the signal is analog,
+and the sampling rate is limited by the bandwidth of the signal.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="kn">import</span> <span class="nn">time</span>
+<span class="linenos">  2</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos">  3</span><span class="kn">from</span> <span class="nn">srsgui</span> <span class="kn">import</span> <span class="n">Task</span>
+<span class="linenos">  4</span><span class="kn">from</span> <span class="nn">srsgui</span> <span class="kn">import</span> <span class="n">IntegerInput</span>
+<span class="linenos">  5</span>
+<span class="linenos">  6</span>
+<span class="linenos">  7</span><span class="k">class</span> <span class="nc">FourthTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+<span class="linenos">  8</span>    <span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos">  9</span><span class="sd">Change the frequency of the clock generator output interactively, \</span>
+<span class="linenos"> 10</span><span class="sd">capture waveforms from the oscilloscope, \</span>
+<span class="linenos"> 11</span><span class="sd">calculate FFT of the waveforms, \</span>
+<span class="linenos"> 12</span><span class="sd">plot the waveforms and repeat until the stop button pressed.  </span>
+<span class="linenos"> 13</span><span class="sd">    &quot;&quot;&quot;</span>
+<span class="linenos"> 14</span>
+<span class="linenos"> 15</span>    <span class="c1"># Interactive input parameters to set before running </span>
+<span class="linenos"> 16</span>    <span class="n">Frequency</span> <span class="o">=</span> <span class="s1">&#39;Frequency to set&#39;</span>
+<span class="linenos"> 17</span>    <span class="n">Count</span> <span class="o">=</span> <span class="s1">&#39;number of runs&#39;</span>
+<span class="linenos"> 18</span>    <span class="n">input_parameters</span> <span class="o">=</span> <span class="p">{</span>
+<span class="linenos"> 19</span>        <span class="n">Frequency</span><span class="p">:</span> <span class="n">IntegerInput</span><span class="p">(</span><span class="mi">10000000</span><span class="p">,</span> <span class="s1">&#39; Hz&#39;</span><span class="p">,</span> <span class="mi">100000</span><span class="p">,</span> <span class="mi">200000000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span>
+<span class="linenos"> 20</span>        <span class="n">Count</span><span class="p">:</span> <span class="n">IntegerInput</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span>
+<span class="linenos"> 21</span>    <span class="p">}</span>
+<span class="linenos"> 22</span>
+<span class="linenos"> 23</span>    <span class="c1"># Add another figure for more plots</span>
+<span class="linenos"> 24</span>    <span class="n">FFTPlot</span> <span class="o">=</span> <span class="s1">&#39;FFT plot&#39;</span>
+<span class="linenos"> 25</span>    <span class="n">additional_figure_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">FFTPlot</span><span class="p">]</span>
+<span class="linenos"> 26</span>
+<span class="linenos"> 27</span>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos"> 28</span>        <span class="bp">self</span><span class="o">.</span><span class="n">repeat_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input_parameter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Count</span><span class="p">)</span>
+<span class="linenos"> 29</span>        <span class="bp">self</span><span class="o">.</span><span class="n">set_freq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_parameters</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">Frequency</span><span class="p">]</span>
+<span class="linenos"> 30</span>
+<span class="linenos"> 31</span>        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+<span class="linenos"> 32</span>        
+<span class="linenos"> 33</span>        <span class="bp">self</span><span class="o">.</span><span class="n">osc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_instrument</span><span class="p">(</span><span class="s1">&#39;osc&#39;</span><span class="p">)</span> <span class="c1"># use the inst name in taskconfig file</span>
+<span class="linenos"> 34</span>        
+<span class="linenos"> 35</span>        <span class="bp">self</span><span class="o">.</span><span class="n">cg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_instrument</span><span class="p">(</span><span class="s1">&#39;cg&#39;</span><span class="p">)</span>
+<span class="linenos"> 36</span>        <span class="bp">self</span><span class="o">.</span><span class="n">cg</span><span class="o">.</span><span class="n">frequency</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_freq</span>  <span class="c1"># Set cg frequency</span>
+<span class="linenos"> 37</span>        
+<span class="linenos"> 38</span>        <span class="bp">self</span><span class="o">.</span><span class="n">init_plots</span><span class="p">()</span>
+<span class="linenos"> 39</span>        
+<span class="linenos"> 40</span>    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos"> 41</span>        <span class="n">prev_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="linenos"> 42</span>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">repeat_count</span><span class="p">):</span>
+<span class="linenos"> 43</span>            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span><span class="p">():</span> <span class="c1"># if the Stop button is pressed</span>
+<span class="linenos"> 44</span>                <span class="k">break</span>
+<span class="linenos"> 45</span>                
+<span class="linenos"> 46</span>            <span class="c1"># Check if the user changed the set_frequency </span>
+<span class="linenos"> 47</span>            <span class="n">freq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input_parameter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Frequency</span><span class="p">)</span>
+<span class="linenos"> 48</span>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_freq</span> <span class="o">!=</span> <span class="n">freq</span><span class="p">:</span>
+<span class="linenos"> 49</span>                <span class="bp">self</span><span class="o">.</span><span class="n">set_frequency</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span>
+<span class="linenos"> 50</span>                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Frequency changed to </span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s1"> Hz&#39;</span><span class="p">)</span>
+<span class="linenos"> 51</span>                <span class="bp">self</span><span class="o">.</span><span class="n">set_freq</span> <span class="o">=</span> <span class="n">freq</span>
+<span class="linenos"> 52</span>                
+<span class="linenos"> 53</span>            <span class="c1"># Get a waveform from the oscillscope and update the plot </span>
+<span class="linenos"> 54</span>            <span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">sara</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_waveform</span><span class="p">()</span>
+<span class="linenos"> 55</span>            <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+<span class="linenos"> 56</span>            <span class="bp">self</span><span class="o">.</span><span class="n">request_figure_update</span><span class="p">()</span>
+<span class="linenos"> 57</span>
+<span class="linenos"> 58</span>            <span class="c1"># Calculate FFT with the waveform and update the plot</span>
+<span class="linenos"> 59</span>            <span class="n">size</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span>  <span class="c1"># largest power of 2 &lt;= waveform length</span>
+<span class="linenos"> 60</span>
+<span class="linenos"> 61</span>            <span class="n">window</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hanning</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>  <span class="c1"># get a FFT window</span>
+<span class="linenos"> 62</span>            <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">v</span><span class="p">[:</span><span class="n">size</span><span class="p">]</span> <span class="o">*</span> <span class="n">window</span><span class="p">)</span>
+<span class="linenos"> 63</span>            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sara</span> <span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+<span class="linenos"> 64</span>            <span class="bp">self</span><span class="o">.</span><span class="n">fft_line</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+<span class="linenos"> 65</span>
+<span class="linenos"> 66</span>            <span class="bp">self</span><span class="o">.</span><span class="n">request_figure_update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fft_fig</span><span class="p">)</span> 
+<span class="linenos"> 67</span>
+<span class="linenos"> 68</span>            <span class="c1"># Calculate time for each capture</span>
+<span class="linenos"> 69</span>            <span class="n">current_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="linenos"> 70</span>            <span class="n">diff</span> <span class="o">=</span> <span class="n">current_time</span> <span class="o">-</span> <span class="n">prev_time</span>
+<span class="linenos"> 71</span>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Waveform no. </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s1"> points, time taken: </span><span class="si">{</span><span class="n">diff</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> s&#39;</span><span class="p">)</span>
+<span class="linenos"> 72</span>            <span class="n">prev_time</span> <span class="o">=</span> <span class="n">current_time</span>
+<span class="linenos"> 73</span>            
+<span class="linenos"> 74</span>    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos"> 75</span>        <span class="k">pass</span>
+<span class="linenos"> 76</span>        
+<span class="linenos"> 77</span>    <span class="k">def</span> <span class="nf">init_plots</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos"> 78</span>        <span class="c1"># Once you get the figure, the following are about Matplotlib things to plot</span>
+<span class="linenos"> 79</span>        <span class="bp">self</span><span class="o">.</span><span class="n">figure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span>
+<span class="linenos"> 80</span>        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="linenos"> 81</span>        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">)</span>
+<span class="linenos"> 82</span>        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+<span class="linenos"> 83</span>        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Clock waveform&#39;</span><span class="p">)</span>
+<span class="linenos"> 84</span>        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;time (s)&#39;</span><span class="p">)</span>
+<span class="linenos"> 85</span>        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Amplitude (V)&#39;</span><span class="p">)</span>
+<span class="linenos"> 86</span>        <span class="bp">self</span><span class="o">.</span><span class="n">x_data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos"> 87</span>        <span class="bp">self</span><span class="o">.</span><span class="n">y_data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos"> 88</span>        <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="p">,</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_data</span><span class="p">)</span>
+<span class="linenos"> 89</span>
+<span class="linenos"> 90</span>        <span class="c1"># Get the second figure for FFT plot.</span>
+<span class="linenos"> 91</span>        <span class="bp">self</span><span class="o">.</span><span class="n">fft_fig</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_figure</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">FFTPlot</span><span class="p">)</span>
+<span class="linenos"> 92</span>
+<span class="linenos"> 93</span>        <span class="bp">self</span><span class="o">.</span><span class="n">fft_ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fft_fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="linenos"> 94</span>        <span class="bp">self</span><span class="o">.</span><span class="n">fft_ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1e8</span><span class="p">)</span>
+<span class="linenos"> 95</span>        <span class="bp">self</span><span class="o">.</span><span class="n">fft_ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e1</span><span class="p">)</span>
+<span class="linenos"> 96</span>        <span class="bp">self</span><span class="o">.</span><span class="n">fft_ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;FFT spectum&#39;</span><span class="p">)</span>
+<span class="linenos"> 97</span>        <span class="bp">self</span><span class="o">.</span><span class="n">fft_ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency (Hz)&#39;</span><span class="p">)</span>
+<span class="linenos"> 98</span>        <span class="bp">self</span><span class="o">.</span><span class="n">fft_ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Magnitude (V)&#39;</span><span class="p">)</span>
+<span class="linenos"> 99</span>        <span class="bp">self</span><span class="o">.</span><span class="n">fft_x_data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos">100</span>        <span class="bp">self</span><span class="o">.</span><span class="n">fft_y_data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>     
+<span class="linenos">101</span>        <span class="bp">self</span><span class="o">.</span><span class="n">fft_line</span><span class="p">,</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fft_ax</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fft_x_data</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">fft_y_data</span><span class="p">)</span>        
+<span class="linenos">102</span>
+<span class="linenos">103</span>    <span class="k">def</span> <span class="nf">get_waveform</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">104</span>        <span class="n">t</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">osc</span><span class="o">.</span><span class="n">get_waveform</span><span class="p">(</span><span class="s1">&#39;c1&#39;</span><span class="p">)</span> <span class="c1"># Get Ch. 1 waveform</span>
+<span class="linenos">105</span>        <span class="n">sara</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">osc</span><span class="o">.</span><span class="n">get_sampling_rate</span><span class="p">()</span>
+<span class="linenos">106</span>        <span class="k">return</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">sara</span>
+<span class="linenos">107</span>        
+<span class="linenos">108</span>    <span class="k">def</span> <span class="nf">set_frequency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+<span class="linenos">109</span>        <span class="bp">self</span><span class="o">.</span><span class="n">cg</span><span class="o">.</span><span class="n">frequency</span> <span class="o">=</span> <span class="n">f</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="create-task.html" class="btn btn-neutral float-left" title="Writing a task script" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="srsgui.html" class="btn btn-neutral float-right" title="srsgui APIs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Chulhoon Kim.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

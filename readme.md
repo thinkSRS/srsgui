@@ -12,7 +12,7 @@
    - To organize instrument classes and task scripts presented in a GUI application
      using a configuration (.taskconfig) file for a project
 
-![screenshot](docs/source/_static/example-screen-capture-1.png " ")
+![screenshot](https://thinksrs.github.io/srsgui/html/_images/example-screen-capture-2.png " ")
 
 ## Installation
 

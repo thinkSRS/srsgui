@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>srsgui.ui package &mdash; srsgui  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="srsgui.ui.commandtree.commanditem module" href="srsgui.ui.commandtree.html" />
+    <link rel="prev" title="srsgui.task package" href="srsgui.task.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> srsgui
+          </a>
+              <div class="version">
+                0.2.16
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-project.html">Creating a project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="define-instrument.html">Defining instrument classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-task.html">Writing a task script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Example project</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="srsgui.html">srsgui APIs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="srsgui.inst.html">srsgui.inst package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.task.html">srsgui.task package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">srsgui.ui package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-srsgui.ui.taskmain">srsgui.ui.taskmain module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.ui.taskmain.TaskMain"><code class="docutils literal notranslate"><span class="pre">TaskMain</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-srsgui.ui.connectdlg">srsgui.ui.connectdlg module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.ui.connectdlg.ConnectDlg"><code class="docutils literal notranslate"><span class="pre">ConnectDlg</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-srsgui.ui.commandterminal">srsgui.ui.commandterminal module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.ui.commandterminal.CommandTerminal"><code class="docutils literal notranslate"><span class="pre">CommandTerminal</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-srsgui.ui.deviceinfohandler">srsgui.ui.deviceinfohandler module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.ui.deviceinfohandler.DeviceInfoHandler"><code class="docutils literal notranslate"><span class="pre">DeviceInfoHandler</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-srsgui.ui.dockhandler">srsgui.ui.dockhandler module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.ui.dockhandler.DockHandler"><code class="docutils literal notranslate"><span class="pre">DockHandler</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-srsgui.ui.inputpanel">srsgui.ui.inputpanel module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.ui.inputpanel.InputPanel"><code class="docutils literal notranslate"><span class="pre">InputPanel</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-srsgui.ui.qtloghandler">srsgui.ui.qtloghandler module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.ui.qtloghandler.QtLogHandler"><code class="docutils literal notranslate"><span class="pre">QtLogHandler</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-srsgui.ui.signalhandler">srsgui.ui.signalhandler module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.ui.signalhandler.SignalHandler"><code class="docutils literal notranslate"><span class="pre">SignalHandler</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-srsgui.ui.stdout">srsgui.ui.stdout module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.ui.stdout.StdOut"><code class="docutils literal notranslate"><span class="pre">StdOut</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#srsgui-ui-commandtree-package">srsgui.ui.commandtree package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.commandtree.html">srsgui.ui.commandtree.commanditem module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.commandtree.html#module-srsgui.ui.commandtree.commandmodel">srsgui.ui.commandtree.commandmodel module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.commandtree.html#module-srsgui.ui.commandtree.commandhandler">srsgui.ui.commandtree.commandhandler module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.commandtree.html#module-srsgui.ui.commandtree.commanddelegate">srsgui.ui.commandtree.commanddelegate module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.commandtree.html#module-srsgui.ui.commandtree.commandspinbox">srsgui.ui.commandtree.commandspinbox module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.commandtree.html#module-srsgui.ui.commandtree.commandtreeview">srsgui.ui.commandtree.commandtreeview module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.commandtree.html#module-srsgui.ui.commandtree.commandtreewidget">srsgui.ui.commandtree.commandtreewidget module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#srsgui-ui-qt-package">srsgui.ui.qt package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.qt.html">srsgui.ui.qt.QtCore module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.qt.html#module-srsgui.ui.qt.QtGui">srsgui.ui.qt.QtGui module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.qt.html#module-srsgui.ui.qt.QtWidgets">srsgui.ui.qt.QtWidgets module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">srsgui</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="srsgui.html">srsgui APIs</a> &raquo;</li>
+      <li>srsgui.ui package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/srsgui.ui.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="srsgui-ui-package">
+<h1>srsgui.ui package<a class="headerlink" href="#srsgui-ui-package" title="Permalink to this heading"></a></h1>
+<section id="module-srsgui.ui.taskmain">
+<span id="srsgui-ui-taskmain-module"></span><h2>srsgui.ui.taskmain module<a class="headerlink" href="#module-srsgui.ui.taskmain" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.ui.taskmain.</span></span><span class="sig-name descname"><span class="pre">TaskMain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QMainWindow</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Ui_TaskMain</span></code></p>
+<p>The main window of the SRSGUI application</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.DefaultConfigFile">
+<span class="sig-name descname"><span class="pre">DefaultConfigFile</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'C:\\PyPI\\srsgui\\srsgui\\examples\\oscilloscope</span> <span class="pre">example\\oscilloscope</span> <span class="pre">example</span> <span class="pre">project.taskconfig'</span></em><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.DefaultConfigFile" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.OrganizationName">
+<span class="sig-name descname"><span class="pre">OrganizationName</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'srsinst'</span></em><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.OrganizationName" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.ApplicationName">
+<span class="sig-name descname"><span class="pre">ApplicationName</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'srsgui'</span></em><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.ApplicationName" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.LogoImageFile">
+<span class="sig-name descname"><span class="pre">LogoImageFile</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'srslogo.jpg'</span></em><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.LogoImageFile" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.LogoFile">
+<span class="sig-name descname"><span class="pre">LogoFile</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'C:\\PyPI\\srsgui\\srsgui\\ui\\srslogo.jpg'</span></em><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.LogoFile" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.load_tasks">
+<span class="sig-name descname"><span class="pre">load_tasks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.load_tasks" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.get_logo_file">
+<span class="sig-name descname"><span class="pre">get_logo_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.get_logo_file" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.print_redirect">
+<span class="sig-name descname"><span class="pre">print_redirect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.print_redirect" title="Permalink to this definition"></a></dt>
+<dd><p>Handles text output for stdout, stderr and various text output
+from <a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task" title="srsgui.task.task.Task"><code class="xref py py-class docutils literal notranslate"><span class="pre">srsgui.task.task.Task</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.onTaskStarted">
+<span class="sig-name descname"><span class="pre">onTaskStarted</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.onTaskStarted" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.onTaskFinished">
+<span class="sig-name descname"><span class="pre">onTaskFinished</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.onTaskFinished" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.is_task_running">
+<span class="sig-name descname"><span class="pre">is_task_running</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.is_task_running" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.update_figure">
+<span class="sig-name descname"><span class="pre">update_figure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">figure</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.update_figure" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.onTaskSelect">
+<span class="sig-name descname"><span class="pre">onTaskSelect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.onTaskSelect" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.onRun">
+<span class="sig-name descname"><span class="pre">onRun</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.onRun" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.onStop">
+<span class="sig-name descname"><span class="pre">onStop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.onStop" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.onOpen">
+<span class="sig-name descname"><span class="pre">onOpen</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.onOpen" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.onInstrumentSelect">
+<span class="sig-name descname"><span class="pre">onInstrumentSelect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inst_action</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.onInstrumentSelect" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.onConnect">
+<span class="sig-name descname"><span class="pre">onConnect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inst_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.onConnect" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.onDisconnect">
+<span class="sig-name descname"><span class="pre">onDisconnect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inst_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.onDisconnect" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.okToContinue">
+<span class="sig-name descname"><span class="pre">okToContinue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.okToContinue" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.display_question">
+<span class="sig-name descname"><span class="pre">display_question</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">question</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_type=&lt;class</span> <span class="pre">'bool'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.display_question" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.closeEvent">
+<span class="sig-name descname"><span class="pre">closeEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PySide2.QtGui.QCloseEvent</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.closeEvent" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.handle_initial_image">
+<span class="sig-name descname"><span class="pre">handle_initial_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_class</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.handle_initial_image" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.onAbout">
+<span class="sig-name descname"><span class="pre">onAbout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checked</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.onAbout" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.load_settings">
+<span class="sig-name descname"><span class="pre">load_settings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.load_settings" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.save_settings">
+<span class="sig-name descname"><span class="pre">save_settings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.save_settings" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.taskmain.TaskMain.staticMetaObject">
+<span class="sig-name descname"><span class="pre">staticMetaObject</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide2.QtCore.QMetaObject</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#srsgui.ui.taskmain.TaskMain.staticMetaObject" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.ui.connectdlg">
+<span id="srsgui-ui-connectdlg-module"></span><h2>srsgui.ui.connectdlg module<a class="headerlink" href="#module-srsgui.ui.connectdlg" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.ui.connectdlg.ConnectDlg">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.ui.connectdlg.</span></span><span class="sig-name descname"><span class="pre">ConnectDlg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.connectdlg.ConnectDlg" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QDialog</span></code></p>
+<ul class="simple">
+<li><p>To build the connection dialog box based on <em>available_interface</em> of subclasses of
+<a class="reference internal" href="srsgui.inst.html#srsgui.inst.instrument.Instrument" title="srsgui.inst.instrument.Instrument"><code class="xref py py-class docutils literal notranslate"><span class="pre">srsgui.inst.instrument.Instrument</span></code></a> class listed in the current .taskconfig file.</p></li>
+<li><p>To connect to the selected interface of the instrument.</p></li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.connectdlg.ConnectDlg.create_tab">
+<span class="sig-name descname"><span class="pre">create_tab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.connectdlg.ConnectDlg.create_tab" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.connectdlg.ConnectDlg.create_input_widget">
+<span class="sig-name descname"><span class="pre">create_input_widget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.connectdlg.ConnectDlg.create_input_widget" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.connectdlg.ConnectDlg.accept">
+<span class="sig-name descname"><span class="pre">accept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#srsgui.ui.connectdlg.ConnectDlg.accept" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.connectdlg.ConnectDlg.save_settings">
+<span class="sig-name descname"><span class="pre">save_settings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.connectdlg.ConnectDlg.save_settings" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.connectdlg.ConnectDlg.load_setting">
+<span class="sig-name descname"><span class="pre">load_setting</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.connectdlg.ConnectDlg.load_setting" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.connectdlg.ConnectDlg.staticMetaObject">
+<span class="sig-name descname"><span class="pre">staticMetaObject</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide2.QtCore.QMetaObject</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#srsgui.ui.connectdlg.ConnectDlg.staticMetaObject" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.ui.commandterminal">
+<span id="srsgui-ui-commandterminal-module"></span><h2>srsgui.ui.commandterminal module<a class="headerlink" href="#module-srsgui.ui.commandterminal" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.ui.commandterminal.CommandTerminal">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.ui.commandterminal.</span></span><span class="sig-name descname"><span class="pre">CommandTerminal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandterminal.CommandTerminal" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QFrame</span></code></p>
+<p>Terminal to control instruments defined in the .taskconfig file</p>
+<p>Type a command in one of the following ways.</p>
+<p>inst_name:remote_command</p>
+<blockquote>
+<div><p>‘inst_name’ is the first item after the prefix  “inst:” in a line in
+the .taskconfig file. ‘Remote_command’ after the colon is a raw remote
+command of the instrument. Terminals send the ‘remote_command’ directly
+to the instrument ‘inst_name’, and display a reply if the instrument
+sends one back.</p>
+<p>dut:<a href="#id1"><span class="problematic" id="id2">*</span></a>idn?
+dut:mi10  - This is a RGA100 command to set scan intial mass to 10</p>
+</div></blockquote>
+<p>inst_name.instrument_command</p>
+<blockquote>
+<div><p>When you use .before a command, the command is interpreted as a Python
+instrument command or a method defined in the Instrument subclass,
+which is the third item in the line starting with ‘inst:’ used
+in .taskconfig file.</p>
+<p>inst_name.(components.)dir  - it shows all available components, commands,
+and methods in the instrument or its component as a Python dictionary.</p>
+<blockquote>
+<div><p>rga.dir
+rga.status.dir</p>
+</div></blockquote>
+<p>rga.status.id_string - this returns the id string. It is a Python instrument
+command defined in the rga.status component.
+rga.scan.initial_mass = 10  - this changes the scan initial mass to 10.
+rga.scan.get_analog_scan()  - this is a method defined in the rga.scan component.</p>
+<p>With the prefix of ‘inst_name:’ or ‘inst_name.’, you can specify which
+instrument receive the following command, as either a raw remote command or
+a instrument command defined in a Instrument subclass.</p>
+</div></blockquote>
+<p>command</p>
+<blockquote>
+<div><p>if you type a command without ‘inst_name.’ or ‘inst_name:’, the command goes
+to the first instrument in the .taskconfig file. A command with dot(s) is
+interpreted as a Python instrument command or a method. A command without
+any dot will be sent directly to the first instrument in the .taskconfig file
+as a raw remote command.</p>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.commandterminal.CommandTerminal.command_requested">
+<span class="sig-name descname"><span class="pre">command_requested</span></span><a class="headerlink" href="#srsgui.ui.commandterminal.CommandTerminal.command_requested" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandterminal.CommandTerminal.setup_widget">
+<span class="sig-name descname"><span class="pre">setup_widget</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandterminal.CommandTerminal.setup_widget" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandterminal.CommandTerminal.on_clear">
+<span class="sig-name descname"><span class="pre">on_clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandterminal.CommandTerminal.on_clear" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandterminal.CommandTerminal.on_up_pressed">
+<span class="sig-name descname"><span class="pre">on_up_pressed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandterminal.CommandTerminal.on_up_pressed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandterminal.CommandTerminal.on_down_pressed">
+<span class="sig-name descname"><span class="pre">on_down_pressed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandterminal.CommandTerminal.on_down_pressed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandterminal.CommandTerminal.on_send">
+<span class="sig-name descname"><span class="pre">on_send</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandterminal.CommandTerminal.on_send" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandterminal.CommandTerminal.handle_command">
+<span class="sig-name descname"><span class="pre">handle_command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reply</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandterminal.CommandTerminal.handle_command" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.commandterminal.CommandTerminal.staticMetaObject">
+<span class="sig-name descname"><span class="pre">staticMetaObject</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide2.QtCore.QMetaObject</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#srsgui.ui.commandterminal.CommandTerminal.staticMetaObject" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.ui.deviceinfohandler">
+<span id="srsgui-ui-deviceinfohandler-module"></span><h2>srsgui.ui.deviceinfohandler module<a class="headerlink" href="#module-srsgui.ui.deviceinfohandler" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.ui.deviceinfohandler.DeviceInfoHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.ui.deviceinfohandler.</span></span><span class="sig-name descname"><span class="pre">DeviceInfoHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.deviceinfohandler.DeviceInfoHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>To handle the instrument info tab widget</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.deviceinfohandler.DeviceInfoHandler.select_browser">
+<span class="sig-name descname"><span class="pre">select_browser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inst_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.deviceinfohandler.DeviceInfoHandler.select_browser" title="Permalink to this definition"></a></dt>
+<dd><p>Set parent.deviceInfo browser to the tab associated with the name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.deviceinfohandler.DeviceInfoHandler.update_info">
+<span class="sig-name descname"><span class="pre">update_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inst_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.deviceinfohandler.DeviceInfoHandler.update_info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.deviceinfohandler.DeviceInfoHandler.update_tabs">
+<span class="sig-name descname"><span class="pre">update_tabs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.deviceinfohandler.DeviceInfoHandler.update_tabs" title="Permalink to this definition"></a></dt>
+<dd><p>Update tabs in sync with inst_dict</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.deviceinfohandler.DeviceInfoHandler.add_tab">
+<span class="sig-name descname"><span class="pre">add_tab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.deviceinfohandler.DeviceInfoHandler.add_tab" title="Permalink to this definition"></a></dt>
+<dd><p>Add a new tab at the end</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.deviceinfohandler.DeviceInfoHandler.remove_tab">
+<span class="sig-name descname"><span class="pre">remove_tab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.deviceinfohandler.DeviceInfoHandler.remove_tab" title="Permalink to this definition"></a></dt>
+<dd><p>Remove the last tab</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.ui.dockhandler">
+<span id="srsgui-ui-dockhandler-module"></span><h2>srsgui.ui.dockhandler module<a class="headerlink" href="#module-srsgui.ui.dockhandler" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.ui.dockhandler.</span></span><span class="sig-name descname"><span class="pre">DockHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>To handle all the QDockWidget instances used for the console, terminal, matplotlib figure windows,
+along with the Docks menu in the main application.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.DefaultConsoleName">
+<span class="sig-name descname"><span class="pre">DefaultConsoleName</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Console'</span></em><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.DefaultConsoleName" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.DefaultTerminalName">
+<span class="sig-name descname"><span class="pre">DefaultTerminalName</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Terminal'</span></em><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.DefaultTerminalName" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.DefaultFigureName">
+<span class="sig-name descname"><span class="pre">DefaultFigureName</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'plot'</span></em><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.DefaultFigureName" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.MenuDocksName">
+<span class="sig-name descname"><span class="pre">MenuDocksName</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'menu_Docks'</span></em><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.MenuDocksName" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.MenuPlotName">
+<span class="sig-name descname"><span class="pre">MenuPlotName</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'menu_Plot'</span></em><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.MenuPlotName" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.TitleFormat">
+<span class="sig-name descname"><span class="pre">TitleFormat</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'{}</span> <span class="pre">-</span> <span class="pre">Capture'</span></em><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.TitleFormat" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.init_plot_menu">
+<span class="sig-name descname"><span class="pre">init_plot_menu</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.init_plot_menu" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.onTightLayout">
+<span class="sig-name descname"><span class="pre">onTightLayout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.onTightLayout" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.onToolbar">
+<span class="sig-name descname"><span class="pre">onToolbar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.onToolbar" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.init_console">
+<span class="sig-name descname"><span class="pre">init_console</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.init_console" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.init_terminal">
+<span class="sig-name descname"><span class="pre">init_terminal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.init_terminal" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.init_inst_dock">
+<span class="sig-name descname"><span class="pre">init_inst_dock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.init_inst_dock" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.setup_figure_canvas">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">setup_figure_canvas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QDockWidget</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.setup_figure_canvas" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.init_figure_dock">
+<span class="sig-name descname"><span class="pre">init_figure_dock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.init_figure_dock" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.display_image">
+<span class="sig-name descname"><span class="pre">display_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.display_image" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.get_terminal">
+<span class="sig-name descname"><span class="pre">get_terminal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.get_terminal" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.get_figure">
+<span class="sig-name descname"><span class="pre">get_figure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Figure</span></span></span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.get_figure" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.set_figure_update_period">
+<span class="sig-name descname"><span class="pre">set_figure_update_period</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">period</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.set_figure_update_period" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.get_figure_update_period">
+<span class="sig-name descname"><span class="pre">get_figure_update_period</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.get_figure_update_period" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.update_figure">
+<span class="sig-name descname"><span class="pre">update_figure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">figure</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Figure</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.update_figure" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.get_dock">
+<span class="sig-name descname"><span class="pre">get_dock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QDockWidget</span></span></span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.get_dock" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.onMenuDocksSelected">
+<span class="sig-name descname"><span class="pre">onMenuDocksSelected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.onMenuDocksSelected" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.reset_inst_docks">
+<span class="sig-name descname"><span class="pre">reset_inst_docks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.reset_inst_docks" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.reset_figures">
+<span class="sig-name descname"><span class="pre">reset_figures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.reset_figures" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.update_menu">
+<span class="sig-name descname"><span class="pre">update_menu</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.update_menu" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.get_figure_dict">
+<span class="sig-name descname"><span class="pre">get_figure_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.get_figure_dict" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.clear_figures">
+<span class="sig-name descname"><span class="pre">clear_figures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.clear_figures" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.show_toolbar">
+<span class="sig-name descname"><span class="pre">show_toolbar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.show_toolbar" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.dockhandler.DockHandler.stop_command_handlers">
+<span class="sig-name descname"><span class="pre">stop_command_handlers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.dockhandler.DockHandler.stop_command_handlers" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.ui.inputpanel">
+<span id="srsgui-ui-inputpanel-module"></span><h2>srsgui.ui.inputpanel module<a class="headerlink" href="#module-srsgui.ui.inputpanel" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.ui.inputpanel.InputPanel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.ui.inputpanel.</span></span><span class="sig-name descname"><span class="pre">InputPanel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task" title="srsgui.task.task.Task"><span class="pre">Task</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.inputpanel.InputPanel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QScrollArea</span></code></p>
+<p>To build the input panel in an instance of <a class="reference internal" href="#srsgui.ui.taskmain.TaskMain" title="srsgui.ui.taskmain.TaskMain"><code class="xref py py-class docutils literal notranslate"><span class="pre">srsgui.ui.taskmain.TaskMain</span></code></a> class
+based on input_parameters of a subclass of <a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task" title="srsgui.task.task.Task"><code class="xref py py-class docutils literal notranslate"><span class="pre">srsgui.task.task.Task</span></code></a> class</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.inputpanel.InputPanel.FirstColumn">
+<span class="sig-name descname"><span class="pre">FirstColumn</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#srsgui.ui.inputpanel.InputPanel.FirstColumn" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.inputpanel.InputPanel.SecondColumn">
+<span class="sig-name descname"><span class="pre">SecondColumn</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#srsgui.ui.inputpanel.InputPanel.SecondColumn" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.inputpanel.InputPanel.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#srsgui.ui.inputpanel.InputPanel.update" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg__1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PySide2.QtCore.QRect</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg__1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PySide2.QtGui.QRegion</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.inputpanel.InputPanel.on_default">
+<span class="sig-name descname"><span class="pre">on_default</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.inputpanel.InputPanel.on_default" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.inputpanel.InputPanel.on_apply">
+<span class="sig-name descname"><span class="pre">on_apply</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.inputpanel.InputPanel.on_apply" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.inputpanel.InputPanel.handle_reply">
+<span class="sig-name descname"><span class="pre">handle_reply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reply</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.inputpanel.InputPanel.handle_reply" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.inputpanel.InputPanel.staticMetaObject">
+<span class="sig-name descname"><span class="pre">staticMetaObject</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide2.QtCore.QMetaObject</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#srsgui.ui.inputpanel.InputPanel.staticMetaObject" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.ui.qtloghandler">
+<span id="srsgui-ui-qtloghandler-module"></span><h2>srsgui.ui.qtloghandler module<a class="headerlink" href="#module-srsgui.ui.qtloghandler" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.ui.qtloghandler.QtLogHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.ui.qtloghandler.</span></span><span class="sig-name descname"><span class="pre">QtLogHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text_browser</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.qtloghandler.QtLogHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Handler</span></code></p>
+<p>Subclass logging.Handler to be used with QTextBrowser widget.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.ui.qtloghandler.QtLogHandler.SignalObject">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SignalObject</span></span><a class="headerlink" href="#srsgui.ui.qtloghandler.QtLogHandler.SignalObject" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QObject</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.qtloghandler.QtLogHandler.SignalObject.new_message">
+<span class="sig-name descname"><span class="pre">new_message</span></span><a class="headerlink" href="#srsgui.ui.qtloghandler.QtLogHandler.SignalObject.new_message" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.qtloghandler.QtLogHandler.SignalObject.staticMetaObject">
+<span class="sig-name descname"><span class="pre">staticMetaObject</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide2.QtCore.QMetaObject</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#srsgui.ui.qtloghandler.QtLogHandler.SignalObject.staticMetaObject" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.qtloghandler.QtLogHandler.emit">
+<span class="sig-name descname"><span class="pre">emit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.qtloghandler.QtLogHandler.emit" title="Permalink to this definition"></a></dt>
+<dd><p>Do whatever it takes to actually log the specified logging record.</p>
+<p>This version is intended to be implemented by subclasses and so
+raises a NotImplementedError.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.qtloghandler.QtLogHandler.append">
+<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.qtloghandler.QtLogHandler.append" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.ui.signalhandler">
+<span id="srsgui-ui-signalhandler-module"></span><h2>srsgui.ui.signalhandler module<a class="headerlink" href="#module-srsgui.ui.signalhandler" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.ui.signalhandler.SignalHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.ui.signalhandler.</span></span><span class="sig-name descname"><span class="pre">SignalHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.signalhandler.SignalHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QObject</span></code>, <a class="reference internal" href="srsgui.task.html#srsgui.task.callbacks.Callbacks" title="srsgui.task.callbacks.Callbacks"><code class="xref py py-class docutils literal notranslate"><span class="pre">Callbacks</span></code></a></p>
+<p>Subclass to override <a class="reference internal" href="srsgui.task.html#srsgui.task.callbacks.Callbacks" title="srsgui.task.callbacks.Callbacks"><code class="xref py py-class docutils literal notranslate"><span class="pre">srsgui.task.callbacks.Callbacks</span></code></a> class.
+It implements Callbacks base methods to utilize I/O methods provided in <a class="reference internal" href="#module-srsgui.ui.taskmain" title="srsgui.ui.taskmain"><code class="xref py py-mod docutils literal notranslate"><span class="pre">srsgui.ui.taskmain</span></code></a>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.signalhandler.SignalHandler.sig_started">
+<span class="sig-name descname"><span class="pre">sig_started</span></span><a class="headerlink" href="#srsgui.ui.signalhandler.SignalHandler.sig_started" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.signalhandler.SignalHandler.sig_finished">
+<span class="sig-name descname"><span class="pre">sig_finished</span></span><a class="headerlink" href="#srsgui.ui.signalhandler.SignalHandler.sig_finished" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.signalhandler.SignalHandler.sig_text_available">
+<span class="sig-name descname"><span class="pre">sig_text_available</span></span><a class="headerlink" href="#srsgui.ui.signalhandler.SignalHandler.sig_text_available" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.signalhandler.SignalHandler.sig_parameter_changed">
+<span class="sig-name descname"><span class="pre">sig_parameter_changed</span></span><a class="headerlink" href="#srsgui.ui.signalhandler.SignalHandler.sig_parameter_changed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.signalhandler.SignalHandler.sig_figure_update_requested">
+<span class="sig-name descname"><span class="pre">sig_figure_update_requested</span></span><a class="headerlink" href="#srsgui.ui.signalhandler.SignalHandler.sig_figure_update_requested" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.signalhandler.SignalHandler.sig_data_available">
+<span class="sig-name descname"><span class="pre">sig_data_available</span></span><a class="headerlink" href="#srsgui.ui.signalhandler.SignalHandler.sig_data_available" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.signalhandler.SignalHandler.sig_new_question">
+<span class="sig-name descname"><span class="pre">sig_new_question</span></span><a class="headerlink" href="#srsgui.ui.signalhandler.SignalHandler.sig_new_question" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.signalhandler.SignalHandler.signals">
+<span class="sig-name descname"><span class="pre">signals</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;PySide2.QtCore.Signal</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;PySide2.QtCore.Signal</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;PySide2.QtCore.Signal</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;PySide2.QtCore.Signal</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;PySide2.QtCore.Signal</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;PySide2.QtCore.Signal</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;PySide2.QtCore.Signal</span> <span class="pre">object&gt;]</span></em><a class="headerlink" href="#srsgui.ui.signalhandler.SignalHandler.signals" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.signalhandler.SignalHandler.started">
+<span class="sig-name descname"><span class="pre">started</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.signalhandler.SignalHandler.started" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.signalhandler.SignalHandler.finished">
+<span class="sig-name descname"><span class="pre">finished</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.signalhandler.SignalHandler.finished" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.signalhandler.SignalHandler.text_available">
+<span class="sig-name descname"><span class="pre">text_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.signalhandler.SignalHandler.text_available" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.signalhandler.SignalHandler.parameter_changed">
+<span class="sig-name descname"><span class="pre">parameter_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.signalhandler.SignalHandler.parameter_changed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.signalhandler.SignalHandler.figure_update_requested">
+<span class="sig-name descname"><span class="pre">figure_update_requested</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Figure</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.signalhandler.SignalHandler.figure_update_requested" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.signalhandler.SignalHandler.data_available">
+<span class="sig-name descname"><span class="pre">data_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.signalhandler.SignalHandler.data_available" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.signalhandler.SignalHandler.new_question">
+<span class="sig-name descname"><span class="pre">new_question</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">question</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.signalhandler.SignalHandler.new_question" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.signalhandler.SignalHandler.disconnect_all">
+<span class="sig-name descname"><span class="pre">disconnect_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.signalhandler.SignalHandler.disconnect_all" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.signalhandler.SignalHandler.staticMetaObject">
+<span class="sig-name descname"><span class="pre">staticMetaObject</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide2.QtCore.QMetaObject</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#srsgui.ui.signalhandler.SignalHandler.staticMetaObject" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.ui.stdout">
+<span id="srsgui-ui-stdout-module"></span><h2>srsgui.ui.stdout module<a class="headerlink" href="#module-srsgui.ui.stdout" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.ui.stdout.StdOut">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.ui.stdout.</span></span><span class="sig-name descname"><span class="pre">StdOut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.stdout.StdOut" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QObject</span></code></p>
+<p>Redirect the system standard output and standard error output to
+the output_function in __init__().
+It is instantiated with <a class="reference internal" href="#srsgui.ui.taskmain.TaskMain.print_redirect" title="srsgui.ui.taskmain.TaskMain.print_redirect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">srsgui.ui.taskmain.TaskMain.print_redirect()</span></code></a>
+for the main application.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.stdout.StdOut.textWritten">
+<span class="sig-name descname"><span class="pre">textWritten</span></span><a class="headerlink" href="#srsgui.ui.stdout.StdOut.textWritten" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.stdout.StdOut.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.stdout.StdOut.write" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.stdout.StdOut.flush">
+<span class="sig-name descname"><span class="pre">flush</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.stdout.StdOut.flush" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.stdout.StdOut.staticMetaObject">
+<span class="sig-name descname"><span class="pre">staticMetaObject</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide2.QtCore.QMetaObject</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#srsgui.ui.stdout.StdOut.staticMetaObject" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="srsgui-ui-commandtree-package">
+<h2>srsgui.ui.commandtree package<a class="headerlink" href="#srsgui-ui-commandtree-package" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="srsgui.ui.commandtree.html">srsgui.ui.commandtree.commanditem module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanditem.Index"><code class="docutils literal notranslate"><span class="pre">Index</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanditem.CommandItem"><code class="docutils literal notranslate"><span class="pre">CommandItem</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanditem.CommandItem.appendChild"><code class="docutils literal notranslate"><span class="pre">CommandItem.appendChild()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanditem.CommandItem.child"><code class="docutils literal notranslate"><span class="pre">CommandItem.child()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanditem.CommandItem.parent"><code class="docutils literal notranslate"><span class="pre">CommandItem.parent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanditem.CommandItem.childCount"><code class="docutils literal notranslate"><span class="pre">CommandItem.childCount()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanditem.CommandItem.row"><code class="docutils literal notranslate"><span class="pre">CommandItem.row()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanditem.CommandItem.value"><code class="docutils literal notranslate"><span class="pre">CommandItem.value</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanditem.CommandItem.query_value"><code class="docutils literal notranslate"><span class="pre">CommandItem.query_value()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanditem.CommandItem.set_value"><code class="docutils literal notranslate"><span class="pre">CommandItem.set_value()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanditem.CommandItem.is_editable"><code class="docutils literal notranslate"><span class="pre">CommandItem.is_editable()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanditem.CommandItem.get_formatted_value"><code class="docutils literal notranslate"><span class="pre">CommandItem.get_formatted_value()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanditem.CommandItem.construct_set_command_string"><code class="docutils literal notranslate"><span class="pre">CommandItem.construct_set_command_string()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanditem.CommandItem.get_name_string"><code class="docutils literal notranslate"><span class="pre">CommandItem.get_name_string()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanditem.CommandItem.load"><code class="docutils literal notranslate"><span class="pre">CommandItem.load()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="srsgui.ui.commandtree.html#module-srsgui.ui.commandtree.commandmodel">srsgui.ui.commandtree.commandmodel module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandmodel.CommandModel"><code class="docutils literal notranslate"><span class="pre">CommandModel</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandmodel.CommandModel.query_requested"><code class="docutils literal notranslate"><span class="pre">CommandModel.query_requested</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandmodel.CommandModel.set_requested"><code class="docutils literal notranslate"><span class="pre">CommandModel.set_requested</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandmodel.CommandModel.set_command_sent"><code class="docutils literal notranslate"><span class="pre">CommandModel.set_command_sent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandmodel.CommandModel.clear"><code class="docutils literal notranslate"><span class="pre">CommandModel.clear()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandmodel.CommandModel.load"><code class="docutils literal notranslate"><span class="pre">CommandModel.load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandmodel.CommandModel.data"><code class="docutils literal notranslate"><span class="pre">CommandModel.data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandmodel.CommandModel.setData"><code class="docutils literal notranslate"><span class="pre">CommandModel.setData()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandmodel.CommandModel.headerData"><code class="docutils literal notranslate"><span class="pre">CommandModel.headerData()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandmodel.CommandModel.index"><code class="docutils literal notranslate"><span class="pre">CommandModel.index()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandmodel.CommandModel.parent"><code class="docutils literal notranslate"><span class="pre">CommandModel.parent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandmodel.CommandModel.rowCount"><code class="docutils literal notranslate"><span class="pre">CommandModel.rowCount()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandmodel.CommandModel.columnCount"><code class="docutils literal notranslate"><span class="pre">CommandModel.columnCount()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandmodel.CommandModel.flags"><code class="docutils literal notranslate"><span class="pre">CommandModel.flags()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandmodel.CommandModel.is_item_editable"><code class="docutils literal notranslate"><span class="pre">CommandModel.is_item_editable()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandmodel.CommandModel.handle_command"><code class="docutils literal notranslate"><span class="pre">CommandModel.handle_command()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandmodel.CommandModel.staticMetaObject"><code class="docutils literal notranslate"><span class="pre">CommandModel.staticMetaObject</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="srsgui.ui.commandtree.html#module-srsgui.ui.commandtree.commandhandler">srsgui.ui.commandtree.commandhandler module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandhandler.CommandWorker"><code class="docutils literal notranslate"><span class="pre">CommandWorker</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandhandler.CommandWorker.query_processed"><code class="docutils literal notranslate"><span class="pre">CommandWorker.query_processed</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandhandler.CommandWorker.set_processed"><code class="docutils literal notranslate"><span class="pre">CommandWorker.set_processed</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandhandler.CommandWorker.handle_query"><code class="docutils literal notranslate"><span class="pre">CommandWorker.handle_query()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandhandler.CommandWorker.handle_set"><code class="docutils literal notranslate"><span class="pre">CommandWorker.handle_set()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandhandler.CommandWorker.staticMetaObject"><code class="docutils literal notranslate"><span class="pre">CommandWorker.staticMetaObject</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandhandler.CommandHandler"><code class="docutils literal notranslate"><span class="pre">CommandHandler</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandhandler.CommandHandler.stop"><code class="docutils literal notranslate"><span class="pre">CommandHandler.stop()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandhandler.CommandHandler.staticMetaObject"><code class="docutils literal notranslate"><span class="pre">CommandHandler.staticMetaObject</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="srsgui.ui.commandtree.html#module-srsgui.ui.commandtree.commanddelegate">srsgui.ui.commandtree.commanddelegate module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanddelegate.CommandDelegate"><code class="docutils literal notranslate"><span class="pre">CommandDelegate</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanddelegate.CommandDelegate.createEditor"><code class="docutils literal notranslate"><span class="pre">CommandDelegate.createEditor()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanddelegate.CommandDelegate.setEditorData"><code class="docutils literal notranslate"><span class="pre">CommandDelegate.setEditorData()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanddelegate.CommandDelegate.setModelData"><code class="docutils literal notranslate"><span class="pre">CommandDelegate.setModelData()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanddelegate.CommandDelegate.updateEditorGeometry"><code class="docutils literal notranslate"><span class="pre">CommandDelegate.updateEditorGeometry()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanddelegate.CommandDelegate.staticMetaObject"><code class="docutils literal notranslate"><span class="pre">CommandDelegate.staticMetaObject</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="srsgui.ui.commandtree.html#module-srsgui.ui.commandtree.commandspinbox">srsgui.ui.commandtree.commandspinbox module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandspinbox.IntegerSpinBox"><code class="docutils literal notranslate"><span class="pre">IntegerSpinBox</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandspinbox.IntegerSpinBox.stepBy"><code class="docutils literal notranslate"><span class="pre">IntegerSpinBox.stepBy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandspinbox.IntegerSpinBox.staticMetaObject"><code class="docutils literal notranslate"><span class="pre">IntegerSpinBox.staticMetaObject</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandspinbox.FloatSpinBox"><code class="docutils literal notranslate"><span class="pre">FloatSpinBox</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandspinbox.FloatSpinBox.set_minimum_step"><code class="docutils literal notranslate"><span class="pre">FloatSpinBox.set_minimum_step()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandspinbox.FloatSpinBox.set_significant_figures"><code class="docutils literal notranslate"><span class="pre">FloatSpinBox.set_significant_figures()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandspinbox.FloatSpinBox.valueFromText"><code class="docutils literal notranslate"><span class="pre">FloatSpinBox.valueFromText()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandspinbox.FloatSpinBox.textFromValue"><code class="docutils literal notranslate"><span class="pre">FloatSpinBox.textFromValue()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandspinbox.FloatSpinBox.stepBy"><code class="docutils literal notranslate"><span class="pre">FloatSpinBox.stepBy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandspinbox.FloatSpinBox.staticMetaObject"><code class="docutils literal notranslate"><span class="pre">FloatSpinBox.staticMetaObject</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandspinbox.RunButton"><code class="docutils literal notranslate"><span class="pre">RunButton</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandspinbox.RunButton.pressed"><code class="docutils literal notranslate"><span class="pre">RunButton.pressed</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandspinbox.RunButton.staticMetaObject"><code class="docutils literal notranslate"><span class="pre">RunButton.staticMetaObject</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="srsgui.ui.commandtree.html#module-srsgui.ui.commandtree.commandtreeview">srsgui.ui.commandtree.commandtreeview module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandtreeview.CommandTreeView"><code class="docutils literal notranslate"><span class="pre">CommandTreeView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandtreeview.CommandTreeView.update_item_display"><code class="docutils literal notranslate"><span class="pre">CommandTreeView.update_item_display()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandtreeview.CommandTreeView.connect_methods_to_buttons"><code class="docutils literal notranslate"><span class="pre">CommandTreeView.connect_methods_to_buttons()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandtreeview.CommandTreeView.staticMetaObject"><code class="docutils literal notranslate"><span class="pre">CommandTreeView.staticMetaObject</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="srsgui.ui.commandtree.html#module-srsgui.ui.commandtree.commandtreewidget">srsgui.ui.commandtree.commandtreewidget module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget"><code class="docutils literal notranslate"><span class="pre">CommandTreeWidget</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.set_inst"><code class="docutils literal notranslate"><span class="pre">CommandTreeWidget.set_inst()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_query_only_changed"><code class="docutils literal notranslate"><span class="pre">CommandTreeWidget.on_query_only_changed()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_set_only_changed"><code class="docutils literal notranslate"><span class="pre">CommandTreeWidget.on_set_only_changed()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_excluded_changed"><code class="docutils literal notranslate"><span class="pre">CommandTreeWidget.on_excluded_changed()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_method_changed"><code class="docutils literal notranslate"><span class="pre">CommandTreeWidget.on_method_changed()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_raw_command_changed"><code class="docutils literal notranslate"><span class="pre">CommandTreeWidget.on_raw_command_changed()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_capture_clicked"><code class="docutils literal notranslate"><span class="pre">CommandTreeWidget.on_capture_clicked()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_expand_clicked"><code class="docutils literal notranslate"><span class="pre">CommandTreeWidget.on_expand_clicked()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_collapse_clicked"><code class="docutils literal notranslate"><span class="pre">CommandTreeWidget.on_collapse_clicked()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.closeEvent"><code class="docutils literal notranslate"><span class="pre">CommandTreeWidget.closeEvent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.staticMetaObject"><code class="docutils literal notranslate"><span class="pre">CommandTreeWidget.staticMetaObject</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="srsgui-ui-qt-package">
+<h2>srsgui.ui.qt package<a class="headerlink" href="#srsgui-ui-qt-package" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="srsgui.ui.qt.html">srsgui.ui.qt.QtCore module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="srsgui.ui.qt.html#module-srsgui.ui.qt.QtGui">srsgui.ui.qt.QtGui module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="srsgui.ui.qt.html#module-srsgui.ui.qt.QtWidgets">srsgui.ui.qt.QtWidgets module</a></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="srsgui.task.html" class="btn btn-neutral float-left" title="srsgui.task package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="srsgui.ui.commandtree.html" class="btn btn-neutral float-right" title="srsgui.ui.commandtree.commanditem module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Chulhoon Kim.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

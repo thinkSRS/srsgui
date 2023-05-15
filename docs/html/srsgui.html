@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>srsgui APIs &mdash; srsgui  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="srsgui.inst package" href="srsgui.inst.html" />
+    <link rel="prev" title="Example project" href="example.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> srsgui
+          </a>
+              <div class="version">
+                0.2.16
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-project.html">Creating a project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="define-instrument.html">Defining instrument classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-task.html">Writing a task script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Example project</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">srsgui APIs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.inst.html">srsgui.inst package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.task.html">srsgui.task package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.html">srsgui.ui package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">srsgui</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>srsgui APIs</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/srsgui.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="srsgui-apis">
+<h1>srsgui APIs<a class="headerlink" href="#srsgui-apis" title="Permalink to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="srsgui.inst.html">srsgui.inst package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.inst.communications.html">srsgui.inst.communications package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.communications.html#module-srsgui.inst.communications.interface">srsgui.inst.communications.interface module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.interface.Interface"><code class="docutils literal notranslate"><span class="pre">Interface</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.communications.html#module-srsgui.inst.communications.serialinterface">srsgui.inst.communications.serialinterface module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.serialinterface.SerialInterface"><code class="docutils literal notranslate"><span class="pre">SerialInterface</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.communications.html#module-srsgui.inst.communications.serial_ports">srsgui.inst.communications.serial_ports module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.serial_ports.serial_ports"><code class="docutils literal notranslate"><span class="pre">serial_ports()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.communications.html#module-srsgui.inst.communications.tcpipinterface">srsgui.inst.communications.tcpipinterface module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.tcpipinterface.TcpipInterface"><code class="docutils literal notranslate"><span class="pre">TcpipInterface</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.inst.html#module-srsgui.inst.instrument">srsgui.inst.instrument module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.instrument.Instrument"><code class="docutils literal notranslate"><span class="pre">Instrument</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.instrument.Instrument.available_interfaces"><code class="docutils literal notranslate"><span class="pre">Instrument.available_interfaces</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.instrument.Instrument.connect"><code class="docutils literal notranslate"><span class="pre">Instrument.connect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.instrument.Instrument.disconnect"><code class="docutils literal notranslate"><span class="pre">Instrument.disconnect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.instrument.Instrument.is_connected"><code class="docutils literal notranslate"><span class="pre">Instrument.is_connected()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.instrument.Instrument.set_term_char"><code class="docutils literal notranslate"><span class="pre">Instrument.set_term_char()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.instrument.Instrument.get_term_char"><code class="docutils literal notranslate"><span class="pre">Instrument.get_term_char()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.instrument.Instrument.send"><code class="docutils literal notranslate"><span class="pre">Instrument.send()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.instrument.Instrument.query_text"><code class="docutils literal notranslate"><span class="pre">Instrument.query_text()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.instrument.Instrument.query_int"><code class="docutils literal notranslate"><span class="pre">Instrument.query_int()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.instrument.Instrument.query_float"><code class="docutils literal notranslate"><span class="pre">Instrument.query_float()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.instrument.Instrument.check_id"><code class="docutils literal notranslate"><span class="pre">Instrument.check_id()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.instrument.Instrument.get_available_interfaces"><code class="docutils literal notranslate"><span class="pre">Instrument.get_available_interfaces()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.instrument.Instrument.get_info"><code class="docutils literal notranslate"><span class="pre">Instrument.get_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.instrument.Instrument.get_status"><code class="docutils literal notranslate"><span class="pre">Instrument.get_status()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.instrument.Instrument.handle_command"><code class="docutils literal notranslate"><span class="pre">Instrument.handle_command()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.instrument.Instrument.reset"><code class="docutils literal notranslate"><span class="pre">Instrument.reset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.instrument.Instrument.connect_with_parameter_string"><code class="docutils literal notranslate"><span class="pre">Instrument.connect_with_parameter_string()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.inst.html#module-srsgui.inst.component">srsgui.inst.component module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.component.Component"><code class="docutils literal notranslate"><span class="pre">Component</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.component.Component.DirCommand"><code class="docutils literal notranslate"><span class="pre">Component.DirCommand</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.component.Component.dir"><code class="docutils literal notranslate"><span class="pre">Component.dir</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.component.Component.exclude_capture"><code class="docutils literal notranslate"><span class="pre">Component.exclude_capture</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.component.Component.allow_run_button"><code class="docutils literal notranslate"><span class="pre">Component.allow_run_button</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.component.Component.is_connected"><code class="docutils literal notranslate"><span class="pre">Component.is_connected()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.component.Component.parent"><code class="docutils literal notranslate"><span class="pre">Component.parent()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.component.Component.set_name"><code class="docutils literal notranslate"><span class="pre">Component.set_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.component.Component.get_name"><code class="docutils literal notranslate"><span class="pre">Component.get_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.component.Component.update_components"><code class="docutils literal notranslate"><span class="pre">Component.update_components()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.component.Component.get_lists"><code class="docutils literal notranslate"><span class="pre">Component.get_lists()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.component.Component.get_component_dict"><code class="docutils literal notranslate"><span class="pre">Component.get_component_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.component.Component.get_command_dict"><code class="docutils literal notranslate"><span class="pre">Component.get_command_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.component.Component.get_method_list"><code class="docutils literal notranslate"><span class="pre">Component.get_method_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.component.Component.get_command_info"><code class="docutils literal notranslate"><span class="pre">Component.get_command_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.component.Component.assert_command_key"><code class="docutils literal notranslate"><span class="pre">Component.assert_command_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.component.Component.capture_commands"><code class="docutils literal notranslate"><span class="pre">Component.capture_commands()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.inst.html#module-srsgui.inst.commands">srsgui.inst.commands module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.commands.Command"><code class="docutils literal notranslate"><span class="pre">Command</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.commands.GetCommand"><code class="docutils literal notranslate"><span class="pre">GetCommand</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.commands.SetCommand"><code class="docutils literal notranslate"><span class="pre">SetCommand</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.commands.BoolCommand"><code class="docutils literal notranslate"><span class="pre">BoolCommand</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.commands.BoolGetCommand"><code class="docutils literal notranslate"><span class="pre">BoolGetCommand</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.commands.BoolSetCommand"><code class="docutils literal notranslate"><span class="pre">BoolSetCommand</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.commands.IntCommand"><code class="docutils literal notranslate"><span class="pre">IntCommand</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.commands.IntGetCommand"><code class="docutils literal notranslate"><span class="pre">IntGetCommand</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.commands.IntSetCommand"><code class="docutils literal notranslate"><span class="pre">IntSetCommand</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.commands.FloatCommand"><code class="docutils literal notranslate"><span class="pre">FloatCommand</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.commands.FloatGetCommand"><code class="docutils literal notranslate"><span class="pre">FloatGetCommand</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.commands.FloatSetCommand"><code class="docutils literal notranslate"><span class="pre">FloatSetCommand</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.commands.DictCommand"><code class="docutils literal notranslate"><span class="pre">DictCommand</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.commands.DictCommand.key_to_value"><code class="docutils literal notranslate"><span class="pre">DictCommand.key_to_value()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.commands.DictCommand.value_to_key"><code class="docutils literal notranslate"><span class="pre">DictCommand.value_to_key()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.commands.DictGetCommand"><code class="docutils literal notranslate"><span class="pre">DictGetCommand</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.inst.html#module-srsgui.inst.indexcommands">srsgui.inst.indexcommands module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.indexcommands.IndexCommand"><code class="docutils literal notranslate"><span class="pre">IndexCommand</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.indexcommands.IndexGetCommand"><code class="docutils literal notranslate"><span class="pre">IndexGetCommand</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.indexcommands.BoolIndexCommand"><code class="docutils literal notranslate"><span class="pre">BoolIndexCommand</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.indexcommands.BoolIndexGetCommand"><code class="docutils literal notranslate"><span class="pre">BoolIndexGetCommand</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.indexcommands.IntIndexCommand"><code class="docutils literal notranslate"><span class="pre">IntIndexCommand</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.indexcommands.IntIndexGetCommand"><code class="docutils literal notranslate"><span class="pre">IntIndexGetCommand</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.indexcommands.FloatIndexCommand"><code class="docutils literal notranslate"><span class="pre">FloatIndexCommand</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.indexcommands.FloatIndexGetCommand"><code class="docutils literal notranslate"><span class="pre">FloatIndexGetCommand</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.indexcommands.DictIndexCommand"><code class="docutils literal notranslate"><span class="pre">DictIndexCommand</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.indexcommands.DictIndexCommand.key_to_value"><code class="docutils literal notranslate"><span class="pre">DictIndexCommand.key_to_value()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.indexcommands.DictIndexCommand.value_to_key"><code class="docutils literal notranslate"><span class="pre">DictIndexCommand.value_to_key()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.inst.html#module-srsgui.inst.exceptions">srsgui.inst.exceptions module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.exceptions.InstException"><code class="docutils literal notranslate"><span class="pre">InstException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.exceptions.InstCommunicationError"><code class="docutils literal notranslate"><span class="pre">InstCommunicationError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.exceptions.InstLoginFailureError"><code class="docutils literal notranslate"><span class="pre">InstLoginFailureError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.exceptions.InstIdError"><code class="docutils literal notranslate"><span class="pre">InstIdError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.exceptions.InstSetError"><code class="docutils literal notranslate"><span class="pre">InstSetError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.exceptions.InstQueryError"><code class="docutils literal notranslate"><span class="pre">InstQueryError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.exceptions.InstIndexError"><code class="docutils literal notranslate"><span class="pre">InstIndexError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="srsgui.task.html">srsgui.task package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.task.html#module-srsgui.task.task">srsgui.task.task module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task"><code class="docutils literal notranslate"><span class="pre">Task</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.TaskException"><code class="docutils literal notranslate"><span class="pre">Task.TaskException</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.TaskSetupFailed"><code class="docutils literal notranslate"><span class="pre">Task.TaskSetupFailed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.TaskRunFailed"><code class="docutils literal notranslate"><span class="pre">Task.TaskRunFailed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.EscapeForResult"><code class="docutils literal notranslate"><span class="pre">Task.EscapeForResult</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.EscapeForDevice"><code class="docutils literal notranslate"><span class="pre">Task.EscapeForDevice</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.EscapeForStatus"><code class="docutils literal notranslate"><span class="pre">Task.EscapeForStatus</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.EscapeForStart"><code class="docutils literal notranslate"><span class="pre">Task.EscapeForStart</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.EscapeForStop"><code class="docutils literal notranslate"><span class="pre">Task.EscapeForStop</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.input_parameters"><code class="docutils literal notranslate"><span class="pre">Task.input_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.additional_figure_names"><code class="docutils literal notranslate"><span class="pre">Task.additional_figure_names</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.InitialImage"><code class="docutils literal notranslate"><span class="pre">Task.InitialImage</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.setup"><code class="docutils literal notranslate"><span class="pre">Task.setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.test"><code class="docutils literal notranslate"><span class="pre">Task.test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.cleanup"><code class="docutils literal notranslate"><span class="pre">Task.cleanup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.get_logger"><code class="docutils literal notranslate"><span class="pre">Task.get_logger()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.basic_setup"><code class="docutils literal notranslate"><span class="pre">Task.basic_setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.basic_cleanup"><code class="docutils literal notranslate"><span class="pre">Task.basic_cleanup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.run"><code class="docutils literal notranslate"><span class="pre">Task.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.start"><code class="docutils literal notranslate"><span class="pre">Task.start()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.stop"><code class="docutils literal notranslate"><span class="pre">Task.stop()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.delay"><code class="docutils literal notranslate"><span class="pre">Task.delay()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.set_session_handler"><code class="docutils literal notranslate"><span class="pre">Task.set_session_handler()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.set_callback_handler"><code class="docutils literal notranslate"><span class="pre">Task.set_callback_handler()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.set_inst_dict"><code class="docutils literal notranslate"><span class="pre">Task.set_inst_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.set_data_dict"><code class="docutils literal notranslate"><span class="pre">Task.set_data_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.set_figure_dict"><code class="docutils literal notranslate"><span class="pre">Task.set_figure_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.get_figure"><code class="docutils literal notranslate"><span class="pre">Task.get_figure()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.clear_figures"><code class="docutils literal notranslate"><span class="pre">Task.clear_figures()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.is_running"><code class="docutils literal notranslate"><span class="pre">Task.is_running()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.is_task_passed"><code class="docutils literal notranslate"><span class="pre">Task.is_task_passed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.set_task_passed"><code class="docutils literal notranslate"><span class="pre">Task.set_task_passed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.is_error_raised"><code class="docutils literal notranslate"><span class="pre">Task.is_error_raised()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.set_error_raised"><code class="docutils literal notranslate"><span class="pre">Task.set_error_raised()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.add_details"><code class="docutils literal notranslate"><span class="pre">Task.add_details()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.create_table"><code class="docutils literal notranslate"><span class="pre">Task.create_table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.add_data_to_table"><code class="docutils literal notranslate"><span class="pre">Task.add_data_to_table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.create_table_in_file"><code class="docutils literal notranslate"><span class="pre">Task.create_table_in_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.add_to_table_in_file"><code class="docutils literal notranslate"><span class="pre">Task.add_to_table_in_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.add_dict_to_file"><code class="docutils literal notranslate"><span class="pre">Task.add_dict_to_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.save_result"><code class="docutils literal notranslate"><span class="pre">Task.save_result()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.round_float"><code class="docutils literal notranslate"><span class="pre">Task.round_float()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.update_status"><code class="docutils literal notranslate"><span class="pre">Task.update_status()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.display_device_info"><code class="docutils literal notranslate"><span class="pre">Task.display_device_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.display_result"><code class="docutils literal notranslate"><span class="pre">Task.display_result()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.write_text"><code class="docutils literal notranslate"><span class="pre">Task.write_text()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.get_input_parameter"><code class="docutils literal notranslate"><span class="pre">Task.get_input_parameter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.get_all_input_parameters"><code class="docutils literal notranslate"><span class="pre">Task.get_all_input_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.set_input_parameter"><code class="docutils literal notranslate"><span class="pre">Task.set_input_parameter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.notify_parameter_changed"><code class="docutils literal notranslate"><span class="pre">Task.notify_parameter_changed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.request_figure_update"><code class="docutils literal notranslate"><span class="pre">Task.request_figure_update()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.update_figure"><code class="docutils literal notranslate"><span class="pre">Task.update_figure()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.notify_data_available"><code class="docutils literal notranslate"><span class="pre">Task.notify_data_available()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.update"><code class="docutils literal notranslate"><span class="pre">Task.update()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.get_instrument"><code class="docutils literal notranslate"><span class="pre">Task.get_instrument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.ask_question"><code class="docutils literal notranslate"><span class="pre">Task.ask_question()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.staticMetaObject"><code class="docutils literal notranslate"><span class="pre">Task.staticMetaObject</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.question_background_update"><code class="docutils literal notranslate"><span class="pre">Task.question_background_update()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.set_log_error_detail"><code class="docutils literal notranslate"><span class="pre">Task.set_log_error_detail()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.task.Task.log_exception"><code class="docutils literal notranslate"><span class="pre">Task.log_exception()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.task.html#module-srsgui.task.callbacks">srsgui.task.callbacks module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.task.html#srsgui.task.callbacks.Callbacks"><code class="docutils literal notranslate"><span class="pre">Callbacks</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.callbacks.Callbacks.started"><code class="docutils literal notranslate"><span class="pre">Callbacks.started()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.callbacks.Callbacks.finished"><code class="docutils literal notranslate"><span class="pre">Callbacks.finished()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.callbacks.Callbacks.text_available"><code class="docutils literal notranslate"><span class="pre">Callbacks.text_available()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.callbacks.Callbacks.parameter_changed"><code class="docutils literal notranslate"><span class="pre">Callbacks.parameter_changed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.callbacks.Callbacks.figure_update_requested"><code class="docutils literal notranslate"><span class="pre">Callbacks.figure_update_requested()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.callbacks.Callbacks.data_available"><code class="docutils literal notranslate"><span class="pre">Callbacks.data_available()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.callbacks.Callbacks.new_question"><code class="docutils literal notranslate"><span class="pre">Callbacks.new_question()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.task.html#module-srsgui.task.inputs">srsgui.task.inputs module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.BaseInput"><code class="docutils literal notranslate"><span class="pre">BaseInput</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.BaseInput.get_value"><code class="docutils literal notranslate"><span class="pre">BaseInput.get_value()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.BaseInput.set_value"><code class="docutils literal notranslate"><span class="pre">BaseInput.set_value()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.StringInput"><code class="docutils literal notranslate"><span class="pre">StringInput</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.PasswordInput"><code class="docutils literal notranslate"><span class="pre">PasswordInput</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.IntegerInput"><code class="docutils literal notranslate"><span class="pre">IntegerInput</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.FloatInput"><code class="docutils literal notranslate"><span class="pre">FloatInput</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.ListInput"><code class="docutils literal notranslate"><span class="pre">ListInput</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.ListInput.get_value"><code class="docutils literal notranslate"><span class="pre">ListInput.get_value()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.ListInput.set_value"><code class="docutils literal notranslate"><span class="pre">ListInput.set_value()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.ListInput.get_index"><code class="docutils literal notranslate"><span class="pre">ListInput.get_index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.ListInput.set_index"><code class="docutils literal notranslate"><span class="pre">ListInput.set_index()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.BoolInput"><code class="docutils literal notranslate"><span class="pre">BoolInput</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.BoolInput.get_value"><code class="docutils literal notranslate"><span class="pre">BoolInput.get_value()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.BoolInput.set_value"><code class="docutils literal notranslate"><span class="pre">BoolInput.set_value()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.IntegerListInput"><code class="docutils literal notranslate"><span class="pre">IntegerListInput</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.IntegerListInput.get_value"><code class="docutils literal notranslate"><span class="pre">IntegerListInput.get_value()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.IntegerListInput.set_value"><code class="docutils literal notranslate"><span class="pre">IntegerListInput.set_value()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.FloatListInput"><code class="docutils literal notranslate"><span class="pre">FloatListInput</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.FloatListInput.get_value"><code class="docutils literal notranslate"><span class="pre">FloatListInput.get_value()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.FloatListInput.set_value"><code class="docutils literal notranslate"><span class="pre">FloatListInput.set_value()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.InstrumentInput"><code class="docutils literal notranslate"><span class="pre">InstrumentInput</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.FindListInput"><code class="docutils literal notranslate"><span class="pre">FindListInput</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.Ip4Input"><code class="docutils literal notranslate"><span class="pre">Ip4Input</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.Ip4Input.get_value"><code class="docutils literal notranslate"><span class="pre">Ip4Input.get_value()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.CommandInput"><code class="docutils literal notranslate"><span class="pre">CommandInput</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.CommandInput.set_inst_name"><code class="docutils literal notranslate"><span class="pre">CommandInput.set_inst_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.inputs.CommandInput.get_value"><code class="docutils literal notranslate"><span class="pre">CommandInput.get_value()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.task.html#module-srsgui.task.config">srsgui.task.config module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.task.html#srsgui.task.config.Config"><code class="docutils literal notranslate"><span class="pre">Config</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.config.Config.ResultDirectory"><code class="docutils literal notranslate"><span class="pre">Config.ResultDirectory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.config.Config.DataRootDirectory"><code class="docutils literal notranslate"><span class="pre">Config.DataRootDirectory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.config.Config.LocalModulePath"><code class="docutils literal notranslate"><span class="pre">Config.LocalModulePath</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.config.Config.load"><code class="docutils literal notranslate"><span class="pre">Config.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.config.Config.load_task_from_line"><code class="docutils literal notranslate"><span class="pre">Config.load_task_from_line()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.config.Config.load_inst_from_line"><code class="docutils literal notranslate"><span class="pre">Config.load_inst_from_line()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.config.Config.get_base_log_file_name"><code class="docutils literal notranslate"><span class="pre">Config.get_base_log_file_name()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.task.html#module-srsgui.task.sessionhandler">srsgui.task.sessionhandler module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.task.html#srsgui.task.sessionhandler.SessionHandler"><code class="docutils literal notranslate"><span class="pre">SessionHandler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.sessionhandler.SessionHandler.is_open"><code class="docutils literal notranslate"><span class="pre">SessionHandler.is_open()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.sessionhandler.SessionHandler.set_data_directory"><code class="docutils literal notranslate"><span class="pre">SessionHandler.set_data_directory()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.sessionhandler.SessionHandler.open_session"><code class="docutils literal notranslate"><span class="pre">SessionHandler.open_session()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.sessionhandler.SessionHandler.close_session"><code class="docutils literal notranslate"><span class="pre">SessionHandler.close_session()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.sessionhandler.SessionHandler.create_new_task_result"><code class="docutils literal notranslate"><span class="pre">SessionHandler.create_new_task_result()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.sessionhandler.SessionHandler.create_file"><code class="docutils literal notranslate"><span class="pre">SessionHandler.create_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.sessionhandler.SessionHandler.add_dict_to_file"><code class="docutils literal notranslate"><span class="pre">SessionHandler.add_dict_to_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.sessionhandler.SessionHandler.create_table_in_file"><code class="docutils literal notranslate"><span class="pre">SessionHandler.create_table_in_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.sessionhandler.SessionHandler.add_to_table_in_file"><code class="docutils literal notranslate"><span class="pre">SessionHandler.add_to_table_in_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.sessionhandler.SessionHandler.close_file"><code class="docutils literal notranslate"><span class="pre">SessionHandler.close_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.sessionhandler.SessionHandler.close_data_dir"><code class="docutils literal notranslate"><span class="pre">SessionHandler.close_data_dir()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.sessionhandler.SessionHandler.is_data_dir_closed"><code class="docutils literal notranslate"><span class="pre">SessionHandler.is_data_dir_closed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.sessionhandler.SessionHandler.get_data_dir"><code class="docutils literal notranslate"><span class="pre">SessionHandler.get_data_dir()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.sessionhandler.SessionHandler.get_last_run_number"><code class="docutils literal notranslate"><span class="pre">SessionHandler.get_last_run_number()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.task.html#module-srsgui.task.taskresult">srsgui.task.taskresult module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.task.html#srsgui.task.taskresult.timestamp_now"><code class="docutils literal notranslate"><span class="pre">timestamp_now()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.task.html#srsgui.task.taskresult.strip_tags"><code class="docutils literal notranslate"><span class="pre">strip_tags()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.task.html#srsgui.task.taskresult.ResultLogHandler"><code class="docutils literal notranslate"><span class="pre">ResultLogHandler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.taskresult.ResultLogHandler.emit"><code class="docutils literal notranslate"><span class="pre">ResultLogHandler.emit()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.task.html#srsgui.task.taskresult.TaskResult"><code class="docutils literal notranslate"><span class="pre">TaskResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.taskresult.TaskResult.reserved"><code class="docutils literal notranslate"><span class="pre">TaskResult.reserved</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.taskresult.TaskResult.clear"><code class="docutils literal notranslate"><span class="pre">TaskResult.clear()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.taskresult.TaskResult.set_start_time_now"><code class="docutils literal notranslate"><span class="pre">TaskResult.set_start_time_now()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.taskresult.TaskResult.set_stop_time_now"><code class="docutils literal notranslate"><span class="pre">TaskResult.set_stop_time_now()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.taskresult.TaskResult.set_aborted"><code class="docutils literal notranslate"><span class="pre">TaskResult.set_aborted()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.taskresult.TaskResult.set_passed"><code class="docutils literal notranslate"><span class="pre">TaskResult.set_passed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.taskresult.TaskResult.append_error"><code class="docutils literal notranslate"><span class="pre">TaskResult.append_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.taskresult.TaskResult.add_details"><code class="docutils literal notranslate"><span class="pre">TaskResult.add_details()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.taskresult.TaskResult.create_table"><code class="docutils literal notranslate"><span class="pre">TaskResult.create_table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.task.html#srsgui.task.taskresult.TaskResult.add_data_to_table"><code class="docutils literal notranslate"><span class="pre">TaskResult.add_data_to_table()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="srsgui.ui.html">srsgui.ui package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.html#module-srsgui.ui.taskmain">srsgui.ui.taskmain module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain"><code class="docutils literal notranslate"><span class="pre">TaskMain</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.DefaultConfigFile"><code class="docutils literal notranslate"><span class="pre">TaskMain.DefaultConfigFile</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.OrganizationName"><code class="docutils literal notranslate"><span class="pre">TaskMain.OrganizationName</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.ApplicationName"><code class="docutils literal notranslate"><span class="pre">TaskMain.ApplicationName</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.LogoImageFile"><code class="docutils literal notranslate"><span class="pre">TaskMain.LogoImageFile</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.LogoFile"><code class="docutils literal notranslate"><span class="pre">TaskMain.LogoFile</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.load_tasks"><code class="docutils literal notranslate"><span class="pre">TaskMain.load_tasks()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.get_logo_file"><code class="docutils literal notranslate"><span class="pre">TaskMain.get_logo_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.print_redirect"><code class="docutils literal notranslate"><span class="pre">TaskMain.print_redirect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.onTaskStarted"><code class="docutils literal notranslate"><span class="pre">TaskMain.onTaskStarted()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.onTaskFinished"><code class="docutils literal notranslate"><span class="pre">TaskMain.onTaskFinished()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.is_task_running"><code class="docutils literal notranslate"><span class="pre">TaskMain.is_task_running()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.update_figure"><code class="docutils literal notranslate"><span class="pre">TaskMain.update_figure()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.onTaskSelect"><code class="docutils literal notranslate"><span class="pre">TaskMain.onTaskSelect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.onRun"><code class="docutils literal notranslate"><span class="pre">TaskMain.onRun()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.onStop"><code class="docutils literal notranslate"><span class="pre">TaskMain.onStop()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.onOpen"><code class="docutils literal notranslate"><span class="pre">TaskMain.onOpen()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.onInstrumentSelect"><code class="docutils literal notranslate"><span class="pre">TaskMain.onInstrumentSelect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.onConnect"><code class="docutils literal notranslate"><span class="pre">TaskMain.onConnect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.onDisconnect"><code class="docutils literal notranslate"><span class="pre">TaskMain.onDisconnect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.okToContinue"><code class="docutils literal notranslate"><span class="pre">TaskMain.okToContinue()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.display_question"><code class="docutils literal notranslate"><span class="pre">TaskMain.display_question()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.closeEvent"><code class="docutils literal notranslate"><span class="pre">TaskMain.closeEvent()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.handle_initial_image"><code class="docutils literal notranslate"><span class="pre">TaskMain.handle_initial_image()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.onAbout"><code class="docutils literal notranslate"><span class="pre">TaskMain.onAbout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.load_settings"><code class="docutils literal notranslate"><span class="pre">TaskMain.load_settings()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.save_settings"><code class="docutils literal notranslate"><span class="pre">TaskMain.save_settings()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.taskmain.TaskMain.staticMetaObject"><code class="docutils literal notranslate"><span class="pre">TaskMain.staticMetaObject</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.html#module-srsgui.ui.connectdlg">srsgui.ui.connectdlg module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.connectdlg.ConnectDlg"><code class="docutils literal notranslate"><span class="pre">ConnectDlg</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.connectdlg.ConnectDlg.create_tab"><code class="docutils literal notranslate"><span class="pre">ConnectDlg.create_tab()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.connectdlg.ConnectDlg.create_input_widget"><code class="docutils literal notranslate"><span class="pre">ConnectDlg.create_input_widget()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.connectdlg.ConnectDlg.accept"><code class="docutils literal notranslate"><span class="pre">ConnectDlg.accept()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.connectdlg.ConnectDlg.save_settings"><code class="docutils literal notranslate"><span class="pre">ConnectDlg.save_settings()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.connectdlg.ConnectDlg.load_setting"><code class="docutils literal notranslate"><span class="pre">ConnectDlg.load_setting()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.connectdlg.ConnectDlg.staticMetaObject"><code class="docutils literal notranslate"><span class="pre">ConnectDlg.staticMetaObject</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.html#module-srsgui.ui.commandterminal">srsgui.ui.commandterminal module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.commandterminal.CommandTerminal"><code class="docutils literal notranslate"><span class="pre">CommandTerminal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.commandterminal.CommandTerminal.command_requested"><code class="docutils literal notranslate"><span class="pre">CommandTerminal.command_requested</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.commandterminal.CommandTerminal.setup_widget"><code class="docutils literal notranslate"><span class="pre">CommandTerminal.setup_widget()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.commandterminal.CommandTerminal.on_clear"><code class="docutils literal notranslate"><span class="pre">CommandTerminal.on_clear()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.commandterminal.CommandTerminal.on_up_pressed"><code class="docutils literal notranslate"><span class="pre">CommandTerminal.on_up_pressed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.commandterminal.CommandTerminal.on_down_pressed"><code class="docutils literal notranslate"><span class="pre">CommandTerminal.on_down_pressed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.commandterminal.CommandTerminal.on_send"><code class="docutils literal notranslate"><span class="pre">CommandTerminal.on_send()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.commandterminal.CommandTerminal.handle_command"><code class="docutils literal notranslate"><span class="pre">CommandTerminal.handle_command()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.commandterminal.CommandTerminal.staticMetaObject"><code class="docutils literal notranslate"><span class="pre">CommandTerminal.staticMetaObject</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.html#module-srsgui.ui.deviceinfohandler">srsgui.ui.deviceinfohandler module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.deviceinfohandler.DeviceInfoHandler"><code class="docutils literal notranslate"><span class="pre">DeviceInfoHandler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.deviceinfohandler.DeviceInfoHandler.select_browser"><code class="docutils literal notranslate"><span class="pre">DeviceInfoHandler.select_browser()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.deviceinfohandler.DeviceInfoHandler.update_info"><code class="docutils literal notranslate"><span class="pre">DeviceInfoHandler.update_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.deviceinfohandler.DeviceInfoHandler.update_tabs"><code class="docutils literal notranslate"><span class="pre">DeviceInfoHandler.update_tabs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.deviceinfohandler.DeviceInfoHandler.add_tab"><code class="docutils literal notranslate"><span class="pre">DeviceInfoHandler.add_tab()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.deviceinfohandler.DeviceInfoHandler.remove_tab"><code class="docutils literal notranslate"><span class="pre">DeviceInfoHandler.remove_tab()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.html#module-srsgui.ui.dockhandler">srsgui.ui.dockhandler module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler"><code class="docutils literal notranslate"><span class="pre">DockHandler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.DefaultConsoleName"><code class="docutils literal notranslate"><span class="pre">DockHandler.DefaultConsoleName</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.DefaultTerminalName"><code class="docutils literal notranslate"><span class="pre">DockHandler.DefaultTerminalName</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.DefaultFigureName"><code class="docutils literal notranslate"><span class="pre">DockHandler.DefaultFigureName</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.MenuDocksName"><code class="docutils literal notranslate"><span class="pre">DockHandler.MenuDocksName</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.MenuPlotName"><code class="docutils literal notranslate"><span class="pre">DockHandler.MenuPlotName</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.TitleFormat"><code class="docutils literal notranslate"><span class="pre">DockHandler.TitleFormat</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.init_plot_menu"><code class="docutils literal notranslate"><span class="pre">DockHandler.init_plot_menu()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.onTightLayout"><code class="docutils literal notranslate"><span class="pre">DockHandler.onTightLayout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.onToolbar"><code class="docutils literal notranslate"><span class="pre">DockHandler.onToolbar()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.init_console"><code class="docutils literal notranslate"><span class="pre">DockHandler.init_console()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.init_terminal"><code class="docutils literal notranslate"><span class="pre">DockHandler.init_terminal()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.init_inst_dock"><code class="docutils literal notranslate"><span class="pre">DockHandler.init_inst_dock()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.setup_figure_canvas"><code class="docutils literal notranslate"><span class="pre">DockHandler.setup_figure_canvas()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.init_figure_dock"><code class="docutils literal notranslate"><span class="pre">DockHandler.init_figure_dock()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.display_image"><code class="docutils literal notranslate"><span class="pre">DockHandler.display_image()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.get_terminal"><code class="docutils literal notranslate"><span class="pre">DockHandler.get_terminal()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.get_figure"><code class="docutils literal notranslate"><span class="pre">DockHandler.get_figure()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.set_figure_update_period"><code class="docutils literal notranslate"><span class="pre">DockHandler.set_figure_update_period()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.get_figure_update_period"><code class="docutils literal notranslate"><span class="pre">DockHandler.get_figure_update_period()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.update_figure"><code class="docutils literal notranslate"><span class="pre">DockHandler.update_figure()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.get_dock"><code class="docutils literal notranslate"><span class="pre">DockHandler.get_dock()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.onMenuDocksSelected"><code class="docutils literal notranslate"><span class="pre">DockHandler.onMenuDocksSelected()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.reset_inst_docks"><code class="docutils literal notranslate"><span class="pre">DockHandler.reset_inst_docks()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.reset_figures"><code class="docutils literal notranslate"><span class="pre">DockHandler.reset_figures()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.update_menu"><code class="docutils literal notranslate"><span class="pre">DockHandler.update_menu()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.get_figure_dict"><code class="docutils literal notranslate"><span class="pre">DockHandler.get_figure_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.clear_figures"><code class="docutils literal notranslate"><span class="pre">DockHandler.clear_figures()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.show_toolbar"><code class="docutils literal notranslate"><span class="pre">DockHandler.show_toolbar()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.dockhandler.DockHandler.stop_command_handlers"><code class="docutils literal notranslate"><span class="pre">DockHandler.stop_command_handlers()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.html#module-srsgui.ui.inputpanel">srsgui.ui.inputpanel module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.inputpanel.InputPanel"><code class="docutils literal notranslate"><span class="pre">InputPanel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.inputpanel.InputPanel.FirstColumn"><code class="docutils literal notranslate"><span class="pre">InputPanel.FirstColumn</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.inputpanel.InputPanel.SecondColumn"><code class="docutils literal notranslate"><span class="pre">InputPanel.SecondColumn</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.inputpanel.InputPanel.update"><code class="docutils literal notranslate"><span class="pre">InputPanel.update()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.inputpanel.InputPanel.on_default"><code class="docutils literal notranslate"><span class="pre">InputPanel.on_default()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.inputpanel.InputPanel.on_apply"><code class="docutils literal notranslate"><span class="pre">InputPanel.on_apply()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.inputpanel.InputPanel.handle_reply"><code class="docutils literal notranslate"><span class="pre">InputPanel.handle_reply()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.inputpanel.InputPanel.staticMetaObject"><code class="docutils literal notranslate"><span class="pre">InputPanel.staticMetaObject</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.html#module-srsgui.ui.qtloghandler">srsgui.ui.qtloghandler module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.qtloghandler.QtLogHandler"><code class="docutils literal notranslate"><span class="pre">QtLogHandler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.qtloghandler.QtLogHandler.SignalObject"><code class="docutils literal notranslate"><span class="pre">QtLogHandler.SignalObject</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.qtloghandler.QtLogHandler.emit"><code class="docutils literal notranslate"><span class="pre">QtLogHandler.emit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.qtloghandler.QtLogHandler.append"><code class="docutils literal notranslate"><span class="pre">QtLogHandler.append()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.html#module-srsgui.ui.signalhandler">srsgui.ui.signalhandler module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.signalhandler.SignalHandler"><code class="docutils literal notranslate"><span class="pre">SignalHandler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.signalhandler.SignalHandler.sig_started"><code class="docutils literal notranslate"><span class="pre">SignalHandler.sig_started</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.signalhandler.SignalHandler.sig_finished"><code class="docutils literal notranslate"><span class="pre">SignalHandler.sig_finished</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.signalhandler.SignalHandler.sig_text_available"><code class="docutils literal notranslate"><span class="pre">SignalHandler.sig_text_available</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.signalhandler.SignalHandler.sig_parameter_changed"><code class="docutils literal notranslate"><span class="pre">SignalHandler.sig_parameter_changed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.signalhandler.SignalHandler.sig_figure_update_requested"><code class="docutils literal notranslate"><span class="pre">SignalHandler.sig_figure_update_requested</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.signalhandler.SignalHandler.sig_data_available"><code class="docutils literal notranslate"><span class="pre">SignalHandler.sig_data_available</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.signalhandler.SignalHandler.sig_new_question"><code class="docutils literal notranslate"><span class="pre">SignalHandler.sig_new_question</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.signalhandler.SignalHandler.signals"><code class="docutils literal notranslate"><span class="pre">SignalHandler.signals</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.signalhandler.SignalHandler.started"><code class="docutils literal notranslate"><span class="pre">SignalHandler.started()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.signalhandler.SignalHandler.finished"><code class="docutils literal notranslate"><span class="pre">SignalHandler.finished()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.signalhandler.SignalHandler.text_available"><code class="docutils literal notranslate"><span class="pre">SignalHandler.text_available()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.signalhandler.SignalHandler.parameter_changed"><code class="docutils literal notranslate"><span class="pre">SignalHandler.parameter_changed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.signalhandler.SignalHandler.figure_update_requested"><code class="docutils literal notranslate"><span class="pre">SignalHandler.figure_update_requested()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.signalhandler.SignalHandler.data_available"><code class="docutils literal notranslate"><span class="pre">SignalHandler.data_available()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.signalhandler.SignalHandler.new_question"><code class="docutils literal notranslate"><span class="pre">SignalHandler.new_question()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.signalhandler.SignalHandler.disconnect_all"><code class="docutils literal notranslate"><span class="pre">SignalHandler.disconnect_all()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.signalhandler.SignalHandler.staticMetaObject"><code class="docutils literal notranslate"><span class="pre">SignalHandler.staticMetaObject</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.html#module-srsgui.ui.stdout">srsgui.ui.stdout module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.stdout.StdOut"><code class="docutils literal notranslate"><span class="pre">StdOut</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.stdout.StdOut.textWritten"><code class="docutils literal notranslate"><span class="pre">StdOut.textWritten</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.stdout.StdOut.write"><code class="docutils literal notranslate"><span class="pre">StdOut.write()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.stdout.StdOut.flush"><code class="docutils literal notranslate"><span class="pre">StdOut.flush()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.html#srsgui.ui.stdout.StdOut.staticMetaObject"><code class="docutils literal notranslate"><span class="pre">StdOut.staticMetaObject</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.html#srsgui-ui-commandtree-package">srsgui.ui.commandtree package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html">srsgui.ui.commandtree.commanditem module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanditem.Index"><code class="docutils literal notranslate"><span class="pre">Index</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanditem.CommandItem"><code class="docutils literal notranslate"><span class="pre">CommandItem</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#module-srsgui.ui.commandtree.commandmodel">srsgui.ui.commandtree.commandmodel module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandmodel.CommandModel"><code class="docutils literal notranslate"><span class="pre">CommandModel</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#module-srsgui.ui.commandtree.commandhandler">srsgui.ui.commandtree.commandhandler module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandhandler.CommandWorker"><code class="docutils literal notranslate"><span class="pre">CommandWorker</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandhandler.CommandHandler"><code class="docutils literal notranslate"><span class="pre">CommandHandler</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#module-srsgui.ui.commandtree.commanddelegate">srsgui.ui.commandtree.commanddelegate module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commanddelegate.CommandDelegate"><code class="docutils literal notranslate"><span class="pre">CommandDelegate</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#module-srsgui.ui.commandtree.commandspinbox">srsgui.ui.commandtree.commandspinbox module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandspinbox.IntegerSpinBox"><code class="docutils literal notranslate"><span class="pre">IntegerSpinBox</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandspinbox.FloatSpinBox"><code class="docutils literal notranslate"><span class="pre">FloatSpinBox</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandspinbox.RunButton"><code class="docutils literal notranslate"><span class="pre">RunButton</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#module-srsgui.ui.commandtree.commandtreeview">srsgui.ui.commandtree.commandtreeview module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandtreeview.CommandTreeView"><code class="docutils literal notranslate"><span class="pre">CommandTreeView</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.commandtree.html#module-srsgui.ui.commandtree.commandtreewidget">srsgui.ui.commandtree.commandtreewidget module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.ui.commandtree.html#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget"><code class="docutils literal notranslate"><span class="pre">CommandTreeWidget</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.html#srsgui-ui-qt-package">srsgui.ui.qt package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.qt.html">srsgui.ui.qt.QtCore module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.qt.html#module-srsgui.ui.qt.QtGui">srsgui.ui.qt.QtGui module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.qt.html#module-srsgui.ui.qt.QtWidgets">srsgui.ui.qt.QtWidgets module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="example.html" class="btn btn-neutral float-left" title="Example project" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="srsgui.inst.html" class="btn btn-neutral float-right" title="srsgui.inst package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Chulhoon Kim.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

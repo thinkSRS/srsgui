@@ -85,6 +85,9 @@ class Component(object):
         """
         return self.comm.is_connected()
 
+    def parent(self):
+        return self._parent
+
     def set_name(self, name):
         """
         Set the name of the component

@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>srsgui.task package &mdash; srsgui  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="srsgui.ui package" href="srsgui.ui.html" />
+    <link rel="prev" title="srsgui.inst.communications package" href="srsgui.inst.communications.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> srsgui
+          </a>
+              <div class="version">
+                0.2.16
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-project.html">Creating a project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="define-instrument.html">Defining instrument classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-task.html">Writing a task script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Example project</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="srsgui.html">srsgui APIs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="srsgui.inst.html">srsgui.inst package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">srsgui.task package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-srsgui.task.task">srsgui.task.task module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.task.task.Task"><code class="docutils literal notranslate"><span class="pre">Task</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-srsgui.task.callbacks">srsgui.task.callbacks module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.task.callbacks.Callbacks"><code class="docutils literal notranslate"><span class="pre">Callbacks</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-srsgui.task.inputs">srsgui.task.inputs module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.task.inputs.BaseInput"><code class="docutils literal notranslate"><span class="pre">BaseInput</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.task.inputs.StringInput"><code class="docutils literal notranslate"><span class="pre">StringInput</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.task.inputs.PasswordInput"><code class="docutils literal notranslate"><span class="pre">PasswordInput</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.task.inputs.IntegerInput"><code class="docutils literal notranslate"><span class="pre">IntegerInput</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.task.inputs.FloatInput"><code class="docutils literal notranslate"><span class="pre">FloatInput</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.task.inputs.ListInput"><code class="docutils literal notranslate"><span class="pre">ListInput</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.task.inputs.BoolInput"><code class="docutils literal notranslate"><span class="pre">BoolInput</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.task.inputs.IntegerListInput"><code class="docutils literal notranslate"><span class="pre">IntegerListInput</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.task.inputs.FloatListInput"><code class="docutils literal notranslate"><span class="pre">FloatListInput</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.task.inputs.InstrumentInput"><code class="docutils literal notranslate"><span class="pre">InstrumentInput</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.task.inputs.FindListInput"><code class="docutils literal notranslate"><span class="pre">FindListInput</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.task.inputs.Ip4Input"><code class="docutils literal notranslate"><span class="pre">Ip4Input</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.task.inputs.CommandInput"><code class="docutils literal notranslate"><span class="pre">CommandInput</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-srsgui.task.config">srsgui.task.config module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.task.config.Config"><code class="docutils literal notranslate"><span class="pre">Config</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-srsgui.task.sessionhandler">srsgui.task.sessionhandler module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.task.sessionhandler.SessionHandler"><code class="docutils literal notranslate"><span class="pre">SessionHandler</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-srsgui.task.taskresult">srsgui.task.taskresult module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.task.taskresult.timestamp_now"><code class="docutils literal notranslate"><span class="pre">timestamp_now()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.task.taskresult.strip_tags"><code class="docutils literal notranslate"><span class="pre">strip_tags()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.task.taskresult.ResultLogHandler"><code class="docutils literal notranslate"><span class="pre">ResultLogHandler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.task.taskresult.TaskResult"><code class="docutils literal notranslate"><span class="pre">TaskResult</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.html">srsgui.ui package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">srsgui</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="srsgui.html">srsgui APIs</a> &raquo;</li>
+      <li>srsgui.task package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/srsgui.task.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="srsgui-task-package">
+<h1>srsgui.task package<a class="headerlink" href="#srsgui-task-package" title="Permalink to this heading"></a></h1>
+<section id="module-srsgui.task.task">
+<span id="srsgui-task-task-module"></span><h2>srsgui.task.task module<a class="headerlink" href="#module-srsgui.task.task" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.task.task.Task">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.task.task.</span></span><span class="sig-name descname"><span class="pre">Task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QThread</span></code></p>
+<p>Base class for derived Task subclasses.</p>
+<p>The parent process starts a task instance
+as a separate thread. Before starting the task thread, the parent process injects resources
+the task thread dependent on (instruments, figures, session handler), and connects
+callback functions to handle the requests from the task. The task uses
+the resources and send requests without knowing much about how they are handled by the parent
+process. It makes easy to write a derived task as a simple Python script starting from
+the base class.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.TaskException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TaskException</span></span><a class="headerlink" href="#srsgui.task.task.Task.TaskException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.TaskSetupFailed">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TaskSetupFailed</span></span><a class="headerlink" href="#srsgui.task.task.Task.TaskSetupFailed" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.task.task.Task.TaskException" title="srsgui.task.task.Task.TaskException"><code class="xref py py-class docutils literal notranslate"><span class="pre">TaskException</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.TaskRunFailed">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TaskRunFailed</span></span><a class="headerlink" href="#srsgui.task.task.Task.TaskRunFailed" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.task.task.Task.TaskException" title="srsgui.task.task.Task.TaskException"><code class="xref py py-class docutils literal notranslate"><span class="pre">TaskException</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.EscapeForResult">
+<span class="sig-name descname"><span class="pre">EscapeForResult</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&#64;RESULT&#64;'</span></em><a class="headerlink" href="#srsgui.task.task.Task.EscapeForResult" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.EscapeForDevice">
+<span class="sig-name descname"><span class="pre">EscapeForDevice</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&#64;DEVICE&#64;'</span></em><a class="headerlink" href="#srsgui.task.task.Task.EscapeForDevice" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.EscapeForStatus">
+<span class="sig-name descname"><span class="pre">EscapeForStatus</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&#64;STATUS&#64;'</span></em><a class="headerlink" href="#srsgui.task.task.Task.EscapeForStatus" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.EscapeForStart">
+<span class="sig-name descname"><span class="pre">EscapeForStart</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&#64;START&#64;'</span></em><a class="headerlink" href="#srsgui.task.task.Task.EscapeForStart" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.EscapeForStop">
+<span class="sig-name descname"><span class="pre">EscapeForStop</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&#64;STOP&#64;'</span></em><a class="headerlink" href="#srsgui.task.task.Task.EscapeForStop" title="Permalink to this definition"></a></dt>
+<dd><p>Escape strings used in stdout redirection to GUI</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.input_parameters">
+<span class="sig-name descname"><span class="pre">input_parameters</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'Define</span> <span class="pre">parameters':</span> <span class="pre">&lt;srsgui.task.inputs.FloatInput</span> <span class="pre">object&gt;,</span> <span class="pre">'before</span> <span class="pre">use!!</span> <span class="pre">':</span> <span class="pre">&lt;srsgui.task.inputs.StringInput</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#srsgui.task.task.Task.input_parameters" title="Permalink to this definition"></a></dt>
+<dd><p>Class variable to define parameters used in the task.
+values in input_parameters can be changed interactively from GUI before the task runs
+IntegerInput, FloatInput, StringInput, ListInput and InstrumentInput can be used
+as dictionary values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.additional_figure_names">
+<span class="sig-name descname"><span class="pre">additional_figure_names</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#srsgui.task.task.Task.additional_figure_names" title="Permalink to this definition"></a></dt>
+<dd><p>Names for extra Matplotlib figures added to use in the task
+If empty, only one figure named ‘plot’ is available as a default.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.InitialImage">
+<span class="sig-name descname"><span class="pre">InitialImage</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#srsgui.task.task.Task.InitialImage" title="Permalink to this definition"></a></dt>
+<dd><p>Image file for parent to display instead of the default logo image when the task is selected.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.setup" title="Permalink to this definition"></a></dt>
+<dd><p>Subclass needs  to override this method.
+Put all preparation for a task in the overridden method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.test">
+<span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.test" title="Permalink to this definition"></a></dt>
+<dd><p>Subclass must override this method.
+Check if is_running() is true to continue.
+Add data using in add_details, create_table, and add_data_to_table.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.cleanup">
+<span class="sig-name descname"><span class="pre">cleanup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.cleanup" title="Permalink to this definition"></a></dt>
+<dd><p>Subclass need to override this method
+Put any cleanup after task in the overridden method</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.get_logger">
+<span class="sig-name descname"><span class="pre">get_logger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.get_logger" title="Permalink to this definition"></a></dt>
+<dd><p>Get a logger with its handler available from the parent</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.basic_setup">
+<span class="sig-name descname"><span class="pre">basic_setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">)</span> <span class="pre">runs</span> <span class="pre">before</span> <span class="pre">task-specific</span> <span class="pre">setup(</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.basic_setup" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.basic_cleanup">
+<span class="sig-name descname"><span class="pre">basic_cleanup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.basic_cleanup" title="Permalink to this definition"></a></dt>
+<dd><p>basic_cleanup runs after task-specific cleanup()</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.run" title="Permalink to this definition"></a></dt>
+<dd><p>Overrides Thread run() method. task-speciic test() runs inside this method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.start" title="Permalink to this definition"></a></dt>
+<dd><p>Overrides Thread start() method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.stop" title="Permalink to this definition"></a></dt>
+<dd><p>Make is_running() returns False. A task should check is_running()
+frequently. Stop if it returns False.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.delay">
+<span class="sig-name descname"><span class="pre">delay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.delay" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the task is stopped and wait for the given seconds.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.set_session_handler">
+<span class="sig-name descname"><span class="pre">set_session_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session_handler</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.set_session_handler" title="Permalink to this definition"></a></dt>
+<dd><p>Parent should set a session handler for Task to use file output.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.set_callback_handler">
+<span class="sig-name descname"><span class="pre">set_callback_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback_handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#srsgui.task.callbacks.Callbacks" title="srsgui.task.callbacks.Callbacks"><span class="pre">Callbacks</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.set_callback_handler" title="Permalink to this definition"></a></dt>
+<dd><p>Parent should set a callback handler to handle events from Task.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.set_inst_dict">
+<span class="sig-name descname"><span class="pre">set_inst_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inst_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.set_inst_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Parent should set inst_dict for Task to use instruments available from the parent.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.set_data_dict">
+<span class="sig-name descname"><span class="pre">set_data_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.set_data_dict" title="Permalink to this definition"></a></dt>
+<dd><p>A dictionary injected when the task run. It is a way to share data among different tasks
+Do not reset the whole dictionary unless you know what you are doing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.set_figure_dict">
+<span class="sig-name descname"><span class="pre">set_figure_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">figure_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.set_figure_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Parent should set figure_dict for Task to use Matplotlib figures available from the parent.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.get_figure">
+<span class="sig-name descname"><span class="pre">get_figure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Figure</span></span></span><a class="headerlink" href="#srsgui.task.task.Task.get_figure" title="Permalink to this definition"></a></dt>
+<dd><p>Get a Matplotlib figure from figure_dict.
+if name is None, it will reutrn the first figure in figure_dict as the defualt</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.clear_figures">
+<span class="sig-name descname"><span class="pre">clear_figures</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.clear_figures" title="Permalink to this definition"></a></dt>
+<dd><p>Clear all the figures in figure_dict</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.is_running">
+<span class="sig-name descname"><span class="pre">is_running</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.is_running" title="Permalink to this definition"></a></dt>
+<dd><p>Task should check is_running() is True.
+If it returns False, Task should stop ASAP.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.is_task_passed">
+<span class="sig-name descname"><span class="pre">is_task_passed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.is_task_passed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.set_task_passed">
+<span class="sig-name descname"><span class="pre">set_task_passed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">status</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.set_task_passed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.is_error_raised">
+<span class="sig-name descname"><span class="pre">is_error_raised</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.is_error_raised" title="Permalink to this definition"></a></dt>
+<dd><p>Check if Task stopped with an error</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.set_error_raised">
+<span class="sig-name descname"><span class="pre">set_error_raised</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.set_error_raised" title="Permalink to this definition"></a></dt>
+<dd><p>Mark Task is stopped with an error</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.add_details">
+<span class="sig-name descname"><span class="pre">add_details</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'summary'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.add_details" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.create_table">
+<span class="sig-name descname"><span class="pre">create_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.create_table" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.add_data_to_table">
+<span class="sig-name descname"><span class="pre">add_data_to_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.add_data_to_table" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.create_table_in_file">
+<span class="sig-name descname"><span class="pre">create_table_in_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.create_table_in_file" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.add_to_table_in_file">
+<span class="sig-name descname"><span class="pre">add_to_table_in_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.add_to_table_in_file" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.add_dict_to_file">
+<span class="sig-name descname"><span class="pre">add_dict_to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.add_dict_to_file" title="Permalink to this definition"></a></dt>
+<dd><p>Add a dictionary to the file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.save_result">
+<span class="sig-name descname"><span class="pre">save_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.save_result" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.round_float">
+<span class="sig-name descname"><span class="pre">round_float</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.round_float" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.update_status">
+<span class="sig-name descname"><span class="pre">update_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.update_status" title="Permalink to this definition"></a></dt>
+<dd><p>Output to the status bar at the bottom of srsgui application</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.display_device_info">
+<span class="sig-name descname"><span class="pre">display_device_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.display_device_info" title="Permalink to this definition"></a></dt>
+<dd><p>output to device info windows</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.display_result">
+<span class="sig-name descname"><span class="pre">display_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.display_result" title="Permalink to this definition"></a></dt>
+<dd><p>output to the result window</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.write_text">
+<span class="sig-name descname"><span class="pre">write_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.write_text" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.get_input_parameter">
+<span class="sig-name descname"><span class="pre">get_input_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.get_input_parameter" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.get_all_input_parameters">
+<span class="sig-name descname"><span class="pre">get_all_input_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.get_all_input_parameters" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.set_input_parameter">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_input_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.set_input_parameter" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.notify_parameter_changed">
+<span class="sig-name descname"><span class="pre">notify_parameter_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.notify_parameter_changed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.request_figure_update">
+<span class="sig-name descname"><span class="pre">request_figure_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">figure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.request_figure_update" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.update_figure">
+<span class="sig-name descname"><span class="pre">update_figure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">figure</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Figure</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.update_figure" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.notify_data_available">
+<span class="sig-name descname"><span class="pre">notify_data_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.notify_data_available" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.update" title="Permalink to this definition"></a></dt>
+<dd><p>when notify_data_available is called, this method handles data processing
+and display update. By default, it does no data handling, but figure update request.
+GUI related data processing needs to be done here to be handled
+in proper order by the GUI event loop handler.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.get_instrument">
+<span class="sig-name descname"><span class="pre">get_instrument</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.get_instrument" title="Permalink to this definition"></a></dt>
+<dd><p>Get an instrument from parent’s inst_dict and check its validity</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.ask_question">
+<span class="sig-name descname"><span class="pre">ask_question</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">question</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_type=&lt;class</span> <span class="pre">'bool'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=300.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.ask_question" title="Permalink to this definition"></a></dt>
+<dd><p>This method display message with an OK button with return_type set to None,
+it asks a yes/no question when with return_type set to bool, and
+it asks for a string when with return_type set to str.
+This method returns True/False for a yes/no question, and
+it returns a string for the return type of str.
+it returns None if the question is aborted</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.staticMetaObject">
+<span class="sig-name descname"><span class="pre">staticMetaObject</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide2.QtCore.QMetaObject</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#srsgui.task.task.Task.staticMetaObject" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.question_background_update">
+<span class="sig-name descname"><span class="pre">question_background_update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.question_background_update" title="Permalink to this definition"></a></dt>
+<dd><p>Repeat this method, while a dialog box is open with ask_question method.
+A Task subclass can re-implement this method as it needs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.set_log_error_detail">
+<span class="sig-name descname"><span class="pre">set_log_error_detail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.set_log_error_detail" title="Permalink to this definition"></a></dt>
+<dd><p>Set True To log exception traceback for debugging</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.task.Task.log_exception">
+<span class="sig-name descname"><span class="pre">log_exception</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">err</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.task.Task.log_exception" title="Permalink to this definition"></a></dt>
+<dd><p>With set_log_error_detail(True), an error is logged with traceback information</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.task.callbacks">
+<span id="srsgui-task-callbacks-module"></span><h2>srsgui.task.callbacks module<a class="headerlink" href="#module-srsgui.task.callbacks" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.task.callbacks.Callbacks">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.task.callbacks.</span></span><span class="sig-name descname"><span class="pre">Callbacks</span></span><a class="headerlink" href="#srsgui.task.callbacks.Callbacks" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.callbacks.Callbacks.started">
+<span class="sig-name descname"><span class="pre">started</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.callbacks.Callbacks.started" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.callbacks.Callbacks.finished">
+<span class="sig-name descname"><span class="pre">finished</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.callbacks.Callbacks.finished" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.callbacks.Callbacks.text_available">
+<span class="sig-name descname"><span class="pre">text_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.callbacks.Callbacks.text_available" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.callbacks.Callbacks.parameter_changed">
+<span class="sig-name descname"><span class="pre">parameter_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.callbacks.Callbacks.parameter_changed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.callbacks.Callbacks.figure_update_requested">
+<span class="sig-name descname"><span class="pre">figure_update_requested</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Figure</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.callbacks.Callbacks.figure_update_requested" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.callbacks.Callbacks.data_available">
+<span class="sig-name descname"><span class="pre">data_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.callbacks.Callbacks.data_available" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.callbacks.Callbacks.new_question">
+<span class="sig-name descname"><span class="pre">new_question</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">question</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.callbacks.Callbacks.new_question" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.task.inputs">
+<span id="srsgui-task-inputs-module"></span><h2>srsgui.task.inputs module<a class="headerlink" href="#module-srsgui.task.inputs" title="Permalink to this heading"></a></h2>
+<p>Interface for input variables between Task and InputPanel in GUI</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.task.inputs.BaseInput">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.task.inputs.</span></span><span class="sig-name descname"><span class="pre">BaseInput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">default_value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.BaseInput" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.inputs.BaseInput.get_value">
+<span class="sig-name descname"><span class="pre">get_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.BaseInput.get_value" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.inputs.BaseInput.set_value">
+<span class="sig-name descname"><span class="pre">set_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.BaseInput.set_value" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.task.inputs.StringInput">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.task.inputs.</span></span><span class="sig-name descname"><span class="pre">StringInput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">default_value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.StringInput" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.task.inputs.BaseInput" title="srsgui.task.inputs.BaseInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseInput</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.task.inputs.PasswordInput">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.task.inputs.</span></span><span class="sig-name descname"><span class="pre">PasswordInput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">default_value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.PasswordInput" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.task.inputs.BaseInput" title="srsgui.task.inputs.BaseInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseInput</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.task.inputs.IntegerInput">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.task.inputs.</span></span><span class="sig-name descname"><span class="pre">IntegerInput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">default_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">65535</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">single_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.IntegerInput" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.task.inputs.BaseInput" title="srsgui.task.inputs.BaseInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseInput</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.task.inputs.FloatInput">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.task.inputs.</span></span><span class="sig-name descname"><span class="pre">FloatInput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">default_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">single_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.FloatInput" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.task.inputs.BaseInput" title="srsgui.task.inputs.BaseInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseInput</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.task.inputs.ListInput">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.task.inputs.</span></span><span class="sig-name descname"><span class="pre">ListInput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.ListInput" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.task.inputs.BaseInput" title="srsgui.task.inputs.BaseInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseInput</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.inputs.ListInput.get_value">
+<span class="sig-name descname"><span class="pre">get_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.ListInput.get_value" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.inputs.ListInput.set_value">
+<span class="sig-name descname"><span class="pre">set_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.ListInput.set_value" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.inputs.ListInput.get_index">
+<span class="sig-name descname"><span class="pre">get_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.ListInput.get_index" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.inputs.ListInput.set_index">
+<span class="sig-name descname"><span class="pre">set_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.ListInput.set_index" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.task.inputs.BoolInput">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.task.inputs.</span></span><span class="sig-name descname"><span class="pre">BoolInput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('False',</span> <span class="pre">'True')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.BoolInput" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.task.inputs.ListInput" title="srsgui.task.inputs.ListInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListInput</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.inputs.BoolInput.get_value">
+<span class="sig-name descname"><span class="pre">get_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.BoolInput.get_value" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.inputs.BoolInput.set_value">
+<span class="sig-name descname"><span class="pre">set_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.BoolInput.set_value" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.task.inputs.IntegerListInput">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.task.inputs.</span></span><span class="sig-name descname"><span class="pre">IntegerListInput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.IntegerListInput" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.task.inputs.ListInput" title="srsgui.task.inputs.ListInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListInput</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.inputs.IntegerListInput.get_value">
+<span class="sig-name descname"><span class="pre">get_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.IntegerListInput.get_value" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.inputs.IntegerListInput.set_value">
+<span class="sig-name descname"><span class="pre">set_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">int_value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.IntegerListInput.set_value" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.task.inputs.FloatListInput">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.task.inputs.</span></span><span class="sig-name descname"><span class="pre">FloatListInput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'{:.2e}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.FloatListInput" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.task.inputs.ListInput" title="srsgui.task.inputs.ListInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListInput</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.inputs.FloatListInput.get_value">
+<span class="sig-name descname"><span class="pre">get_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.FloatListInput.get_value" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.inputs.FloatListInput.set_value">
+<span class="sig-name descname"><span class="pre">set_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">float_number</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.FloatListInput.set_value" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.task.inputs.InstrumentInput">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.task.inputs.</span></span><span class="sig-name descname"><span class="pre">InstrumentInput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">default_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.InstrumentInput" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.task.inputs.ListInput" title="srsgui.task.inputs.ListInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListInput</span></code></a></p>
+<p>InputPanel will setup a QComboBox widget with inst_dict</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.task.inputs.FindListInput">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.task.inputs.</span></span><span class="sig-name descname"><span class="pre">FindListInput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">default_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.FindListInput" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.task.inputs.ListInput" title="srsgui.task.inputs.ListInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListInput</span></code></a></p>
+<p>Hold a list of available resources from a communication
+interface find() method</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.task.inputs.Ip4Input">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.task.inputs.</span></span><span class="sig-name descname"><span class="pre">Ip4Input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">default_value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.Ip4Input" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.task.inputs.BaseInput" title="srsgui.task.inputs.BaseInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseInput</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.inputs.Ip4Input.get_value">
+<span class="sig-name descname"><span class="pre">get_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.Ip4Input.get_value" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.task.inputs.CommandInput">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.task.inputs.</span></span><span class="sig-name descname"><span class="pre">CommandInput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmd_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.CommandInput" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.task.inputs.IntegerInput" title="srsgui.task.inputs.IntegerInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntegerInput</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.inputs.CommandInput.set_inst_name">
+<span class="sig-name descname"><span class="pre">set_inst_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inst_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.CommandInput.set_inst_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.inputs.CommandInput.get_value">
+<span class="sig-name descname"><span class="pre">get_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.inputs.CommandInput.get_value" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.task.config">
+<span id="srsgui-task-config-module"></span><h2>srsgui.task.config module<a class="headerlink" href="#module-srsgui.task.config" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.task.config.Config">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.task.config.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><a class="headerlink" href="#srsgui.task.config.Config" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.task.config.Config.ResultDirectory">
+<span class="sig-name descname"><span class="pre">ResultDirectory</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'task-results'</span></em><a class="headerlink" href="#srsgui.task.config.Config.ResultDirectory" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.task.config.Config.DataRootDirectory">
+<span class="sig-name descname"><span class="pre">DataRootDirectory</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'C:\\Users\\ckim\\task-results'</span></em><a class="headerlink" href="#srsgui.task.config.Config.DataRootDirectory" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.task.config.Config.LocalModulePath">
+<span class="sig-name descname"><span class="pre">LocalModulePath</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['tasks',</span> <span class="pre">'instruments',</span> <span class="pre">'plots']</span></em><a class="headerlink" href="#srsgui.task.config.Config.LocalModulePath" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.config.Config.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.config.Config.load" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.config.Config.load_task_from_line">
+<span class="sig-name descname"><span class="pre">load_task_from_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.config.Config.load_task_from_line" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.config.Config.load_inst_from_line">
+<span class="sig-name descname"><span class="pre">load_inst_from_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.config.Config.load_inst_from_line" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.config.Config.get_base_log_file_name">
+<span class="sig-name descname"><span class="pre">get_base_log_file_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.config.Config.get_base_log_file_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.task.sessionhandler">
+<span id="srsgui-task-sessionhandler-module"></span><h2>srsgui.task.sessionhandler module<a class="headerlink" href="#module-srsgui.task.sessionhandler" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.task.sessionhandler.SessionHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.task.sessionhandler.</span></span><span class="sig-name descname"><span class="pre">SessionHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">use_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_api</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.sessionhandler.SessionHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.sessionhandler.SessionHandler.is_open">
+<span class="sig-name descname"><span class="pre">is_open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.sessionhandler.SessionHandler.is_open" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.sessionhandler.SessionHandler.set_data_directory">
+<span class="sig-name descname"><span class="pre">set_data_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_dict_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.sessionhandler.SessionHandler.set_data_directory" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.sessionhandler.SessionHandler.open_session">
+<span class="sig-name descname"><span class="pre">open_session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reuse_last_session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.sessionhandler.SessionHandler.open_session" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.sessionhandler.SessionHandler.close_session">
+<span class="sig-name descname"><span class="pre">close_session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_passed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.sessionhandler.SessionHandler.close_session" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.sessionhandler.SessionHandler.create_new_task_result">
+<span class="sig-name descname"><span class="pre">create_new_task_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#srsgui.task.taskresult.TaskResult" title="srsgui.task.taskresult.TaskResult"><span class="pre">TaskResult</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.sessionhandler.SessionHandler.create_new_task_result" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.sessionhandler.SessionHandler.create_file">
+<span class="sig-name descname"><span class="pre">create_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.sessionhandler.SessionHandler.create_file" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.sessionhandler.SessionHandler.add_dict_to_file">
+<span class="sig-name descname"><span class="pre">add_dict_to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.sessionhandler.SessionHandler.add_dict_to_file" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.sessionhandler.SessionHandler.create_table_in_file">
+<span class="sig-name descname"><span class="pre">create_table_in_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.sessionhandler.SessionHandler.create_table_in_file" title="Permalink to this definition"></a></dt>
+<dd><p>args: list of header string</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.sessionhandler.SessionHandler.add_to_table_in_file">
+<span class="sig-name descname"><span class="pre">add_to_table_in_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.sessionhandler.SessionHandler.add_to_table_in_file" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.sessionhandler.SessionHandler.close_file">
+<span class="sig-name descname"><span class="pre">close_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.sessionhandler.SessionHandler.close_file" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.sessionhandler.SessionHandler.close_data_dir">
+<span class="sig-name descname"><span class="pre">close_data_dir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.sessionhandler.SessionHandler.close_data_dir" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.sessionhandler.SessionHandler.is_data_dir_closed">
+<span class="sig-name descname"><span class="pre">is_data_dir_closed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.sessionhandler.SessionHandler.is_data_dir_closed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.sessionhandler.SessionHandler.get_data_dir">
+<span class="sig-name descname"><span class="pre">get_data_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">serial_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reuse_last_run_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.sessionhandler.SessionHandler.get_data_dir" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.sessionhandler.SessionHandler.get_last_run_number">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_last_run_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit_data_dir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.sessionhandler.SessionHandler.get_last_run_number" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.task.taskresult">
+<span id="srsgui-task-taskresult-module"></span><h2>srsgui.task.taskresult module<a class="headerlink" href="#module-srsgui.task.taskresult" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="srsgui.task.taskresult.timestamp_now">
+<span class="sig-prename descclassname"><span class="pre">srsgui.task.taskresult.</span></span><span class="sig-name descname"><span class="pre">timestamp_now</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.taskresult.timestamp_now" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="srsgui.task.taskresult.strip_tags">
+<span class="sig-prename descclassname"><span class="pre">srsgui.task.taskresult.</span></span><span class="sig-name descname"><span class="pre">strip_tags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.taskresult.strip_tags" title="Permalink to this definition"></a></dt>
+<dd><p>Removes HTML tags</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.task.taskresult.ResultLogHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.task.taskresult.</span></span><span class="sig-name descname"><span class="pre">ResultLogHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_result</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.taskresult.ResultLogHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Handler</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.taskresult.ResultLogHandler.emit">
+<span class="sig-name descname"><span class="pre">emit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.taskresult.ResultLogHandler.emit" title="Permalink to this definition"></a></dt>
+<dd><p>Do whatever it takes to actually log the specified logging record.</p>
+<p>This version is intended to be implemented by subclasses and so
+raises a NotImplementedError.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.task.taskresult.TaskResult">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.task.taskresult.</span></span><span class="sig-name descname"><span class="pre">TaskResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_class_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.taskresult.TaskResult" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>An object that stores relevant test result data</p>
+<p>Any data stored in attributes of this object will
+end up saved in the database</p>
+<p>Be sure to store only json-serializable objects in
+the attributes of this class (i.e. only python primitives
+like dict, list, str, int) or it will throw an error
+when it tries to store it in a database</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.task.taskresult.TaskResult.reserved">
+<span class="sig-name descname"><span class="pre">reserved</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#srsgui.task.taskresult.TaskResult.reserved" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.taskresult.TaskResult.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.taskresult.TaskResult.clear" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.taskresult.TaskResult.set_start_time_now">
+<span class="sig-name descname"><span class="pre">set_start_time_now</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.taskresult.TaskResult.set_start_time_now" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.taskresult.TaskResult.set_stop_time_now">
+<span class="sig-name descname"><span class="pre">set_stop_time_now</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.taskresult.TaskResult.set_stop_time_now" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.taskresult.TaskResult.set_aborted">
+<span class="sig-name descname"><span class="pre">set_aborted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.taskresult.TaskResult.set_aborted" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.taskresult.TaskResult.set_passed">
+<span class="sig-name descname"><span class="pre">set_passed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.taskresult.TaskResult.set_passed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.taskresult.TaskResult.append_error">
+<span class="sig-name descname"><span class="pre">append_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.taskresult.TaskResult.append_error" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.taskresult.TaskResult.add_details">
+<span class="sig-name descname"><span class="pre">add_details</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'summary'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.taskresult.TaskResult.add_details" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.taskresult.TaskResult.create_table">
+<span class="sig-name descname"><span class="pre">create_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.taskresult.TaskResult.create_table" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.task.taskresult.TaskResult.add_data_to_table">
+<span class="sig-name descname"><span class="pre">add_data_to_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.task.taskresult.TaskResult.add_data_to_table" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="srsgui.inst.communications.html" class="btn btn-neutral float-left" title="srsgui.inst.communications package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="srsgui.ui.html" class="btn btn-neutral float-right" title="srsgui.ui package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Chulhoon Kim.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

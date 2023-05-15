@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>srsgui.inst package &mdash; srsgui  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="srsgui.inst.communications package" href="srsgui.inst.communications.html" />
+    <link rel="prev" title="srsgui APIs" href="srsgui.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> srsgui
+          </a>
+              <div class="version">
+                0.2.16
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-project.html">Creating a project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="define-instrument.html">Defining instrument classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-task.html">Writing a task script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Example project</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="srsgui.html">srsgui APIs</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">srsgui.inst package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.communications.html">srsgui.inst.communications package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-srsgui.inst.instrument">srsgui.inst.instrument module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.instrument.Instrument"><code class="docutils literal notranslate"><span class="pre">Instrument</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-srsgui.inst.component">srsgui.inst.component module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.component.Component"><code class="docutils literal notranslate"><span class="pre">Component</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-srsgui.inst.commands">srsgui.inst.commands module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.commands.Command"><code class="docutils literal notranslate"><span class="pre">Command</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.commands.GetCommand"><code class="docutils literal notranslate"><span class="pre">GetCommand</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.commands.SetCommand"><code class="docutils literal notranslate"><span class="pre">SetCommand</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.commands.BoolCommand"><code class="docutils literal notranslate"><span class="pre">BoolCommand</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.commands.BoolGetCommand"><code class="docutils literal notranslate"><span class="pre">BoolGetCommand</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.commands.BoolSetCommand"><code class="docutils literal notranslate"><span class="pre">BoolSetCommand</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.commands.IntCommand"><code class="docutils literal notranslate"><span class="pre">IntCommand</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.commands.IntGetCommand"><code class="docutils literal notranslate"><span class="pre">IntGetCommand</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.commands.IntSetCommand"><code class="docutils literal notranslate"><span class="pre">IntSetCommand</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.commands.FloatCommand"><code class="docutils literal notranslate"><span class="pre">FloatCommand</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.commands.FloatGetCommand"><code class="docutils literal notranslate"><span class="pre">FloatGetCommand</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.commands.FloatSetCommand"><code class="docutils literal notranslate"><span class="pre">FloatSetCommand</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.commands.DictCommand"><code class="docutils literal notranslate"><span class="pre">DictCommand</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.commands.DictGetCommand"><code class="docutils literal notranslate"><span class="pre">DictGetCommand</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-srsgui.inst.indexcommands">srsgui.inst.indexcommands module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.indexcommands.IndexCommand"><code class="docutils literal notranslate"><span class="pre">IndexCommand</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.indexcommands.IndexGetCommand"><code class="docutils literal notranslate"><span class="pre">IndexGetCommand</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.indexcommands.BoolIndexCommand"><code class="docutils literal notranslate"><span class="pre">BoolIndexCommand</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.indexcommands.BoolIndexGetCommand"><code class="docutils literal notranslate"><span class="pre">BoolIndexGetCommand</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.indexcommands.IntIndexCommand"><code class="docutils literal notranslate"><span class="pre">IntIndexCommand</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.indexcommands.IntIndexGetCommand"><code class="docutils literal notranslate"><span class="pre">IntIndexGetCommand</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.indexcommands.FloatIndexCommand"><code class="docutils literal notranslate"><span class="pre">FloatIndexCommand</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.indexcommands.FloatIndexGetCommand"><code class="docutils literal notranslate"><span class="pre">FloatIndexGetCommand</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.indexcommands.DictIndexCommand"><code class="docutils literal notranslate"><span class="pre">DictIndexCommand</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-srsgui.inst.exceptions">srsgui.inst.exceptions module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.exceptions.InstException"><code class="docutils literal notranslate"><span class="pre">InstException</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.exceptions.InstCommunicationError"><code class="docutils literal notranslate"><span class="pre">InstCommunicationError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.exceptions.InstLoginFailureError"><code class="docutils literal notranslate"><span class="pre">InstLoginFailureError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.exceptions.InstIdError"><code class="docutils literal notranslate"><span class="pre">InstIdError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.exceptions.InstSetError"><code class="docutils literal notranslate"><span class="pre">InstSetError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.exceptions.InstQueryError"><code class="docutils literal notranslate"><span class="pre">InstQueryError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#srsgui.inst.exceptions.InstIndexError"><code class="docutils literal notranslate"><span class="pre">InstIndexError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.task.html">srsgui.task package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.ui.html">srsgui.ui package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">srsgui</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="srsgui.html">srsgui APIs</a> &raquo;</li>
+      <li>srsgui.inst package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/srsgui.inst.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="srsgui-inst-package">
+<h1>srsgui.inst package<a class="headerlink" href="#srsgui-inst-package" title="Permalink to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="srsgui.inst.communications.html">srsgui.inst.communications package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.inst.communications.html#module-srsgui.inst.communications.interface">srsgui.inst.communications.interface module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.interface.Interface"><code class="docutils literal notranslate"><span class="pre">Interface</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.interface.Interface.NAME"><code class="docutils literal notranslate"><span class="pre">Interface.NAME</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.interface.Interface.set_callbacks"><code class="docutils literal notranslate"><span class="pre">Interface.set_callbacks()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.interface.Interface.get_lock"><code class="docutils literal notranslate"><span class="pre">Interface.get_lock()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.interface.Interface.connect"><code class="docutils literal notranslate"><span class="pre">Interface.connect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.interface.Interface.disconnect"><code class="docutils literal notranslate"><span class="pre">Interface.disconnect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.interface.Interface.is_connected"><code class="docutils literal notranslate"><span class="pre">Interface.is_connected()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.interface.Interface.parse_parameter_string"><code class="docutils literal notranslate"><span class="pre">Interface.parse_parameter_string()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.interface.Interface.set_term_char"><code class="docutils literal notranslate"><span class="pre">Interface.set_term_char()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.interface.Interface.get_term_char"><code class="docutils literal notranslate"><span class="pre">Interface.get_term_char()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.interface.Interface.send"><code class="docutils literal notranslate"><span class="pre">Interface.send()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.interface.Interface.recv"><code class="docutils literal notranslate"><span class="pre">Interface.recv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.interface.Interface.query_text"><code class="docutils literal notranslate"><span class="pre">Interface.query_text()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.interface.Interface.query_int"><code class="docutils literal notranslate"><span class="pre">Interface.query_int()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.interface.Interface.query_float"><code class="docutils literal notranslate"><span class="pre">Interface.query_float()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.interface.Interface.set_timeout"><code class="docutils literal notranslate"><span class="pre">Interface.set_timeout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.interface.Interface.get_timeout"><code class="docutils literal notranslate"><span class="pre">Interface.get_timeout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.interface.Interface.query_text_with_long_timeout"><code class="docutils literal notranslate"><span class="pre">Interface.query_text_with_long_timeout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.interface.Interface.get_info"><code class="docutils literal notranslate"><span class="pre">Interface.get_info()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.inst.communications.html#module-srsgui.inst.communications.serialinterface">srsgui.inst.communications.serialinterface module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.serialinterface.SerialInterface"><code class="docutils literal notranslate"><span class="pre">SerialInterface</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.serialinterface.SerialInterface.NAME"><code class="docutils literal notranslate"><span class="pre">SerialInterface.NAME</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.serialinterface.SerialInterface.connect"><code class="docutils literal notranslate"><span class="pre">SerialInterface.connect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.serialinterface.SerialInterface.disconnect"><code class="docutils literal notranslate"><span class="pre">SerialInterface.disconnect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.serialinterface.SerialInterface.parse_parameter_string"><code class="docutils literal notranslate"><span class="pre">SerialInterface.parse_parameter_string()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.serialinterface.SerialInterface.send_break"><code class="docutils literal notranslate"><span class="pre">SerialInterface.send_break()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.serialinterface.SerialInterface.set_timeout"><code class="docutils literal notranslate"><span class="pre">SerialInterface.set_timeout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.serialinterface.SerialInterface.get_timeout"><code class="docutils literal notranslate"><span class="pre">SerialInterface.get_timeout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.serialinterface.SerialInterface.query_text"><code class="docutils literal notranslate"><span class="pre">SerialInterface.query_text()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.serialinterface.SerialInterface.clear_buffer"><code class="docutils literal notranslate"><span class="pre">SerialInterface.clear_buffer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.serialinterface.SerialInterface.get_info"><code class="docutils literal notranslate"><span class="pre">SerialInterface.get_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.serialinterface.SerialInterface.find"><code class="docutils literal notranslate"><span class="pre">SerialInterface.find()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.inst.communications.html#module-srsgui.inst.communications.serial_ports">srsgui.inst.communications.serial_ports module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.serial_ports.serial_ports"><code class="docutils literal notranslate"><span class="pre">serial_ports()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.inst.communications.html#module-srsgui.inst.communications.tcpipinterface">srsgui.inst.communications.tcpipinterface module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.tcpipinterface.TcpipInterface"><code class="docutils literal notranslate"><span class="pre">TcpipInterface</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.tcpipinterface.TcpipInterface.NAME"><code class="docutils literal notranslate"><span class="pre">TcpipInterface.NAME</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.tcpipinterface.TcpipInterface.query_text"><code class="docutils literal notranslate"><span class="pre">TcpipInterface.query_text()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.tcpipinterface.TcpipInterface.set_timeout"><code class="docutils literal notranslate"><span class="pre">TcpipInterface.set_timeout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.tcpipinterface.TcpipInterface.get_timeout"><code class="docutils literal notranslate"><span class="pre">TcpipInterface.get_timeout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.tcpipinterface.TcpipInterface.connect_without_login"><code class="docutils literal notranslate"><span class="pre">TcpipInterface.connect_without_login()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.tcpipinterface.TcpipInterface.connect_with_login"><code class="docutils literal notranslate"><span class="pre">TcpipInterface.connect_with_login()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.tcpipinterface.TcpipInterface.connect"><code class="docutils literal notranslate"><span class="pre">TcpipInterface.connect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.tcpipinterface.TcpipInterface.disconnect"><code class="docutils literal notranslate"><span class="pre">TcpipInterface.disconnect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.tcpipinterface.TcpipInterface.parse_parameter_string"><code class="docutils literal notranslate"><span class="pre">TcpipInterface.parse_parameter_string()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.tcpipinterface.TcpipInterface.clear_buffer"><code class="docutils literal notranslate"><span class="pre">TcpipInterface.clear_buffer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="srsgui.inst.communications.html#srsgui.inst.communications.tcpipinterface.TcpipInterface.get_info"><code class="docutils literal notranslate"><span class="pre">TcpipInterface.get_info()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="module-srsgui.inst.instrument">
+<span id="srsgui-inst-instrument-module"></span><h2>srsgui.inst.instrument module<a class="headerlink" href="#module-srsgui.inst.instrument" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.instrument.Instrument">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.instrument.</span></span><span class="sig-name descname"><span class="pre">Instrument</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.instrument.Instrument" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.component.Component" title="srsgui.inst.component.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">Component</span></code></a></p>
+<p>Base class for derived instrument classes.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.inst.instrument.Instrument.available_interfaces">
+<span class="sig-name descname"><span class="pre">available_interfaces</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[[&lt;class</span> <span class="pre">'srsgui.inst.communications.serialinterface.SerialInterface'&gt;,</span> <span class="pre">{'port':</span> <span class="pre">&lt;srsgui.task.inputs.FindListInput</span> <span class="pre">object&gt;,</span> <span class="pre">'baud_rate':</span> <span class="pre">&lt;srsgui.task.inputs.IntegerListInput</span> <span class="pre">object&gt;,</span> <span class="pre">'hardware_flow_control':</span> <span class="pre">&lt;srsgui.task.inputs.BoolInput</span> <span class="pre">object&gt;}],</span> <span class="pre">[&lt;class</span> <span class="pre">'srsgui.inst.communications.tcpipinterface.TcpipInterface'&gt;,</span> <span class="pre">{'ip_address':</span> <span class="pre">&lt;srsgui.task.inputs.Ip4Input</span> <span class="pre">object&gt;,</span> <span class="pre">'port':</span> <span class="pre">&lt;srsgui.task.inputs.IntegerInput</span> <span class="pre">object&gt;}]]</span></em><a class="headerlink" href="#srsgui.inst.instrument.Instrument.available_interfaces" title="Permalink to this definition"></a></dt>
+<dd><p>Available_interface specifies the communication interface available with an instrument.
+As default, SerialInterface and TcpipInterface is provided with the base class.
+VXI11 interface and VISA interface is available srsinst.sr860 package.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.instrument.Instrument.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface_type</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.instrument.Instrument.connect" title="Permalink to this definition"></a></dt>
+<dd><p>Connect to an instrument over one of the specified communication interfaces
+in available_interface</p>
+<p>If interface_type is ‘serial’,</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>interface_type</strong> (<em>str</em>) – Use <strong>‘serial’</strong> for serial communication</p></li>
+<li><p><strong>port</strong> (<em>string</em>) – serial port,  such as ‘COM3’ or ‘/dev/ttyUSB0’</p></li>
+<li><p><strong>baud_rate</strong> (<em>int</em><em>, </em><em>optional</em>) – baud rate of the serial port, default is 114200, and SRS RGA uses 28800.</p></li>
+<li><p><strong>hardware_flow_control</strong> (<em>bool</em><em>, </em><em>optional</em>) – RTS/CTS setting. The default is False, SRS RGA requires <strong>True</strong>.</p></li>
+</ul>
+</dd>
+</dl>
+<p>If interface_type is ‘tcpip’,</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>interface_type</strong> (<em>str</em>) – Use  <strong>‘tcpip’</strong>  for TCPIP communication</p></li>
+<li><p><strong>ip_address</strong> (<em>str</em>) – IP address of a instrument, such as ‘192.168.1.100’</p></li>
+<li><p><strong>port</strong> (<em>int</em><em>, </em><em>optional</em>) – TCP port number, default is 23 which is the TELNET default port.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.instrument.Instrument.disconnect">
+<span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.instrument.Instrument.disconnect" title="Permalink to this definition"></a></dt>
+<dd><p>Disconnect from the instrument</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.instrument.Instrument.is_connected">
+<span class="sig-name descname"><span class="pre">is_connected</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.instrument.Instrument.is_connected" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the communication interface is connected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.instrument.Instrument.set_term_char">
+<span class="sig-name descname"><span class="pre">set_term_char</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ch</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.instrument.Instrument.set_term_char" title="Permalink to this definition"></a></dt>
+<dd><p>Set the termination character for the communication interface</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ch</strong> (<em>bytes</em>) – termination character</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.instrument.Instrument.get_term_char">
+<span class="sig-name descname"><span class="pre">get_term_char</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.instrument.Instrument.get_term_char" title="Permalink to this definition"></a></dt>
+<dd><p>Get the current termination character</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>termination character for the communication interface</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.instrument.Instrument.send">
+<span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.instrument.Instrument.send" title="Permalink to this definition"></a></dt>
+<dd><p>Send a remote command without a reply</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cmd</strong> (<em>str</em>) – remote command</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.instrument.Instrument.query_text">
+<span class="sig-name descname"><span class="pre">query_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.instrument.Instrument.query_text" title="Permalink to this definition"></a></dt>
+<dd><p>Send a remote command with a string reply, and return the reply as a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cmd</strong> (<em>str</em>) – remote command</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>reply of the remote command</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.instrument.Instrument.query_int">
+<span class="sig-name descname"><span class="pre">query_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.instrument.Instrument.query_int" title="Permalink to this definition"></a></dt>
+<dd><p>Send a remote command with a integer reply, and return the reply as a integer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cmd</strong> (<em>str</em>) – remote command</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>reply of the remote command</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.instrument.Instrument.query_float">
+<span class="sig-name descname"><span class="pre">query_float</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.instrument.Instrument.query_float" title="Permalink to this definition"></a></dt>
+<dd><p>Send a remote command with a float reply, and return the reply as a float.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cmd</strong> (<em>str</em>) – remote command</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>reply of the remote command</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.instrument.Instrument.check_id">
+<span class="sig-name descname"><span class="pre">check_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.instrument.Instrument.check_id" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the ID string of the instrument contains _IdString of the Insteument class
+A derived instrument class should make sure that check_id method is properly implemented.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>tuple of (model name, serial number, firmware version)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.instrument.Instrument.get_available_interfaces">
+<span class="sig-name descname"><span class="pre">get_available_interfaces</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.instrument.Instrument.get_available_interfaces" title="Permalink to this definition"></a></dt>
+<dd><p>Get available communication interfaces for the instrument</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.instrument.Instrument.get_info">
+<span class="sig-name descname"><span class="pre">get_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.instrument.Instrument.get_info" title="Permalink to this definition"></a></dt>
+<dd><p>Get the instrument information</p>
+<p>default return value is a dictionalry containing model name, serial number,
+firmware version. A subclass can add more informaton into the dictionary
+as needed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.instrument.Instrument.get_status">
+<span class="sig-name descname"><span class="pre">get_status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.instrument.Instrument.get_status" title="Permalink to this definition"></a></dt>
+<dd><p>Get instrument status</p>
+<p>Returns a string with stauts and error infomation.
+This method will be called by the owner of the instrument
+to display status info to its output interface.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.instrument.Instrument.handle_command">
+<span class="sig-name descname"><span class="pre">handle_command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.instrument.Instrument.handle_command" title="Permalink to this definition"></a></dt>
+<dd><p>It sends a remote command and returns the reply, if the remote command returns a reply.
+if the remote command has no replay, it return a empty string.
+A terminal program will always get a reply for any remote command,
+unless unexpected timeout error  occurs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cmd</strong> (<em>str</em>) – remote command</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.instrument.Instrument.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.instrument.Instrument.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Reset the instrument.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.instrument.Instrument.connect_with_parameter_string">
+<span class="sig-name descname"><span class="pre">connect_with_parameter_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameter_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.instrument.Instrument.connect_with_parameter_string" title="Permalink to this definition"></a></dt>
+<dd><p>Connect the instrument using colon-separated parameter string from a config file</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.inst.component">
+<span id="srsgui-inst-component-module"></span><h2>srsgui.inst.component module<a class="headerlink" href="#module-srsgui.inst.component" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.component.Component">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.component.</span></span><span class="sig-name descname"><span class="pre">Component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'unnamed'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.component.Component" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class is used to build hierarchical structure in an instrument.
+An instrument can have multiple components and each component
+can also have multiple subcomponents. All the components
+inside an instrument shares the communication interface
+of the instrument.</p>
+<p>When the communication interface of an
+instrument changed, the instrument should call
+<code class="docutils literal notranslate"><span class="pre">update_components()</span></code> to update all its components.</p>
+<p>Component has a convenience attribute, <code class="docutils literal notranslate"><span class="pre">dir</span></code> that returns available subcomponents,
+commands and methods available from the component. <code class="docutils literal notranslate"><span class="pre">dir</span></code> combines the return values from
+<code class="docutils literal notranslate"><span class="pre">get_component_dict()</span></code>, <code class="docutils literal notranslate"><span class="pre">get_command_dict()</span></code> and <code class="docutils literal notranslate"><span class="pre">get_method_list()</span></code>.</p>
+<p>Component has a convenience method, <code class="docutils literal notranslate"><span class="pre">get_component_dict()</span></code> to get child
+components of an instance. This method helps a user to navigate through
+the component tree.</p>
+<p>Component contains Command and its subclasses along with
+IndexCommand and its subclasses as class attributes.
+A convenience method, <code class="docutils literal notranslate"><span class="pre">get_command_dict()</span></code> will show what commands are
+available from the component instance. each command is listed with:
+the name of the Command instance; the raw remote command associated with
+the command; the conversion_dict if it is a DictCommand instance;
+the index_dict for IndexCommand instance, if used.</p>
+<p><code class="docutils literal notranslate"><span class="pre">get_method_list()</span></code> shows methods a component has, including ones
+inherited from the superclasses.</p>
+<p>The information available from the convenience methods are
+available interactively from context-sensitive editors, such as IDLE, Pycharm, VSCode.
+When the information from the editors are not complete, consulting with
+those convenience methods provides complete lists you can use.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.component.Component.DirCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DirCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.component.Component.DirCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.commands.GetCommand" title="srsgui.inst.commands.GetCommand"><code class="xref py py-class docutils literal notranslate"><span class="pre">GetCommand</span></code></a></p>
+<p>Descriptor to run get_lists() with ‘dir’ command</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.inst.component.Component.dir">
+<span class="sig-name descname"><span class="pre">dir</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#srsgui.inst.component.Component.dir" title="Permalink to this definition"></a></dt>
+<dd><p>class instance of DirCommand</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.inst.component.Component.exclude_capture">
+<span class="sig-name descname"><span class="pre">exclude_capture</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#srsgui.inst.component.Component.exclude_capture" title="Permalink to this definition"></a></dt>
+<dd><p>Exclude commands from query in capture_commands</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.inst.component.Component.allow_run_button">
+<span class="sig-name descname"><span class="pre">allow_run_button</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#srsgui.inst.component.Component.allow_run_button" title="Permalink to this definition"></a></dt>
+<dd><p>Allow methods to have run buttons in a control panel</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.component.Component.is_connected">
+<span class="sig-name descname"><span class="pre">is_connected</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.component.Component.is_connected" title="Permalink to this definition"></a></dt>
+<dd><p>check if the current communication interface is open</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.component.Component.parent">
+<span class="sig-name descname"><span class="pre">parent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.component.Component.parent" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.component.Component.set_name">
+<span class="sig-name descname"><span class="pre">set_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.component.Component.set_name" title="Permalink to this definition"></a></dt>
+<dd><p>Set the name of the component</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.component.Component.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.component.Component.get_name" title="Permalink to this definition"></a></dt>
+<dd><p>Get the name of the component</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.component.Component.update_components">
+<span class="sig-name descname"><span class="pre">update_components</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.component.Component.update_components" title="Permalink to this definition"></a></dt>
+<dd><p>Update the communication interface of child components with the parent’s</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.component.Component.get_lists">
+<span class="sig-name descname"><span class="pre">get_lists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">include_superclass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.component.Component.get_lists" title="Permalink to this definition"></a></dt>
+<dd><p>Get the directory containing a list of subcomponents in this component,
+a list of commands available in the component,
+a list of  method available in the component and its superclass</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.component.Component.get_component_dict">
+<span class="sig-name descname"><span class="pre">get_component_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.component.Component.get_component_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Get a dict of the child component of the component</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list contain name of child compoents and its class name</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list(str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.component.Component.get_command_dict">
+<span class="sig-name descname"><span class="pre">get_command_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">include_superclass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.component.Component.get_command_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Get a dict of commands available from the component.</p>
+<p>list contains strings on command name, command type,  remote command it uses</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of commands</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list(str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.component.Component.get_method_list">
+<span class="sig-name descname"><span class="pre">get_method_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">include_superclass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.component.Component.get_method_list" title="Permalink to this definition"></a></dt>
+<dd><p>get a list of names of methods available from the component
+including methods inherited from the superclasses</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of string of method names</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list(str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.component.Component.get_command_info">
+<span class="sig-name descname"><span class="pre">get_command_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.component.Component.get_command_info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.component.Component.assert_command_key">
+<span class="sig-name descname"><span class="pre">assert_command_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.component.Component.assert_command_key" title="Permalink to this definition"></a></dt>
+<dd><p>It asserts if the component has the command as a DictCommand and DictIndexCommand, and
+the command has the key in its set_dict.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.component.Component.capture_commands">
+<span class="sig-name descname"><span class="pre">capture_commands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">include_query_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_set_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_excluded</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_methods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_raw_cmds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.component.Component.capture_commands" title="Permalink to this definition"></a></dt>
+<dd><p>Query all command with both set and get methods in the component
+and its subcomponents</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.inst.commands">
+<span id="srsgui-inst-commands-module"></span><h2>srsgui.inst.commands module<a class="headerlink" href="#module-srsgui.inst.commands" title="Permalink to this heading"></a></h2>
+<p>Module to wrap remote commands used in communication with an instrument
+in <a class="reference external" href="https://docs.python.org/3/howto/descriptor.html">Python descriptors</a>.</p>
+<p>If an instrument has a remote command ‘FREQ’ for  setting and querying a value,
+you will use the command from a terminal,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&gt; FREQ?
+1000.0
+? FREQ 500
+&gt; FREQ?
+500.0
+</pre></div>
+</div>
+<p>The instrument is defined as an instance of an Instrument subclass, fg,
+you can use it from a Python interpreter prompt.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fg</span><span class="o">.</span><span class="n">query_float</span><span class="p">(</span><span class="s1">&#39;FREQ?&#39;</span><span class="p">)</span>
+<span class="go">1000.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fg</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;FREQ 500&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fg</span><span class="o">.</span><span class="n">query_float</span><span class="p">(</span><span class="s1">&#39;FREQ?&#39;</span><span class="p">)</span>
+<span class="go">500.0</span>
+</pre></div>
+</div>
+<p>You can define a FloatCommand for the remote command in an Instrument subclass.</p>
+<blockquote>
+<div><p>frequency = FloatCommand(‘FREQ’)</p>
+</div></blockquote>
+<p>Now, you can use the command like an class attribute as following:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fg</span><span class="o">.</span><span class="n">frequency</span>
+<span class="go">1000.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fg</span><span class="o">.</span><span class="n">frequency</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fg</span><span class="o">.</span><span class="n">frequency</span>
+<span class="go">500.0</span>
+</pre></div>
+</div>
+<p>Using Command class simplifies tedious usage of a many set and query remote commands</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.commands.Command">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.commands.</span></span><span class="sig-name descname"><span class="pre">Command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.commands.Command" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Descriptor for a remote command to
+<strong>set</strong> and <strong>query</strong> a <strong>string</strong> value</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.commands.GetCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.commands.</span></span><span class="sig-name descname"><span class="pre">GetCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.commands.GetCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.commands.Command" title="srsgui.inst.commands.Command"><code class="xref py py-class docutils literal notranslate"><span class="pre">Command</span></code></a></p>
+<p>Descriptor for  a remote command only to <strong>query</strong> a <strong>string</strong> value.
+To <strong>set</strong> a value is not allowed.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.commands.SetCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.commands.</span></span><span class="sig-name descname"><span class="pre">SetCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.commands.SetCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.commands.Command" title="srsgui.inst.commands.Command"><code class="xref py py-class docutils literal notranslate"><span class="pre">Command</span></code></a></p>
+<p>Descriptor for  a remote command only to <strong>set</strong> a <strong>string</strong> value.
+To <strong>query</strong> a value is not allowed.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.commands.BoolCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.commands.</span></span><span class="sig-name descname"><span class="pre">BoolCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.commands.BoolCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.commands.Command" title="srsgui.inst.commands.Command"><code class="xref py py-class docutils literal notranslate"><span class="pre">Command</span></code></a></p>
+<p>Descriptor for a remote command to
+<strong>set</strong> and <strong>query</strong> a <strong>bool</strong> value</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.commands.BoolGetCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.commands.</span></span><span class="sig-name descname"><span class="pre">BoolGetCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.commands.BoolGetCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.commands.BoolCommand" title="srsgui.inst.commands.BoolCommand"><code class="xref py py-class docutils literal notranslate"><span class="pre">BoolCommand</span></code></a></p>
+<p>Descriptor for  a remote command only to <strong>query</strong> a <strong>bool</strong> value.
+To <strong>set</strong> a value is not allowed.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.commands.BoolSetCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.commands.</span></span><span class="sig-name descname"><span class="pre">BoolSetCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.commands.BoolSetCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.commands.BoolCommand" title="srsgui.inst.commands.BoolCommand"><code class="xref py py-class docutils literal notranslate"><span class="pre">BoolCommand</span></code></a></p>
+<p>Descriptor for  a remote command only to <strong>set</strong> a <strong>bool</strong> value.
+To <strong>query</strong> a value is not allowed.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.commands.IntCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.commands.</span></span><span class="sig-name descname"><span class="pre">IntCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">65535</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.commands.IntCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.commands.Command" title="srsgui.inst.commands.Command"><code class="xref py py-class docutils literal notranslate"><span class="pre">Command</span></code></a></p>
+<p>Descriptor for a remote command to
+<strong>set</strong> and <strong>query</strong> an <strong>integer</strong> value</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.commands.IntGetCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.commands.</span></span><span class="sig-name descname"><span class="pre">IntGetCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">65535</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.commands.IntGetCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.commands.IntCommand" title="srsgui.inst.commands.IntCommand"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntCommand</span></code></a></p>
+<p>Descriptor for  a remote command only to <strong>query</strong> an <strong>integer</strong> value.
+To <strong>set</strong> a value is not allowed.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.commands.IntSetCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.commands.</span></span><span class="sig-name descname"><span class="pre">IntSetCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">65535</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.commands.IntSetCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.commands.IntCommand" title="srsgui.inst.commands.IntCommand"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntCommand</span></code></a></p>
+<p>Descriptor for  a remote command only to <strong>set</strong> an <strong>integer</strong> value.
+To <strong>query</strong> a value is not allowed.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.commands.FloatCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.commands.</span></span><span class="sig-name descname"><span class="pre">FloatCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1000000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-09</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">significant_figures</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.commands.FloatCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.commands.Command" title="srsgui.inst.commands.Command"><code class="xref py py-class docutils literal notranslate"><span class="pre">Command</span></code></a></p>
+<p>Descriptor for a remote command to
+<strong>set</strong> and <strong>query</strong> a <strong>float</strong> value</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.commands.FloatGetCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.commands.</span></span><span class="sig-name descname"><span class="pre">FloatGetCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1000000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-09</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">significant_figures</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.commands.FloatGetCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.commands.FloatCommand" title="srsgui.inst.commands.FloatCommand"><code class="xref py py-class docutils literal notranslate"><span class="pre">FloatCommand</span></code></a></p>
+<p>Descriptor for  a remote command only to <strong>query</strong> a <strong>float</strong> value.
+To <strong>set</strong> a value is not allowed.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.commands.FloatSetCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.commands.</span></span><span class="sig-name descname"><span class="pre">FloatSetCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1000000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-09</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">significant_figures</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.commands.FloatSetCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.commands.FloatCommand" title="srsgui.inst.commands.FloatCommand"><code class="xref py py-class docutils literal notranslate"><span class="pre">FloatCommand</span></code></a></p>
+<p>Descriptor for  a remote command only to <strong>set</strong> a <strong>float</strong> value.
+To <strong>query</strong> a value is not allowed.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.commands.DictCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.commands.</span></span><span class="sig-name descname"><span class="pre">DictCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.commands.DictCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.commands.Command" title="srsgui.inst.commands.Command"><code class="xref py py-class docutils literal notranslate"><span class="pre">Command</span></code></a></p>
+<p>Descriptor for a remote command to
+<strong>set</strong> and <strong>query</strong> using a conversion dictionary</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.commands.DictCommand.key_to_value">
+<span class="sig-name descname"><span class="pre">key_to_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.commands.DictCommand.key_to_value" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.commands.DictCommand.value_to_key">
+<span class="sig-name descname"><span class="pre">value_to_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.commands.DictCommand.value_to_key" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.commands.DictGetCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.commands.</span></span><span class="sig-name descname"><span class="pre">DictGetCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.commands.DictGetCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.commands.DictCommand" title="srsgui.inst.commands.DictCommand"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictCommand</span></code></a></p>
+<p>Descriptor for  a remote command only to <strong>query</strong> a <strong>dict</strong> value.
+To <strong>set</strong> a value is not allowed.</p>
+</dd></dl>
+
+</section>
+<section id="module-srsgui.inst.indexcommands">
+<span id="srsgui-inst-indexcommands-module"></span><h2>srsgui.inst.indexcommands module<a class="headerlink" href="#module-srsgui.inst.indexcommands" title="Permalink to this heading"></a></h2>
+<p>Module to wrap remote commands with an index argument in dunder methods, __setitem__ and __get_item__.</p>
+<p>If an instrument has a remote command using an index, ‘PARAM’, for  setting and querying a value,
+you will use the command from a terminal,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&gt; PARAM? 1
+1000.0
+? PARAM 1, 500
+&gt; PARAM? 1
+500.0
+</pre></div>
+</div>
+<p>The instrument is defined as an instance of an Instrument subclass, <code class="docutils literal notranslate"><span class="pre">fg</span></code>,
+you can use it from a Python interpreter prompt.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fg</span><span class="o">.</span><span class="n">query_float</span><span class="p">(</span><span class="s1">&#39;PARAM? 1&#39;</span><span class="p">)</span>
+<span class="go">1000.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fg</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;PARAM 1, 500&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fg</span><span class="o">.</span><span class="n">query_float</span><span class="p">(</span><span class="s1">&#39;PARAM? 1&#39;</span><span class="p">)</span>
+<span class="go">500.0</span>
+</pre></div>
+</div>
+<p>You can define a FloatIndexCommand for the remote command in an Instrument subclass.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fit_parameter</span> <span class="o">=</span> <span class="n">FloatIndexCommand</span><span class="p">(</span><span class="s1">&#39;PARAM&#39;</span><span class="p">,</span> <span class="n">index_max</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now, you can use the command like an class attribute as following:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fg</span><span class="o">.</span><span class="n">fit_parameter</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">1000.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fg</span><span class="o">.</span><span class="n">fit_parameter</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fg</span><span class="o">.</span><span class="n">fit_parameter</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">500.0</span>
+</pre></div>
+</div>
+<p>Sometimes, it is hard to remember whtat a n index means for the command.
+You can assign  an index_dict to use the dictionary keys instead of the numberic index.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">IndexDict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;front&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;back&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">:</span><span class="mi">3</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fit_parameter</span> <span class="o">=</span> <span class="n">FloatIndexCommand</span><span class="p">(</span><span class="s1">&#39;PARAM&#39;</span><span class="p">,</span> <span class="n">index_max</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">index_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">index_dict</span><span class="o">=</span><span class="n">IndexDict</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fg</span><span class="o">.</span><span class="n">fit_parameter</span><span class="p">[</span><span class="s1">&#39;back&#39;</span><span class="p">]</span>
+<span class="go">500.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fg</span><span class="o">.</span><span class="n">fit_parameter</span><span class="p">[</span><span class="s1">&#39;back&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fg</span><span class="o">.</span><span class="n">fit_parameter</span><span class="p">[</span><span class="s1">&#39;back&#39;</span><span class="p">]</span>
+<span class="go">1000.0</span>
+</pre></div>
+</div>
+<p>Using IndexCommand class simplifies tedious usage of a many set and query remote commands
+with an index argument</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.indexcommands.IndexCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.indexcommands.</span></span><span class="sig-name descname"><span class="pre">IndexCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.indexcommands.IndexCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Command class for a remote command with index
+using <strong>set</strong> and <strong>query</strong> returning an <strong>string</strong></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.indexcommands.IndexGetCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.indexcommands.</span></span><span class="sig-name descname"><span class="pre">IndexGetCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.indexcommands.IndexGetCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.indexcommands.IndexCommand" title="srsgui.inst.indexcommands.IndexCommand"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndexCommand</span></code></a></p>
+<p>Command class for a remote command with index
+using only <strong>query</strong> returning an <strong>string</strong>, without <strong>set</strong>.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.indexcommands.BoolIndexCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.indexcommands.</span></span><span class="sig-name descname"><span class="pre">BoolIndexCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.indexcommands.BoolIndexCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.indexcommands.IndexCommand" title="srsgui.inst.indexcommands.IndexCommand"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndexCommand</span></code></a></p>
+<p>Command class for a remote command with index
+using <strong>set</strong> and <strong>query</strong> returning a <strong>bool</strong></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.indexcommands.BoolIndexGetCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.indexcommands.</span></span><span class="sig-name descname"><span class="pre">BoolIndexGetCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.indexcommands.BoolIndexGetCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.indexcommands.BoolIndexCommand" title="srsgui.inst.indexcommands.BoolIndexCommand"><code class="xref py py-class docutils literal notranslate"><span class="pre">BoolIndexCommand</span></code></a></p>
+<p>Command class for a remote command with index
+using only <strong>query</strong> returning a <strong>bool</strong>, without <strong>set</strong>.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.indexcommands.IntIndexCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.indexcommands.</span></span><span class="sig-name descname"><span class="pre">IntIndexCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_nax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">65535</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.indexcommands.IntIndexCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.indexcommands.IndexCommand" title="srsgui.inst.indexcommands.IndexCommand"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndexCommand</span></code></a></p>
+<p>Command class for a remote command with index
+using <strong>set</strong> and <strong>query</strong> returning an <strong>integer</strong></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.indexcommands.IntIndexGetCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.indexcommands.</span></span><span class="sig-name descname"><span class="pre">IntIndexGetCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_nax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">65535</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.indexcommands.IntIndexGetCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.indexcommands.IntIndexCommand" title="srsgui.inst.indexcommands.IntIndexCommand"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntIndexCommand</span></code></a></p>
+<p>Command class for a remote command with index
+using only <strong>query</strong> returning an <strong>integer</strong>, without <strong>set</strong>.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.indexcommands.FloatIndexCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.indexcommands.</span></span><span class="sig-name descname"><span class="pre">FloatIndexCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1000000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-09</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">significant_figures</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_valaue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.indexcommands.FloatIndexCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.indexcommands.IndexCommand" title="srsgui.inst.indexcommands.IndexCommand"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndexCommand</span></code></a></p>
+<p>Command class for a remote command with index
+using <strong>set</strong> and <strong>query</strong> returning an <strong>float</strong></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.indexcommands.FloatIndexGetCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.indexcommands.</span></span><span class="sig-name descname"><span class="pre">FloatIndexGetCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1000000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-09</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">significant_figures</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_valaue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.indexcommands.FloatIndexGetCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.indexcommands.FloatIndexCommand" title="srsgui.inst.indexcommands.FloatIndexCommand"><code class="xref py py-class docutils literal notranslate"><span class="pre">FloatIndexCommand</span></code></a></p>
+<p>Command class for a remote command with index
+using only <strong>query</strong> returning an <strong>float</strong>, without <strong>set</strong>.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.inst.indexcommands.DictIndexCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.indexcommands.</span></span><span class="sig-name descname"><span class="pre">DictIndexCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_command_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.indexcommands.DictIndexCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.indexcommands.IndexCommand" title="srsgui.inst.indexcommands.IndexCommand"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndexCommand</span></code></a></p>
+<p>Descriptor for a remote command to
+<strong>set</strong> and <strong>query</strong> using a conversion dictionary</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.indexcommands.DictIndexCommand.key_to_value">
+<span class="sig-name descname"><span class="pre">key_to_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.indexcommands.DictIndexCommand.key_to_value" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.inst.indexcommands.DictIndexCommand.value_to_key">
+<span class="sig-name descname"><span class="pre">value_to_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.inst.indexcommands.DictIndexCommand.value_to_key" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.inst.exceptions">
+<span id="srsgui-inst-exceptions-module"></span><h2>srsgui.inst.exceptions module<a class="headerlink" href="#module-srsgui.inst.exceptions" title="Permalink to this heading"></a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="srsgui.inst.exceptions.InstException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.exceptions.</span></span><span class="sig-name descname"><span class="pre">InstException</span></span><a class="headerlink" href="#srsgui.inst.exceptions.InstException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Package-wide base exception</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="srsgui.inst.exceptions.InstCommunicationError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.exceptions.</span></span><span class="sig-name descname"><span class="pre">InstCommunicationError</span></span><a class="headerlink" href="#srsgui.inst.exceptions.InstCommunicationError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.exceptions.InstException" title="srsgui.inst.exceptions.InstException"><code class="xref py py-class docutils literal notranslate"><span class="pre">InstException</span></code></a></p>
+<p>communication exception</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="srsgui.inst.exceptions.InstLoginFailureError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.exceptions.</span></span><span class="sig-name descname"><span class="pre">InstLoginFailureError</span></span><a class="headerlink" href="#srsgui.inst.exceptions.InstLoginFailureError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.exceptions.InstException" title="srsgui.inst.exceptions.InstException"><code class="xref py py-class docutils literal notranslate"><span class="pre">InstException</span></code></a></p>
+<p>Exception for TCPIP login error</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="srsgui.inst.exceptions.InstIdError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.exceptions.</span></span><span class="sig-name descname"><span class="pre">InstIdError</span></span><a class="headerlink" href="#srsgui.inst.exceptions.InstIdError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.exceptions.InstException" title="srsgui.inst.exceptions.InstException"><code class="xref py py-class docutils literal notranslate"><span class="pre">InstException</span></code></a></p>
+<p>Exception for invalid instrument ID</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="srsgui.inst.exceptions.InstSetError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.exceptions.</span></span><span class="sig-name descname"><span class="pre">InstSetError</span></span><a class="headerlink" href="#srsgui.inst.exceptions.InstSetError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.exceptions.InstException" title="srsgui.inst.exceptions.InstException"><code class="xref py py-class docutils literal notranslate"><span class="pre">InstException</span></code></a></p>
+<p>Exception for errors during set operation</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="srsgui.inst.exceptions.InstQueryError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.exceptions.</span></span><span class="sig-name descname"><span class="pre">InstQueryError</span></span><a class="headerlink" href="#srsgui.inst.exceptions.InstQueryError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.exceptions.InstException" title="srsgui.inst.exceptions.InstException"><code class="xref py py-class docutils literal notranslate"><span class="pre">InstException</span></code></a></p>
+<p>Exception for errors during query operation</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="srsgui.inst.exceptions.InstIndexError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.inst.exceptions.</span></span><span class="sig-name descname"><span class="pre">InstIndexError</span></span><a class="headerlink" href="#srsgui.inst.exceptions.InstIndexError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#srsgui.inst.exceptions.InstException" title="srsgui.inst.exceptions.InstException"><code class="xref py py-class docutils literal notranslate"><span class="pre">InstException</span></code></a></p>
+<p>Exception for error in index operation</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="srsgui.html" class="btn btn-neutral float-left" title="srsgui APIs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="srsgui.inst.communications.html" class="btn btn-neutral float-right" title="srsgui.inst.communications package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Chulhoon Kim.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

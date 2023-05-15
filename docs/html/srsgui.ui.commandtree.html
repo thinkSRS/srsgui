@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>srsgui.ui.commandtree.commanditem module &mdash; srsgui  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="srsgui.ui.qt.QtCore module" href="srsgui.ui.qt.html" />
+    <link rel="prev" title="srsgui.ui package" href="srsgui.ui.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> srsgui
+          </a>
+              <div class="version">
+                0.2.16
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-project.html">Creating a project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="define-instrument.html">Defining instrument classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-task.html">Writing a task script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Example project</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="srsgui.html">srsgui APIs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="srsgui.inst.html">srsgui.inst package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="srsgui.task.html">srsgui.task package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="srsgui.ui.html">srsgui.ui package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.html#module-srsgui.ui.taskmain">srsgui.ui.taskmain module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.html#module-srsgui.ui.connectdlg">srsgui.ui.connectdlg module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.html#module-srsgui.ui.commandterminal">srsgui.ui.commandterminal module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.html#module-srsgui.ui.deviceinfohandler">srsgui.ui.deviceinfohandler module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.html#module-srsgui.ui.dockhandler">srsgui.ui.dockhandler module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.html#module-srsgui.ui.inputpanel">srsgui.ui.inputpanel module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.html#module-srsgui.ui.qtloghandler">srsgui.ui.qtloghandler module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.html#module-srsgui.ui.signalhandler">srsgui.ui.signalhandler module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.html#module-srsgui.ui.stdout">srsgui.ui.stdout module</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="srsgui.ui.html#srsgui-ui-commandtree-package">srsgui.ui.commandtree package</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">srsgui.ui.commandtree.commanditem module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-srsgui.ui.commandtree.commandmodel">srsgui.ui.commandtree.commandmodel module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-srsgui.ui.commandtree.commandhandler">srsgui.ui.commandtree.commandhandler module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-srsgui.ui.commandtree.commanddelegate">srsgui.ui.commandtree.commanddelegate module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-srsgui.ui.commandtree.commandspinbox">srsgui.ui.commandtree.commandspinbox module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-srsgui.ui.commandtree.commandtreeview">srsgui.ui.commandtree.commandtreeview module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-srsgui.ui.commandtree.commandtreewidget">srsgui.ui.commandtree.commandtreewidget module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="srsgui.ui.html#srsgui-ui-qt-package">srsgui.ui.qt package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">srsgui</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="srsgui.html">srsgui APIs</a> &raquo;</li>
+          <li><a href="srsgui.ui.html">srsgui.ui package</a> &raquo;</li>
+      <li>srsgui.ui.commandtree.commanditem module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/srsgui.ui.commandtree.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <span class="target" id="module-srsgui.ui.commandtree"></span><section id="module-srsgui.ui.commandtree.commanditem">
+<span id="srsgui-ui-commandtree-commanditem-module"></span><h1>srsgui.ui.commandtree.commanditem module<a class="headerlink" href="#module-srsgui.ui.commandtree.commanditem" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commanditem.Index">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.ui.commandtree.commanditem.</span></span><span class="sig-name descname"><span class="pre">Index</span></span><a class="headerlink" href="#srsgui.ui.commandtree.commanditem.Index" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commanditem.CommandItem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.ui.commandtree.commanditem.</span></span><span class="sig-name descname"><span class="pre">CommandItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#srsgui.ui.commandtree.commanditem.CommandItem" title="srsgui.ui.commandtree.commanditem.CommandItem"><span class="pre">CommandItem</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commanditem.CommandItem" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Command item corresponding to a line in QTreeView. It encapsulates
+Component, Command, and Index class used in srsgui.Instrument class.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commanditem.CommandItem.appendChild">
+<span class="sig-name descname"><span class="pre">appendChild</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#srsgui.ui.commandtree.commanditem.CommandItem" title="srsgui.ui.commandtree.commanditem.CommandItem"><span class="pre">CommandItem</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commanditem.CommandItem.appendChild" title="Permalink to this definition"></a></dt>
+<dd><p>Add item as a child</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commanditem.CommandItem.child">
+<span class="sig-name descname"><span class="pre">child</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#srsgui.ui.commandtree.commanditem.CommandItem" title="srsgui.ui.commandtree.commanditem.CommandItem"><span class="pre">CommandItem</span></a></span></span><a class="headerlink" href="#srsgui.ui.commandtree.commanditem.CommandItem.child" title="Permalink to this definition"></a></dt>
+<dd><p>Return the child of the current item from the given row</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commanditem.CommandItem.parent">
+<span class="sig-name descname"><span class="pre">parent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#srsgui.ui.commandtree.commanditem.CommandItem" title="srsgui.ui.commandtree.commanditem.CommandItem"><span class="pre">CommandItem</span></a></span></span><a class="headerlink" href="#srsgui.ui.commandtree.commanditem.CommandItem.parent" title="Permalink to this definition"></a></dt>
+<dd><p>Return the parent of the current item</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commanditem.CommandItem.childCount">
+<span class="sig-name descname"><span class="pre">childCount</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#srsgui.ui.commandtree.commanditem.CommandItem.childCount" title="Permalink to this definition"></a></dt>
+<dd><p>Return the number of children of the current item</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commanditem.CommandItem.row">
+<span class="sig-name descname"><span class="pre">row</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#srsgui.ui.commandtree.commanditem.CommandItem.row" title="Permalink to this definition"></a></dt>
+<dd><p>Return the row where the current item occupies in the parent</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commanditem.CommandItem.value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#srsgui.ui.commandtree.commanditem.CommandItem.value" title="Permalink to this definition"></a></dt>
+<dd><p>Return the value of the current item</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commanditem.CommandItem.query_value">
+<span class="sig-name descname"><span class="pre">query_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commanditem.CommandItem.query_value" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commanditem.CommandItem.set_value">
+<span class="sig-name descname"><span class="pre">set_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commanditem.CommandItem.set_value" title="Permalink to this definition"></a></dt>
+<dd><p>Set value to the instrument and update the value of the item</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commanditem.CommandItem.is_editable">
+<span class="sig-name descname"><span class="pre">is_editable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commanditem.CommandItem.is_editable" title="Permalink to this definition"></a></dt>
+<dd><p>Return True if the item is editable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commanditem.CommandItem.get_formatted_value">
+<span class="sig-name descname"><span class="pre">get_formatted_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commanditem.CommandItem.get_formatted_value" title="Permalink to this definition"></a></dt>
+<dd><p>Return formatted value of a float</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commanditem.CommandItem.construct_set_command_string">
+<span class="sig-name descname"><span class="pre">construct_set_command_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commanditem.CommandItem.construct_set_command_string" title="Permalink to this definition"></a></dt>
+<dd><p>Construct python command string corresponding to the item</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commanditem.CommandItem.get_name_string">
+<span class="sig-name descname"><span class="pre">get_name_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commanditem.CommandItem.get_name_string" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commanditem.CommandItem.load">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#srsgui.ui.commandtree.commanditem.CommandItem" title="srsgui.ui.commandtree.commanditem.CommandItem"><span class="pre">CommandItem</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#srsgui.ui.commandtree.commanditem.CommandItem" title="srsgui.ui.commandtree.commanditem.CommandItem"><span class="pre">CommandItem</span></a></span></span><a class="headerlink" href="#srsgui.ui.commandtree.commanditem.CommandItem.load" title="Permalink to this definition"></a></dt>
+<dd><p>Create a ‘root’ CommandItem from a Component and
+populate its subcomponent and commands recursively.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>CommandItem</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#srsgui.ui.commandtree.commanditem.CommandItem" title="srsgui.ui.commandtree.commanditem.CommandItem">CommandItem</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.ui.commandtree.commandmodel">
+<span id="srsgui-ui-commandtree-commandmodel-module"></span><h1>srsgui.ui.commandtree.commandmodel module<a class="headerlink" href="#module-srsgui.ui.commandtree.commandmodel" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandmodel.CommandModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.ui.commandtree.commandmodel.</span></span><span class="sig-name descname"><span class="pre">CommandModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">QObject</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandmodel.CommandModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QAbstractItemModel</span></code></p>
+<p>An editable model of Command and Component</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandmodel.CommandModel.query_requested">
+<span class="sig-name descname"><span class="pre">query_requested</span></span><a class="headerlink" href="#srsgui.ui.commandtree.commandmodel.CommandModel.query_requested" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandmodel.CommandModel.set_requested">
+<span class="sig-name descname"><span class="pre">set_requested</span></span><a class="headerlink" href="#srsgui.ui.commandtree.commandmodel.CommandModel.set_requested" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandmodel.CommandModel.set_command_sent">
+<span class="sig-name descname"><span class="pre">set_command_sent</span></span><a class="headerlink" href="#srsgui.ui.commandtree.commandmodel.CommandModel.set_command_sent" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandmodel.CommandModel.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandmodel.CommandModel.clear" title="Permalink to this definition"></a></dt>
+<dd><p>Clear data from the model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandmodel.CommandModel.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="srsgui.inst.html#srsgui.inst.component.Component" title="srsgui.inst.component.Component"><span class="pre">Component</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandmodel.CommandModel.load" title="Permalink to this definition"></a></dt>
+<dd><p>Load model from a nested dictionary returned by json.loads()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>document</strong> (<em>dict</em>) – JSON-compatible dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandmodel.CommandModel.data">
+<span class="sig-name descname"><span class="pre">data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index:</span> <span class="pre">~PySide2.QtCore.QModelIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role:</span> <span class="pre">&lt;class</span> <span class="pre">'PySide2.QtCore.Qt.ItemDataRole'&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#srsgui.ui.commandtree.commandmodel.CommandModel.data" title="Permalink to this definition"></a></dt>
+<dd><p>Override from QAbstractItemModel</p>
+<p>Return data from an item according index and role</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandmodel.CommandModel.setData">
+<span class="sig-name descname"><span class="pre">setData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index:</span> <span class="pre">~PySide2.QtCore.QModelIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value:</span> <span class="pre">~typing.Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role:</span> <span class="pre">&lt;class</span> <span class="pre">'PySide2.QtCore.Qt.ItemDataRole'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandmodel.CommandModel.setData" title="Permalink to this definition"></a></dt>
+<dd><p>Override from QAbstractItemModel</p>
+<p>Set CommandItem according to index and role</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> (<em>QModelIndex</em>) – </p></li>
+<li><p><strong>value</strong> (<em>Any</em>) – </p></li>
+<li><p><strong>role</strong> (<em>Qt.ItemDataRole</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandmodel.CommandModel.headerData">
+<span class="sig-name descname"><span class="pre">headerData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orientation:</span> <span class="pre">&lt;class</span> <span class="pre">'PySide2.QtCore.Qt.Orientation'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role:</span> <span class="pre">&lt;class</span> <span class="pre">'PySide2.QtCore.Qt.ItemDataRole'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandmodel.CommandModel.headerData" title="Permalink to this definition"></a></dt>
+<dd><p>Override from QAbstractItemModel</p>
+<p>it returns only data for columns (orientation = Horizontal)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandmodel.CommandModel.index">
+<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent=&lt;PySide2.QtCore.QModelIndex(-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">0x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QObject(0x0))&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QModelIndex</span></span></span><a class="headerlink" href="#srsgui.ui.commandtree.commandmodel.CommandModel.index" title="Permalink to this definition"></a></dt>
+<dd><p>Override from QAbstractItemModel</p>
+<p>Return index according row, column and parent</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandmodel.CommandModel.parent">
+<span class="sig-name descname"><span class="pre">parent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QModelIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QModelIndex</span></span></span><a class="headerlink" href="#srsgui.ui.commandtree.commandmodel.CommandModel.parent" title="Permalink to this definition"></a></dt>
+<dd><p>Override from QAbstractItemModel</p>
+<p>Return parent index of index</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandmodel.CommandModel.rowCount">
+<span class="sig-name descname"><span class="pre">rowCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent=&lt;PySide2.QtCore.QModelIndex(-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">0x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QObject(0x0))&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandmodel.CommandModel.rowCount" title="Permalink to this definition"></a></dt>
+<dd><p>Override from QAbstractItemModel</p>
+<p>Return row count from parent index</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandmodel.CommandModel.columnCount">
+<span class="sig-name descname"><span class="pre">columnCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent=&lt;PySide2.QtCore.QModelIndex(-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">0x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QObject(0x0))&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandmodel.CommandModel.columnCount" title="Permalink to this definition"></a></dt>
+<dd><p>Override from QAbstractItemModel</p>
+<p>Return column number. For the model, it always return 2 columns</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandmodel.CommandModel.flags">
+<span class="sig-name descname"><span class="pre">flags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QModelIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ItemFlags</span></span></span><a class="headerlink" href="#srsgui.ui.commandtree.commandmodel.CommandModel.flags" title="Permalink to this definition"></a></dt>
+<dd><p>Override from QAbstractItemModel</p>
+<p>Return flags of index</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandmodel.CommandModel.is_item_editable">
+<span class="sig-name descname"><span class="pre">is_item_editable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QModelIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#srsgui.ui.commandtree.commandmodel.CommandModel.is_item_editable" title="Permalink to this definition"></a></dt>
+<dd><p>Return True if item is editable, False otherwise</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandmodel.CommandModel.handle_command">
+<span class="sig-name descname"><span class="pre">handle_command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd_tuple</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandmodel.CommandModel.handle_command" title="Permalink to this definition"></a></dt>
+<dd><p>External command processor calls this slot once a command is processed</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandmodel.CommandModel.staticMetaObject">
+<span class="sig-name descname"><span class="pre">staticMetaObject</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide2.QtCore.QMetaObject</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#srsgui.ui.commandtree.commandmodel.CommandModel.staticMetaObject" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.ui.commandtree.commandhandler">
+<span id="srsgui-ui-commandtree-commandhandler-module"></span><h1>srsgui.ui.commandtree.commandhandler module<a class="headerlink" href="#module-srsgui.ui.commandtree.commandhandler" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandhandler.CommandWorker">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.ui.commandtree.commandhandler.</span></span><span class="sig-name descname"><span class="pre">CommandWorker</span></span><a class="headerlink" href="#srsgui.ui.commandtree.commandhandler.CommandWorker" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QObject</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandhandler.CommandWorker.query_processed">
+<span class="sig-name descname"><span class="pre">query_processed</span></span><a class="headerlink" href="#srsgui.ui.commandtree.commandhandler.CommandWorker.query_processed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandhandler.CommandWorker.set_processed">
+<span class="sig-name descname"><span class="pre">set_processed</span></span><a class="headerlink" href="#srsgui.ui.commandtree.commandhandler.CommandWorker.set_processed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandhandler.CommandWorker.handle_query">
+<span class="sig-name descname"><span class="pre">handle_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QModelIndex</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandhandler.CommandWorker.handle_query" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandhandler.CommandWorker.handle_set">
+<span class="sig-name descname"><span class="pre">handle_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd_tuple</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandhandler.CommandWorker.handle_set" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandhandler.CommandWorker.staticMetaObject">
+<span class="sig-name descname"><span class="pre">staticMetaObject</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide2.QtCore.QMetaObject</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#srsgui.ui.commandtree.commandhandler.CommandWorker.staticMetaObject" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandhandler.CommandHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.ui.commandtree.commandhandler.</span></span><span class="sig-name descname"><span class="pre">CommandHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandhandler.CommandHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QObject</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandhandler.CommandHandler.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandhandler.CommandHandler.stop" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandhandler.CommandHandler.staticMetaObject">
+<span class="sig-name descname"><span class="pre">staticMetaObject</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide2.QtCore.QMetaObject</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#srsgui.ui.commandtree.commandhandler.CommandHandler.staticMetaObject" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.ui.commandtree.commanddelegate">
+<span id="srsgui-ui-commandtree-commanddelegate-module"></span><h1>srsgui.ui.commandtree.commanddelegate module<a class="headerlink" href="#module-srsgui.ui.commandtree.commanddelegate" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commanddelegate.CommandDelegate">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.ui.commandtree.commanddelegate.</span></span><span class="sig-name descname"><span class="pre">CommandDelegate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commanddelegate.CommandDelegate" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QStyledItemDelegate</span></code></p>
+<p>A custom delegate for editing CommandItem</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commanddelegate.CommandDelegate.createEditor">
+<span class="sig-name descname"><span class="pre">createEditor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PySide2.QtWidgets.QWidget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PySide2.QtWidgets.QStyleOptionViewItem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PySide2.QtCore.QModelIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">PySide2.QtWidgets.QWidget</span></span></span><a class="headerlink" href="#srsgui.ui.commandtree.commanddelegate.CommandDelegate.createEditor" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commanddelegate.CommandDelegate.setEditorData">
+<span class="sig-name descname"><span class="pre">setEditorData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">editor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PySide2.QtWidgets.QWidget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PySide2.QtCore.QModelIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#srsgui.ui.commandtree.commanddelegate.CommandDelegate.setEditorData" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commanddelegate.CommandDelegate.setModelData">
+<span class="sig-name descname"><span class="pre">setModelData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">editor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PySide2.QtWidgets.QWidget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PySide2.QtCore.QAbstractItemModel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PySide2.QtCore.QModelIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#srsgui.ui.commandtree.commanddelegate.CommandDelegate.setModelData" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commanddelegate.CommandDelegate.updateEditorGeometry">
+<span class="sig-name descname"><span class="pre">updateEditorGeometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">editor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PySide2.QtWidgets.QWidget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PySide2.QtWidgets.QStyleOptionViewItem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PySide2.QtCore.QModelIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#srsgui.ui.commandtree.commanddelegate.CommandDelegate.updateEditorGeometry" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commanddelegate.CommandDelegate.staticMetaObject">
+<span class="sig-name descname"><span class="pre">staticMetaObject</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide2.QtCore.QMetaObject</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#srsgui.ui.commandtree.commanddelegate.CommandDelegate.staticMetaObject" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.ui.commandtree.commandspinbox">
+<span id="srsgui-ui-commandtree-commandspinbox-module"></span><h1>srsgui.ui.commandtree.commandspinbox module<a class="headerlink" href="#module-srsgui.ui.commandtree.commandspinbox" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandspinbox.IntegerSpinBox">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.ui.commandtree.commandspinbox.</span></span><span class="sig-name descname"><span class="pre">IntegerSpinBox</span></span><a class="headerlink" href="#srsgui.ui.commandtree.commandspinbox.IntegerSpinBox" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QSpinBox</span></code></p>
+<p>Adjust step size depending on the cursor position</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandspinbox.IntegerSpinBox.stepBy">
+<span class="sig-name descname"><span class="pre">stepBy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#srsgui.ui.commandtree.commandspinbox.IntegerSpinBox.stepBy" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandspinbox.IntegerSpinBox.staticMetaObject">
+<span class="sig-name descname"><span class="pre">staticMetaObject</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide2.QtCore.QMetaObject</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#srsgui.ui.commandtree.commandspinbox.IntegerSpinBox.staticMetaObject" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandspinbox.FloatSpinBox">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.ui.commandtree.commandspinbox.</span></span><span class="sig-name descname"><span class="pre">FloatSpinBox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandspinbox.FloatSpinBox" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QDoubleSpinBox</span></code></p>
+<p>Adjust step size depending on the cursor position</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandspinbox.FloatSpinBox.set_minimum_step">
+<span class="sig-name descname"><span class="pre">set_minimum_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandspinbox.FloatSpinBox.set_minimum_step" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandspinbox.FloatSpinBox.set_significant_figures">
+<span class="sig-name descname"><span class="pre">set_significant_figures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandspinbox.FloatSpinBox.set_significant_figures" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandspinbox.FloatSpinBox.valueFromText">
+<span class="sig-name descname"><span class="pre">valueFromText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#srsgui.ui.commandtree.commandspinbox.FloatSpinBox.valueFromText" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandspinbox.FloatSpinBox.textFromValue">
+<span class="sig-name descname"><span class="pre">textFromValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#srsgui.ui.commandtree.commandspinbox.FloatSpinBox.textFromValue" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandspinbox.FloatSpinBox.stepBy">
+<span class="sig-name descname"><span class="pre">stepBy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#srsgui.ui.commandtree.commandspinbox.FloatSpinBox.stepBy" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandspinbox.FloatSpinBox.staticMetaObject">
+<span class="sig-name descname"><span class="pre">staticMetaObject</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide2.QtCore.QMetaObject</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#srsgui.ui.commandtree.commandspinbox.FloatSpinBox.staticMetaObject" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandspinbox.RunButton">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.ui.commandtree.commandspinbox.</span></span><span class="sig-name descname"><span class="pre">RunButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandspinbox.RunButton" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QWidget</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandspinbox.RunButton.pressed">
+<span class="sig-name descname"><span class="pre">pressed</span></span><a class="headerlink" href="#srsgui.ui.commandtree.commandspinbox.RunButton.pressed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandspinbox.RunButton.staticMetaObject">
+<span class="sig-name descname"><span class="pre">staticMetaObject</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide2.QtCore.QMetaObject</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#srsgui.ui.commandtree.commandspinbox.RunButton.staticMetaObject" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.ui.commandtree.commandtreeview">
+<span id="srsgui-ui-commandtree-commandtreeview-module"></span><h1>srsgui.ui.commandtree.commandtreeview module<a class="headerlink" href="#module-srsgui.ui.commandtree.commandtreeview" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandtreeview.CommandTreeView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.ui.commandtree.commandtreeview.</span></span><span class="sig-name descname"><span class="pre">CommandTreeView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandtreeview.CommandTreeView" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QTreeView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandtreeview.CommandTreeView.update_item_display">
+<span class="sig-name descname"><span class="pre">update_item_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent=&lt;PySide2.QtCore.QModelIndex(-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">0x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QObject(0x0))&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandtreeview.CommandTreeView.update_item_display" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandtreeview.CommandTreeView.connect_methods_to_buttons">
+<span class="sig-name descname"><span class="pre">connect_methods_to_buttons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent=&lt;PySide2.QtCore.QModelIndex(-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">0x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QObject(0x0))&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandtreeview.CommandTreeView.connect_methods_to_buttons" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandtreeview.CommandTreeView.staticMetaObject">
+<span class="sig-name descname"><span class="pre">staticMetaObject</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide2.QtCore.QMetaObject</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#srsgui.ui.commandtree.commandtreeview.CommandTreeView.staticMetaObject" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-srsgui.ui.commandtree.commandtreewidget">
+<span id="srsgui-ui-commandtree-commandtreewidget-module"></span><h1>srsgui.ui.commandtree.commandtreewidget module<a class="headerlink" href="#module-srsgui.ui.commandtree.commandtreewidget" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">srsgui.ui.commandtree.commandtreewidget.</span></span><span class="sig-name descname"><span class="pre">CommandTreeWidget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QWidget</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Ui_CommandTreeWidget</span></code></p>
+<p>CommandTreeWidget is used to display an Instrument class in a tree view
+based on Qt Model/View architecture.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.set_inst">
+<span class="sig-name descname"><span class="pre">set_inst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inst</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.set_inst" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_query_only_changed">
+<span class="sig-name descname"><span class="pre">on_query_only_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_query_only_changed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_set_only_changed">
+<span class="sig-name descname"><span class="pre">on_set_only_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_set_only_changed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_excluded_changed">
+<span class="sig-name descname"><span class="pre">on_excluded_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_excluded_changed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_method_changed">
+<span class="sig-name descname"><span class="pre">on_method_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_method_changed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_raw_command_changed">
+<span class="sig-name descname"><span class="pre">on_raw_command_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_raw_command_changed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_capture_clicked">
+<span class="sig-name descname"><span class="pre">on_capture_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_capture_clicked" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_expand_clicked">
+<span class="sig-name descname"><span class="pre">on_expand_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_expand_clicked" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_collapse_clicked">
+<span class="sig-name descname"><span class="pre">on_collapse_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.on_collapse_clicked" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.closeEvent">
+<span class="sig-name descname"><span class="pre">closeEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PySide2.QtGui.QCloseEvent</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.closeEvent" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.staticMetaObject">
+<span class="sig-name descname"><span class="pre">staticMetaObject</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide2.QtCore.QMetaObject</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#srsgui.ui.commandtree.commandtreewidget.CommandTreeWidget.staticMetaObject" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="srsgui.ui.html" class="btn btn-neutral float-left" title="srsgui.ui package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="srsgui.ui.qt.html" class="btn btn-neutral float-right" title="srsgui.ui.qt.QtCore module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Chulhoon Kim.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
