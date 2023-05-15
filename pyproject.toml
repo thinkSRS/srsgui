@@ -33,6 +33,11 @@ version = {attr = "srsgui.__version__"}
 [project.optional-dependencies]
 full = ['matplotlib >= 3.6.2', 'pyside6 != 6.5.0']
 
+[project.urls]
+homepage = "https://github.com/thinkSRS/srsgui"
+repository = "https://github.com/thinkSRS/srsgui.git"
+documentation = "https://thinksrs.github.io/srsgui"
+
 [project.scripts]
 srsgui = "srsgui.__main__:main"
 
