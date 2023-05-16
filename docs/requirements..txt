@@ -1,2 +1,6 @@
 sphinx>=5
 sphinx-rtd-theme>=1
+pyserial
+matplotlib
+pyside2
+
