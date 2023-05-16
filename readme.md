@@ -12,7 +12,7 @@
    - To organize instrument classes and task scripts presented in a GUI application
      using a configuration (.taskconfig) file for a project
 
-![screenshot](https://thinksrs.github.io/srsgui/html/_images/example-screen-capture-2.png " ")
+![screenshot](https://thinksrs.github.io/srsgui/_images/example-screen-capture-2.png " ")
 
 ## Installation
 
@@ -71,4 +71,4 @@ even without any instruments connected.
 Python scripts running as a GUI application. Using its APIs, you can write 
 scripts running in GUI with the same amount of code with writing console-based 
 scripts. For programming API, refer to
-[`srsgui` documentation](https://thinksrs.github.io/srsgui/html/index.html).
+[`srsgui` documentation](https://thinksrs.github.io/srsgui).
