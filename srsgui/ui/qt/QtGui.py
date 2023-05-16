@@ -1,3 +1,8 @@
+##! 
+##! Coptright(c) 2022, 2023 Stanford Research Systems, All right reserved
+##! Subject to the MIT License
+##! 
+
 """
 Adapter module for QtGui package for  PySide6, PySide2 and PyQt5
 """

@@ -1,3 +1,8 @@
+##! 
+##! Coptright(c) 2022, 2023 Stanford Research Systems, All right reserved
+##! Subject to the MIT License
+##! 
+
 import re
 import time
 from .communications import Interface, SerialInterface, TcpipInterface

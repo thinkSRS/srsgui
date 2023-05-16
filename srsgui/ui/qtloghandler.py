@@ -1,3 +1,8 @@
+##! 
+##! Coptright(c) 2022, 2023 Stanford Research Systems, All right reserved
+##! Subject to the MIT License
+##! 
+
 from logging import getLogger, Handler
 
 from .qt.QtCore import QObject

@@ -1,3 +1,8 @@
+##! 
+##! Coptright(c) 2022, 2023 Stanford Research Systems, All right reserved
+##! Subject to the MIT License
+##! 
+
 """
 Module to wrap remote commands with an index argument in dunder methods, __setitem__ and __get_item__.
 
