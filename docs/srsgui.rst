@@ -1,4 +1,4 @@
-srsgui APIs
+Srsgui APIs
 =====================
 
 .. toctree::

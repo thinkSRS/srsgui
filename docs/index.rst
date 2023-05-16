@@ -75,6 +75,8 @@ Here are more information on how to use ``srsgui``.
    create-task.rst
    example.rst
    srsgui.rst
+   troubleshooting.rst
+   changelog.rst
 
 Indices and tables
 ==================
