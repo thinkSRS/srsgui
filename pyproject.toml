@@ -32,6 +32,7 @@ version = {attr = "srsgui.__version__"}
 
 [project.optional-dependencies]
 full = ['matplotlib >= 3.6.2', 'pyside6 <= 6.4.3']
+docs = ['matplotlib', 'pyside2']
 
 [project.urls]
 homepage = "https://github.com/thinkSRS/srsgui"
