@@ -1,3 +1,5 @@
+srsgui.ui.qt package
+======================
 
 .. automodule:: srsgui.ui.qt
    :members:

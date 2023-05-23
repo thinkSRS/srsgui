@@ -20,7 +20,7 @@ you can check your Python version by running from the command line:
 If you have a Python older than the required version,
 `install a newer Python. <install-python_>`_
 
-Using `virtual environment <virtual-environment_>`_ avoids possible dependency
+Using `virtual environment <virtual-environment_>`_ helps to avoid possible dependency
 conflict among Python packages. If you want to use a virtual environment, create one with
 your favorite virtual environment package. If you do not have a preference,
 use Python default ``venv``.

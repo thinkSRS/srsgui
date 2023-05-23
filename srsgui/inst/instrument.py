@@ -295,3 +295,4 @@ class Instrument(Component):
                            .format(interface_type, self.get_name()))
         return True
 
+    exclude_capture = [connect_with_parameter_string]

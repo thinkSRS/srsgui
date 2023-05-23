@@ -15,6 +15,8 @@ logger = logging.getLogger(__name__)
 
 
 class SessionHandler(object):
+    FileExtension = 'sgdata'  # srsgui data
+
     def __init__(self, use_file=False, use_db=False, use_api=False):
         self.use_file = False
         self.use_db = False
@@ -87,8 +89,9 @@ class SessionHandler(object):
         self.path = Path(self.data_dir)
         if not self.path.exists():
             self.path.mkdir(parents=True)
-        # file_name = task_name + '-' + datetime.now().strftime('%Y%m%d-%H%M%S') + '.txt'
-        file_name = '{}-{}.txt'.format(task_name, datetime.now().strftime('%Y%m%d-%H%M%S'))
+        # file_name = task_name + '-' + datetime.now().strftime('%Y%m%d-%H%M%S') + '.sgdata'
+        file_name = '{}-{}.{}'.format(task_name, datetime.now().strftime('%Y%m%d-%H%M%S'),
+                                      self.FileExtension)
         logger.debug('Output file opened as {}\\{}'.format(self.path, file_name))
         self.output_file = open(self.path / file_name, 'w', 1)
         self.is_file_open = True

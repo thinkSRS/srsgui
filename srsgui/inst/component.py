@@ -12,7 +12,8 @@ from .indexcommands import IndexCommand, BoolIndexCommand, IntIndexCommand, \
 
 class Component(object):
     """
-    Class is used to build hierarchical structure in an instrument.
+    Class used to build hierarchical structure in an instrument.
+
     An instrument can have multiple components and each component
     can also have multiple subcomponents. All the components
     inside an instrument shares the communication interface
@@ -305,13 +306,16 @@ class Component(object):
                 if callable(cmd_instance):
                     if issubclass(cmd_instance.__class__, type):
                         continue
+                    if cmd_instance in self.exclude_capture:
+                        if include_excluded:
+                            commands[k + '() [M][EX]'] = ''
                     if include_methods and not k.startswith('_'):
                         commands[k + '() [M]'] = ''
                     continue
 
                 if cmd_instance in self.exclude_capture:
                     if include_excluded:
-                        commands[k + ' [X]'] = ''
+                        commands[k + ' [EX]'] = ''
                     continue
 
                 if issubclass(cmd_instance.__class__, Command):

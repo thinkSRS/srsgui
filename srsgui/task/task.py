@@ -51,21 +51,17 @@ class Task(thread_class):
     the base class.
     """
 
+    # Exceptions for Task
     class TaskException(Exception): pass
     class TaskSetupFailed(TaskException): pass
     class TaskRunFailed(TaskException): pass
-    """
-    Exceptions for Task
-    """
 
+    # Escape strings used in stdout redirection to GUI
     EscapeForResult = '@RESULT@'
     EscapeForDevice = '@DEVICE@'
     EscapeForStatus = '@STATUS@'
     EscapeForStart = '@START@'
     EscapeForStop = '@STOP@'
-    """
-    Escape strings used in stdout redirection to GUI
-    """
 
     input_parameters = {
         # Example float parameter
@@ -74,7 +70,7 @@ class Task(thread_class):
     }
     """
     Class variable to define parameters used in the task.
-    values in input_parameters can be changed interactively from GUI before the task runs    
+    Values in input_parameters can be changed interactively from GUI before the task runs    
     IntegerInput, FloatInput, StringInput, ListInput and InstrumentInput can be used 
     as dictionary values.     
     """
@@ -123,25 +119,27 @@ class Task(thread_class):
 
     def setup(self):
         """
-        Subclass needs  to override this method.
-        Put all preparation for a task in the overridden method.
+        The task-specific preparation before running test() comes in here.
+        When a task starts, it runs setup() first. If setup() finished without error,
+        it runs test(), the main routine of the task.
+        If setup() finished with an error, test() will not even start.
         """
-        self.logger.info("Task.setup() is not overridden.")
+        self.logger.warning("Task.setup() is not overridden.")
 
     def test(self):
         """
-        Subclass must override this method.
-        Check if is_running() is true to continue.
-        Add data using in add_details, create_table, and add_data_to_table.
+        Test() is the main part of a Task. And a lot of times, test() takes long time to finish.
+        Check frequently if is_running() is true. If not, test() should finish voluntarily
+        as soon as possible.
         """
-        raise NotImplementedError("We need a real test() implemented!")
+        raise NotImplementedError("A test() should be implemented!")
 
     def cleanup(self):
         """
-        Subclass need to override this method
-        Put any cleanup after task in the overridden method
+        When test() is finished, cleanup() will run subsequently.
+        Any cleanup and closing routine can be added here.
         """
-        self.logger.info('Task.cleanup() is not overridden.')
+        self.logger.warning('Task.cleanup() is not overridden.')
 
     def get_logger(self, name):
         """
@@ -235,7 +233,7 @@ class Task(thread_class):
 
     def run(self):
         """
-        Overrides Thread run() method. task-speciic test() runs inside this method.
+        Overrides Thread run() method. task-specific test() runs inside this method.
         """
         try:
             self.basic_setup()
@@ -272,7 +270,7 @@ class Task(thread_class):
     def stop(self):
         """
         Make is_running() returns False. A task should check is_running()
-        frequently. Stop if it returns False.
+        frequently. Stop() if is_running() returns False.
         """
 
         if self._keep_running:
@@ -479,6 +477,18 @@ class Task(thread_class):
         self.callbacks.text_available(str(text))
 
     def get_input_parameter(self, name):
+        """
+        Get the parameter value in input_parameters
+
+        Parameters
+        -----------
+            name: str
+                the key to retrieve a value from input_parameter dictionary
+        Returns
+        -------
+            The value from the dictionary
+
+        """
         if name in self.__class__.input_parameters:
             param = self.__class__.input_parameters[name]
             value = param.get_value()
@@ -489,6 +499,16 @@ class Task(thread_class):
             raise KeyError('{} not in input_parameters'.format(name))
 
     def get_all_input_parameters(self):
+        """
+        Get all the parameter values in input_parameters
+
+        Returns
+        -------
+            dict
+                All the value with key in the dictionary format
+
+        """
+
         d = {}
         for name in self.__class__.input_parameters:
             value = self.get_input_parameter(name)
@@ -497,13 +517,27 @@ class Task(thread_class):
 
     @classmethod
     def set_input_parameter(cls, name, value):
+        """
+        Set manually a value in input_parameters
+
+        Parameters
+        -----------
+            name: str
+                name of the key in the dictionary, input_parameters
+
+            value
+                value associated with *name* in the dictionary
+
+        """
         if name in cls.input_parameters:
             cls.input_parameters[name].set_value(value)
         else:
             raise KeyError('{} not in input_parameters'.format(name))
 
-    # Notify UI to input_parameters for display update
     def notify_parameter_changed(self):
+        """
+        Notify UI that there are changes in input_parameters for display update
+        """
         self.callbacks.parameter_changed()
 
     def request_figure_update(self, figure=None):
@@ -530,7 +564,18 @@ class Task(thread_class):
         self.request_figure_update()
 
     def get_instrument(self, name):
-        """Get an instrument from parent's inst_dict and check its validity"""
+        """
+        Get an instrument from parent's inst_dict and check its validity
+
+        Parameters
+        ----------
+            name: str
+                name of an instrument in inst_dict
+        Returns
+        --------
+            Instrument
+                an instance of Instrument in Inst_dict
+        """
 
         if name not in self.inst_dict:
             self.logger.error("{} is not in Instrument dict.".format(name))

@@ -16,9 +16,9 @@ class CommandTerminal(QFrame):
     """
     Terminal to control instruments defined in the .taskconfig file
 
-    Type a command in one of the following ways.
+    Type a command in one of the following ways:
 
-    inst_name:remote_command
+    - inst_name:remote_command
 
         'inst_name' is the first item after the prefix  "inst:" in a line in
         the .taskconfig file. 'Remote_command' after the colon is a raw remote
@@ -26,10 +26,11 @@ class CommandTerminal(QFrame):
         to the instrument 'inst_name', and display a reply if the instrument
         sends one back.
 
-        dut:*idn?
-        dut:mi10  - This is a RGA100 command to set scan intial mass to 10
+        dut:\*idn?
 
-    inst_name.instrument_command
+        dut:mi10  - This is a RGA100 command to set scan initial mass to 10
+
+    - inst_name.instrument_command
 
         When you use .before a command, the command is interpreted as a Python
         instrument command or a method defined in the Instrument subclass,
@@ -40,6 +41,7 @@ class CommandTerminal(QFrame):
         and methods in the instrument or its component as a Python dictionary.
 
                 rga.dir
+
                 rga.status.dir
 
         rga.status.id_string - this returns the id string. It is a Python instrument
@@ -51,15 +53,15 @@ class CommandTerminal(QFrame):
         instrument receive the following command, as either a raw remote command or
         a instrument command defined in a Instrument subclass.
 
-    command
+    - command
 
         if you type a command without 'inst_name.' or 'inst_name:', the command goes
         to the first instrument in the .taskconfig file. A command with dot(s) is
         interpreted as a Python instrument command or a method. A command without
         any dot will be sent directly to the first instrument in the .taskconfig file
         as a raw remote command.
-
     """
+
     command_requested = Signal(str, str)
 
     def __init__(self, parent):
@@ -74,6 +76,9 @@ class CommandTerminal(QFrame):
         self.buffer_size = 40
 
     def setup_widget(self):
+        """
+        Set up the terminal widget
+        """
         self.tbCommand = QTextBrowser(self)
         self.pbClear = QPushButton(self)
         self.pbClear.setText('Clear')
@@ -99,10 +104,17 @@ class CommandTerminal(QFrame):
         self.up_key = QShortcut(QKeySequence('UP'), self, self.on_up_pressed)
 
     def on_clear(self):
+        """
+        When 'Clear' button is pressed, the terminal display and command input line is cleared.
+        """
         self.tbCommand.clear()
         self.leCommand.clear()
 
     def on_up_pressed(self):
+        """
+        When the keyboard UP arrow key is pressed, the previous command in the history
+        is displayed in the command input line.
+        """
         try:
             if len(self.history_buffer) == 0:
                 return
@@ -116,6 +128,11 @@ class CommandTerminal(QFrame):
             self.tbCommand.append('{}'.format(e))
 
     def on_down_pressed(self):
+        """
+        When the keyboard DOWN arrow key is pressed, the next command in the history
+        is displayed in the command input line.
+        """
+
         try:
             if len(self.history_buffer) == 0:
                 return
@@ -129,6 +146,9 @@ class CommandTerminal(QFrame):
             self.tbCommand.append('{}'.format(e))
 
     def on_send(self):
+        """
+        When the Send button is pressed, send the command in the command input line to the instrument.
+        """
         try:
             cmd = self.leCommand.text().strip()
             reply = ''
@@ -154,6 +174,9 @@ class CommandTerminal(QFrame):
             self.tbCommand.append('Error: {}'.format(str(e)))
 
     def handle_command(self, cmd, reply):
+        """
+        Display the processed command to the terminal display
+        """
         try:
             if reply:
                 self.tbCommand.append(f'{cmd}   ==>   {reply}')

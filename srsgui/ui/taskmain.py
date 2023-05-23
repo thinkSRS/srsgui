@@ -148,6 +148,12 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         self.menu_Instruments.triggered.connect(self.onInstrumentSelect)
 
     def load_tasks(self):
+        """
+        Load configuration info from a .taskconfig file specified from
+            #. Command line argument
+            #. Settings saved in the registry
+            #. Application default .taskconfig file
+        """
         try:
             # Clear console and result display
             self.console.clear()
@@ -255,9 +261,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         except Exception as e:
             logger.error('Error adding to Task menu Task:{}  Error: {}'.format(name, e))
 
-    def get_logo_file(self):
-        return self.LogoFile
-
     def print_redirect(self, text):
         """
         Handles text output for stdout, stderr and various text output
@@ -352,9 +355,15 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             logger.error('Error onTaskFinished: {}'.format(e))
 
     def is_task_running(self):
+        """
+        Check if a task is running
+        """
         return self._busy_flag
 
     def update_figure(self, figure):
+        """
+        Handle figure update request from a task
+        """
         self.dock_handler.update_figure(figure)
 
     def onTaskSelect(self, action):
@@ -504,14 +513,10 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         except Exception as e:
             logger.error(e)
 
-    def okToContinue(self):
-        if self.task and self.task.is_running():
-            self.display_question("Do you want to quit while a task is running?")
-            if not self.question_result_value:
-                return False
-        return True
-
     def display_question(self, question, return_type=bool):
+        """
+        Slot to handle a question from the :meth:`Task.ask_question<srsgui.task.task.Task.ask_question>`
+        """
         try:
             self.question_result = None
             self.question_result_value = None
@@ -556,7 +561,20 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         except Exception as e:
             logger.error('display_question error: {}'.format(e))
 
+    def okToContinue(self):
+        """
+        Check if ok to quit the application.
+        """
+        if self.task and self.task.is_running():
+            self.display_question("Do you want to quit while a task is running?")
+            if not self.question_result_value:
+                return False
+        return True
+
     def closeEvent(self, event):
+        """
+        Override the default closeEvent handler
+        """
         if self.okToContinue():
             # Save settings
             self.save_settings()
@@ -570,6 +588,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                     inst_dict[key].disconnect()
         else:
             event.ignore()
+
+    def get_logo_file(self):
+        return self.LogoFile
 
     def handle_initial_image(self, task_class):
         try:
@@ -601,6 +622,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         self.display_question(msg, None)
 
     def load_settings(self):
+        """
+        Load settings from the registry
+        """
         try:
             self.default_config_file = self.settings.value("ConfigFile", "")
             sizes = self.settings.value("MainWindow/Splitter1", [100, 200, 200])
@@ -616,6 +640,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             logger.error('During load_setting, {}'.format(e))
 
     def save_settings(self):
+        """
+        Save settings to the registry
+        """
         self.settings.setValue("ConfigFile", self.default_config_file)
         self.settings.setValue("MainWindow/Splitter1", self.splitter.sizes())
         self.settings.setValue("MainWindow/Splitter2", self.splitter_2.sizes())
