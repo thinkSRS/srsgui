@@ -1,3 +1,13 @@
+srsgui.ui.commandtree package
+==============================
+
+``srsgui.ui.commandtree`` package visualizes an instance of
+:class:`Instrument <srsgui.inst.instrument.Instrument>` class
+containing multiple components and commands using
+`Qt Model/View programming. <model_view_programming_>`_
+
+The visualization helps the hierarchical structure of a command
+can be used more easily in the command terminal and writing the Python scripts.
 
 .. automodule:: srsgui.ui.commandtree
    :members:
@@ -60,3 +70,4 @@ srsgui.ui.commandtree.commandtreewidget module
    :undoc-members:
    :show-inheritance:
 
+.. _model_view_programming: https://doc.qt.io/qt-6/model-view-programming.html

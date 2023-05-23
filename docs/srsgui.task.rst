@@ -4,9 +4,9 @@ srsgui.task package
 srsgui.task.task module
 -----------------------
 
-.. automodule:: srsgui.task.task
+.. autoclass:: srsgui.task.task.Task
    :members:
-   :undoc-members:
+   :no-undoc-members: EscapeForResult, EscapeForDevice, EscapeForStatus, EscapeForStart, EscapeForStop
    :show-inheritance:
 
 srsgui.task.callbacks module

@@ -38,10 +38,10 @@ docs = ['matplotlib', 'pyside2', 'sphinx>=5', 'sphinx-rtd-theme>=1']
 homepage = "https://github.com/thinkSRS/srsgui"
 repository = "https://github.com/thinkSRS/srsgui.git"
 documentation = "https://thinksrs.github.io/srsgui"
-changelog = "https://thinksrs.github.io/srsgui/html/changelog.html"
+changelog = "https://thinksrs.github.io/srsgui/changelog.html"
 
 [project.scripts]
 srsgui = "srsgui.__main__:main"
 
-# ... other project metadata fields as specified in:
-#     https://packaging.python.org/en/latest/specifications/declaring-project-metadata/
+# Other project metadata fields as specified in:
+# https://packaging.python.org/en/latest/specifications/declaring-project-metadata/

@@ -44,10 +44,10 @@ class CommandModel(QAbstractItemModel):
         self.load(Component())
 
     def load(self, document: Component):
-        """Load model from a nested dictionary returned by json.loads()
+        """Load model from a ComponentItem instance returned by CommandItem.loads()
 
         Arguments:
-            document (dict): JSON-compatible dictionary
+            document: Component instance
         """
 
         assert isinstance(
@@ -63,7 +63,8 @@ class CommandModel(QAbstractItemModel):
         return True
 
     def data(self, index: QModelIndex, role: Qt.ItemDataRole) -> Any:
-        """Override from QAbstractItemModel
+        """
+        Override from QAbstractItemModel
 
         Return data from an item according index and role
         """
@@ -217,7 +218,9 @@ class CommandModel(QAbstractItemModel):
             return flags
 
     def is_item_editable(self, index: QModelIndex) -> bool:
-        """Return True if item is editable, False otherwise"""
+        """
+        Return True if item is editable, False otherwise
+        """
         item = index.internalPointer()
         if type(item) == CommandItem:
             return item.is_editable()
@@ -249,16 +252,9 @@ if __name__ == "__main__":
     inst = SR860('tcpip', '172.25.70.129')
     inst.query_text(' ')
 
-    # inst = RGA100('tcpip','172.25.70.12','admin','admin')
-    # inst = RGA120('tcpip','172.25.70.12','admin','admin')    
-    
-    # inst.comm.set_callbacks(print, print)
-    # print(inst.check_id())
-
     model.load(inst)
 
     view.show()
     view.header().setSectionResizeMode(0, QHeaderView.Stretch)
-    # view.setAlternatingRowColors(True)
     view.resize(500, 300)
     app.exec_()

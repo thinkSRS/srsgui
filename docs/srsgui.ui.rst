@@ -1,6 +1,16 @@
 srsgui.ui package
 =================
 
+.. toctree::
+   :maxdepth: 4
+
+   srsgui.ui.commandtree.rst
+
+.. toctree::
+   :maxdepth: 4
+
+   srsgui.ui.qt.rst
+
 srsgui.ui.taskmain module
 -------------------------
 
@@ -74,21 +84,4 @@ srsgui.ui.stdout module
    :members:
    :undoc-members:
    :show-inheritance:
-
-srsgui.ui.commandtree package
-------------------------------
-
-.. toctree::
-   :maxdepth: 4
-
-   srsgui.ui.commandtree.rst
-
-
-srsgui.ui.qt package
-----------------------
-
-.. toctree::
-   :maxdepth: 4
-
-   srsgui.ui.qt.rst
 

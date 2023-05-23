@@ -16,9 +16,9 @@ class CommandTerminal(QFrame):
     """
     Terminal to control instruments defined in the .taskconfig file
 
-    Type a command in one of the following ways.
+    Type a command in one of the following ways:
 
-    inst_name:remote_command
+    - inst_name:remote_command
 
         'inst_name' is the first item after the prefix  "inst:" in a line in
         the .taskconfig file. 'Remote_command' after the colon is a raw remote
@@ -27,9 +27,10 @@ class CommandTerminal(QFrame):
         sends one back.
 
         dut:*idn?
-        dut:mi10  - This is a RGA100 command to set scan intial mass to 10
 
-    inst_name.instrument_command
+        dut:mi10  - This is a RGA100 command to set scan initial mass to 10
+
+    - inst_name.instrument_command
 
         When you use .before a command, the command is interpreted as a Python
         instrument command or a method defined in the Instrument subclass,
@@ -40,6 +41,7 @@ class CommandTerminal(QFrame):
         and methods in the instrument or its component as a Python dictionary.
 
                 rga.dir
+
                 rga.status.dir
 
         rga.status.id_string - this returns the id string. It is a Python instrument
@@ -51,7 +53,7 @@ class CommandTerminal(QFrame):
         instrument receive the following command, as either a raw remote command or
         a instrument command defined in a Instrument subclass.
 
-    command
+    - command
 
         if you type a command without 'inst_name.' or 'inst_name:', the command goes
         to the first instrument in the .taskconfig file. A command with dot(s) is

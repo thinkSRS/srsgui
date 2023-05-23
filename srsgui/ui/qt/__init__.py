@@ -1,8 +1,10 @@
+
 """
 ``srsgui.ui.qt`` subpackage enables SRSGUI to use either PySide6, Pyside2 or PyQt5 as Qt binder for Python.
 It checks if either Qt binder is installed in the order listed above. If any found installed, it uses the one.
-If you use PyQt6 or PyQt5, the whole SRSGUI package is subjected to be used under the GPL3 license, which PyQt requires.
-When you use PySide6 or PySide2, , which is provided under the LGPL license, you can use SRSGUI under its intended MIT license.
+If you use PyQt5, the whole SRSGUI package is subjected to be used under the GPL3 license, which PyQt requires.
+When you use PySide6 or PySide2, which is provided under the LGPL license, you can use SRSGUI under its
+intended MIT license.
 """
 
 from importlib import import_module

@@ -109,6 +109,7 @@ class SerialInterface(Interface):
     def send_break(self, duration=0.1):
         """
         Send break signal over serial interface
+
         Parameters
         -----------
             duration: float, optioanl

@@ -4,7 +4,8 @@
 ##! 
 
 """
-Interface for input variables between Task and InputPanel in GUI
+Interface for input variables between :class:`Task <srsgui.task.task.Task>` instance
+and :class:`InputPanel <srsgui.ui.inputpanel.InputPanel>` instance in GUI
 
 """
 

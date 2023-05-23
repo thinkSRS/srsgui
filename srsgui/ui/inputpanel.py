@@ -21,8 +21,8 @@ logger = logging.getLogger(__name__)
 
 class InputPanel(QScrollArea):
     """
-    To build the input panel in an instance of :class:`srsgui.ui.taskmain.TaskMain` class
-    based on input_parameters of a subclass of :class:`srsgui.task.task.Task` class
+    To build the input panel in an instance of :class:`TaskMain <srsgui.ui.taskmain.TaskMain>` class
+    based on input_parameters in a subclass of :class:`Task <srsgui.task.task.Task>` class
     """
     FirstColumn = 0
     SecondColumn = 1
