@@ -107,7 +107,7 @@ class FloatSpinBox(QDoubleSpinBox):
             format_string = '{:.' + str(prec) + 'f}'
             text = format_string.format(value)
         except Exception as e:
-            print(e)
+            print('Error in textFromValue: {}'.format(e))
             return ''
         return text
 

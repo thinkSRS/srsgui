@@ -255,6 +255,7 @@ class CommandItem:
             if callable(comp):
                 root_item.comp = comp
                 root_item.comp_type = type(comp)
+                root_item.excluded = comp in root_item.parent().comp.exclude_capture
                 root_item.is_method = True
 
             elif issubclass(type(comp), Command):

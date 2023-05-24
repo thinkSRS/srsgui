@@ -4,6 +4,7 @@
 ##! 
 
 import sys
+import logging
 
 from typing import Any, Iterable, List, Dict, Union
 
@@ -17,6 +18,8 @@ from srsgui import Component
 from .commanditem import CommandItem, Index
 from .commanddelegate import CommandDelegate
 from .commandhandler import CommandHandler
+
+logger = logging.getLogger(__name__)
 
 
 class CommandModel(QAbstractItemModel):
@@ -71,44 +74,46 @@ class CommandModel(QAbstractItemModel):
 
         if not index.isValid():
             return None
+        try:
+            if role == Qt.DisplayRole:
+                if index.column() == 0:
+                    item = index.internalPointer()
+                    name = item.name
 
-        if role == Qt.DisplayRole:
-            if index.column() == 0:
+                    if self.show_raw_remote_command:
+                        name += f' <{item.raw_remote_command}>' if item.raw_remote_command else ''
+
+                    name += ' [M]' if item.is_method else ''
+                    name += ' [EX]' if item.excluded else ''
+                    name += ' [SO]' if item.set_enable and not item.get_enable else ''
+                    name += ' [QO]' if item.get_enable and not item.set_enable else ''
+                    return name
+
+                if index.column() == 1:
+                    item = index.internalPointer()
+                    self.query_requested.emit(index)
+                    return item.get_formatted_value()
+
+            elif role == Qt.EditRole:
+                if index.column() == 1:
+                    item = index.internalPointer()
+                    self.query_requested.emit(index)
+                    return item.value
+
+            elif role == Qt.BackgroundRole:
                 item = index.internalPointer()
-                name = item.name
+                if item.comp_type != Index and issubclass(item.comp_type, Component):
+                    return QBrush(QColor(243, 230, 225))
+                if item.row() % 2 == 0:
+                    return QBrush(QColor(240, 240, 253))
 
-                if self.show_raw_remote_command:
-                    name += f' <{item.raw_remote_command}>' if item.raw_remote_command else ''
-
-                name += ' [M]' if item.is_method else ''
-                name += ' [EX]' if item.excluded else ''
-                name += ' [SO]' if item.set_enable and not item.get_enable else ''
-                name += ' [QO]' if item.get_enable and not item.set_enable else ''
-                return name
-
-            if index.column() == 1:
+            elif role == Qt.ToolTipRole:
                 item = index.internalPointer()
-                self.query_requested.emit(index)
-                return item.get_formatted_value()
-
-        elif role == Qt.EditRole:
-            if index.column() == 1:
-                item = index.internalPointer()
-                self.query_requested.emit(index)
-                return item.value
-
-        elif role == Qt.BackgroundRole:
-            item = index.internalPointer()
-            if item.comp_type != Index and issubclass(item.comp_type, Component):
-                return QBrush(QColor(243, 230, 225))
-            if item.row() % 2 == 0:
-                return QBrush(QColor(240, 240, 253))
-
-        elif role == Qt.ToolTipRole:
-            item = index.internalPointer()
-            if item.is_method or issubclass(item.comp_type, Component):
-                if hasattr(item.comp, '__doc__') and index.column() == 0:
-                    return item.comp.__doc__
+                if item.is_method or issubclass(item.comp_type, Component):
+                    if hasattr(item.comp, '__doc__') and index.column() == 0:
+                        return item.comp.__doc__
+        except Exception as e:
+            logger.error('Error in CommandModel.Data: {}'.format(e))
 
     def setData(self, index: QModelIndex, value: Any, role: Qt.ItemDataRole):
         """Override from QAbstractItemModel
@@ -231,11 +236,16 @@ class CommandModel(QAbstractItemModel):
         """
         External command processor calls this slot once a command is processed
         """
-        index = cmd_tuple[0]
-        value = cmd_tuple[1]
-        changed = cmd_tuple[2]
-        if changed:
-            self.dataChanged.emit(index, index, [Qt.DisplayRole, Qt.EditRole])
+        try:
+            index = cmd_tuple[0]
+            value = cmd_tuple[1]
+            changed = cmd_tuple[2]
+            if index.isValid() and changed:
+                item = index.internalPointer()
+                if type(item) == CommandItem:
+                    self.dataChanged.emit(index, index, [Qt.DisplayRole, Qt.EditRole])
+        except Exception as e:
+            logger.error('Error in CommandModel.handle_command: {}'.format(e))
 
 
 if __name__ == "__main__":

@@ -81,7 +81,7 @@ class Command(object):
         query_string = self._get_command_format.format(self.remote_command)
         reply = None
         try:
-            reply = instance.comm.query_text(query_string).strip()
+            reply = instance.comm.query_text(query_string).strip(' \t\n\r\x0b\x0c\x00')
             if callable(self._get_convert_function):
                 self._value = self._get_convert_function(reply)
 

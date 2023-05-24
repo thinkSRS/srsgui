@@ -26,7 +26,7 @@ class CommandTerminal(QFrame):
         to the instrument 'inst_name', and display a reply if the instrument
         sends one back.
 
-        dut:*idn?
+        dut:\*idn?
 
         dut:mi10  - This is a RGA100 command to set scan initial mass to 10
 
@@ -60,8 +60,8 @@ class CommandTerminal(QFrame):
         interpreted as a Python instrument command or a method. A command without
         any dot will be sent directly to the first instrument in the .taskconfig file
         as a raw remote command.
-
     """
+
     command_requested = Signal(str, str)
 
     def __init__(self, parent):
@@ -76,6 +76,9 @@ class CommandTerminal(QFrame):
         self.buffer_size = 40
 
     def setup_widget(self):
+        """
+        Set up the terminal widget
+        """
         self.tbCommand = QTextBrowser(self)
         self.pbClear = QPushButton(self)
         self.pbClear.setText('Clear')
@@ -101,10 +104,17 @@ class CommandTerminal(QFrame):
         self.up_key = QShortcut(QKeySequence('UP'), self, self.on_up_pressed)
 
     def on_clear(self):
+        """
+        When 'Clear' button is pressed, the terminal display and command input line is cleared.
+        """
         self.tbCommand.clear()
         self.leCommand.clear()
 
     def on_up_pressed(self):
+        """
+        When the keyboard UP arrow key is pressed, the previous command in the history
+        is displayed in the command input line.
+        """
         try:
             if len(self.history_buffer) == 0:
                 return
@@ -118,6 +128,11 @@ class CommandTerminal(QFrame):
             self.tbCommand.append('{}'.format(e))
 
     def on_down_pressed(self):
+        """
+        When the keyboard DOWN arrow key is pressed, the next command in the history
+        is displayed in the command input line.
+        """
+
         try:
             if len(self.history_buffer) == 0:
                 return
@@ -131,6 +146,9 @@ class CommandTerminal(QFrame):
             self.tbCommand.append('{}'.format(e))
 
     def on_send(self):
+        """
+        When the Send button is pressed, send the command in the command input line to the instrument.
+        """
         try:
             cmd = self.leCommand.text().strip()
             reply = ''
@@ -156,6 +174,9 @@ class CommandTerminal(QFrame):
             self.tbCommand.append('Error: {}'.format(str(e)))
 
     def handle_command(self, cmd, reply):
+        """
+        Display the processed command to the terminal display
+        """
         try:
             if reply:
                 self.tbCommand.append(f'{cmd}   ==>   {reply}')
