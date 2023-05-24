@@ -120,42 +120,44 @@ class CommandItem:
         value = self.value
         if value is None:
             return None
+        try:
+            comp = None
+            if self.comp_type == Index:
+                comp = self.parent().comp
+            elif issubclass(type(self.comp), Command) or \
+                 issubclass(type(self.comp), IndexCommand):
+                comp = self.comp
 
-        comp = None
-        if self.comp_type == Index:
-            comp = self.parent().comp
-        elif issubclass(type(self.comp), Command) or \
-             issubclass(type(self.comp), IndexCommand):
-            comp = self.comp
+            fmt = comp.fmt if comp and hasattr(comp, 'fmt') else ''
+            unit = comp.unit if comp and hasattr(comp, 'unit') else ''
 
-        fmt = comp.fmt if comp and hasattr(comp, 'fmt') else ''
-        unit = comp.unit if comp and hasattr(comp, 'unit') else ''
+            if comp and (issubclass(type(comp), FloatIndexCommand) or
+                         issubclass(type(comp), FloatCommand)):
+                if value == 0.0:
+                    return '0' + f' {unit}'
+                step = comp.step
+                significant_figures = comp.significant_figures
 
-        if comp and (issubclass(type(comp), FloatIndexCommand) or
-                     issubclass(type(comp), FloatCommand)):
-            if value == 0.0:
-                return '0' + f' {unit}'
-            step = comp.step
-            significant_figures = comp.significant_figures
-
-            decimals = math.ceil(-math.log10(step))
-            digits = math.ceil(math.log10(abs(value))) if value else 0
-            precision = min(decimals, significant_figures - digits)
-            precision = max(precision, 0)
-            if abs(value) >= 0.1 or precision < significant_figures:
-                # Remove trailing zeros and return
-                s = f'{value:.{precision}f}'
-                if '.' in s:
-                    return s.rstrip('0').rstrip('.') + f' {unit}'
+                decimals = math.ceil(-math.log10(step))
+                digits = math.ceil(math.log10(abs(value))) if value else 0
+                precision = min(decimals, significant_figures - digits)
+                precision = max(precision, 0)
+                if abs(value) >= 0.1 or precision < significant_figures:
+                    # Remove trailing zeros and return
+                    s = f'{value:.{precision}f}'
+                    if '.' in s:
+                        return s.rstrip('0').rstrip('.') + f' {unit}'
+                    else:
+                        return s + f' {unit}'
                 else:
-                    return s + f' {unit}'
+                    v = f'{value:.{significant_figures}e}'
+                    # Remove trailing zeros before 'e' and return
+                    t = v.split('e')
+                    return f'{t[0].rstrip("0").rstrip(".")}e{t[1]}' + f'  {unit}'
             else:
-                v = f'{value:.{significant_figures}e}'
-                # Remove trailing zeros before 'e' and return
-                t = v.split('e')
-                return f'{t[0].rstrip("0").rstrip(".")}e{t[1]}' + f'  {unit}'
-        else:
-            return f'{value:{fmt}}' + f' {unit}'
+                return f'{value:{fmt}}' + f' {unit}'
+        except Exception as e:
+            print('Format error: {} {}'.format(e, self.value))
 
     def construct_set_command_string(self, value):
         """
@@ -184,13 +186,12 @@ class CommandItem:
             self.get_name_string(item.parent())
 
     @classmethod
-    def load(
-        cls, comp, parent: "CommandItem" = None) -> "CommandItem":
+    def load(cls, comp, parent: "CommandItem" = None) -> "CommandItem":
         """Create a 'root' CommandItem from a Component and 
         populate its subcomponent and commands recursively.
 
         Returns:
-            CommandItem: CommandItem
+            root_item: CommandItem
         """
         root_item = CommandItem(parent)
         root_item.name = "root"
@@ -254,6 +255,7 @@ class CommandItem:
             if callable(comp):
                 root_item.comp = comp
                 root_item.comp_type = type(comp)
+                root_item.excluded = comp in root_item.parent().comp.exclude_capture
                 root_item.is_method = True
 
             elif issubclass(type(comp), Command):

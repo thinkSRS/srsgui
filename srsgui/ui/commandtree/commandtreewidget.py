@@ -4,6 +4,7 @@
 ##! 
 
 import logging
+import time
 
 from srsgui.ui.qt.QtCore import Qt, QModelIndex
 from srsgui.ui.qt.QtWidgets import QWidget
@@ -33,6 +34,9 @@ class CommandTreeWidget(QWidget, Ui_CommandTreeWidget):
         self.excluded_included = False
         self.method_included = False
         self.show_raw_command = False
+
+        self.capture_time = 0.0  # time of the last capture
+        self.capture_time_limit = 5.0  # seconds before a new capture
 
         self.model = CommandModel()
         self.tree_view.setItemDelegate(CommandDelegate())
@@ -76,6 +80,18 @@ class CommandTreeWidget(QWidget, Ui_CommandTreeWidget):
         self.model.dataChanged.emit(QModelIndex(), QModelIndex())
 
     def on_capture_clicked(self):
+        # Limit the frequency of new capture
+        if self.parent and hasattr(self.parent, 'is_task_running'):
+            if self.parent.is_task_running():
+                logger.warning('No capture allowed during a task running')
+                return
+
+        current_time = time.time()
+        if current_time - self.capture_time < self.capture_time_limit:
+            return
+        else:
+            self.capture_time = current_time
+
         if self.inst is not None and self.inst.is_connected():
             try:
                 self.model.show_raw_remote_command = self.show_raw_command
@@ -99,6 +115,7 @@ class CommandTreeWidget(QWidget, Ui_CommandTreeWidget):
 
     def closeEvent(self, event) -> None:
         self.model.command_handler.stop()
+
 
 if __name__ == '__main__':
     import sys
