@@ -98,7 +98,7 @@ class IndexCommand(object):
         reply = None
         value = None
         try:
-            reply = self._parent.comm.query_text(query_string)
+            reply = self._parent.comm.query_text(query_string).strip(' \t\n\r\x0b\x0c\x00')
             if callable(self._get_convert_function):
                 value = self._get_convert_function(reply)
 
