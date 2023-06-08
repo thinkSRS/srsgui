@@ -14,7 +14,7 @@
      class and the communication
      :class:`Interface<srsgui.inst.communications.interface.Interface>` class.
 
-   - To write Python scripts (tasks) that run in GUI environment with simple APIs
+   - To write Python scripts (tasks) that run in GUI environment with APIs
      provided in :class:`Task<srsgui.task.task.Task>` class.
 
    - To organize instrument classes and task scripts presented in a GUI application
@@ -22,16 +22,17 @@
 
 ``Srsgui`` provides the following I/O functionality to a task:
 
-   - Python logging output to a console window and a log file
+   - Python logging_ output to the console window and a log file
    - `print` function redirected to the console window
-   - text streaming to multiple selectable windows
-   - terminal from which you can control and query interactively all the instrument defined in the configuration file
-   - real-time updating, non-blocking, multiple matplotlib figures_ that can include multiple axes_
-   - interactively changeable  input parameters fed into a running task
-   - Qt's dockable windows makes layout flexible(
+   - Text streaming to multiple windows
+   - Terminal from which you can control and query interactively all the instrument
+     defined in the configuration file
+   - Real-time updating, non-blocking, multiple matplotlib figures_ that can include multiple axes_
+   - Interactively changeable  input parameters fed into a running task
+   - Qt's dockable widgets makes layout flexible(
      :ref:`before <top-of-initial-screen-capture>` and
      :ref:`after <top-of-screen-capture-1>`)
-   - dedicated output data file generated for each run of a task
+   - Dedicated output data file generated for each run of a task
 
 Here is a screen shot of ``srsgui`` running with the :ref:`example project <top-of-example-project>`
 included in the ``srsgui`` package.
@@ -42,8 +43,8 @@ included in the ``srsgui`` package.
     :align: center
     :figclass: align-center
 
-From the :ref:`Example project <top-of-example-project>` directory, you can see how many lines of code
-you need write to get ``srsgui`` working for control and data acquisition
+From the :ref:`Example project <top-of-example-project>` directory, you can see
+how many lines of code you need to write to get ``srsgui`` working for control and data acquisition
 from a couple of arbitrary instruments and data visualization for a small task.
 
    - 5 lines of code for CG635 to control its
@@ -70,6 +71,7 @@ Here are more information on how to use ``srsgui``.
    :maxdepth: 2
 
    installation.rst
+   application.rst
    create-project.rst
    define-instrument.rst
    create-task.rst
@@ -87,3 +89,4 @@ Indices and tables
 
 .. _figures: https://matplotlib.org/stable/tutorials/introductory/quick_start.html#figure
 .. _axes: https://matplotlib.org/stable/tutorials/introductory/quick_start.html#axes
+.. _logging: https://docs.python.org/3/library/logging.html

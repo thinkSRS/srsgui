@@ -136,7 +136,7 @@ class Task(thread_class):
 
     def cleanup(self):
         """
-        When test() is finished, cleanup() will run subsequently.
+        After test() is finished, cleanup() will run subsequently.
         Any cleanup and closing routine can be added here.
         """
         self.logger.warning('Task.cleanup() is not overridden.')

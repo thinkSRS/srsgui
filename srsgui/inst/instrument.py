@@ -186,8 +186,8 @@ class Instrument(Component):
 
     def check_id(self):
         """
-        Check if the ID string of the instrument contains _IdString of the Insteument class
-        A derived instrument class should make sure that check_id method is properly implemented.
+        Check if the ID string of the instrument contains _IdString of the Instrument class.
+        A derived instrument class should make sure that check_id() method is properly implemented.
 
         :return: tuple of (model name, serial number, firmware version)
         """

@@ -10,6 +10,17 @@ from .indexcommands import IndexCommand, BoolIndexCommand, IntIndexCommand, \
                            FloatIndexCommand, DictIndexCommand
 
 
+class DirCommand(GetCommand):
+    """
+    Descriptor to run get_lists() with 'dir' command in Component
+
+    :meta private:
+    """
+    def __get__(self, instance, instance_type):
+        if hasattr(instance, 'get_lists'):
+            return instance.get_lists()
+
+
 class Component(object):
     """
     Class used to build hierarchical structure in an instrument.
@@ -49,22 +60,17 @@ class Component(object):
 
     """
 
-    class DirCommand(GetCommand):
-        """
-        Descriptor to run get_lists() with 'dir' command
-        """
-        def __get__(self, instance, instance_type):
-            if hasattr(instance, 'get_lists'):
-                return instance.get_lists()
-
     dir = DirCommand('dir')
-    """ class instance of DirCommand"""
+    """
+    Attribute to be used to get a dictionary that contains information on the subcomponents, 
+    commands, and class method
+    """
 
     exclude_capture = []
     """Exclude commands from query in capture_commands"""
 
     allow_run_button = []
-    """Allow methods to have run buttons in a control panel"""
+    """Allow methods to have run buttons in the GUI control panel"""
 
     def __init__(self, parent, name='unnamed'):
         self._name = name
@@ -265,7 +271,7 @@ class Component(object):
     def capture_commands(self, include_query_only=False, include_set_only=False,
                          include_excluded=False, include_methods=False, show_raw_cmds=False):
         """
-        Query all command with both set and get methods in the component
+        Query all commands with both set and get methods in the component
         and its subcomponents
         """
         commands = {}
@@ -366,4 +372,3 @@ class Component(object):
                             print(f'  {type(e)} {e} command:{k} index: {index}')
                             break
         return commands
-

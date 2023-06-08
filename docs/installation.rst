@@ -5,7 +5,7 @@ Preparation
 ------------
 
 To install ``srsgui``,  make sure you have Python version 3.7 or later.
-you can check your Python version by running from the command line:
+you can check your Python version by running from the command prompt:
 
 .. code-block::
 
@@ -21,7 +21,7 @@ If you have a Python older than the required version,
 `install a newer Python. <install-python_>`_
 
 Using `virtual environment <virtual-environment_>`_ helps to avoid possible dependency
-conflict among Python packages. If you want to use a virtual environment, create one with
+conflicts among Python packages. If you want to use a virtual environment, create one with
 your favorite virtual environment package. If you do not have a preference,
 use Python default ``venv``.
 
@@ -76,10 +76,10 @@ It will install ``srsgui`` with pyserial_ only.
     In order to maintain the MIT_ license for your projects or modified ``srsgui``, you have to use
     pyside6_ or pyside2_. Note that pyqt5_ imposes GPLv3_ license to packages using pyqt5_.
 
-Running srsgui application
+Starting srsgui application
 ----------------------------
 
-After ``srsgui`` is installed, you can start ``srsgui`` application from the command line
+After ``srsgui`` is installed, you can start ``srsgui`` application from the command prompt.
 
 .. code-block::
 
@@ -104,8 +104,10 @@ If you see the application is open and running, the installation is successful!
 .. note::
     Instead of seeing the application running, you may get errors, probably ImportError.
     Carefully look through the exception traceback to find out which package causes the error.
-    When the latest python is installed, some packages may not install properly. If the problem
+    When the latest python is installed, some packages may not be installed properly. If the problem
     is not from ``srsgui`` directly, web search of the problem usually leads to a fix.
+
+
 
 
 .. _install-packages: https://packaging.python.org/en/latest/tutorials/installing-packages/

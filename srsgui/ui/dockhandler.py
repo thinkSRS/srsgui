@@ -236,8 +236,8 @@ class DockHandler(object):
             figure.clear()
             img = mpimg.imread(image_file)
             ax = figure.subplots()
-            ax.axis('off')
             ax.imshow(img)
+            ax.axis('off')
             figure.canvas.draw_idle()
         except Exception as e:
             logger.error(f"Error in display_image: {e}")
