@@ -19,7 +19,6 @@ srsgui.inst.component module
 
 .. automodule:: srsgui.inst.component
    :members:
-   :undoc-members:
    :show-inheritance:
 
 srsgui.inst.commands module

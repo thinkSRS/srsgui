@@ -37,7 +37,7 @@ class CommandItem:
         self.excluded = False
         self.raw_remote_command = ""
         self.timestamp = 0.0
-        self.query_update_period = 0.3
+        self.query_update_period = 0.5
 
     def appendChild(self, item: "CommandItem"):
         """Add item as a child"""
