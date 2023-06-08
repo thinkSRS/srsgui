@@ -610,7 +610,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         msg = ''
         for name in self.inst_dict:
             inst = self.inst_dict[name]
-            if hasattr(inst, __version__):
+            if hasattr(inst, "__version__"):
                 version = inst.__version__
             else:
                 version = 'N/A'

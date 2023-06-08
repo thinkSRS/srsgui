@@ -2,7 +2,7 @@
 Writing a task script
 -----------------------
 
-When you write a Python script that runs with `'srsgui``, you make a subclass of
+When you write a Python script that runs with ``srsgui``, you make a subclass of
 :class:`Task <srsgui.task.task.Task>` class, and implement
 :meth:`setup<srsgui.task.task.Task.setup>`,
 :meth:`test<srsgui.task.task.Task.test>` and

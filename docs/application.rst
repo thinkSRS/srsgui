@@ -60,25 +60,29 @@ the stop is requested. The running task should check the flag frequently, and st
 Saving a data file 
 --------------------
 
-Every run of a task generates a data file as
+Every run of a task automatically generates a data file as
 *%USERPROFILE%\\task-results\\the_name_in_taskconfig_file\\RNxxx\\task_name-timestamp.sgdata*.
 Typically, the *%USERPROFILE%* directory is *C:\\users\\your_user_name* in Windows.
-It is the home directory, *$HOME*, in linux.
+It is the home directory, *$HOME*, in Linux.
 
-A default instance of TaskResult class is generated from Task and saved as a Python dictionary.
-A task can save Python dictionaries and create tables for large data.
+A default instance of :class:`TaskResult <srsgui.task.taskresult.TaskResult>` class is generated
+after an instance of  :class:`Task<srsgui.task.task.Task>` subclass and saved
+as a Python dictionary in the data file.
 
-Docking windows in ``srsgui`` application
+A task can save additional Python dictionaries and create tables for large data in the default data file
+using APIs in :class:`Task<srsgui.task.task.Task>` class .
+
+Dock widgets in ``srsgui`` application
 ------------------------------------------ 
  
 ``Srsgui`` application is a Qt application_ built on QMainWindow_ for GUI.
 Thanks to Python Qt binder, such as, Pyside6_, we can write Python scripts using the Qt C++ library.
 
-``Srsgui`` extensively uses QDockWidget_ as a container for its tools,
-such as the console, the terminal and the Command Capture. 
+``Srsgui`` extensively uses QDockWidget_ as a container for its widgets,
+such as the console, the terminal and the command capture.
 By putting the widgets in QDockWidget_, they can be
 laid out as many different ways as you want. Qt dock widgets can be docked anywhere
-around the main window, stacked togetjer with one another, closed, or floated (undocked)
+around the main window, stacked together with one another, closed, or floated (undocked)
 outside the main window. 
 
 
@@ -95,7 +99,8 @@ outside the main window.
 
     Srsgui application with a floating (undocked) dock widget
     
-The other major GUI component is Matplotlib_, the most popular Python data visualiation library. By putting a Matplotlib_ Figure_ in a QDockWidget_, ``srsgui`` provides 
+The other major GUI component is Matplotlib_, the most popular Python data visualiation
+library. By putting a Matplotlib_ Figure_ in a QDockWidget_, ``srsgui`` provides
 flexible layouts of multiple Matplotlib_ plots. And encapsulating Matplotlib Figure_
 handling into :class:`Task <srsgui.task.task.Task>` class makes it simple to use a
 Matplotlib_ figure_ in :class:`Task <srsgui.task.task.Task>` subclasses.
@@ -103,24 +108,28 @@ Matplotlib_ figure_ in :class:`Task <srsgui.task.task.Task>` subclasses.
 When you choose a dock window from the **menu/Docks**, it will be brought up the dock window
 to the top level, even if it is closed.
 
-Command capture dock widgets
+Command capture dock widget
 -----------------------------
 
 Command capture dock widget is the latest addition to ``srsgui`` application. Each instrument
-in the configuration file will have a capture dock widget. You can open it by select the menu item
+in the configuration file will have its command capture dock widget. You can open it by select the menu item
 named as "*instrument_name-caputre*" from the menu/Docks.
 
-It is used to visualize a complex :class:`Instrument <srsgui.inst.instrument.Instrument>` class
-containing multiple :class:`components <srsgui.inst.component.Component>` and
-:class:`commands <srsgui.inst.commands.Command>` using
-`Qt Model/View programming. <model_view_programming_>`_
+It is used to visualize a :class:`Instrument <srsgui.inst.instrument.Instrument>` class
+containing multiple :class:`components <srsgui.inst.component.Component>`,
+:mod:`commands <srsgui.inst.commands>` and
+:mod:`index commands <srsgui.inst.indexcommands>`
+using `Qt Model/View programming. <model_view_programming_>`_
 
-It captures all the values of remote commands defined in an instrument class,
+It captures the values of :mod:`commands <srsgui.inst.commands>` and
+:mod:`index commands <srsgui.inst.indexcommands>`
+defined in an instrument class,
 and allows you to change the values interactively.
 
-An active command capture dock widget generates a lot of communication traffic whenever it needs
-to update the item values. If the running task needs the full communication capacity,
-close the dock widget not to generate any additional communication load.
+An active command capture dock widget generates a lot of communication traffic to the physical
+instrument whenever it needs to update the item values.
+If the running task needs the full communication capacity,
+close the dock widget not to interfere with generating any additional communication load.
 
 It helps you to understand the hierarchical structure of an instrument class
 and to use command more easily in the command terminal and writing the Python scripts.
