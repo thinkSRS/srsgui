@@ -606,7 +606,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         except Exception as e:
             logger.error(f"Error in handle_initial_image: {e}")
 
-    def onAbout(self,checked):
+    def onAbout(self, checked):
         msg = ''
         for name in self.inst_dict:
             inst = self.inst_dict[name]

@@ -31,7 +31,7 @@ dynamic = ["version"]
 version = {attr = "srsgui.__version__"}
 
 [project.optional-dependencies]
-full = ['matplotlib >= 3.6.2', 'pyside6 <= 6.4.3, >= 6.5.1']
+full = ['matplotlib >= 3.6.2', 'pyside6']
 docs = ['matplotlib', 'pyside6', 'sphinx>=5', 'sphinx-rtd-theme>=1']
 
 [project.urls]

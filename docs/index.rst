@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 
-``srsgui`` : Organize your instrument-controlling Python scripts as a GUI application
+``Srsgui`` : Organize your instrument-controlling Python scripts as a GUI application
 =======================================================================================
 
 ``Srsgui`` is a simple framework:

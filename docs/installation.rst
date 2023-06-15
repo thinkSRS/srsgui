@@ -111,7 +111,7 @@ If you see the application is open and running, the installation is successful!
 
 
 .. _install-packages: https://packaging.python.org/en/latest/tutorials/installing-packages/
-.. _install-python: https://realpython.com/installing-python/
+.. _install-python: https://www.python.org/
 .. _virtual-environment: https://realpython.com/python-virtual-environments-a-primer/
 .. _venv: https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/
 .. _pip: https://realpython.com/what-is-pip/

@@ -4,7 +4,10 @@ Running ``srsgui`` application
 Starting ``srsgui`` application
 ---------------------------------
 
-With proper installation, you can start ``srsgui`` application by typing one of the following commands from the command promp. If you installed it with a virtual environment, acitvate the virtual environment before stating ``srsgui``.
+With proper installation, you can start ``srsgui`` application by typing
+one of the following commands from the command prompt.
+If you installed it with a virtual environment, activate the virtual environment
+before stating ``srsgui``.
 
 .. code-block::
 
@@ -105,14 +108,14 @@ flexible layouts of multiple Matplotlib_ plots. And encapsulating Matplotlib Fig
 handling into :class:`Task <srsgui.task.task.Task>` class makes it simple to use a
 Matplotlib_ figure_ in :class:`Task <srsgui.task.task.Task>` subclasses.
 
-When you choose a dock window from the **menu/Docks**, it will be brought up the dock window
+When you choose a dock widget from the **menu/Docks**, it will be brought up the dock wdget
 to the top level, even if it is closed.
 
-Command capture dock widget
+Capture dock widget
 -----------------------------
 
-Command capture dock widget is the latest addition to ``srsgui`` application. Each instrument
-in the configuration file will have its command capture dock widget. You can open it by select the menu item
+Capture dock widget is the latest addition to ``srsgui`` application. Each instrument
+in the configuration file will have its capture dock widget. You can open it by select the menu item
 named as "*instrument_name-caputre*" from the menu/Docks.
 
 It is used to visualize a :class:`Instrument <srsgui.inst.instrument.Instrument>` class
@@ -126,19 +129,37 @@ It captures the values of :mod:`commands <srsgui.inst.commands>` and
 defined in an instrument class,
 and allows you to change the values interactively.
 
-An active command capture dock widget generates a lot of communication traffic to the physical
-instrument whenever it needs to update the item values.
-If the running task needs the full communication capacity,
-close the dock widget not to interfere with generating any additional communication load.
+.. note::
 
-It helps you to understand the hierarchical structure of an instrument class
+    An active capture dock widget generates a lot of communication traffic to the physical
+    instrument whenever it needs to update the item values.
+    If the running task needs the full communication capacity,
+    close the dock widget not to interfere with generating any additional communication load.
+
+It can display optional insformation:
+
+    - With *Show query-only cmds* option checked, commands that can be queried,
+      but cannot not be set will be displayed with [QO] tag after the command name,
+      along with its query value.
+    - With *Show set-only cmds* option checked, the name of commands that cannot be queried
+      will be displayed with [SO] tag after the command name.
+    - With *Show excluded cmds* checked, the name of commands that intentionally excluded
+      will be displayed with [EX] tag after the command name, however, without its query return value.
+    - With *Show methods* checked, methods of the components of the instrument class will be displayed
+      with [M] tag after the command name.
+      some simple methods that can run without parameters defined and does not return value
+      can have the run button that allows to run the method directly.
+    - With *Show raw cmds* option checked, the raw remote command name associated with the
+      item will be shown inside the angled brackets, < >   .
+
+Capture dock widgets help you to understand the hierarchical structure of an instrument class
 and to use command more easily in the command terminal and writing the Python scripts.
 
 .. figure:: ./_static/lockin-capture.png
     :align: center
     :scale: 75 %
 
-    Remote command capture dock of `SR860 lock-in amplifier instrument class <sr860_>`_
+    Screenshot of Capture dock widget of `SR860 lock-in amplifier instrument class <sr860_>`_
 
 Plot menu
 --------------
