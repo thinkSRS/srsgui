@@ -58,7 +58,7 @@ for x in the range [initial angle, final angle].
         rad = 180 / math.pi
 
         
-        for i in range(self.theta_i, self.theta_f, 1):
+        for i in range(self.theta_i, self.theta_f+1, 1):
             if not self.is_running():  # if the stop button is pressed, stop the task
                 break
        
