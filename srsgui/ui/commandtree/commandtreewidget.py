@@ -36,7 +36,7 @@ class CommandTreeWidget(QWidget, Ui_CommandTreeWidget):
         self.show_raw_command = False
 
         self.capture_time = 0.0  # time of the last capture
-        self.capture_time_limit = 5.0  # seconds before a new capture
+        self.capture_time_limit = 10.0  # seconds before a new capture
 
         self.model = CommandModel()
         self.tree_view.setItemDelegate(CommandDelegate())

@@ -100,13 +100,17 @@ class Instrument(Component):
             time.sleep(0.1)
         if not interface_type:
             return
+        matched = False
         for interface, _ in self.available_interfaces:
             if interface_type == interface.NAME:
+                matched = True
                 self.comm = interface()
                 self.set_term_char(term_char)
                 self.comm.connect(*args)
                 self.update_components()
                 break
+        if not matched:
+            raise TypeError("Invalid interface_type: {}".format(interface_type))
 
     def disconnect(self):
         """
