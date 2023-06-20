@@ -4,7 +4,7 @@
 ##! 
 
 """
-Interface for input variables between :class:`Task <srsgui.task.task.Task>` instance
+Interface for input parameters in  :class:`Task <srsgui.task.task.Task>` instance
 and :class:`InputPanel <srsgui.ui.inputpanel.InputPanel>` instance in GUI
 
 """
@@ -170,8 +170,15 @@ class Ip4Input(BaseInput):
 
 
 class CommandInput(IntegerInput):
-    def __init__(self, cmd_name, cmd_instance, default_value=None):
-        super().__init__(default_value)
+    """
+    It provides the interface to :class:`InputPanel <srsgui.ui.inputpanel.InputPanel>`
+    to query the value of a command and to change the set value of the command.
+    Currently InputPanel does not update self.value. Do not user get_value().
+    Query the command directly in a task.
+    """
+
+    def __init__(self, cmd_name, cmd_instance):
+        super().__init__(None)
 
         self.inst_name = ''
         self.cmd_name = cmd_name
@@ -183,6 +190,10 @@ class CommandInput(IntegerInput):
         self.cmd = f'{self.inst_name}.{self.cmd_name}'
 
     def get_value(self):
+        """
+        Do not use. The command handler used in the InputPanel that performs command query
+        does not set the self.value.
+        """
         v = None
         if hasattr(self.cmd_instance, 'get_dict'):
             v = self.cmd_instance.key_type(self.text)

@@ -1,6 +1,9 @@
 Changelog
 ==========
 
+V.0.3.4 -- Jun 20, 2023
+    * Remove default_value from :class:`CommandInput <srsgui.task.inputs.CommandInput>`.__init__
+
 V.0.3.1 -- May 22, 2023
     * Change task result file name extension to .sgdata.
 
