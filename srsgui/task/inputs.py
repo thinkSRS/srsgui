@@ -177,7 +177,7 @@ class CommandInput(IntegerInput):
     Query the command directly in a task.
     """
 
-    def __init__(self, cmd_name, cmd_instance):
+    def __init__(self, cmd_name, cmd_instance=None):
         super().__init__(None)
 
         self.inst_name = ''

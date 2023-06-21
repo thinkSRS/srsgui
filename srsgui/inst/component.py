@@ -89,7 +89,7 @@ class Component(object):
         self._parent = parent
         self._parent._children.append(self)
         self.comm = parent.comm
-        self._add_parent_to_index_commands()
+        # self.add_parent_to_index_commands()  # it needs to run AFTER adding index commands in __init__() in a subclass
 
     def is_connected(self):
         """
@@ -117,11 +117,11 @@ class Component(object):
         """
         Update the communication interface of child components with the parent's
         """
-        self._add_parent_to_index_commands()
+        self.add_parent_to_index_commands()
         for child in self._children:
             child.comm = self.comm
             child.update_components()
-            child._add_parent_to_index_commands()
+            child.add_parent_to_index_commands()
 
     def get_lists(self, include_superclass=True):
         """
@@ -135,11 +135,15 @@ class Component(object):
             'methods': self.get_method_list(include_superclass),
         }
 
-    def _add_parent_to_index_commands(self):
+    def add_parent_to_index_commands(self):
         # Add parent to ListCommands
         commands = self.get_command_dict()
         for cmd in commands:
-            instance = self.__class__.__dict__[cmd]
+            instance = None
+            if cmd in self.__class__.__dict__:
+                instance = instance = self.__class__.__dict__[cmd]
+            elif cmd in self.__dict__:
+                instance = instance = self.__dict__[cmd]
             if hasattr(instance, "_add_parent"):
                 instance._add_parent(self)
 
@@ -176,7 +180,7 @@ class Component(object):
         current_attributes = []
         end = -1 if include_superclass else 1
         for c in self.__class__.__mro__[:end]:  # loop through the classes including super classes
-            if not issubclass(c, Component):  # it should be subclass of Component
+            if not issubclass(c, Component):  # it should be a subclass of Component
                 break
             if c == Component:  # But it should not be Component
                 break
@@ -191,6 +195,18 @@ class Component(object):
                 if issubclass(instance.__class__, Command) or \
                    issubclass(instance.__class__, IndexCommand):
                     command_list[key] = (instance.__class__.__name__, instance.remote_command)
+        for key in self.__dict__:
+            if key.startswith('_'):
+                continue
+            if key in current_attributes:
+                continue
+            current_attributes.append(key)
+
+            instance = self.__dict__[key]
+            if issubclass(instance.__class__, Command) or \
+                    issubclass(instance.__class__, IndexCommand):
+                command_list[key] = (instance.__class__.__name__, instance.remote_command)
+
         return command_list
 
     def get_method_list(self, include_superclass=False):

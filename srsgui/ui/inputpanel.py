@@ -9,7 +9,7 @@ from .qt.QtWidgets import QWidget, QDoubleSpinBox, QSpinBox, QComboBox, \
                           QLineEdit, QLabel, QGridLayout, QPushButton, QScrollArea
 
 from srsgui.inst.commands import Command, IntCommand, FloatCommand, DictCommand
-from srsgui.inst.indexcommands import IntIndexCommand, FloatIndexCommand, DictIndexCommand
+from srsgui.inst.indexcommands import IndexCommand, IntIndexCommand, FloatIndexCommand, DictIndexCommand
 
 from srsgui.task.task import Task
 from srsgui.task.inputs import IntegerInput, FloatInput, StringInput, \
@@ -96,6 +96,7 @@ class InputPanel(QScrollArea):
                         raise ValueError('{} is not connected'.format(self.inst_name))
 
                     p.set_inst_name(self.inst_name)
+                    p.cmd_instance = self.get_cmd_instance(p)
                     if issubclass(p.cmd_instance.__class__, IntCommand) or \
                        issubclass(p.cmd_instance.__class__, IntIndexCommand):
                         widget = QSpinBox()
@@ -218,8 +219,10 @@ class InputPanel(QScrollArea):
                     widget.setCurrentIndex(params[name].default_value)
                     params[name].text = widget.currentText()
                     if type(params[name]) == CommandInput:
-                        if hasattr(params[name].cmd_instance, 'key_type') and \
-                           getattr(params[name].cmd_instance, 'key_type') == 'int':
+                        p = params[name]
+                        p.cmd_instance = self.get_cmd_instance(p)
+                        if hasattr(p.cmd_instance, 'key_type') and \
+                           getattr(p.cmd_instance, 'key_type') == 'int':
                             cmd = '{} = {}'.format(params[name].cmd, params[name].default_value)
                         else:
                             cmd = '{} = "{}"'.format(params[name].cmd, params[name].text)
@@ -257,8 +260,10 @@ class InputPanel(QScrollArea):
                     params[name].value = widget.currentIndex()
                     params[name].text = widget.currentText()
                     if type(params[name]) == CommandInput:
-                        if hasattr(params[name].cmd_instance, 'key_type') and \
-                           getattr(params[name].cmd_instance, 'key_type') is str:
+                        p = params[name]
+                        p.cmd_instance = self.get_cmd_instance(p)
+                        if hasattr(p.cmd_instance, 'key_type') and \
+                           getattr(p.cmd_instance, 'key_type') is str:
                             fmt = '{} = "{}"'
                         else:
                             fmt = '{} = {}'
@@ -291,9 +296,34 @@ class InputPanel(QScrollArea):
 
                 elif type(self.command_dict[cmd]) == QLineEdit:
                     self.command_dict[cmd].setText(reply)
-
                 else:
                     logger.error('Unhandled Command: {}'.format(cmd))
 
         except Exception as e:
             logger.error(e)
+
+    def get_cmd_instance(self, cmd_input):
+        """
+        Find the command instance in CommandInput from cmd_name
+        """
+
+        found = False
+        new_comp = self.inst_dict[cmd_input.inst_name]
+        if not new_comp.is_connected():
+            raise IOError('Instrument not connected')
+
+        comp_names = cmd_input.cmd_name.split('.')
+        for c in comp_names:
+            name = c.split('[')[0]  # Do not include '[]'
+            try:
+                new_comp = getattr(new_comp.__class__, name)
+            except AttributeError:
+                new_comp = getattr(new_comp, name)
+
+            if issubclass(type(new_comp), (Command, IndexCommand)):
+                found = True
+                break
+        if not found:
+            raise TypeError('get_cmd_instance: No Command instance found')
+
+        return new_comp

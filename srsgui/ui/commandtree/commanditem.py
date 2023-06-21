@@ -213,6 +213,18 @@ class CommandItem:
                     root_item.appendChild(child)
 
             current_attributes = []
+            for key in comp.__dict__:
+                cmd_instance = comp.__dict__[key]
+                if key in current_attributes:
+                    continue
+                current_attributes.append(key)
+                if issubclass(cmd_instance.__class__, IndexCommand):
+                    child = cls.load(cmd_instance, root_item)
+                    child.name = key
+                    child.comp = cmd_instance
+                    child.comp_type = type(cmd_instance)
+                    root_item.appendChild(child)
+
             for c in comp.__class__.__mro__:  # loop through the classes including super classes
                 if not issubclass(c, Component):  # it should be a subclass of Component
                     break
