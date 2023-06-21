@@ -364,6 +364,12 @@ class Task(thread_class):
         If it returns False, Task should stop ASAP.
         """
         return self._keep_running
+    
+    def delay(self, dt_s):  
+        if self._keep_running:
+            time.sleep(dt_s)
+        else:
+            raise InterruptedError("Aborted.")
 
     def is_task_passed(self):
         return self._task_passed
