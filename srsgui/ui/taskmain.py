@@ -10,6 +10,7 @@ import logging
 import logging.handlers
 
 from pathlib import Path
+import webbrowser
 
 from .qt import QT_BINDER, PYSIDE6, QT_BINDER_VERSION
 from .qt.QtCore import QTimer, QSettings
@@ -54,6 +55,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
     LogoImageFile = 'srslogo.jpg'
     LogoFile = str(Path(__file__).parent / LogoImageFile)
 
+    DocsSuffix = ' documentation'
+    TextAbout = 'About'
+
     def __init__(self, parent=None):
         super(TaskMain, self).__init__(parent)
         self.setupUi(self)
@@ -75,6 +79,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
         # data_dict hold data shared among task. It will inject to a task when run
         self.data_dict = {}
+        self.docs_dict = {}
 
         # self.inst_dict holds instances of subclass of Instrument
         self.inst_dict = {}
@@ -139,13 +144,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         self.statusbar.showMessage('Waiting for task selection')
         self.stdout = StdOut(self.print_redirect)
 
-        self.about = QAction(self)
-        self.about.setText('About')
-        self.menu_Help.addAction(self.about)
-        self.about.triggered.connect(self.onAbout)
-
         self.menu_Tasks.triggered.connect(self.onTaskSelect)
         self.menu_Instruments.triggered.connect(self.onInstrumentSelect)
+        self.menu_Help.triggered.connect(self.onHelp)
 
     def load_tasks(self):
         """
@@ -191,14 +192,14 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             for instr in prev_inst_dict:
                 del instr
             self.inst_dict = self.config.inst_dict
+            self.task_dict = self.config.task_dict
+            self.docs_dict = self.config.docs_dict
 
             self.dock_handler.reset_inst_docks()
 
             self.inst_info_handler.update_tabs()
             for inst_name in self.inst_dict:
                 self.inst_info_handler.update_info(inst_name)
-
-            self.task_dict = self.config.task_dict
 
             self.setWindowTitle(self.config.task_dict_name)
             self.dock_handler.display_image(self.get_logo_file())
@@ -211,6 +212,19 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             logger.error('{}: {}'.format(e.__class__.__name__, e))
 
         try:
+            actions = self.menu_Help.actions()
+            for action in actions:
+                self.menu_Help.removeAction(action)
+
+            action_about = QAction(self)
+            action_about.setText(self.TextAbout)
+            self.menu_Help.addAction(action_about)
+
+            for item in self.docs_dict:
+                action_docs = QAction(self)
+                action_docs.setText(item + self.DocsSuffix)
+                self.menu_Help.addAction(action_docs)
+
             actions = self.menu_Instruments.actions()
             for action in actions:
                 self.menu_Instruments.removeAction(action)
@@ -219,6 +233,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                 action_inst.setText(item)
                 self.menu_Instruments.addAction(action_inst)
             logger.debug('Added new actions to Instruments menu')
+
             # Remove previous actions from Task menu
             actions = self.menu_Tasks.actions()
             for action in actions:
@@ -606,7 +621,19 @@ class TaskMain(QMainWindow, Ui_TaskMain):
         except Exception as e:
             logger.error(f"Error in handle_initial_image: {e}")
 
-    def onAbout(self, checked):
+    def onHelp(self, help_action):
+        try:
+            name = help_action.text()
+            if name == self.TextAbout:
+                self.onAbout()
+            else:
+                name = name[:-len(self.DocsSuffix)]
+                if name in self.docs_dict:
+                    webbrowser.open(self.docs_dict[name])
+        except Exception as e:
+            logger.error(e)
+
+    def onAbout(self):
         msg = ''
         for name in self.inst_dict:
             inst = self.inst_dict[name]

@@ -11,7 +11,6 @@ from importlib import import_module, reload, invalidate_caches
 
 from srsgui.task.task import Task, GreenNormal, RedNormal
 
-# from srs_insts.baseinsts import BaseInst
 from srsgui.inst.instrument import Instrument
 
 logger = logging.getLogger(__name__)
@@ -26,6 +25,7 @@ class Config(object):
         self.inst_dict = {}
         self.task_dict = {}
         self.task_path_dict = {}
+        self.docs_dict = {}
         self.task_dict_name = 'No tasks loaded'
         self.local_db_name = None
         self.base_data_dir = self.DataRootDirectory
@@ -67,7 +67,8 @@ class Config(object):
 
                         elif k == 'inst':
                             self.load_inst_from_line(v)
-
+                        elif k == 'docs':
+                            self.load_docs_from_line(v)
                         elif k == 'name':
                             self.task_dict_name = v
                         else:
@@ -141,7 +142,7 @@ class Config(object):
 
         if hasattr(mod, inst_class_name):
             inst_class = getattr(mod, inst_class_name)
-            inst_class.__version = None
+            inst_class.__version__ = None
             if hasattr(mod, '__version__'):
                 inst_class.__version__ = getattr(mod, "__version__")
             logger.debug('Instrument class {} from "{}" loaded'.format(inst_class_name, inst_key))
@@ -163,6 +164,16 @@ class Config(object):
                 inst.connect_with_parameter_string(parameter_string)
             except Exception as e:
                 logger.error(e)
+
+    def load_docs_from_line(self, v):
+        items = v.split(',')
+        if len(items) != 2:
+            logger.error('invalid docs line: {}'.format(v))
+            return
+
+        doc_key = items[0].strip()
+        doc_url = items[1].strip()
+        self.docs_dict[doc_key] = doc_url
 
     def get_base_log_file_name(self):
         max_file_number = 20
