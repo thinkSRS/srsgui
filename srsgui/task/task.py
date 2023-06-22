@@ -279,7 +279,8 @@ class Task(thread_class):
 
     def delay(self, seconds):
         """
-        Check if the task is stopped and wait for the given seconds.
+        Check if the task is stopped and abort,
+        or wait for the given seconds.
         """
         if not self._keep_running:
             raise Task.TaskException('Task is requested to stop')
