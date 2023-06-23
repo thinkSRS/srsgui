@@ -145,7 +145,7 @@ class SerialInterface(Interface):
         except serial.SerialException:
             raise InstCommunicationError("Sending cmd '{}' to port '{}' failed".format(cmd, self._port))
 
-    def _write_bibary(self, binary_array):
+    def _write_binary(self, binary_array):
         if type(binary_array) not in (bytes, bytearray):
             raise TypeError('_write_binary requires bytes or bytearray')
         try:
