@@ -244,9 +244,13 @@ class Component(object):
         return method_list
 
     def get_command_info(self, command_name):
-        if not hasattr(self.__class__, command_name):
+        if hasattr(self.__class__, command_name):
+            cmd = self.__class__.__dict__[command_name]
+        elif hasattr(self, command_name):
+            cmd = self.__dict__[command_name]
+        else:
             raise AttributeError("No command named '{}' in {}".format(command_name, self.__class__.__name__))
-        cmd = self.__class__.__dict__[command_name]
+
         if issubclass(cmd.__class__, DictCommand):
             info = (cmd.__class__.__name__, cmd.remote_command,
                     cmd.set_dict, cmd.get_dict, None)
@@ -274,15 +278,19 @@ class Component(object):
         the command has the key in its set_dict.
         """
 
-        if not hasattr(self.__class__, command):
+        if hasattr(self.__class__, command):
+            cmd = self.__class__.__dict__[command]
+        elif hasattr(self, command):
+            cmd = self.__dict__[command]
+        else:
             raise AttributeError("No command named '{}' in {}".format(command, self.__class__.__name__))
 
-        cmd = self.__class__.__dict__[command]
         if not issubclass(cmd.__class__, DictCommand) and not issubclass(cmd.__class__, DictIndexCommand):
             raise TypeError("'{}' is not a DictCommand or DictIndexCommand in {}"
                             .format(command, self.__class__.__name__))
         if key not in cmd.set_dict:
-            raise KeyError(f" '{key}' is in {cmd.set_dict} of command '{command}'.")
+            raise KeyError(f" '{key}' is NOT in {cmd.set_dict} of command '{command}'.")
+        return True
 
     def capture_commands(self, include_query_only=False, include_set_only=False,
                          include_excluded=False, include_methods=False, show_raw_cmds=False):
@@ -306,6 +314,83 @@ class Component(object):
 
         # Capture commands from the current component
         current_attributes = []
+
+        for key in self.__dict__:  # loop through the instance
+            cmd_instance = self.__dict__[key]
+            if key in current_attributes:
+                continue
+            current_attributes.append(key)
+
+            if show_raw_cmds and \
+               (issubclass(cmd_instance.__class__, Command) or \
+                issubclass(cmd_instance.__class__, IndexCommand)):
+                k = key + f' <{cmd_instance.remote_command}>'
+            else:
+                k = key
+            if callable(cmd_instance):
+                if issubclass(cmd_instance.__class__, type):
+                    continue
+                if cmd_instance in self.exclude_capture:
+                    if include_excluded:
+                        commands[k + '() [M][EX]'] = ''
+                if include_methods and not k.startswith('_'):
+                    commands[k + '() [M]'] = ''
+                continue
+
+            if cmd_instance in self.exclude_capture:
+                if include_excluded:
+                    commands[k + ' [EX]'] = ''
+                continue
+
+            if issubclass(cmd_instance.__class__, Command):
+                if include_set_only:
+                    if cmd_instance._set_enable and not cmd_instance._get_enable:
+                        commands[k + ' [SO]'] = ''
+                        continue
+
+                if include_query_only:
+                    allowed = cmd_instance._get_enable
+                else:
+                    allowed = cmd_instance._set_enable and cmd_instance._get_enable
+                if not allowed:
+                    continue
+
+                if not cmd_instance._set_enable:
+                    name = k + ' [QO]'
+                else:
+                    name = k
+                commands[name] = cmd_instance.__get__(self, self.__class__)
+
+            elif issubclass(cmd_instance.__class__, IndexCommand):
+                if include_query_only:
+                    allowed = cmd_instance._get_enable
+                else:
+                    allowed = cmd_instance._set_enable and cmd_instance._get_enable
+                if not allowed:
+                    continue
+
+                if not cmd_instance._set_enable:
+                    name = k + ' [QO]'
+                else:
+                    name = k
+                print('Name: {}'.format(name))
+
+                commands[name] = {}
+                index = cmd_instance.index_min
+                while index <= cmd_instance.index_max:
+                    try:
+                        if cmd_instance.index_dict is None:
+                            commands[name][index] = cmd_instance.__getitem__(index)
+                        else:
+                            for key, value in cmd_instance.index_dict.items():
+                                if value == index:
+                                    commands[name][key] = cmd_instance.__getitem__(index)
+                                    break
+                        index += 1
+                    except Exception as e:
+                        print(f'  {type(e)} {e} command:{k} index: {index}')
+                        break
+
         for c in self.__class__.__mro__:  # loop through the classes including super classes
             if not issubclass(c, Component):  # it should be subclass of Component
                 break

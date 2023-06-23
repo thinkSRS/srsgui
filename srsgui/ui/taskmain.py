@@ -640,9 +640,9 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             if hasattr(inst, "__version__"):
                 version = inst.__version__
             else:
-                version = 'N/A'
-
-            msg += '{} version: {}\n'.format(inst.__class__.__name__, version)
+                version = ''
+            if version:
+                msg += '{} version: {}\n'.format(inst.__class__.__name__, version)
         msg += '\nSrsgui version: {}\n'.format(__version__)
         msg += '\n{} version: {}\n'.format(QT_BINDER, QT_BINDER_VERSION)
         msg += 'Python version: {}\n'.format(sys.version)

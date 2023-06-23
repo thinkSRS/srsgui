@@ -7,7 +7,7 @@ V.0.4.0 -- Jun 21, 2023
       self.add_parent_to_index_commands() should be called after the definition of index commands.
 
 V.0.3.4 -- Jun 20, 2023
-    * Removed default_value from :class:`CommandInput <srsgui.task.inputs.CommandInput>`.__init__
+    * Removed default_value from :class:`CommandInput <srsgui.task.inputs.CommandInput>`.__init__.
       cmd_instance argument is not necessary, either.
 
 V.0.3.1 -- May 22, 2023
