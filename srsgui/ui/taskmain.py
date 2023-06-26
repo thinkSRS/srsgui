@@ -179,7 +179,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
                 self.default_config_file = sys.argv[1]
                 self.initial_load = False
             else:
-                popped_path = sys.path.pop()
+                popped_path = sys.path.pop(0)
                 logger.debug('"{}" removed from sys.path'.format(popped_path))
 
             current_dir = str(Path(self.default_config_file).parent)
