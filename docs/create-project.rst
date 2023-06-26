@@ -4,7 +4,7 @@
 Creating a project
 ===================
 
-Here is how to create a ``srsgui`` project as shown in the example
+Here is how to create an ``srsgui`` project as shown in the examples
 directory.
 
     - Create file structure for a project.
@@ -12,8 +12,8 @@ directory.
     - Define instrument drivers based on the :class:`Instrument<srsgui.inst.instrument.Instrument>` class
     - Write Python scripts based on the :class:`Task<srsgui.task.task.Task>` class.
     - Open the configuration file in the ``srsgui`` application
-    - Connect instruments from the Instruments menu, if connections not defined
-      in the configuration file.
+    - Connect instruments from the Instruments menu (if connections are not defined
+      in the .taskconfig file).
     - Select a task from the Task menu and run it.
 
 
@@ -30,27 +30,26 @@ Each ``srsgui`` project makes a use of the predefined directory structure.
         project.taskconfig
 
 A project directory has a .taskconfig configuration file and multiple Python
-modules in two special subdirectory: instruments and tasks.
-Whenever open a .taskconfig file from the SRSGUI application,
+modules in two special subdirectories: ``instruments`` and ``tasks``.
+Whenever .taskconfig file is loaded in the SRSGUI application,
 Python modules in those directories will be forced to reload.
 
 Typically, a Python interpreter loads a module when it is imported for the first time,
-and never check again if the module is modified. When you make changes to a module, save it,
+and does not check again if the module has been modified. When you make changes to a module, save it,
 and run a script using it, you would not see the changes because the Python interpreter
 would not use the modified module, as long as the previous copy of the module is in memory.
-The Python interpreter needs to restart to take an effect of the changed modules.
+The Python interpreter needs to restart for the changed modules to take effect.
 
-When you open a .taskconfig file again from the ``srsgui`` application,
+When you open (or re-open) a .taskconfig file from the ``srsgui`` application,
 it reloads all the Python modules in the 2 subdirectories.
-It helps when you modify and debug a module in the subdirectories.
-Instead of restart the application every time a module is changed,
+Instead of restarting the ``srsgui`` application every time a module is changed,
 you can reopen the .taskconfig file to see the changes from modified modules.
-If you modify a Python module other than the ones in the 2 directories
+If you modify a Python module other than those in the 2 directories
 with respect to the current .taskconfig file, you have to restart the ``srsgui`` application
 to use the modified module.
 
-Python does not allow to use spaces in its package and module names.
-Use underscore if you need spaces between words.
+Python does not allow use of spaces in its package and module names.
+Use underscores if you need spaces between words.
 
 
 Populating the .taskconfig file
@@ -59,17 +58,17 @@ Populating the .taskconfig file
 Each ``srsgui`` project has a \.taskconfig file. The configuration file
 contains:
 
-    - name of the project,
+    - name of the project
     - a list of instruments to use
     - a list tasks to run
 
 
-The following is the configuration file in the example directory
-of ``srsgui`` package without comment lines.
+The following is the configuration file in the examples directory
+of ``srsgui`` package (comment lines have been removed).
 
 .. code-block::
 
-    name: srsgui example project using an oscilloscope and a clock generator
+    name: Srsgui Example - Oscilloscope and Clock Generator
 
     inst: cg,  instruments.cg635,   CG635
     inst: osc, instruments.sds1202, SDS1202
@@ -79,23 +78,22 @@ of ``srsgui`` package without comment lines.
     ...
 
 
-The keyword 'name:' is use as
+The keyword `name:` is used as
 
-    - Title of the SRSGUI application main window (Look at the top of
-      this :ref:`screen capture <top-of-screen-capture-1>`.
-    - Directory name for the project data saving under ~/home/task-results
+    - The title of the SRSGUI application main window (see the top of
+      this :ref:`screen capture <top-of-screen-capture-1>`).
+    - The ddirectory name for the project data, which is saved under ~/home/task-results
 
-You can specify a list of instrument classes to be included in the project using 'inst:' keyword.
+You can specify a list of instrument classes to be included in the project using the `inst:` keyword.
 The first column after the keyword is the name of the instrument used across the project:
 
-    - Menu items under **Instruments** menu. It is used to connect and disconnect
-      the selected instrument.
-    - Tab labels in Instrument Info panel (in the top left corner under the red STOP button
-      in this :ref:`screen capture <top-of-screen-capture-1>`.
-    - Name used in terminal to specify a instrument. Make it short if you use a lot
-      in the terminal at the bottom right corner in this
-      :ref:`screen capture <top-of-screen-capture-1>`.
-
+    - Menu items under **Instruments** menu. Selecting an instrument from this menu is
+      allows you to connect and disconnect the selected instrument.
+    - Tab labels in the Instrument Info panel (in the top left corner under the red STOP button
+      in this :ref:`screen capture <top-of-screen-capture-1>`).
+    - Name used in the Terminal to specify an instrument (at the bottom right corner in this
+      :ref:`screen capture <top-of-screen-capture-1>`). 
+      Keep names short if you plan to interact with instruments frequently via the Terminal.
     - Argument in :meth:`get_instrument() <srsgui.task.task.Task.get_instrument>` method in
       :class:`Task<srsgui.task.task.Task>` class.
 
@@ -106,7 +104,7 @@ The path can be relative to the .taskconfig file if it is a local module,
 
     inst: cg,  instruments.cg635,   CG635
 
-or a path from one of the Python site_package directory.
+or a path from the Python site_package directory.
 
 .. code-block::
 
@@ -114,15 +112,16 @@ or a path from one of the Python site_package directory.
 
 The third column is the name of the class defined in the module.
 
-
+.. _fixed_connection_parameters:
 You can add the optional fourth column if an instrument is used with a fixed connection parameters.
+This automatically establishes the connection to the instrument when the .taskconfig is loaded.
 
 .. code-block::
 
     inst: cg2,  instruments.cg635,   CG635,   serial:COM4:9600
     inst: osc2, instruments.sds1202, SDS1202, tcpip:192.168.1.100:5035
 
-It gets the instruments connected, while a configuration file is loading.
+
 
 
 The first instrument that appears in the configuration file is the default instrument.
@@ -131,9 +130,10 @@ it will be sent to the default instrument.
 
 
 The keyword 'task:' is used to specify a task class to be used in the configuration file.
-the first column after the 'task:' keyword is the name of the task,
-the second is path to the module, the third one is the name of the task class.
-It specifies a task class in the same way with instrument classes.
+The columns that follow the `task` keyword are (in order)
+  1. The name of the task,
+  2. The path to the module, the third one is 
+  3. The name of the task class.
 
 When you open a .taskconfig file, in ``srsgui`` application, the names of the tasks
 appear as menu items under the Task menu, as shown at the top of

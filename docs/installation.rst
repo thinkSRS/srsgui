@@ -17,10 +17,10 @@ you can check your Python version by running from the command prompt:
     a Windows computer system. If you use other systems, commands may be
     different. Refer to `this page. <install-packages_>`_
 
-If you have a Python older than the required version,
-`install a newer Python. <install-python_>`_
+If your version of Python is older than the required version,
+`install a newer version of Python. <install-python_>`_
 
-Using `virtual environment <virtual-environment_>`_ helps to avoid possible dependency
+Using a `virtual environment <virtual-environment_>`_ helps to avoid possible dependency
 conflicts among Python packages. If you want to use a virtual environment, create one with
 your favorite virtual environment package. If you do not have a preference,
 use Python default ``venv``.
@@ -28,11 +28,11 @@ use Python default ``venv``.
 .. code-block::
 
     python -m venv env
-    .\env\Scripts\activate
+    .\venv\Scripts\activate
 
 .. note::
-    Commands to use ``venv`` are different among computer systems. Other than Windows, refer to
-    `this page <venv_>`_.
+    Commands to use ``venv`` are different among computer systems. 
+    For operating systems other than Windows, refer to `this page <venv_>`_.
 
 Srsgui installation
 --------------------
@@ -43,16 +43,16 @@ To run ``srsgui`` as a GUI application, install it with [full] option using pip_
 
     python -m pip install srsgui[full]
 
-It will install ``srsgui`` package along with
+This will install the ``srsgui`` package along with
 the 3 main packages (pyserial_, matplotlib_ and pyside6_) and their dependencies.
 
 If
 
-    - you plan only to use the instrument driver part of ``srsgui`` package without GUI support,
-    - your system requires to install matplotlib_ or pyside6_ from sources other than pip
-      (Some linux systems do so),
-    - you want to use pyqt5_ or pyside2_ instead of pyside6_ as GUI backend,
-    - you have trouble with the full installation and you want to install dependency manually,
+    - you plan to use the instrument driver part of ``srsgui`` only, without GUI support,
+    - your system requires installation of matplotlib_ or pyside6_ from sources other than pip
+      (Some Linux systems do so),
+    - you want to use pyqt5_ or pyside2_ instead of pyside6_ as GUI backend, or
+    - you have trouble with the full installation and you want to install the dependencies manually,
 
 you can install without the extra [full] option:
 
@@ -60,21 +60,22 @@ you can install without the extra [full] option:
 
     python -m pip install srsgui
 
-It will install ``srsgui`` with pyserial_ only.
+This will install ``srsgui`` with pyserial_ only.
 
 .. note::
-    ``srsgui`` runs with either pyside6_, pyside2_ or pyqt5_ installed as GUI backend.
-    If your system already have pyside2_ or pyqt5_ installed, you do not have to install pyside6_.
+    ``srsgui`` runs with either pyside6_, pyside2_, or pyqt5_ installed as the GUI backend.
+    If your system already has pyside2_ or pyqt5_ installed, you do not have to install pyside6_.
+    To determine if these are installed, you can check the following from a terminal:
 
         python -m pip show pyside2
 
         python -m pip show pyqt5
 
-    will show if pyside2_ or pyqt5_ is installed.
+    
 
 .. note::
     In order to maintain the MIT_ license for your projects or modified ``srsgui``, you have to use
-    pyside6_ or pyside2_. Note that pyqt5_ imposes GPLv3_ license to packages using pyqt5_.
+    pyside6_ or pyside2_. pyqt5_ imposes the GPLv3_ license to any packages using pyqt5_.
 
 Starting srsgui application
 ----------------------------
@@ -89,7 +90,7 @@ After ``srsgui`` is installed, you can start ``srsgui`` application from the com
 
     python -m srsgui
 
-``srsgui`` installs a executable script named "srsgui" in Python/Scripts directory.
+``srsgui`` installs an executable script named "srsgui" in the Python/Scripts directory.
 If the directory is included in PATH environment variable, **srsgui** command will work.
 Otherwise, **python -m srsgui** will work regardless of PATH setting.
 
@@ -99,13 +100,13 @@ Otherwise, **python -m srsgui** will work regardless of PATH setting.
     :align: center
     :figclass: align-center
 
-If you see the application is open and running, the installation is successful!
+If you see the application is open and running, the installation was successful!
 
 .. note::
-    Instead of seeing the application running, you may get errors, probably ImportError.
-    Carefully look through the exception traceback to find out which package causes the error.
-    When the latest python is installed, some packages may not be installed properly. If the problem
-    is not from ``srsgui`` directly, web search of the problem usually leads to a fix.
+    Instead of seeing the application running, you may get errors (most likely, an `ImportError`).
+    Carefully look through the exception traceback to find out which package caused the error.
+    When the latest version of python is installed, some packages may not be installed properly. 
+    If the problem is not from ``srsgui`` directly, a web search of the problem usually leads to a fix.
 
 
 

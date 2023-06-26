@@ -29,38 +29,39 @@ Following is the simplest form of a task. Even though it does not do much,
 
 When a task runs, the setup() method runs first. if the setup finished with an exception,
 the task is aborted without running test() or cleanup(). If the setup() method completes
-without exception, the test() method runs next. Regardless of exception happened while
-the test() is finished, running the cleanup() method completes the task.
+without exception, the test() method runs next. Regardless of any exceptions,
+the cleanup() method runs last.
 
-You write a task based on the template any way you want, utilizing the resources and APIs
-provided in Task class for Graphic User Interface (GUI) inputs and outputs. As long as
-your tasks use the limited GUI resources available from Task class,
-your task will run along with ``srsgui`` application.
+Your task may be much more involved of course, utilizing the resources and APIs
+provided in the Task class for Graphical User Interface (GUI) inputs and outputs. 
+As long as your tasks make proper use of the GUI resources available from the :class:`Task <srsgui.task.task.Task>` class,
+your task will run successfully in the ``srsgui`` application.
 
-A task is a Python thread_ (if it is run by an application with a Qt backend,
-it will be QThread_.), running as concurrently with the main application.
+A task is executed as a Python thread_ (if it is run by an application with a Qt backend,
+it will be QThread_.), running concurrently with the main application.
 
 The :class:`Task <srsgui.task.task.Task>` is designed with much consideration
-on protection of the main application from crashing caused by unhandled Exception,
-while a buggy task running. ``srsgui`` provides information as much as Python
-interpreter does. After modifying a task, reopen the .taskconfig file will reload
-the modified task before you run it again.
+on protection of the main application from crashing caused by unhandled Exceptions. 
+``srsgui`` provides debug information and error handling just as Python interpreter does. 
+
+If you have modified a task, reopen the .taskconfig file from within ``srsgui`` in order to reload
+the modified task before you run it again (otherwise your modified code will not be run).
 
 
 The main application provides resources that a task can use,
 and responds to the callbacks from the task. The resources are set using
 the APIs provided by the task.
 
-    - :meth:`set_inst_dict <srsgui.task.task.Task.set_inst_dict>` is to set the
-      instrument dictionary that contains the instrument instances.
-    - :meth:`set_data_dict <srsgui.task.task.Task.set_data_dict>` is to set the
-      data dictionary that contains the data instances.
-    - :meth:`set_figure_dict <srsgui.task.task.Task.set_figure_dict>` is to set the
-      figure dictionary that contains the figure instances.
-    - :meth:`set_session_handler <srsgui.task.task.Task.set_session_handler>` is
-       to set the session handler that saves the data to a file.
-    - :meth:`set_callback_handler <srsgui.task.task.Task.set_session_handler>` is
-      to set the callback handler that handles the callbacks from the task.
+    - :meth:`set_inst_dict <srsgui.task.task.Task.set_inst_dict>` -- 
+      set the instrument dictionary that contains the instrument instances.
+    - :meth:`set_data_dict <srsgui.task.task.Task.set_data_dict>` -- 
+      set the data dictionary that contains the data instances.
+    - :meth:`set_figure_dict <srsgui.task.task.Task.set_figure_dict>` -- 
+      set the figure dictionary that contains the figure instances.
+    - :meth:`set_session_handler <srsgui.task.task.Task.set_session_handler>` -- 
+      set the session handler that saves the data to a file.
+    - :meth:`set_callback_handler <srsgui.task.task.Task.set_session_handler>` -- 
+      set the callback handler that handles the callbacks from the task.
 
 
 The main application and the running task are separate threads, and the main application responds only to
@@ -99,11 +100,10 @@ For the input panel in the ``srsgui`` main window,
       update the value of the input parameter in the input panel.
 
 For Matplotlib Figures,
-
-    callbacks.request_figure_update - draw
-    callbacks.notify_data_available - update
-    clear_figure
-    get_figure
+    - callbacks.request_figure_update - re-draw figure
+    - callbacks.notify_data_available - update
+    - clear_figure
+    - get_figure
 
 For a question dialog box during running a task,
     - :meth:`ask_question <srsgui.task.task.Task.ask_question>` is a wrapper method
@@ -111,12 +111,12 @@ For a question dialog box during running a task,
     - :meth:`question_background_update <srsgui.task.task.Task.question_background_update>`
 
 
-For the session_handler that save information from a task to a file,
-    add_details
-    create_table
-    add_data_to_table
-    create_table_in_file
-    add_to_table_in_file
+For the session_handler (which saves information from a task to a file),
+    - :meth:`add_details <srsgui.task.task.Task.add_details>`
+    - :meth:`create_table <srsgui.task.task.Task.create_table>`
+    - :meth:`add_data_to_table <srsgui.task.task.Task.add_data_to_table>`
+    - :meth:`create_table_in_file <srsgui.task.task.Task.create_table_in_file>`
+    - :meth:`add_to_table_in_file <srsgui.task.task.Task.add_to_table_in_file>`
 
 For inst_dict
     - :meth:`get_instrument <srsgui.task.task.Task.get_instrument>` is to retrieve
@@ -124,7 +124,7 @@ For inst_dict
       the instrument instance, you can use it in the task in the same way with
       the instance created from a Python interpreter.
 
-Once you get used to the APIs of Task class, you can write scripts that runs
+Once you get used to the API for the Task class, you can write scripts that run
 as a part of ``srsgui``.
 
 
