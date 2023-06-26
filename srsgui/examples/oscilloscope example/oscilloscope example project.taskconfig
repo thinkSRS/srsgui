@@ -4,7 +4,7 @@
 
 # The name is used for the main window title and for the directory name for result data saving
 
-name: Srsgui example project using an oscilloscope and a clock generator
+name: Srsgui Example - Oscilloscope and Clock Generator
 
 
 # Specify Instruments used in the project

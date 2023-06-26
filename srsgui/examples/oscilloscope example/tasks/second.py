@@ -12,14 +12,18 @@ from srsgui import IntegerInput
 
 class SecondTask(Task):
     """
-It shows how to use a Matplotlib plot in a task. \
-No hardware connection is required to plot a sine curve.
+Example to demonstrate the use of matplotlib plot in a task.
+No hardware connection is required.
+Generates a plot of y = sin(x) vs. x, \
+for x in the range [initial angle, final angle]. 
     """
     
     # Interactive input parameters to set before running 
-    Angle = 'final angle to plot'
+    theta_init = 'initial angle'
+    theta_final = 'final angle'
     input_parameters = {
-        Angle: IntegerInput(360, ' degree')
+        theta_init: IntegerInput(0,' deg'),
+        theta_final: IntegerInput(360,' deg')
     }
     """
     Use input_parameters to get parameters used in the task 
@@ -28,7 +32,8 @@ No hardware connection is required to plot a sine curve.
     def setup(self):
 
         # Get a value from input_parameters
-        self.total_angle = self.get_input_parameter(self.Angle)
+        self.theta_i = self.get_input_parameter(self.theta_init)
+        self.theta_f = self.get_input_parameter(self.theta_final)
 
         # Get the Python logging handler
         self.logger = self.get_logger(__file__)
@@ -38,9 +43,11 @@ No hardware connection is required to plot a sine curve.
 
         # Once you get the figure, the followings are typical Matplotlib things to plot.
         self.ax = self.figure.add_subplot(111)
-        self.ax.set_xlim(0, self.total_angle)
+        self.ax.set_xlim(self.theta_i, self.theta_f)
         self.ax.set_ylim(-1.1, 1.1)
-        self.ax.text(0.1 * self.total_angle, 0.5, 'Drawing sine curve...')
+        x_txt = self.theta_i + 0.25*(self.theta_f - self.theta_i)
+        y_txt = 0.5
+        self.ax.text(x_txt, y_txt, 'Drawing sine curve...')
         self.line, = self.ax.plot([0], [0])
         
     def test(self):
@@ -50,7 +57,8 @@ No hardware connection is required to plot a sine curve.
         y = []
         rad = 180 / math.pi
 
-        for i in range(self.total_angle):
+        
+        for i in range(self.theta_i, self.theta_f+1, 1):
             if not self.is_running():  # if the stop button is pressed, stop the task
                 break
        
