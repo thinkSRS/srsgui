@@ -94,8 +94,7 @@ For the input panel in the ``srsgui`` main window,
       parameter.
     - :meth:`get_input_parameter <srsgui.task.task.Task.get_input_parameter>` is to get the value of an input
       parameter.
-    - :meth:`notify_parameter_changed <srsgui.task.task.Task.notify_parameter_changed>` is a wrapper method for
-      :meth:`callbacks.parameter_changed <srsgui.task.callbacks.Callbacks.parameter_changed>`, which is to notify the
+    - :meth:`notify_parameter_changed <srsgui.task.task.Task.notify_parameter_changed>` is to notify the
       main application that the value of an input parameter has changed. The main application will
       update the value of the input parameter in the input panel.
 
@@ -106,8 +105,7 @@ For Matplotlib Figures,
     - :meth:`clear_figures <srsgui.task.task.Task.clear_figures>`
 
 For a question dialog box during running a task,
-    - :meth:`ask_question <srsgui.task.task.Task.ask_question>` is a wrapper method
-      for the Task :meth:`callbacks.new_question <srsgui.task.callbacks.new_question>`.
+    - :meth:`ask_question <srsgui.task.task.Task.ask_question>`
     - :meth:`question_background_update <srsgui.task.task.Task.question_background_update>`
 
 For the session_handler (which saves information from a task to a file),
