@@ -472,8 +472,10 @@ class Task(thread_class):
         self.write_text(self.EscapeForStop + self.name)
         self.update_status(self.name + ' stopped')
 
-    # output text to UI
     def write_text(self, text):
+        """
+        Base method to send output text to UI
+        """
         self.callbacks.text_available(str(text))
 
     def get_input_parameter(self, name):

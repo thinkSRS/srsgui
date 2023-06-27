@@ -345,7 +345,7 @@ ThirdTask
 The third task uses the oscilloscope only. It gets the requested number of captures from user input,
 then repeats oscilloscope waveform capture and updates the waveform plot. 
 It stops once the desired number of captures have been obtained, or when the Stop button is pressed.
-Waveforms are captured with 700000 points every 0.2 seconds over TCP/IP communcation.
+Waveforms are captured with 700000 points about every 0.2 seconds over TCP/IP communcation.
 
 
 .. literalinclude:: ../srsgui/examples/oscilloscope example/tasks/third.py
@@ -355,10 +355,10 @@ Waveforms are captured with 700000 points every 0.2 seconds over TCP/IP communca
 FourthTask
 -----------
 
-The fourth example is the climax of the examples series. It uses `input_parameters`
-to change output frequency of the clock generator interactively, captures waveforms
-from the oscilloscope, calculates an FFT of the waveforms with numpy, and generates plots
-using 2 matplotlib figures.
+The fourth example is the climax of the examples series (:ref:`screenshot <top-of-screen-capture-1>`).
+It uses `input_parameters` to change output frequency of the clock generator interactively,
+captures waveforms from the oscilloscope, calculates an FFT of the waveforms with numpy,
+and generates plots using 2 matplotlib figures.
 
 By adding the names of figures that you want to use in additional_figure_names,
 ``srsgui`` provides more figures to the task before it starts.
