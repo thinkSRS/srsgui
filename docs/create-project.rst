@@ -113,6 +113,7 @@ or a path from the Python site_package directory.
 The third column is the name of the class defined in the module.
 
 .. _fixed_connection_parameters:
+
 You can add the optional fourth column if an instrument is used with a fixed connection parameters.
 This automatically establishes the connection to the instrument when the .taskconfig is loaded.
 
@@ -131,6 +132,7 @@ it will be sent to the default instrument.
 
 The keyword 'task:' is used to specify a task class to be used in the configuration file.
 The columns that follow the `task` keyword are (in order)
+
   1. The name of the task,
   2. The path to the module, the third one is 
   3. The name of the task class.

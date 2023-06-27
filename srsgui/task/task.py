@@ -340,7 +340,7 @@ class Task(thread_class):
     def get_figure(self, name=None) -> Figure:
         """
         Get a Matplotlib figure from figure_dict.
-        if name is None, it will reutrn the first figure in figure_dict as the defualt
+        if name is None, it will return the first figure in figure_dict as the default.
         """
 
         if name is None:
@@ -388,30 +388,83 @@ class Task(thread_class):
 
     # Wrapper for TaskResult.add_details
     def add_details(self, msg: str, key='summary'):
+        """
+        Add msg to :class:`TaskResult <srsgui.task.task.taskresult.TaskResult>` with key.
+        Also display it on the Result panel.
+        """
         self.result.add_details(msg, key)
         self.display_result('{}: {}'.format(key, msg))
 
     # Wrapper for TaskResult.create_table
     def create_table(self, name: str, *args):
+        """
+        Create a table with name in :class:`TaskResult <srsgui.task.task.taskresult.TaskResult>`
+
+        Parameters
+        -----------
+            name: str
+                name of the table
+            args
+                horizontal header for the table.
+                The length of args defines the number of table columns
+        """
         self.result.create_table(name, *args)
 
     # Wrapper for TaskResult.add_data_to_table
     def add_data_to_table(self, name: str, *args, ):
+        """
+        Add args into the table with name
+
+        Parameters
+        -----------
+            name: str
+                the name of the table into which data are added
+            args
+                A row of data
+                The length of args should match with the number of columns in the table
+        """
         self.result.add_data_to_table(name, *args)
 
     # The file for raw data is created by SessionHandler automatically.
     # You can sequentially add data to the table until you create another new table.
-    # TaskResult is attached to the file in the last before closed.
+    # TaskResult is attached to the enf og the file when closed.
 
     def create_table_in_file(self, name, *args):
+        """
+        Create a table only saved outside :class:`TaskResult <srsgui.task.task.taskresult.TaskResult>` class.
+
+        When a table will get big, use this instead of :meth:`create_table <srsgui.task.task.Task.create_table>`.
+
+        Parameters
+        -----------
+            name: str
+                name of the table
+            args
+                horizontal header for the table.
+                The length of args defines the number of table columns
+        """
         if self.session_handler is None:
             raise AttributeError("No session handler available")
         self.session_handler.create_table_in_file(name, *args)
 
-    def add_to_table_in_file(self, *args, format_list=None):
+    def add_to_table_in_file(self, name, *args, format_list=None):
+        """
+        Add args into the table with name
+
+        Parameters
+        -----------
+            name: str
+                the name of the table into which data are added
+            args
+                A row of data
+                The length of args should match with the number of columns in the table
+            format_list: tuple
+                optional format for args
+        """
+
         if self.session_handler is None:
             raise AttributeError("No session handler available")
-        self.session_handler.add_to_table_in_file(*args, format_list=format_list)
+        self.session_handler.add_to_table_in_file(name, *args, format_list=format_list)
 
     def add_dict_to_file(self, name, data_dict):
         """
@@ -422,11 +475,18 @@ class Task(thread_class):
         self.session_handler.add_dict_to_file(name, data_dict)
 
     def save_result(self, msg):
-        self.logger.error('Do not use save_result. Use add_to_table_in_file, or result.add_details, instead.')
+        """
+        Deprecated. Use add_details instead
+        """
+        self.logger.error('Do not use save_result. Use add_details or add_to_table_in_file instead.')
         # raise NotImplementedError()
 
     def round_float(self, number):
-        # set the resolution of the number with self.round_float_resolution
+        """
+        Round a float number with a resolution
+
+        Set the resolution of the number with self.round_float_resolution
+        """
         fmt = '{{:.{}e}}'.format(self.round_float_resolution)
         return float(fmt.format(number))
 
@@ -543,17 +603,28 @@ class Task(thread_class):
         self.callbacks.parameter_changed()
 
     def request_figure_update(self, figure=None):
+        """
+        It requests the parent of the task to update the figure,
+        if the callback is set up properly.
+        """
         if type(figure) is not Figure:
             figure = self.figure
         self.callbacks.figure_update_requested(figure)
 
     def update_figure(self, figure: Figure):
+        """
+        Deprecated. Use request_figure_update instead.
+        """
         if type(figure) is not Figure:
             raise TypeError('{} is not  a Figure'.format(type(figure)))
         self.callbacks.figure_update_requested(figure)
 
-    # It needs a matching update() as a slot to run from UI
     def notify_data_available(self, data={}):
+        """
+        It needs a matching update() defined in the task class that will be run by the parent.
+        It is used to run both data processing and figure_update from the parent thread
+        to prevent a race condition between them.
+        """
         self.callbacks.data_available(data)
 
     def update(self, data: dict):

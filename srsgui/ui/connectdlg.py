@@ -26,7 +26,6 @@ class ConnectDlg(QDialog):
       :class:`srsgui.inst.instrument.Instrument` class listed in the current .taskconfig file.
 
     * To connect to the selected interface of the instrument.
-
     """
 
     def __init__(self, inst, parent=None):

@@ -85,7 +85,7 @@ For python logging_,
 
 
 For the input panel in the ``srsgui`` main window,
-    :attr:`input_parameters <srsgui.task.task.Task.input_paramteres>` is a dictionary that contains
+    :attr:`input_parameters <srsgui.task.task.Task.input_parameters>` is a dictionary that contains
     the input parameters that will be displayed in the input panel.
 
     - :meth:`get_all_input_parameters <srsgui.task.task.Task.get_all_input_parameters>` is to get all the input
@@ -95,21 +95,20 @@ For the input panel in the ``srsgui`` main window,
     - :meth:`get_input_parameter <srsgui.task.task.Task.get_input_parameter>` is to get the value of an input
       parameter.
     - :meth:`notify_parameter_changed <srsgui.task.task.Task.notify_parameter_changed>` is a wrapper method for
-      :meth:`callbacks.parameter_changed <srsgui.task.callbacks.parameter_changed`, which is to notify the
+      :meth:`callbacks.parameter_changed <srsgui.task.callbacks.Callbacks.parameter_changed>`, which is to notify the
       main application that the value of an input parameter has changed. The main application will
       update the value of the input parameter in the input panel.
 
 For Matplotlib Figures,
-    - callbacks.request_figure_update - re-draw figure
-    - callbacks.notify_data_available - update
-    - clear_figure
-    - get_figure
+    - :meth:`get_figure <srsgui.task.task.Task.get_figure>`
+    - :meth:`request_figure_update <srsgui.task.task.Task.request_figure_update>`
+    - :meth:`notify_data_available <srsgui.task.task.Task.notify_data_available>`
+    - :meth:`clear_figures <srsgui.task.task.Task.clear_figures>`
 
 For a question dialog box during running a task,
     - :meth:`ask_question <srsgui.task.task.Task.ask_question>` is a wrapper method
       for the Task :meth:`callbacks.new_question <srsgui.task.callbacks.new_question>`.
     - :meth:`question_background_update <srsgui.task.task.Task.question_background_update>`
-
 
 For the session_handler (which saves information from a task to a file),
     - :meth:`add_details <srsgui.task.task.Task.add_details>`
@@ -133,6 +132,6 @@ as a part of ``srsgui``.
 .. _VXI11: https://www.lxistandard.org/About/VXI-11-and-LXI.aspx
 .. _GPIB: https://en.wikipedia.org/wiki/IEEE-488
 .. _USB-TMC: https://www.testandmeasurementtips.com/remote-communication-with-usbtmc-faq/
-.. _thread: https://realpython.com/intro-to-python-threading/
+.. _thread: https://docs.python.org/3/library/threading.html
 .. _QThread: https://doc.qt.io/qt-6/qthread.html
 .. _logging: https://docs.python.org/3/howto/logging.html
