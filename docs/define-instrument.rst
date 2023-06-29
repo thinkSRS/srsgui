@@ -148,7 +148,7 @@ as well as two commands sent to the the clock generator ``cg``
 |
 
 
-Component, Commands, and IndexCommands
+Component, Commands and IndexCommands
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 :class:`Instrument <srsgui.inst.instrument.Instrument>` class uses

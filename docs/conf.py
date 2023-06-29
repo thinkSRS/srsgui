@@ -10,7 +10,7 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('/PyPI/srsgui'))
+sys.path.insert(0, os.path.abspath('../srsgui'))
 
 from srsgui import __version__
 

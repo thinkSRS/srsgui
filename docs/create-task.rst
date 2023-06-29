@@ -65,11 +65,12 @@ the APIs provided by the task.
 
 
 The main application and the running task are separate threads, and the main application responds only to
-the callbacks from the task.
+the callbacks from the task. Following are convenience methods for callbacks and related ones
+in the :class:`Task <srsgui.task.task.Task>` class.
 
 For text output,
     - :meth:`write_text <srsgui.task.task.Task.write_text>` is the base method for Task to use
-      :meth:`callbacks.text_available <srsgui.task.callbacks.text_available>` callback.
+      :meth:`callbacks.text_available <srsgui.task.callbacks.Callbacks.text_available>` callback.
     - :meth:`display_device_info <srsgui.task.task.Task.display_device_info>`
     - :meth:`display_result <srsgui.task.task.Task.display_result>`
     - :meth:`update_status <srsgui.task.task.Task.update_status>`
@@ -98,7 +99,11 @@ For the input panel in the ``srsgui`` main window,
       main application that the value of an input parameter has changed. The main application will
       update the value of the input parameter in the input panel.
 
-For Matplotlib Figures,
+For Matplotlib `figures <figure_>`_,
+    You can use most of Axes_-based Matplotlib APIs with the figure instance you get with
+    :meth:`get_figure <srsgui.task.task.Task.get_figure>`. After adding data and formats
+    into the figure, call :meth:`request_figure_update <srsgui.task.task.Task.request_figure_update>`.
+
     - :meth:`get_figure <srsgui.task.task.Task.get_figure>`
     - :meth:`request_figure_update <srsgui.task.task.Task.request_figure_update>`
     - :meth:`notify_data_available <srsgui.task.task.Task.notify_data_available>`
@@ -121,8 +126,8 @@ For inst_dict
       the instrument instance, you can use it in the task in the same way with
       the instance created from a Python interpreter.
 
-Once you get used to the API for the Task class, you can write scripts that run
-as a part of ``srsgui``.
+Once you get used to the API for the :class:`Task <srsgui.task.task.Task>` class,
+you can write scripts that run as a part of ``srsgui``.
 
 
 .. _PyVisa: https://pyvisa.readthedocs.io/en/latest/
@@ -133,3 +138,5 @@ as a part of ``srsgui``.
 .. _thread: https://docs.python.org/3/library/threading.html
 .. _QThread: https://doc.qt.io/qt-6/qthread.html
 .. _logging: https://docs.python.org/3/howto/logging.html
+.. _figure: https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure
+.. _axes: https://matplotlib.org/stable/api/axes_api.html

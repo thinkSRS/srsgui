@@ -496,7 +496,7 @@ class Task(thread_class):
         self.write_text(self.EscapeForStatus + message)
 
     def display_device_info(self, message='', device_name=None, update=False,  clear=False):
-        """output to device info windows
+        """output to the Device Info panel
         """
         if update:
             if device_name:
@@ -518,7 +518,7 @@ class Task(thread_class):
             self.write_text('{}{}'.format(self.EscapeForDevice, message))
 
     def display_result(self, message, clear=False):
-        """ output to the result window
+        """ output to the Result panel
         """
         if clear:
             self.write_text('{}cls'.format(self.EscapeForResult))
