@@ -10,7 +10,7 @@ directory.
     - Create file structure for a project.
     - Make a list of instrument classes and Python scripts in a .taskconfig file.
     - Define instrument drivers based on the :class:`Instrument<srsgui.inst.instrument.Instrument>` class,
-      if don't find ones you want to use.
+      if you don't find ones that you want to use.
     - Write Python scripts based on the :class:`Task<srsgui.task.task.Task>` class, or modify existing ones.
     - Open the configuration file in the ``srsgui`` application
     - Connect instruments from the Instruments menu (if connections are not defined
