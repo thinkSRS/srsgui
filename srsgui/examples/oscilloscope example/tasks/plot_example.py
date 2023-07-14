@@ -1,5 +1,5 @@
 ##! 
-##! Coptright(c) 2022, 2023 Stanford Research Systems, All right reserved
+##! Copyright(c) 2022, 2023 Stanford Research Systems, All rights reserved
 ##! Subject to the MIT License
 ##! 
 
@@ -10,7 +10,7 @@ from srsgui import Task
 from srsgui import IntegerInput
 
 
-class SecondTask(Task):
+class PlotExample(Task):
     """
 Example to demonstrate the use of matplotlib plot in a task.
 No hardware connection is required.

@@ -51,8 +51,8 @@ Let's look at the directory structure of the project.
             cg635.py
             sds1202.py
         /tasks
-            first.py
-            second.py
+            identify.py
+            plot_example.py
             ...
 
         oscilloscope example project.taskconfig
@@ -78,8 +78,8 @@ explained in :ref:`Populating the .taskconfig file`
     inst: cg,  instruments.cg635,   CG635
     inst: osc, instruments.sds1202, SDS1202
 
-    task: *IDN test,                 tasks.first,  FirstTask
-    task: Plot example,              tasks.second, SecondTask
+    task: *IDN test,                 tasks.idenfify,  Identify
+    task: Plot example,              tasks.plot_example, PlotExample
     ...
 
 Instrument drivers
@@ -271,10 +271,10 @@ They are designed to showcase how to use the Task class.
 Select the first task (\*IDN test) from the Tasks menu
 and click the green arrow in the tool bar to run the task.
 
-FirstTask
------------
+Identify task
+--------------
 
-The first task shows:
+The Identify task shows:
 
     - How to use module-level logger for Python logging_ in a task
     - How to use instruments defined in the configuration file
@@ -283,7 +283,7 @@ The first task shows:
 It is not much different from the :ref:`bare bone structure <top-of-bare-bone-task>`
 shown in the :ref:`Writing a task script` section.
 
-.. literalinclude:: ../srsgui/examples/oscilloscope example/tasks/first.py
+.. literalinclude:: ../srsgui/examples/oscilloscope example/tasks/identify.py
     :language: Python
     :linenos:
 
@@ -304,10 +304,10 @@ which is utilized in the CG635 class definition via the following line:
 This simple line makes it possible to set and query the `cg.frequency` 
 without having to directly manipulate command or response strings. 
 
-SecondTask
------------
+PlotExample task
+-----------------
 
-The second task requires no instrument connections, and shows:
+The PlotExample task requires no instrument connections, and shows:
 
     - How to define :attr:`input_parameters <srsgui.task.task.Task.input_parameters>`
       for interactive user input from the application input panel
@@ -317,7 +317,7 @@ The second task requires no instrument connections, and shows:
     - How to stop the task by checking
       :meth:`is_running() <srsgui.task.task.Task.is_running>`.
 
-.. literalinclude:: ../srsgui/examples/oscilloscope example/tasks/second.py
+.. literalinclude:: ../srsgui/examples/oscilloscope example/tasks/plot_example.py
     :language: Python
     :linenos:
 
@@ -327,7 +327,7 @@ Using matplotlib_ with ``srsgui`` is straightforward if you are already familiar
 The important differences when using matplotlib in ``srsgui`` are:
     - You have to get the figure using get_figure(), rather than creating one on your own.
     - Plots are created during `setup()`, because it is a slow process. During `test()`,
-      you simply update data using `set_data()` or similiar methods for data update.
+      you simply update data using `set_data()` or similar methods for data update.
     - You must use `request_figure_update()` to redraw the plot, after `set_data()`.
       The event loop handler in the main application will update the plot at its earliest
       convenience.
@@ -339,23 +339,25 @@ The important differences when using matplotlib in ``srsgui`` are:
 
 |
 
-ThirdTask
------------
+ScopeCapture task
+------------------
 
-The third task uses the oscilloscope only. It gets the requested number of captures from user input,
+The ScopeCapture task uses the oscilloscope only. It gets the requested number of captures from user input,
 then repeats oscilloscope waveform capture and updates the waveform plot. 
 It stops once the desired number of captures have been obtained, or when the Stop button is pressed.
-Waveforms are captured with 700000 points about every 0.2 seconds over TCP/IP communcation.
+Waveforms are captured with 700000 points about every 0.2 seconds over TCP/IP communication.
 
 
-.. literalinclude:: ../srsgui/examples/oscilloscope example/tasks/third.py
+.. literalinclude:: ../srsgui/examples/oscilloscope example/tasks/scope_capture.py
     :language: Python
     :linenos:
 
-FourthTask
------------
+.. _top-of-captured-fft:
 
-The fourth example is the climax of the examples series (:ref:`screenshot <top-of-screen-capture-1>`).
+CapturedFFT task
+-----------------
+
+The CaptureFFT task is the climax of the examples series (:ref:`screenshot <top-of-screen-capture-1>`).
 It uses `input_parameters` to change output frequency of the clock generator interactively,
 captures waveforms from the oscilloscope, calculates an FFT of the waveforms with numpy,
 and generates plots using 2 matplotlib figures.
@@ -363,15 +365,15 @@ and generates plots using 2 matplotlib figures.
 By adding the names of figures that you want to use in additional_figure_names,
 ``srsgui`` provides more figures to the task before it starts.
 
-.. literalinclude:: ../srsgui/examples/oscilloscope example/tasks/fourth.py
+.. literalinclude:: ../srsgui/examples/oscilloscope example/tasks/captured_fft.py
     :language: Python
     :linenos:
 
-FifthTask
-----------
+SimulatedFFT task
+------------------
 
-The fifth task shows how to subclass an existing task class for reuse.
-The method get_waveform() in the fourth example is reimplemented to generate
+The SimulatedFFT task shows how to subclass an existing task class for reuse.
+The method get_waveform() in the CaptureFFT example is reimplemented to generate
 simulated waveform that runs without any real oscilloscope.
 
 Note that the square wave edge calculation is crude, causing modulation in pulse width
@@ -384,7 +386,7 @@ processing. It is not a problem in the real world, because the signal is analog,
 and the sampling rate is limited by the bandwidth of the signal.
 
 
-.. literalinclude:: ../srsgui/examples/oscilloscope example/tasks/fifth.py
+.. literalinclude:: ../srsgui/examples/oscilloscope example/tasks/simulated_fft.py
     :language: Python
     :linenos:
 

@@ -1,12 +1,12 @@
 ##! 
-##! Coptright(c) 2022, 2023 Stanford Research Systems, All right reserved
+##! Copyright(c) 2022, 2023 Stanford Research Systems, All rights reserved
 ##! Subject to the MIT License
 ##! 
 
 from srsgui import Task
 
 
-class FirstTask(Task):
+class Identify(Task):
     """
 Query *IDN? to instruments, 'cg' and 'osc' \
 defined in the configuration file.

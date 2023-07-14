@@ -2,21 +2,26 @@
 
 `Srsgui` is a simple framework:
 
-   - To define instrument classes for instruments that use remote communication,
-     based on the `Instrument` class and the communication `Interface` class. 
+   - To define instrument classes for instruments that use remote communication, based on the 
+     [`Instrument`](https://thinksrs.github.io/srsgui/srsgui.inst.html#module-srsgui.inst.instrument) 
+     class and the communication 
+     [`Interface`](https://thinksrs.github.io/srsgui/srsgui.inst.communications.html) classes. 
      (By default, serial and TCPIP is available. VXI11, GPIB and USB-TMC are optional).
 
-   - To write Python scripts (tasks) that run in GUI environment with simple APIs
-     provided in ``Task`` class.
+   - To write Python scripts (tasks) that run in graphic user interface (GUI) environment using simple
+     application programming interfaces (APIs) provided in 
+     [``Task``](https://thinksrs.github.io/srsgui/srsgui.task.html) class.
 
    - To organize instrument classes and task scripts presented in a GUI application
-     using a configuration (.taskconfig) file for a project.
+     using a configuration 
+     [(.taskconfig)](https://thinksrs.github.io/srsgui/create-project.html#populating-the-taskconfig-file)
+     file for a project.
 
 ![screenshot](https://thinksrs.github.io/srsgui/_images/example-screen-capture-2.png " ")
 
 ## Installation
 
-To run ``srsgui`` as an application, create a virtual environment, if necessary, 
+To run ``srsgui`` as an GUI application, create a virtual environment, if necessary, 
 and install using ``pip`` with the `[full]` option:  
 
     python -m pip install srsgui[full]
@@ -24,13 +29,16 @@ and install using ``pip`` with the `[full]` option:
 ``Srsgui`` package has the following 3 main dependencies: 
 [pyserial](https://pypi.org/project/pyserial/), 
 [matplotlib](https://pypi.org/project/matplotlib/) and
-[PySide6](https://pypi.org/project/PySide6/). If the installation above fails, 
+[PySide6](https://pypi.org/project/PySide6/) 
+(or [PySide2](https://pypi.org/project/PySide2/)). If the installation above fails, 
 you have to install the failed pacakge manually. Using a virtual environment will
 eliminate possible conflicts between packages in the main Python installation and 
-the packages. Some Linux distributions offer certain Python packages from their repositories only (i.e. not from ``pip``). 
+the packages. Some Linux distributions offer certain Python packages from their 
+repositories only (not from ``pip``). 
 Run a web search for more information on system-specific installation.   
 
-Once pyserial, matplotlib and PySide6 are installed properly, or if you plan to use `srsgui` for instrument drivers only without GUI support, 
+Once pyserial, matplotlib and PySide6 (or PySide2) are installed properly, or if you plan to use 
+`srsgui` for instrument drivers only without GUI support, 
 you can install ``srsgui`` without the `[full]` option:
 
     python -m pip install srsgui
@@ -49,14 +57,16 @@ If the script directory is not in PATH, run the srsgui module with Python.
 
 ## Run the example project
 
-By default, the `srsgui` application starts with the project that was running when it was last closed.
+By default, the `srsgui` application starts with the project that was running when it was closed the last time.
  
-To open the **oscilloscope example project** included in the `srsgui` package 
+To open the [**oscilloscope example project**](https://thinksrs.github.io/srsgui/example.html)
+included in the `srsgui` package  
 (if `srsgui` does not start with the example project), select File/Open config, 
-go to the `srsgui` package directory, find the examples directory, and select the `oscilloscope example project.taskconfig` file
-in the example project folder. 
+go to the `srsgui` package directory, find the examples directory, and select the 
+`oscilloscope example project.taskconfig` file in the example project folder. 
 
-You can run the **Plot example** and **FFT of simulated waveform** tasks from the Task menu without any instruments connected.
+You can run the **Plot example** and **FFT of simulated waveform** tasks from 
+the Task menu without any instruments connected.
 
 ## Create a project
 

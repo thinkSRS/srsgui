@@ -1,5 +1,5 @@
 ##! 
-##! Coptright(c) 2022, 2023 Stanford Research Systems, All right reserved
+##! Copyright(c) 2022, 2023 Stanford Research Systems, All rights reserved
 ##! Subject to the MIT License
 ##! 
 
@@ -11,7 +11,7 @@ import numpy as np
 from srsgui import Task
 from srsgui import IntegerInput
 
-from tasks.fourth import FourthTask
+from tasks.captured_fft import CapturedFFT
 
 try:
     # Use SciPy signal library if available
@@ -21,9 +21,10 @@ except:
 else:
     SCIPY_IMPORTED = True
 
-class FifthTask(FourthTask):
+
+class SimulatedFFT(CapturedFFT):
     """
-It subclasses FourthTask (Display FFT waveform) to use simulated \
+It subclasses CapturedFFT class in the capturedfft.py module to use simulated \
 waveforms instead of ones from a real oscilloscope. \
 By isolating and overriding hardware related codes in separate methods, \
 the existing task can be reused.

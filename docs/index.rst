@@ -51,7 +51,7 @@ from a couple of arbitrary instruments and data visualization for a small task.
      output frequency (if not count comment lines);
    - 40 lines to capture waveforms from an oscilloscope (it has a method
      to download a waveform from the oscilloscope);
-   - 100 lines in the fourth example to check if set frequency
+   - 100 lines in the :ref:`CapturedFFT <top-of-captured-fft>` example to check if set frequency
      changed from the input panel, set a new frequency if changed,
      capture a new waveform of 700000 points, calculate FFT of the waveform
      and plot them every 0.2 second;
