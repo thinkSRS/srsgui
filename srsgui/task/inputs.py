@@ -173,7 +173,7 @@ class CommandInput(IntegerInput):
     """
     It provides the interface to :class:`InputPanel <srsgui.ui.inputpanel.InputPanel>`
     to query the value of a command and to change the set value of the command.
-    Currently InputPanel does not update self.value. Do not use get_value().
+    Currently, InputPanel does not update self.value. Do not use get_value().
     Query the command directly in a task.
     """
 
