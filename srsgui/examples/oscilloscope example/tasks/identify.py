@@ -6,7 +6,7 @@
 from srsgui import Task
 
 
-class FirstTask(Task):
+class Identify(Task):
     """
 Query *IDN? to instruments, 'cg' and 'osc' \
 defined in the configuration file.

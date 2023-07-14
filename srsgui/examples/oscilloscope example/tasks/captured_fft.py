@@ -9,7 +9,7 @@ from srsgui import Task
 from srsgui import IntegerInput
 
 
-class FourthTask(Task):
+class CapturedFFT(Task):
     """
 Change the frequency of the clock generator output interactively, \
 capture waveforms from the oscilloscope, \

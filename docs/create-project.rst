@@ -74,8 +74,8 @@ of ``srsgui`` package (comment lines have been removed).
     inst: cg,  instruments.cg635,   CG635
     inst: osc, instruments.sds1202, SDS1202
 
-    task: *IDN test,    tasks.first,  FirstTask
-    task: Plot example, tasks.second, SecondTask
+    task: *IDN test,    tasks.identify,  Identify
+    task: Plot example, tasks.plot_example, PlotExample
     ...
 
 

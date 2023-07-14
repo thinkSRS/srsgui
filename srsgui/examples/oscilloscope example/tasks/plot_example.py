@@ -10,7 +10,7 @@ from srsgui import Task
 from srsgui import IntegerInput
 
 
-class SecondTask(Task):
+class PlotExample(Task):
     """
 Example to demonstrate the use of matplotlib plot in a task.
 No hardware connection is required.

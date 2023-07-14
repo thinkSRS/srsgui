@@ -31,8 +31,8 @@ inst: osc, instruments.sds1202, SDS1202
 # The Second column is the Python module that contains the task class with relative path from the Task config file.
 # The third column is a task class  that is a Task subclass in the module.
 
-task: *IDN test,                 tasks.first,  FirstTask
-task: Plot example,              tasks.second, SecondTask
-task: Capture Osc. waveform,     tasks.third,  ThirdTask
-task: FFT of captured waveform,  tasks.fourth, FourthTask
-task: FFT of simulated waveform, tasks.fifth,  FifthTask
+task: *IDN test,                 tasks.identify,  Identify
+task: Plot example,              tasks.plot_example, PlotExample
+task: Capture Osc. waveform,     tasks.scope_capture,  ScopeCapture
+task: FFT of captured waveform,  tasks.captured_fft, CapturedFFT
+task: FFT of simulated waveform, tasks.simulated_fft,  SimulatedFFT
