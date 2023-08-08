@@ -4,7 +4,17 @@
 ##! 
 
 import logging
-from matplotlib.figure import Figure
+
+
+class DummyFigure:
+    pass
+
+
+try:
+    from matplotlib.figure import Figure
+except (ImportError, ModuleNotFoundError):
+    Figure = DummyFigure
+
 
 logger = logging.getLogger(__file__)
 
