@@ -8,20 +8,16 @@ import traceback
 import logging
 import time
 
+from .inputs import FloatInput, StringInput
+from .taskresult import TaskResult, ResultLogHandler
+from .callbacks import Callbacks, DummyFigure
+
+from srsgui.inst.instrument import Instrument
+
 try:
     from matplotlib.figure import Figure
 except (ImportError, ModuleNotFoundError):
-    msg = "\n\nPython package 'Matplotlib' is required to use Task class." \
-          "\nTry again after installing 'Matplotlib' with" \
-          "\n\npip install matplotlib" \
-          "\n\nOr your system may have a different way to install it."
-    raise ModuleNotFoundError(msg)
-
-from .inputs import FloatInput, StringInput
-from .taskresult import TaskResult, ResultLogHandler
-from .callbacks import Callbacks
-
-from srsgui.inst.instrument import Instrument
+    Figure = DummyFigure
 
 try:
     from srsgui.ui.qt.QtCore import QThread
@@ -161,7 +157,7 @@ class Task(thread_class):
         """
 
         self.logger = self.get_logger(__name__)
-        if self.figure is None or not hasattr(self.figure, 'canvas'):
+        if self.figure is not None and not hasattr(self.figure, 'canvas'):
             raise AttributeError('Invalid figure')
 
         if not self._check_dict_items(self.inst_dict, Instrument):
@@ -300,6 +296,9 @@ class Task(thread_class):
 
     @staticmethod
     def _check_dict_items(item_dict, item_class):
+        """
+        Check if all the items in item_dict are instances of item_class.
+        """
         if type(item_dict) is not dict:
             return False
         for value in item_dict.values():
