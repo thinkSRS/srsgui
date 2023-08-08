@@ -8,6 +8,7 @@ from logging import getLogger, Handler
 from .qt.QtCore import QObject
 from .qt.QtCore import Signal
 
+RedError = '<font color="red"><b>-ERROR-</b></font>'
 logger = getLogger(__name__)
 
 
@@ -38,7 +39,7 @@ class QtLogHandler(Handler):
             # self.append(message)
 
     def append(self, message):
-        self.text_browser.append(message)
+        self.text_browser.append(message.replace('-ERROR-', RedError, 1))
         sb = self.text_browser.verticalScrollBar()
         sb.setValue(sb.maximum())
 

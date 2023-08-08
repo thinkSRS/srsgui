@@ -177,14 +177,15 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             # Check if argument is given in the command line
             if self.initial_load and len(sys.argv) == 2 and sys.argv[1].split('.')[-1].lower() == 'taskconfig':
                 self.default_config_file = sys.argv[1]
-                self.initial_load = False
-            else:
+            elif not self.initial_load:
                 popped_path = sys.path.pop(0)
                 logger.debug('"{}" removed from sys.path'.format(popped_path))
 
             current_dir = str(Path(self.default_config_file).parent)
             sys.path.insert(0, current_dir)
             os.chdir(current_dir)
+            self.initial_load = False
+
             logger.debug('Set the current directory to "{}"'.format(current_dir))
             self.config.load(self.default_config_file)
             logger.debug('TaskConfig file: "{}"  loading done'.format(self.default_config_file))
@@ -199,6 +200,7 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
             self.inst_info_handler.update_tabs()
             for inst_name in self.inst_dict:
+                self.inst_dict[inst_name].check_id()
                 self.inst_info_handler.update_info(inst_name)
 
             self.setWindowTitle(self.config.task_dict_name)

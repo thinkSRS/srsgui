@@ -22,8 +22,8 @@ from srsgui.inst.exceptions import InstException, InstCommunicationError, \
                         InstLoginFailureError, InstIdError, \
                         InstSetError, InstQueryError, InstIndexError
 
-from srsgui.inst import Interface, SerialInterface, TcpipInterface
+from srsgui.inst.communications import Interface, SerialInterface, TcpipInterface
 from srsgui.inst.instrument import Instrument
 from srsgui.inst.component import Component
 
-__version__ = "0.4.0.1"  # Global version number
+__version__ = "0.4.2"  # Global version number

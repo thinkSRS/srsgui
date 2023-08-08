@@ -234,7 +234,7 @@ class Instrument(Component):
         Get the instrument information
 
         default return value is a dictionalry containing model name, serial number,
-        firmware version. A subclass can add more informaton into the dictionary
+        firmware version. A subclass can add more information into the dictionary
         as needed.
 
         :rtype: dict

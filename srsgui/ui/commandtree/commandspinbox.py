@@ -59,6 +59,7 @@ class FloatSpinBox(QDoubleSpinBox):
         self.significant_figures = 4
         self.precision = 3
         self.decis = 3
+        self.setDecimals(10)
 
     def set_minimum_step(self, value):
         self.minimum_step = value
@@ -80,7 +81,6 @@ class FloatSpinBox(QDoubleSpinBox):
                 value = self.minimum()
             elif value > self.maximum():
                 value = self.maximum()
-
         except ValueError:
             print('valueFromText ValueError', text, self.suffix())
             value = self.minimum()
@@ -89,7 +89,7 @@ class FloatSpinBox(QDoubleSpinBox):
     def textFromValue(self, value):
         prec = self.decis
         try:
-            if value == 0:
+            if abs(value) < self.minimum_step:
                 return '0.0'
 
             digits = math.ceil(math.log10(abs(value)))
@@ -100,11 +100,15 @@ class FloatSpinBox(QDoubleSpinBox):
                 step = 10 ** (digits - self.significant_figures)
             value = round(value / step) * step
             """
-            prec = self.significant_figures - digits
-            prec = self.decis if prec > self.decis else prec
-            prec = 0 if prec < 0 else prec
-            self.precision = prec
-            format_string = '{:.' + str(prec) + 'f}'
+            if digits > -3:
+                prec = self.significant_figures - digits
+                prec = self.decis if prec > self.decis else prec
+                prec = 0 if prec < 0 else prec
+                self.precision = prec
+                format_string = '{:.' + str(prec) + 'f}'
+            else:
+                format_string = '{:.' + str(self.significant_figures - 1) + 'e}'
+
             text = format_string.format(value)
         except Exception as e:
             print('Error in textFromValue: {}'.format(e))
@@ -116,16 +120,29 @@ class FloatSpinBox(QDoubleSpinBox):
         suffix_len = len(self.suffix())
         min_pos = prefix_len + 1 if self.value() < 0 else prefix_len
 
-        text = self.lineEdit().text()
+        text = self.lineEdit().text().lower()
         cur_pos = self.lineEdit().cursorPosition()
+        max_pos = len(text) - suffix_len
+
+        if cur_pos < min_pos or cur_pos > max_pos:
+            return
+
+        e_pos = text.find('e')
+        if e_pos > 0 and e_pos < cur_pos:  # cursor is on the right side of 'E'
+            return
+
+        exponent = 0
+        if 0 < e_pos < max_pos:
+            try:
+                exponent = int(text[e_pos + 1: max_pos])
+            except:
+                return
+
         sep_pos = text.find('.')
         if sep_pos < 0:
             sep_pos = len(text) - suffix_len
 
-        if cur_pos < min_pos:
-            return
-
-        exponent = sep_pos - cur_pos
+        exponent += sep_pos - cur_pos
         if exponent == -1:
             cur_pos += 1
 

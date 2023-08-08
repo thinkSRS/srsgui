@@ -5,7 +5,7 @@
 
 import math
 from .qt.QtCore import Qt
-from .qt.QtWidgets import QWidget, QDoubleSpinBox, QSpinBox, QComboBox, \
+from .qt.QtWidgets import QWidget, QComboBox, \
                           QLineEdit, QLabel, QGridLayout, QPushButton, QScrollArea
 
 from srsgui.inst.commands import Command, IntCommand, FloatCommand, DictCommand
@@ -14,6 +14,8 @@ from srsgui.inst.indexcommands import IndexCommand, IntIndexCommand, FloatIndexC
 from srsgui.task.task import Task
 from srsgui.task.inputs import IntegerInput, FloatInput, StringInput, \
                                ListInput, InstrumentInput, CommandInput
+
+from srsgui.ui.commandtree.commandspinbox import IntegerSpinBox, FloatSpinBox
 
 import logging
 logger = logging.getLogger(__name__)
@@ -99,7 +101,7 @@ class InputPanel(QScrollArea):
                     p.cmd_instance = self.get_cmd_instance(p)
                     if issubclass(p.cmd_instance.__class__, IntCommand) or \
                        issubclass(p.cmd_instance.__class__, IntIndexCommand):
-                        widget = QSpinBox()
+                        widget = IntegerSpinBox()
                         widget.setSuffix(' ' + p.cmd_instance.unit)
                         widget.setMaximum(p.cmd_instance.maximum)
                         widget.setMinimum(p.cmd_instance.minimum)
@@ -108,12 +110,13 @@ class InputPanel(QScrollArea):
 
                     elif issubclass(p.cmd_instance.__class__, FloatCommand) or \
                          issubclass(p.cmd_instance.__class__, FloatIndexCommand):
-                        widget = QDoubleSpinBox()
+                        widget = FloatSpinBox()
                         widget.setSuffix(' ' + p.cmd_instance.unit)
                         widget.setMaximum(p.cmd_instance.maximum)
                         widget.setMinimum(p.cmd_instance.minimum)
-                        widget.setSingleStep(p.cmd_instance.step)
-                        widget.setDecimals(math.ceil(math.log10(1.0 / p.cmd_instance.step)))
+                        widget.set_minimum_step(p.cmd_instance.step)
+                        # widget.setSingleStep(p.cmd_instance.step)
+                        #widget.setDecimals(math.ceil(math.log10(1.0 / p.cmd_instance.step)))
                         widget.setAlignment(Qt.AlignRight)
 
                     elif issubclass(p.cmd_instance.__class__, DictCommand) or \
@@ -141,12 +144,14 @@ class InputPanel(QScrollArea):
                     continue
 
                 elif param_type == FloatInput:
-                    widget = QDoubleSpinBox()
+                    widget = FloatSpinBox()
                     setattr(self, name, widget)
-                    widget.setDecimals(4)
+                    widget.set_minimum_step(p.single_step)
+
+                    # widget.setDecimals(4)
                     widget.setAlignment(Qt.AlignRight)
                 elif param_type == IntegerInput:
-                    widget = QSpinBox()
+                    widget = IntegerSpinBox()
                     setattr(self, name, widget)
                     widget.setAlignment(Qt.AlignRight)
                 else:
@@ -160,7 +165,10 @@ class InputPanel(QScrollArea):
                     widget.setMinimum(p.minimum)
                     widget.setMaximum(p.maximum)
                     widget.setEnabled(True)
-                widget.setSingleStep(p.single_step)
+                if param_type == FloatInput:
+                    widget.set_minimum_step(p.single_step)
+                else:
+                    widget.setSingleStep(p.single_step)
                 widget.setSuffix(' ' + p.suffix)
                 widget.setValue(p.value)
 
@@ -226,12 +234,12 @@ class InputPanel(QScrollArea):
                             cmd = '{} = {}'.format(params[name].cmd, params[name].default_value)
                         else:
                             cmd = '{} = "{}"'.format(params[name].cmd, params[name].text)
-                elif type(widget) == QSpinBox and type(params[name].default_value) == int:
+                elif type(widget) == IntegerSpinBox and type(params[name].default_value) == int:
                     params[name].value = params[name].default_value
                     widget.setValue(params[name].default_value)
                     if type(params[name]) == CommandInput:
                         cmd = '{} = {}'.format(params[name].cmd, params[name].default_value)
-                elif type(widget) == QDoubleSpinBox and type(params[name].default_value) == float:
+                elif type(widget) == FloatSpinBox and type(params[name].default_value) == float:
                     params[name].value = params[name].default_value
                     widget.setValue(params[name].default_value)
                     if type(params[name]) == CommandInput:
@@ -269,7 +277,7 @@ class InputPanel(QScrollArea):
                             fmt = '{} = {}'
                         cmd = fmt.format(params[name].cmd, widget.currentText())
 
-                elif type(widget) in (QSpinBox, QDoubleSpinBox):
+                elif type(widget) in (IntegerSpinBox, FloatSpinBox):
                     params[name].value = widget.value()
                     if type(params[name]) == CommandInput:
                         cmd = '{} = {}'.format(params[name].cmd, widget.value())
@@ -284,10 +292,10 @@ class InputPanel(QScrollArea):
     def handle_reply(self, cmd, reply):
         try:
             if cmd in self.command_dict:
-                if type(self.command_dict[cmd]) == QSpinBox:
+                if type(self.command_dict[cmd]) == IntegerSpinBox:
                     self.command_dict[cmd].setValue(int(reply))
 
-                elif type(self.command_dict[cmd]) == QDoubleSpinBox:
+                elif type(self.command_dict[cmd]) == FloatSpinBox:
                     self.command_dict[cmd].setValue(float(reply))
 
                 elif type(self.command_dict[cmd]) == QComboBox:
