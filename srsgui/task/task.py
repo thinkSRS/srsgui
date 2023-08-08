@@ -60,8 +60,6 @@ class Task(thread_class):
     EscapeForResult = '@RESULT@'
     EscapeForDevice = '@DEVICE@'
     EscapeForStatus = '@STATUS@'
-    EscapeForStart = '@START@'
-    EscapeForStop = '@STOP@'
 
     input_parameters = {
         # Example float parameter
@@ -105,7 +103,7 @@ class Task(thread_class):
         self.result = None
         self.result_log_handler = None
         self.session_handler = None
-        self.callbacks = None
+        self.callbacks = Callbacks()
 
         # inst_dict holds all the instrument to use in task
         self.inst_dict = {}
@@ -167,8 +165,6 @@ class Task(thread_class):
         if not self._check_dict_items(self.inst_dict, Instrument):
             raise AttributeError('Invalid inst_dict detected during basic setup')
 
-        self.callbacks.started()
-
         # We want Exception to be handled in run()
         Task._is_running = True
         self._keep_running = True
@@ -190,7 +186,6 @@ class Task(thread_class):
         self.update_status(msg)
         self.logger.info(GreenBold.format(msg))
 
-        self._notify_start()
         self.clear_figures()
 
     def basic_cleanup(self):
@@ -201,7 +196,7 @@ class Task(thread_class):
         try:
             Task._is_running = False
             self._keep_running = False
-            self._notify_finish()
+
             self.result.set_stop_time_now()
             if self._aborted:
                 msg = '{} ABORTED'.format(self.name)
@@ -236,6 +231,7 @@ class Task(thread_class):
         Overrides Thread run() method. task-specific test() runs inside this method.
         """
         try:
+            self.callbacks.started()
             self.basic_setup()
             if self._keep_running:
                 self.logger.debug("{} run started".format(self.name))
@@ -523,14 +519,6 @@ class Task(thread_class):
         if clear:
             self.write_text('{}cls'.format(self.EscapeForResult))
         self.write_text('{}{}'.format(self.EscapeForResult, message))
-
-    def _notify_start(self):
-        self.write_text(self.EscapeForStart + self.name)
-        self.update_status(self.name + ' running')
-
-    def _notify_finish(self):
-        self.write_text(self.EscapeForStop + self.name)
-        self.update_status(self.name + ' stopped')
 
     def write_text(self, text):
         """

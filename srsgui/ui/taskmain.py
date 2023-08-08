@@ -321,15 +321,8 @@ class TaskMain(QMainWindow, Ui_TaskMain):
 
             elif text.startswith(Task.EscapeForStatus):
                 self.statusbar.showMessage(msg[2])
-            elif text.startswith(Task.EscapeForStart):
-                # self.taskInfo.append(text)
-                pass
-            elif text.startswith(Task.EscapeForStop):
-                # self.taskInfo.append(text)
-                # self.clear_busy()
-                pass
             else:
-                raise ValueError("Invalid escape string")
+                raise ValueError("Invalid escape string: {}".format(text))
         except Exception as e:
             logger.error(e)
 
@@ -455,7 +448,6 @@ class TaskMain(QMainWindow, Ui_TaskMain):
             self.task.set_session_handler(self.session_handler)
             signal_handler = SignalHandler(self)
             self.task.set_callback_handler(signal_handler)
-            self.onTaskStarted()
             self.task.start()
         except Exception as e:
             logger.error(e)
