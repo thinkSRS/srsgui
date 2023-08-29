@@ -7,7 +7,7 @@ General
 `````````````````````````````````````````````````````````
 
     It happens with PySide6 V.6.2.4. or earlier.
-    It is fixed with V.6.5.1 or possibly before.
+    It is fixed with V.6.3.0 or later.
     If 'pip' does not allow to upgrade to a newer version, upgrade 'pip' first.
 
 .. code-block::
