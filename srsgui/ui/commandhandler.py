@@ -104,6 +104,14 @@ class CommandHandler(QObject):
         self.worker.figure_dict = self.parent.dock_handler.get_figure_dict()
         self.request_command.emit(cmd, reply)
 
+    def process_command_without_figure_dict(self, cmd, reply):
+        """
+        Handles a command from a parent without dock_handler
+        """
+        self.worker.inst_dict = self.parent.inst_dict
+        self.worker.figure_dict = {}
+        self.request_command.emit(cmd, reply)
+
     def stop(self):
         self.worker_thread.quit()
         self.worker_thread.wait()
