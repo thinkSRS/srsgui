@@ -1,5 +1,9 @@
 Changelog
 ==========
+V.0.4.4 -- Apr 18, 2024
+    * Changed :meth:`Instrument.get_available_interfaces <srsgui.inst.instrument.Instrument.get_available_interfaces>`
+      to a class method.
+
 V.0.4.0 -- Jun 21, 2023
     * Changed :mod:`IndexCommand <srsgui.inst.indexcommands>`
       to instance variable to handle multiple instances correctly.
@@ -7,8 +11,8 @@ V.0.4.0 -- Jun 21, 2023
       self.add_parent_to_index_commands() should be called after the definition of index commands.
 
 V.0.3.4 -- Jun 20, 2023
-    * Removed default_value from :class:`CommandInput <srsgui.task.inputs.CommandInput>`.__init__.
-      cmd_instance argument is not necessary, either.
+    * Removed *default_value* from :class:`CommandInput <srsgui.task.inputs.CommandInput>`.__init__().
+      The *cmd_instance* argument is not necessary, either.
 
 V.0.3.1 -- May 22, 2023
     * Changed task result file name extension to .sgdata.

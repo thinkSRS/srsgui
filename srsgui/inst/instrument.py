@@ -218,14 +218,15 @@ class Instrument(Component):
         self._firmware_version = firmware_version
         return self._model_name, self._serial_number, self._firmware_version
 
-    def get_available_interfaces(self):
+    @classmethod
+    def get_available_interfaces(cls):
         """
         Get available communication interfaces for the instrument
 
         :rtype: dict
         """
         d = {}
-        for interface in self.available_interfaces:
+        for interface in cls.available_interfaces:
             d[interface[0].NAME] = interface
         return d
 
@@ -233,7 +234,7 @@ class Instrument(Component):
         """
         Get the instrument information
 
-        default return value is a dictionalry containing model name, serial number,
+        default return value is a dictionary containing model name, serial number,
         firmware version. A subclass can add more information into the dictionary
         as needed.
 

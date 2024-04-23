@@ -122,7 +122,7 @@ class Task(thread_class):
 
     def test(self):
         """
-        Test() is the main part of a Task. And a lot of times, test() takes long time to finish.
+        Test() is the main part of a Task subclass. And a lot of times, test() takes long time to finish.
         Check frequently if is_running() is true. If not, test() should finish voluntarily
         as soon as possible.
         """

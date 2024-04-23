@@ -306,6 +306,7 @@ class DictGetCommand(DictCommand):
     To **set** a value is not allowed.
     """
     _set_enable = False
+
     def __set__(self, instance, value):
         raise AttributeError('No set command for {}'
                              .format(self.remote_command))

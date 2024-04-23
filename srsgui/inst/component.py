@@ -244,6 +244,15 @@ class Component(object):
         return method_list
 
     def get_command_info(self, command_name):
+        """
+        get detailed information on the command with command_name
+
+        returns
+        --------
+            dict
+                dictionary of information on the command
+        """
+
         if hasattr(self.__class__, command_name):
             cmd = self.__class__.__dict__[command_name]
         elif hasattr(self, command_name):

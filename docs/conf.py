@@ -19,7 +19,7 @@ from srsgui import __version__
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'srsgui'
-copyright = '2022, 2023, Stanford Research Systems'
+copyright = '2022-2024, Stanford Research Systems'
 author = 'Chulhoon Kim'
 version = __version__
 
