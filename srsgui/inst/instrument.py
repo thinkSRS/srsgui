@@ -1,7 +1,7 @@
-##! 
-##! Copyright(c) 2022, 2023 Stanford Research Systems, All rights reserved
+##!
+##! Copyright(c) 2022-2024 Stanford Research Systems, All rights reserved
 ##! Subject to the MIT License
-##! 
+##!
 
 import re
 import time
@@ -16,12 +16,14 @@ from srsgui.task.inputs import FindListInput, IntegerListInput, BoolInput, \
 class Instrument(Component):
     """ Base class for derived instrument classes.
     """
+    # Termination character used in text communication
+    _term_char = b'\n'
 
     # String should be in the ID string of the instrument
     _IdString = "Not Available"
 
-    # Termination character used in text communication
-    _term_char = b'\n'
+    # default ID command used in check_id()
+    id_query_cmd = '*IDN?'
 
     available_interfaces = [
         [
@@ -43,7 +45,7 @@ class Instrument(Component):
     """
     Available_interface specifies the communication interface available with an instrument.
     As default, SerialInterface and TcpipInterface is provided with the base class.
-    VXI11 interface and VISA interface is available srsinst.sr860 package.  
+    VXI11 interface and VISA interface is available in srsinst.sr860 package.
     """
     def __init__(self, interface_type=None, *args):
         """
@@ -195,11 +197,10 @@ class Instrument(Component):
 
         :return: tuple of (model name, serial number, firmware version)
         """
-
         if not self.is_connected():
             return None, None, None
 
-        reply = self.query_text('*IDN?').strip()
+        reply = self.query_text(self.id_query_cmd).strip()
         strings = reply.split(',')
 
         if len(strings) != 4:
@@ -210,7 +211,7 @@ class Instrument(Component):
         firmware_version = strings[3].strip()
 
         if not re.search(self._IdString, reply):
-            raise InstIdError("Invalid instrument: {} not in {}"
+            raise InstIdError("Invalid instrument: '{}' not in ID query reply, '{}'"
                               .format(self._IdString, reply))
         self._id_string = reply
         self._model_name = model_name
@@ -242,6 +243,8 @@ class Instrument(Component):
         """
         d = self.comm.get_info()
         if type(d) is dict:
+            if self._model_name is None and self.comm.is_connected():
+                self.check_id()
             d['model_name'] = self._model_name
             d['serial_number'] = self._serial_number
             d['firmware_version'] = self._firmware_version
