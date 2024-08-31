@@ -254,7 +254,7 @@ class Instrument(Component):
         """
         Get instrument status
 
-        Returns a string with stauts and error infomation.
+        Returns a string with status and error information.
         This method will be called by the owner of the instrument
         to display status info to its output interface.
 

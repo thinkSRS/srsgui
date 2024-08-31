@@ -26,4 +26,6 @@ from srsgui.inst.communications import Interface, SerialInterface, TcpipInterfac
 from srsgui.inst.instrument import Instrument
 from srsgui.inst.component import Component
 
-__version__ = "0.4.5"  # Global version number
+from srsgui.plots.timeplot import TimePlot
+
+__version__ = "0.4.6"  # Global version number
